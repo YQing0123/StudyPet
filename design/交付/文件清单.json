@@ -1,0 +1,302 @@
+[
+  {
+    "path": "交付/伴学小岛-技术详细设计.docx",
+    "bytes": 160120,
+    "sha256": "6a496571fa35e80297860019ea7cc0b2c75d2734357071301152892fa48c3eee"
+  },
+  {
+    "path": "交付/伴学小岛-技术详细设计.html",
+    "bytes": 322304,
+    "sha256": "b41aecb643fbdd1b92ef4b684e7b81fd9307ecad3aceff4a93bc998053ddd72e"
+  },
+  {
+    "path": "交付/伴学小岛-技术详细设计.md",
+    "bytes": 253191,
+    "sha256": "f217c190480c76ae57073e13f953df8580e2147ece256e1a6f1f3993c7e7a592"
+  },
+  {
+    "path": "交付/系统架构.html",
+    "bytes": 757849,
+    "sha256": "dc50de6e3a03049d3c02b6a2c34afef173581ed3cbf1e6fa5c0a92b6a22030cf"
+  },
+  {
+    "path": "功能清单.csv",
+    "bytes": 25904,
+    "sha256": "312cafd7c5ffe56136a23d7b3e03c70354803c0f77ac402683b1b896a4a7a66a"
+  },
+  {
+    "path": "功能清单.json",
+    "bytes": 50941,
+    "sha256": "f3a9f8e54cfc1b30e72673e2ba4e47d5984d2c36a3c3eff9ccabaa65949e7f00"
+  },
+  {
+    "path": "契约/openapi.json",
+    "bytes": 476833,
+    "sha256": "fe467e0589e14431a1b8fd63839b08f497043792cb06f80d89c0c09f53df5b54"
+  },
+  {
+    "path": "契约/operations.json",
+    "bytes": 35874,
+    "sha256": "288d36bc13897dbda8f825ce32f6870c15e0f6550b8efffe77495dd670cfe5dd"
+  },
+  {
+    "path": "契约/内容/README.md",
+    "bytes": 6559,
+    "sha256": "fad1211393236a7381962b262310658a5544515d0954215f70726ebc15c34713"
+  },
+  {
+    "path": "契约/内容/build_contracts.py",
+    "bytes": 25721,
+    "sha256": "749c57ddbee954e0621996da4a898a5f0d864382150cd2254ef2e7ee33619ded"
+  },
+  {
+    "path": "契约/内容/check_integration.py",
+    "bytes": 6397,
+    "sha256": "3567715853b3a907efb9b0ae4162ed807dcb0932bb7c847ae05bef323bd7864d"
+  },
+  {
+    "path": "契约/内容/examples/fixture-registry.json",
+    "bytes": 641,
+    "sha256": "6526345e47c3cef7d9d6f685247b3535a3d6c41c600bb37905d0485a3bddbedf"
+  },
+  {
+    "path": "契约/内容/examples/generation-blueprint.p1.valid.json",
+    "bytes": 11720,
+    "sha256": "c1a7fb973b911c3c3572b13d1f7eb435382cb1e1d1c3affa6d5b6c4ed5fbda16"
+  },
+  {
+    "path": "契约/内容/examples/generation-blueprint.p2.valid.json",
+    "bytes": 16124,
+    "sha256": "c0eacb058d1ca970abf81f476a61d848dff20d38286db71530b0abb96e76b269"
+  },
+  {
+    "path": "契约/内容/examples/question-candidate.audio_to_picture.valid.json",
+    "bytes": 1697,
+    "sha256": "bb21a3520640f79da105bc978660c1c2bf7991d01409620f938b58cc3dde9cac"
+  },
+  {
+    "path": "契约/内容/examples/question-candidate.cloze_choice.valid.json",
+    "bytes": 1628,
+    "sha256": "7ceaf66b8389be3da94981b2303fc5b4454c0073a9c22bcd4f1a8e60095be173"
+  },
+  {
+    "path": "契约/内容/examples/question-candidate.cloze_text.valid.json",
+    "bytes": 1454,
+    "sha256": "0d398c53ef5bbae3990269abea72654f0481bdd33ef2b22cf1e74ddd48b9d9d0"
+  },
+  {
+    "path": "契约/内容/examples/question-candidate.matching.valid.json",
+    "bytes": 2104,
+    "sha256": "21e3c4082b27ef3d2b507015662a05e9c2713bd6b72484f9c995771eeb8e9cb0"
+  },
+  {
+    "path": "契约/内容/examples/question-candidate.oral_reading.valid.json",
+    "bytes": 1480,
+    "sha256": "c8a0f0cdfb4981f6e7b793859a78a63a27c4721635bdbbe7889ec1feafa5b3fb"
+  },
+  {
+    "path": "契约/内容/examples/question-candidate.picture_to_word.valid.json",
+    "bytes": 1592,
+    "sha256": "54a627aaf48ab81ba05ec696818a92ed456c3b4967f8355d47d7a287d88915dd"
+  },
+  {
+    "path": "契约/内容/examples/question-candidate.reading_choice.valid.json",
+    "bytes": 1857,
+    "sha256": "1a85f043530e5686a67b62cfc29fe01a2a70a2744ddf4e5aea40275d54b20817"
+  },
+  {
+    "path": "契约/内容/examples/question-candidate.retell.valid.json",
+    "bytes": 1844,
+    "sha256": "b1a0076fd245f6b4358b1c4f84b3bbe6efc8fd4ecc458aef8dc88e5f264dec81"
+  },
+  {
+    "path": "契约/内容/examples/question-candidate.sentence_choice.valid.json",
+    "bytes": 1670,
+    "sha256": "b26e241ae2df90108f389875b48ccb42a22d9afcbbbf6f3c516c5f8218f8d460"
+  },
+  {
+    "path": "契约/内容/examples/question-candidate.word_order.valid.json",
+    "bytes": 1771,
+    "sha256": "dfc3ee8a59b5e5aad857ce123859d8059cbfe555625c28cfb0ef25ad54a97fd8"
+  },
+  {
+    "path": "契约/内容/examples/question-candidate.word_to_picture.valid.json",
+    "bytes": 1624,
+    "sha256": "4bbef7c6440c71975d3404206878bfd5ca76d087cb747d4bf463cc34919e8d1b"
+  },
+  {
+    "path": "契约/内容/examples/source-slice.bag.valid.json",
+    "bytes": 1294,
+    "sha256": "04d8fad42d676b26d3e327d1fb42365a83e62be04f587838c685156c5d3de88c"
+  },
+  {
+    "path": "契约/内容/examples/source-slice.blue.valid.json",
+    "bytes": 990,
+    "sha256": "e9b9f68f57f53886a4da3fc9b4bfb1ef4a29ea50e0f32a35c1a84f7889b92a1d"
+  },
+  {
+    "path": "契约/内容/examples/source-slice.context.valid.json",
+    "bytes": 1269,
+    "sha256": "7144d6f078e38cf1895917cc3b1c3bb1390c53ceac914c83673e8e4f293597d2"
+  },
+  {
+    "path": "契约/内容/generation-blueprint.schema.json",
+    "bytes": 22256,
+    "sha256": "41b462ef0816b9eddf7992e74b2c0e7d1b9bf20a767bd4df71c6d82b78d0640b"
+  },
+  {
+    "path": "契约/内容/integration-report.json",
+    "bytes": 8634,
+    "sha256": "6435fe2a3cca2059c3f21d3b82e58da587127e7f346930e864f7188bbc0ce20d"
+  },
+  {
+    "path": "契约/内容/question-candidate.schema.json",
+    "bytes": 29388,
+    "sha256": "b9d5f32a6d60bd4b175432a2184a27ecec05fd47055b064be0a78024996ccc6b"
+  },
+  {
+    "path": "契约/内容/source-slice.schema.json",
+    "bytes": 9598,
+    "sha256": "e7db7963b6d15c7b39df2713db00e334c5dff0fe96137ee215c1254c804e4486"
+  },
+  {
+    "path": "契约/内容/validate_contracts.py",
+    "bytes": 21456,
+    "sha256": "ae2318e1e1ee96a06976e735c30a4de8765de64103067e263f769b832d7c044a"
+  },
+  {
+    "path": "契约/内容/validation-report.json",
+    "bytes": 2606,
+    "sha256": "a243a27be840ca37374e16dbdd3935eb858f18b04c8683900d2d87871402334b"
+  },
+  {
+    "path": "契约/内容/开源逻辑映射.json",
+    "bytes": 5431,
+    "sha256": "2f18c4fd35c9f0425b5cab5c2e85f5e007f8b131d15c14017dab700b3b4d31aa"
+  },
+  {
+    "path": "契约/内容/运行与落库映射.json",
+    "bytes": 5630,
+    "sha256": "e1b2e662801eb6174db904216da549606049f4e647aafa41a39360616b355bf2"
+  },
+  {
+    "path": "工具/导出技术设计Word.py",
+    "bytes": 4613,
+    "sha256": "194f15ccfed1d21ff99ce6ce00596b91bd7eadd095b996fb9261b564d451b2f2"
+  },
+  {
+    "path": "工具/校验并打包设计.py",
+    "bytes": 8139,
+    "sha256": "9b33f6c4a0c62d060f861a675238422095bdb3f424b32032d2e5c34ee42460ce"
+  },
+  {
+    "path": "工具/汇编技术文档.py",
+    "bytes": 4890,
+    "sha256": "ab395c32abeb8460be40e32ee1106d308125be7597953ea4f5a19c666bc2ede1"
+  },
+  {
+    "path": "工具/生成接口与功能契约.py",
+    "bytes": 43151,
+    "sha256": "19950a6e819b90a5000e6c26c4fdeaef51d888b622dabe9bb385e942a5a40043"
+  },
+  {
+    "path": "开发包使用说明.md",
+    "bytes": 2477,
+    "sha256": "3e18dcf056dbb611bff201de3bb9c2f7e51b05710d44ba2691186daa48b8bef5"
+  },
+  {
+    "path": "数据库/catalog.json",
+    "bytes": 267241,
+    "sha256": "8606f196c0760918a558249e4fcb361669106dc3d0d9a8432fa6f9260859f75d"
+  },
+  {
+    "path": "数据库/definition-data.json",
+    "bytes": 263284,
+    "sha256": "9b1db7df2d053dddea0bf59cb7dc4fc26e3dc3c15c355f91162aafa4cf3a7254"
+  },
+  {
+    "path": "数据库/schema.extra-guards.sql",
+    "bytes": 14248,
+    "sha256": "975301d70bb2a9493d4b233d92d0ce0f79c622b7d5910282ffc3e53b8ebb82a5"
+  },
+  {
+    "path": "数据库/schema.guards.sql",
+    "bytes": 25506,
+    "sha256": "be84ee7d8d5fee8cef3787ac61e098555de7e190cb3786e98eac85d83ea2e8b3"
+  },
+  {
+    "path": "数据库/schema.sql",
+    "bytes": 310474,
+    "sha256": "818a786d72730e557b86e254dc865a9177b3ad72b8f16056b13ee7436a729793"
+  },
+  {
+    "path": "数据库/schema.tables.sql",
+    "bytes": 232993,
+    "sha256": "b7157fd7c89532dfd9b7306acfe14522ec5f8099ba99a342bee1d1663a3a3c7c"
+  },
+  {
+    "path": "数据库/validation-report.json",
+    "bytes": 666,
+    "sha256": "dfd756c60ea4d5d84f85f080a4af5eac86ab69b71041b317c87e72cee50a33a9"
+  },
+  {
+    "path": "数据库/校验数据库设计.py",
+    "bytes": 7348,
+    "sha256": "c3855998145e0d14aac2836567f43331a6707bafac25a165bf4ec7f349474e3d"
+  },
+  {
+    "path": "数据库/生成交付.py",
+    "bytes": 28411,
+    "sha256": "c50a111b93e727d658b8d762864fda0de3a3125f73e29ac573ee82b6e8f80af1"
+  },
+  {
+    "path": "数据库/生成数据库设计.py",
+    "bytes": 84901,
+    "sha256": "dc659f431f4040b6a717eda7d7f7e8fdacb90f8be2271523df55d2d0b8616279"
+  },
+  {
+    "path": "校验/设计校验汇总.json",
+    "bytes": 14546,
+    "sha256": "bc1529cdefff39a9b52ce0000eabbfc8a9cf7c55796ec4abb80eef8bd02396b8"
+  },
+  {
+    "path": "章节/01-架构与功能.md",
+    "bytes": 15263,
+    "sha256": "f3b3ae7e0405aa0183c0b77ed7fdd088a6ccb7c4a21ed3a5def11b6374e7d400"
+  },
+  {
+    "path": "章节/03-计划与学习流程.md",
+    "bytes": 12827,
+    "sha256": "41aca0fc2901e5445ebda1dacaf8f6aa688f0ea0027c80569a03403b34ce7efa"
+  },
+  {
+    "path": "章节/04-奖励宠物与AI.md",
+    "bytes": 13889,
+    "sha256": "192026c826ec2e655b01ffdd3dab43dccfb978ec27a0e0596a99fafdc4a75137"
+  },
+  {
+    "path": "章节/05-接口多端运维与验收.md",
+    "bytes": 19360,
+    "sha256": "baf540ceff260c0b84b5ff5fdace244019d852be76818719ae64cc1054695640"
+  },
+  {
+    "path": "章节/06-功能与接口清单.md",
+    "bytes": 30105,
+    "sha256": "8fec86e1e25ba7dc15c2134bfba7e9a10782709afa97d6b0a1bd46643ada3c0d"
+  },
+  {
+    "path": "章节/07-映射与实现细则.md",
+    "bytes": 6933,
+    "sha256": "c9811a0188b11765844c0e3815a7e8f19ea6c2fb1a065b8ca28b70914bccc337"
+  },
+  {
+    "path": "章节/内容生产设计.md",
+    "bytes": 29276,
+    "sha256": "aa2b3d161b9536f6920de3f3c4feb3f80da2a9351755880d5f841be6d9bc7fe3"
+  },
+  {
+    "path": "章节/数据库设计.md",
+    "bytes": 125464,
+    "sha256": "9c429af8eefb7e3a2329664e5475cddee2aa021cff8561abd2c3ea7c37bfd720"
+  }
+]

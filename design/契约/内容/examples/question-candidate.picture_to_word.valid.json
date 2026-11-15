@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "id": "4b720796-521f-578a-89e5-763d83b8d26d",
+  "blueprint_id": "4511d1b1-171f-5514-a522-fc7166e7e025",
+  "phase": "p1",
+  "question_family_key": "fixture.picture-to-word.bag",
+  "question_type": "picture_to_word",
+  "source_slice_ids": [
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+  ],
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "objective_ids": [
+    "08f9d6a6-cc9d-5736-97f7-3813f49a5fb4"
+  ],
+  "skill": "word_recognition",
+  "modality": "visual",
+  "difficulty": 1,
+  "estimated_seconds": 15,
+  "presentation_kind": "verbatim",
+  "prompt_text": "看图片，选单词。",
+  "instruction_text": "看图片，选单词。",
+  "public_payload": {
+    "image_asset_id": "3f981930-8e18-511c-8274-007c324b23b5",
+    "options": [
+      {
+        "id": "8a815e67-9c16-535a-b313-f8285ff0018c",
+        "text": "bag"
+      },
+      {
+        "id": "3e7a9410-6822-58ad-9e5e-3796a1eb5bef",
+        "text": "cat"
+      },
+      {
+        "id": "7896bb82-e0a9-5649-9039-58eff82d28bc",
+        "text": "dog"
+      }
+    ]
+  },
+  "answer_spec": {
+    "answer_kind": "single_choice",
+    "accepted_option_ids": [
+      "8a815e67-9c16-535a-b313-f8285ff0018c"
+    ]
+  },
+  "explanation": "本题来自家庭自编页句，按所列目标验证。",
+  "requires_microphone": false,
+  "requires_typing": false,
+  "quality_risks": [],
+  "source_quotes": [
+    {
+      "slice_id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+      "source_role": "assessed",
+      "quote": "This is my bag.",
+      "start_char": 0,
+      "end_char": 15
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "fps": 30,
+  "method": "RIFE 4.25; curated atlas keys, premultiplied RGBA; VP9 alpha",
+  "actions": {
+    "greet": {
+      "frames": 72,
+      "distinctFrames": 72,
+      "seconds": 2.4,
+      "keys": 6,
+      "sha256": "c5f2bf44105c9cdfba0a20c96e41671cf5d94cf8fc11edeeec1c6718f9e02f31",
+      "keySHA256": "335d56ee64c775448a521ed1a9942d2c2e0a96a9c4a3d1129e26fd1aadbd43a1"
+    },
+    "eat": {
+      "frames": 48,
+      "distinctFrames": 48,
+      "seconds": 1.6,
+      "keys": 4,
+      "sha256": "148f22450ac63a87abca831ae089ac0d01cbdb579ad61c459f34af0c53601bab",
+      "keySHA256": "b87ed7148c5d05cf1ca2015c59bfe8af9d83b5cd7f1975be5d8bdce31cc0bab5"
+    },
+    "eatrev": {
+      "frames": 24,
+      "distinctFrames": 24,
+      "seconds": 0.8,
+      "keys": 3,
+      "sha256": "fb1665df8ec4ea2cdd488e3da5cd8ad51a414f0199d5897e606c71b90b6083d5",
+      "keySHA256": "f8a624a6dbef63624a36faf47ad490c1abcd10e39e07fcc922ed7bdc7a5db041"
+    },
+    "petted": {
+      "frames": 48,
+      "distinctFrames": 48,
+      "seconds": 1.6,
+      "keys": 4,
+      "sha256": "24f6b4ad931e3099b18edded05b7fc8c8a56c03cf644eb8781640b584d5d3dc0",
+      "keySHA256": "7d848883eff48fe284ffa524b6d7300047f7536daa90cd6f4a8a6b044253b9a6"
+    },
+    "petted-out": {
+      "frames": 21,
+      "distinctFrames": 21,
+      "seconds": 0.7,
+      "keys": 3,
+      "sha256": "6165970dd7848092090f1076afcfe7b28e3b7dae0bb2fef57f524ca58f8a54c4",
+      "keySHA256": "26f367cb295f10c22c170d941342a07b966b1abb9ce5b8dc257c5d8e1742572f"
+    },
+    "play": {
+      "frames": 72,
+      "distinctFrames": 72,
+      "seconds": 2.4,
+      "keys": 6,
+      "sha256": "1d5d0c7563447ec903296c56dfabb1c642e1c1ccb9de87b84cb85c219a03896e",
+      "keySHA256": "18d415a1459a901df7b55e9617c10f78cbdb8b202db28d8d3bf8adefd9344dd2"
+    },
+    "hug": {
+      "frames": 66,
+      "distinctFrames": 66,
+      "seconds": 2.2,
+      "keys": 6,
+      "sha256": "d290befdaa736e40399d21510dc6958f74897f35521f5877fd548dfebfe13644",
+      "keySHA256": "79fec41415bf671f2a63eccfec3bbef093a411e927cb1516a53997533e8548e2"
+    },
+    "sleep": {
+      "frames": 72,
+      "distinctFrames": 72,
+      "seconds": 2.4,
+      "keys": 6,
+      "sha256": "0302a9fc27e681fd52e69ecfd9e84c54ee00a8d4198ab1cd7868ca2c8d04f7e0",
+      "keySHA256": "b2cc004121f8928da116575430a33d3eb5145214009a768214f84224afa217c8"
+    },
+    "wake": {
+      "frames": 60,
+      "distinctFrames": 60,
+      "seconds": 2.0,
+      "keys": 6,
+      "sha256": "cc9de79f17956b40f69a894977f1eabcf7b1e396690a255658e2005093e54bea",
+      "keySHA256": "1b29b620a06457ecaaebf7998baae5ba5c4fbd8c37b05c9a3940c45219f197e1"
+    },
+    "stretch": {
+      "frames": 78,
+      "distinctFrames": 78,
+      "seconds": 2.6,
+      "keys": 6,
+      "sha256": "8d0ac2c84415e4043575c4861fe751ef8cfa39b548e9094617e270a2d7871ccf",
+      "keySHA256": "7061545b42f922cc42fcdede82a0d0eebf6dad9dcb9447452633d8b61253be6d"
+    },
+    "walk": {
+      "frames": 48,
+      "distinctFrames": 48,
+      "seconds": 1.6,
+      "keys": 1,
+      "method": "four-hoof displacement field",
+      "sha256": "2ccedae183c1075af6c82d14f4d328ebb8985e5ecebc5fdb18d0bd3c8a3638a4"
+    }
+  }
+}

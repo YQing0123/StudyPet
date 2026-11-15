@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0.0",
+  "bundle_id": "demo-bad-001",
+  "created_by": "agent:test-agent",
+  "library_ref": {
+    "series": "RAZ",
+    "level": "B",
+    "book": "The Bag"
+  },
+  "generator": {
+    "provider": "openai",
+    "model": "gpt-5",
+    "prompt_version": "v3"
+  },
+  "candidate_count": 9,
+  "note": "故意包含各类错误的样例，用于验证质量门"
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0.0",
+  "id": "25c9f9ee-e4b6-558f-bae8-f729cbd85ad8",
+  "blueprint_id": "66b3aff5-e0a8-519a-b4a6-c1af7f691656",
+  "phase": "p2",
+  "question_family_key": "fixture.reading-choice.bag",
+  "question_type": "reading_choice",
+  "source_slice_ids": [
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+    "7735e957-e92d-52bb-a6be-24d82bcf0d34"
+  ],
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "objective_ids": [
+    "cce119bb-ab69-5ced-babc-0738bbd005ac"
+  ],
+  "skill": "sentence_comprehension",
+  "modality": "text",
+  "difficulty": 1,
+  "estimated_seconds": 30,
+  "presentation_kind": "verbatim",
+  "prompt_text": "包是什么颜色？",
+  "instruction_text": "读短文，选答案。",
+  "public_payload": {
+    "passage_text": "This is my bag. It is blue.",
+    "question_text": "包是什么颜色？",
+    "options": [
+      {
+        "id": "492f2e78-3959-5427-b19d-1ad080134df6",
+        "text": "蓝色"
+      },
+      {
+        "id": "25f7272a-e0af-5572-9ff4-f73a300b4603",
+        "text": "红色"
+      },
+      {
+        "id": "9dafc292-0b58-5a24-b6be-acba6bf11bec",
+        "text": "绿色"
+      }
+    ]
+  },
+  "answer_spec": {
+    "answer_kind": "single_choice",
+    "accepted_option_ids": [
+      "492f2e78-3959-5427-b19d-1ad080134df6"
+    ]
+  },
+  "explanation": "本题来自家庭自编页句，按所列目标验证。",
+  "requires_microphone": false,
+  "requires_typing": false,
+  "quality_risks": [],
+  "source_quotes": [
+    {
+      "slice_id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+      "source_role": "assessed",
+      "quote": "This is my bag.",
+      "start_char": 0,
+      "end_char": 15
+    },
+    {
+      "slice_id": "7735e957-e92d-52bb-a6be-24d82bcf0d34",
+      "source_role": "assessed",
+      "quote": "It is blue.",
+      "start_char": 0,
+      "end_char": 11
+    }
+  ]
+}

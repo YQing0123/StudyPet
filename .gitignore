@@ -1,0 +1,49 @@
+# Keep maintained source, runtime assets, design inputs and project documentation.
+/*
+!/.gitignore
+!/AGENTS.md
+!/VERSION_CONTROL.md
+!/项目接续说明-*.md
+!/app/
+!/design/
+!/prototype/
+!/方案/
+
+# Dependencies, generated output and local tools.
+**/node_modules/
+**/dist/
+**/output/
+**/.venv/
+**/venv/
+**/__pycache__/
+**/*.py[cod]
+**/.DS_Store
+**/.playwright*/
+**/.cdp/
+**/*.log
+**/*.tsbuildinfo
+
+# Real family data, backups, authentication state and credentials.
+/app/data/
+**/backups/
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.*.example
+**/*.db
+**/*.db-wal
+**/*.db-shm
+**/*.sqlite
+**/*.sqlite-*
+**/*.sqlite3
+**/*.pem
+**/*.key
+**/storage-state*.json
+**/storageState*.json
+**/auth-state*.json
+
+# Local inference model weights; scripts and runtime pet media remain tracked.
+**/*.pth
+**/*.pt
+**/*.onnx
+**/*.npz

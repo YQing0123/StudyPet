@@ -1,0 +1,17 @@
+{
+  "description": "Self-authored, pre-registered contract fixtures; no real textbook or child data.",
+  "content_version_id": "29e51114-a347-5b0b-8d00-4b9bf5390c1b",
+  "source_media_id": "cfb3313f-5f18-5603-851d-f7614b127284",
+  "source_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6",
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+    "7735e957-e92d-52bb-a6be-24d82bcf0d34"
+  ],
+  "registered_asset_ids": [
+    "3f981930-8e18-511c-8274-007c324b23b5",
+    "3e57234b-2e44-587b-9d18-5ca25c9b931c",
+    "81f4ea90-591a-568c-9e7a-983b50d87e38",
+    "60776e54-98bc-593e-9312-6712f7d445c5",
+    "8d009441-5e2c-5d1b-aaaa-9c27cbdf7a67"
+  ]
+}

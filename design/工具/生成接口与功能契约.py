@@ -1,0 +1,290 @@
+from pathlib import Path
+import json,csv
+root=Path('/Users/yqing/Documents/Project/学习打卡养宠物/design')
+contracts=root/'契约'; contracts.mkdir(parents=True,exist_ok=True)
+U={'type':'string','format':'uuid'}
+S=lambda **k:dict(type='string',**k)
+I=lambda **k:dict(type='integer',**k)
+B={'type':'boolean'}
+A=lambda x,**k:dict(type='array',items=x,**k)
+R=lambda name:{'$ref':'#/components/schemas/'+name}
+def O(props,req=None,**kw):return dict(type='object',properties=props,required=req if req is not None else list(props),additionalProperties=False,**kw)
+E=lambda *v:dict(type='string',enum=list(v))
+DT=S(format='date-time'); DATE=S(format='date')
+COUNT=S(pattern='^(0|[1-9][0-9]*)$',description='bigint最小单位十进制字符串')
+J={'type':'object','description':'由所引用的版本化内容或策略JSON Schema另行验证；不是任意执行代码'}
+s={}
+s['Error']=O({'code':S(),'message':S(),'retryable':B,'request_id':U,'field_errors':A(O({'path':S(),'code':S(),'message':S()}))},['code','message','retryable','request_id'])
+s['Entity']=O({'id':U,'revision':I(minimum=1),'status':S(),'created_at':DT,'updated_at':DT},['id','revision','status'])
+s['Ack']=O({'accepted':B,'resource_id':U,'revision':I(minimum=1)},['accepted'])
+s['Job']=O({'id':U,'job_type':S(),'status':E('queued','running','retry_wait','succeeded','failed','cancelled'),'stage':S(),'progress':I(minimum=0,maximum=100),'attempts':I(minimum=0),'error_code':S(),'result_ref':U},['id','job_type','status','progress','attempts'])
+s['RevisionCommand']=O({'expected_revision':I(minimum=1)})
+s['LoginRequest']=O({'username':S(minLength=1,maxLength=120),'password':S(minLength=1,maxLength=1024)})
+s['SessionInfo']=O({'actor_kind':E('adult','child','companion'),'family_id':U,'child_id':U,'roles':A(S()),'expires_at':DT,'csrf_token':S()},['actor_kind','family_id','roles','expires_at','csrf_token'])
+s['Family']=O({'id':U,'name':S(maxLength=80),'timezone':S(),'revision':I(minimum=1)})
+s['ChildInput']=O({'nickname':S(minLength=1,maxLength=32),'capabilities':O({'can_read_words':B,'can_type_words':B,'can_record_independently':B}),'locale':S(default='zh-CN')})
+s['Child']=O({'id':U,'nickname':S(),'capabilities':J,'revision':I(minimum=1)})
+s['Scope']=O({'content_version_id':U,'source_slice_ids':A(U,minItems=1,maxItems=200,uniqueItems=True),'context_slice_ids':A(U,maxItems=200,uniqueItems=True),'objective_ids':A(U,minItems=1,maxItems=100,uniqueItems=True)},['content_version_id','source_slice_ids','objective_ids'])
+s['Capabilities']=O({'webgl':B,'max_texture_size':I(minimum=0),'recording_mime_types':A(S()),'audio_codecs':A(S()),'input_modes':A(E('touch','keyboard','dpad')),'reduced_motion':B,'browser_version':S()},['webgl','recording_mime_types','input_modes','reduced_motion'])
+s['Device']=O({'id':U,'name':S(),'kind':E('ipad','web','tv','companion'),'capabilities':R('Capabilities'),'revoked_at':DT},['id','name','kind','capabilities'])
+s['UploadInit']=O({'purpose':E('source_document','source_image','source_audio','child_recording','asset_package'),'filename':S(maxLength=255),'mime_type':S(),'size_bytes':I(minimum=1,maximum=104857600),'sha256':S(pattern='^[0-9a-f]{64}$'),'session_id':U,'challenge_item_id':U},['purpose','filename','mime_type','size_bytes'])
+s['UploadTicket']=O({'asset_id':U,'upload_path':S(),'expires_at':DT,'max_bytes':I(minimum=1)})
+s['Media']=O({'id':U,'status':E('uploading','staged','validated','finalized','retired','deleted'),'mime_type':S(),'size_bytes':I(),'duration_ms':I(minimum=0),'sha256':S(),'access_path':S()},['id','status','mime_type','size_bytes'])
+s['CurriculumInput']=O({'stable_key':S(pattern='^[a-z0-9][a-z0-9._-]{1,80}$'),'title':S(maxLength=120),'language':S(default='en'),'adapter_key':E('raz','new_concept','generic_tree'),'rights':J})
+s['Curriculum']=O({'id':U,'stable_key':S(),'title':S(),'language':S(),'adapter_key':S(),'revision':I(minimum=1)})
+s['EditionInput']=O({'edition_key':S(),'title':S(),'external_source':S(),'hierarchy_config':J},['edition_key','title','hierarchy_config'])
+s['ContentNode']=O({'id':U,'parent_id':U,'kind':S(),'title':S(),'ordinal':I(minimum=0),'external_locator':J},['id','kind','title','ordinal'])
+s['SourceSlice']=O({'id':U,'content_version_id':U,'node_id':U,'kind':E('context','sentence','word'),'original_text':S(),'normalized_text':S(),'source_hash':S(),'locator':J,'context_slice_ids':A(U),'media_asset_ids':A(U)},['id','content_version_id','node_id','kind','original_text','source_hash','locator'])
+s['ImportRequest']=O({'edition_id':U,'asset_ids':A(U,minItems=1,maxItems=50),'format':E('structured_zip','json','csv','xlsx','text','pdf','epub','docx','images'),'column_mapping':J,'dedupe_policy':E('compare_only','new_version'),'options':J},['edition_id','asset_ids','format','dedupe_policy'])
+s['ImportPreview']=O({'import_job_id':U,'content_version_id':U,'new_count':I(minimum=0),'duplicate_count':I(minimum=0),'changed_count':I(minimum=0),'blocking_issues':A(O({'code':S(),'source_locator':S(),'message':S()}))})
+s['GenerationRequest']=O({'scope':R('Scope'),'question_types':A(E('audio_to_picture','word_to_picture','picture_to_word','oral_reading','sentence_choice','cloze_choice','cloze_text','matching','word_order','reading_choice','retell'),minItems=1),'count_per_objective':I(minimum=1,maximum=6),'difficulty_band':I(minimum=1,maximum=5),'template_version':S(),'budget_limit_microunits':COUNT,'expected_content_revision':I(minimum=1)},['scope','question_types','count_per_objective','difficulty_band','template_version','expected_content_revision'])
+s['QualityReport']=O({'id':U,'subject_type':E('source','question','release','asset'),'subject_id':U,'verdict':E('blocked','review_required','ready'),'checks':A(O({'code':S(),'severity':E('error','warning','info'),'passed':B,'message':S()})),'validator_version':S()})
+s['QuestionAdmin']=O({'id':U,'question_family_id':U,'question_type':S(),'status':S(),'source_slice_ids':A(U),'objective_ids':A(U),'public_payload':J,'answer_spec':J,'quality_report_ids':A(U),'version':I(minimum=1)})
+s['PublishRequest']=O({'expected_revision':I(minimum=1),'quality_report_id':U,'publish_policy_key':S(),'reason':S(maxLength=500)},['expected_revision','quality_report_id'])
+s['RetireRequest']=O({'expected_revision':I(minimum=1),'reason':S(minLength=1,maxLength=500),'replacement_id':U},['expected_revision','reason'])
+s['PlanInput']=O({'child_id':U,'week_start':DATE,'title':S(maxLength=120)})
+s['TaskDraft']=O({'client_key':S(),'learning_date':DATE,'stable_slot':S(),'kind':E('new_learning','review'),'required':B,'scope':R('Scope'),'estimated_external_minutes':I(minimum=0,maximum=60),'estimated_challenge_seconds':I(minimum=30,maximum=900),'question_blueprint':J,'external_instruction':S(maxLength=1500)},['client_key','learning_date','stable_slot','kind','required','scope','question_blueprint'])
+s['PlanRevisionInput']=O({'expected_revision':I(minimum=1),'tasks':A(R('TaskDraft'),maxItems=21),'time_policy':O({'open_time':S(pattern='^\\d{2}:\\d{2}$'),'last_start_time':S(),'close_time':S(),'finish_time':S(),'free_interaction_seconds':I(minimum=0,maximum=600)}),'week_target_ratio':{'type':'number','minimum':0,'maximum':1}},['expected_revision','tasks','time_policy'])
+s['Coverage']=O({'valid':B,'revision_id':U,'scope_hash':S(),'blocking_issues':A(O({'code':S(),'task_key':S(),'message':S()})),'warnings':A(S()),'estimated_challenge_seconds':I(minimum=0)})
+s['Plan']=O({'id':U,'child_id':U,'week_start':DATE,'status':E('draft','validated','published','superseded','archived'),'revision':I(minimum=1),'active_revision_id':U},['id','child_id','week_start','status','revision'])
+s['LearningDay']=O({'id':U,'learning_date':DATE,'timezone':S(),'open_at':DT,'last_start_at':DT,'close_at':DT,'finish_deadline':DT,'status':S(),'task_ids':A(U),'revision':I(minimum=1)})
+s['Task']=O({'id':U,'learning_day_id':U,'stable_slot':S(),'status':S(),'scope':R('Scope'),'required':B,'requirements':A(J),'revision':I(minimum=1)})
+s['ExposureRequest']=O({'task_id':U,'actual_source_slice_ids':A(U,minItems=1,uniqueItems=True),'source':E('child_self_report','parent_confirmed'),'expected_task_revision':I(minimum=1)})
+s['HistoricalExposureRequest']=O({'child_id':U,'scope':R('Scope'),'date_precision':E('known_day','approximate','unknown'),'occurred_on':DATE,'note':S(maxLength=500)},['child_id','scope','date_precision'])
+s['StartSession']=O({'task_id':U,'mode':E('training','verification','diagnostic'),'presentation':E('home','park','hospital'),'capability_profile_id':U,'expected_task_revision':I(minimum=1)})
+s['PublicQuestion']=O({'challenge_item_id':U,'question_version_id':U,'question_type':S(),'instruction':S(),'public_payload':J,'required_response_kind':E('option','gaps','pairs','tokens','recording'),'asset_paths':A(S())},['challenge_item_id','question_version_id','question_type','instruction','public_payload','required_response_kind'])
+s['ChallengeSession']=O({'id':U,'task_id':U,'mode':S(),'presentation':S(),'status':S(),'revision':I(minimum=1),'lease_epoch':I(minimum=1),'lease_expires_at':DT,'finish_deadline':DT,'form_version':I(minimum=1),'items':A(R('PublicQuestion'))})
+s['AnswerResponse']={'oneOf':[O({'option_id':U}),O({'gaps':A({'oneOf':[O({'gap_id':U,'text':S(maxLength=400)}),O({'gap_id':U,'option_id':U})]},minItems=1,maxItems=24)}),O({'pairs':A(O({'left_id':U,'right_id':U}),minItems=1,maxItems=24)}),O({'token_ids':A(U,minItems=1,maxItems=24)}),O({'media_asset_id':U})]}
+s['AnswerRequest']=O({'challenge_item_id':U,'response':R('AnswerResponse'),'expected_revision':I(minimum=1),'lease_epoch':I(minimum=1),'client_event_id':U})
+s['AttemptResult']=O({'attempt_id':U,'verdict':E('correct','incorrect','partial','incomplete','unrecognized','pending_review'),'independence':E('independent','prompted','answer_exposed','parent_confirmed'),'revision':I(minimum=1),'feedback':J},['attempt_id','verdict','independence','revision'])
+s['SessionCommand']=O({'expected_revision':I(minimum=1),'lease_epoch':I(minimum=1)})
+s['Receipt']=O({'grant_id':U,'entitlement_id':U,'learning_date':DATE,'items':A(O({'item_id':U,'units':COUNT})),'committed_at':DT},['grant_id','entitlement_id','items','committed_at'])
+s['FinalizeResult']=O({'session_id':U,'status':E('completed','awaiting_review','needs_support','late_review','blocked_content'),'revision':I(minimum=1),'missing_requirements':A(U),'review_request_ids':A(U),'grant_receipts':A(R('Receipt'))})
+s['ReviewRequest']=O({'id':U,'child_id':U,'session_id':U,'challenge_item_id':U,'reason':E('oral','late','content','assistance'),'status':E('pending','approved','needs_help','unrecognized','cancelled'),'media_asset_id':U,'revision':I(minimum=1)},['id','child_id','session_id','challenge_item_id','reason','status','revision'])
+s['ReviewDecision']=O({'expected_revision':I(minimum=1),'decision':E('approve','needs_help','unrecognized'),'evidence_source':E('recording','in_person','late_evidence'),'note':S(maxLength=500)},['expected_revision','decision','evidence_source'])
+s['Inventory']=O({'child_id':U,'revision':I(minimum=0),'items':A(O({'item_id':U,'unit_kind':E('nutrient_point','piece'),'balance':COUNT}))})
+s['Pet']=O({'id':U,'child_id':U,'species_key':S(),'nickname':S(),'package_version_id':U,'state':R('PetState')})
+s['PetState']=O({'revision':I(minimum=1),'satiety_cp':I(minimum=0,maximum=10000),'hydration_cp':I(minimum=0,maximum=10000),'energy_cp':I(minimum=0,maximum=10000),'mood_cp':I(minimum=0,maximum=10000),'health_cp':I(minimum=0,maximum=10000),'hygiene_cp':I(minimum=0,maximum=10000),'life_stage':E('juvenile','adolescent','adult','senior'),'care_mode':E('active','resting','boarding'),'disease_state':S(),'scene_key':S(),'last_evaluated_at':DT})
+s['AdoptRequest']=O({'species_key':E('dog','cat','rabbit'),'nickname':S(minLength=1,maxLength=24),'package_version_id':U})
+s['FeedRequest']=O({'item_id':U,'requested_units':COUNT,'expected_revision':I(minimum=1)})
+s['FeedResult']=O({'pet_event_id':U,'consumed_units':COUNT,'remaining_units':COUNT,'state':R('PetState')})
+s['CareRequest']=O({'action':E('water','clean','rest','wake','pet','virtual_walk','resume_care'),'expected_revision':I(minimum=1)})
+s['CraftRequest']=O({'recipe_item_id':U,'expected_inventory_revision':I(minimum=0)})
+s['Layout']=O({'scene_key':S(),'expected_revision':I(minimum=0),'placements':A(O({'item_id':U,'slot_key':S(),'x':{'type':'number','minimum':0,'maximum':1},'y':{'type':'number','minimum':0,'maximum':1},'scale':{'type':'number','minimum':0.5,'maximum':2},'layer':I(minimum=0,maximum=20)}),maxItems=30),'locked':B})
+s['Pairing']=O({'id':U,'code':S(),'expires_at':DT,'status':E('pending','claimed','confirmed','expired','revoked')})
+s['ReportInput']=O({'subject_type':E('question','audio','source','pet_asset'),'subject_id':U,'category':E('wrong_answer','ambiguous','missing_media','too_hard','other'),'message':S(maxLength=1000),'session_id':U},['subject_type','subject_id','category'])
+s['BuildRequest']=O({'definition':J,'generator_version':S(),'seed':S(),'quality_profile':E('tablet','tv_low','static'),'retry_limit':I(minimum=0,maximum=3)})
+s['AssetPackage']=O({'id':U,'package_key':S(),'version':S(),'status':S(),'manifest':J,'quality_report_id':U,'sha256':S()},['id','package_key','version','status','manifest','sha256'])
+s['Budget']=O({'currency':S(),'daily_limit_microunits':COUNT,'reserved_microunits':COUNT,'spent_microunits':COUNT})
+s['Health']=O({'status':E('ok','degraded','unavailable'),'database':S(),'media':S(),'schema_version':S(),'app_version':S()})
+s['EvidenceSummary']=O({'child_id':U,'objectives':A(O({'objective_id':U,'skill':S(),'modality':S(),'mastery_label':E('unseen','introduced','practicing','emerging','stable'),'independent_success_days':I(minimum=0),'review_due_at':DT},['objective_id','skill','modality','mastery_label','independent_success_days']))})
+ops=[]
+def add(module,phase,method,path,op,role,title,req=None,res='Entity',errors='',description=''):
+ ops.append(dict(module=module,phase=phase,method=method,path=path,operation_id=op,role=role,title=title,request=req,response=res,errors=errors,description=description))
+add('identity','P1','POST','/auth/login','login','anonymous','家长登录','LoginRequest','SessionInfo','AUTH_REQUIRED')
+add('identity','P1','GET','/auth/session','getSession','any','查询认证与CSRF上下文',res='SessionInfo')
+add('identity','P1','POST','/auth/logout','logout','any','注销当前会话',res='Ack')
+add('identity','P1','GET','/family','getFamily','adult','查询家庭',res='Family')
+add('identity','P1','PATCH','/family','updateFamily','owner','更新家庭名称与下日时区','Family','Family','REVISION_CONFLICT')
+add('identity','P1','GET','/children','listChildren','adult','孩子档案列表',res='Child')
+add('identity','P1','POST','/children','createChild','adult','创建孩子与能力设置','ChildInput','Child')
+add('identity','P1','PATCH','/children/{child_id}','updateChild','adult','修改孩子档案','ChildInput','Child','REVISION_CONFLICT')
+add('identity','P1','POST','/children/{child_id}/device-session','authorizeChildDevice','adult','授权儿童设备会话',res='SessionInfo')
+add('identity','P1','POST','/devices/capabilities','registerCapabilities','any','登记设备能力','Capabilities','Device')
+add('identity','P1','GET','/devices','listDevices','adult','查询家庭已授权设备',res='Device')
+add('identity','P1','POST','/devices/{device_id}/revoke','revokeDevice','adult','撤销设备会话',res='Ack')
+add('media','P1','POST','/media/uploads','initUpload','any','创建受控上传凭据','UploadInit','UploadTicket','CAPABILITY_UNAVAILABLE')
+add('media','P1','PUT','/media/uploads/{asset_id}/content','uploadMediaBytes','any','上传二进制媒体','binary','Ack','UPLOAD_TOO_LARGE')
+add('media','P1','POST','/media/{asset_id}/finalize','finalizeMedia','any','校验并完成媒体','RevisionCommand','Media','MEDIA_NOT_FINALIZED')
+add('media','P1','GET','/media/{asset_id}','getMedia','any','查询权限内媒体元数据',res='Media')
+add('media','P1','GET','/media/{asset_id}/content','readMediaBytes','any','读取受控媒体内容',res='binary')
+add('media','P1','DELETE','/media/{asset_id}','deleteMedia','adult','按保留规则删除音频',res='Ack')
+add('curriculum','P1','GET','/curricula','listCurricula','adult','教材系列目录',res='Curriculum')
+add('curriculum','P1','POST','/curricula','createCurriculum','editor','创建通用教材系列','CurriculumInput','Curriculum')
+add('curriculum','P1','POST','/curricula/{curriculum_id}/editions','createEdition','editor','创建教材版本','EditionInput')
+add('curriculum','P1','GET','/editions/{edition_id}/nodes','listContentNodes','editor','浏览版本内容树',res='ContentNode')
+add('curriculum','P1','GET','/source-slices/{slice_id}','getSourceSlice','editor','查看原文切片与定位',res='SourceSlice')
+add('curriculum','P1','POST','/imports','createImport','editor','导入教材文件与字段映射','ImportRequest','Job')
+add('curriculum','P1','GET','/imports/{import_id}','getImport','editor','查看导入阶段与失败原因',res='Job')
+add('curriculum','P1','GET','/imports/{import_id}/preview','previewImport','editor','预览新增重复修订与隔离项',res='ImportPreview')
+add('curriculum','P1','POST','/imports/{import_id}/retry','retryImport','editor','从失败阶段恢复导入','RevisionCommand','Job')
+add('curriculum','P1','POST','/content-versions/{version_id}/validate','validateContent','editor','源文与引用完整性检查','RevisionCommand','QualityReport')
+add('curriculum','P1','POST','/content-versions/{version_id}/publish','publishContent','publisher','发布不可变教材版本','PublishRequest','Entity','CONTENT_INVALID')
+add('authoring','P1','POST','/generation-runs','createGenerationRun','editor','基于教材scope生成候选题','GenerationRequest','Job','AI_BUDGET_EXCEEDED')
+add('authoring','P1','GET','/generation-runs/{run_id}','getGenerationRun','editor','查看生成与复核作业',res='Job')
+add('authoring','P1','GET','/questions','listQuestions','editor','按目标状态过滤候选和题库',res='QuestionAdmin')
+add('authoring','P1','GET','/questions/{question_id}','getQuestionAdmin','editor','家长查看源题答案与报告',res='QuestionAdmin')
+add('authoring','P1','POST','/questions/{question_id}/validate','validateQuestion','editor','结构规则与语义质量检查','RevisionCommand','QualityReport')
+add('authoring','P1','POST','/questions/{question_id}/publish','publishQuestion','publisher','按策略发布合格题版本','PublishRequest','Entity','QUALITY_BLOCKED')
+add('authoring','P1','POST','/questions/{question_id}/retire','retireQuestion','publisher','撤回错误题并关联替代','RetireRequest','Entity')
+add('authoring','P1','POST','/content-releases','createContentRelease','publisher','冻结教材与题目集合','PublishRequest','Entity')
+add('authoring','P1','POST','/content-issues','reportContentIssue','any','报告错误题或异常媒体','ReportInput','Entity')
+add('authoring','P2','GET','/content-issues','listContentIssues','adult','内容问题收件箱',res='Entity')
+add('planning','P1','POST','/plans','createPlan','adult','创建一周稳定计划','PlanInput','Plan')
+add('planning','P1','GET','/plans/{plan_id}','getPlan','adult','查询计划与当前修订',res='Plan')
+add('planning','P1','POST','/plans/{plan_id}/revisions','savePlanRevision','adult','保存页句任务与时段草稿','PlanRevisionInput','Plan')
+add('planning','P1','POST','/plan-revisions/{revision_id}/validate','validatePlan','adult','编译前检查能力覆盖与预算','RevisionCommand','Coverage')
+add('planning','P1','POST','/plan-revisions/{revision_id}/publish','publishPlan','adult','冻结日任务与稳定奖励资格','PublishRequest','Plan')
+add('planning','P1','GET','/children/{child_id}/today','getToday','own_child','查询今日学习窗口与任务',res='LearningDay')
+add('planning','P1','GET','/tasks/{task_id}','getTask','own_child','查询任务教材范围与要求',res='Task')
+add('planning','P2','POST','/learning-days/{day_id}/excuse','excuseLearningDay','adult','请假并修订未来周分母','RetireRequest','LearningDay')
+add('planning','P1','POST','/tasks/{task_id}/makeup','authorizeMakeup','adult','批准原任务补做时段','RevisionCommand','Task')
+add('learning','P1','POST','/study-exposures','recordExposure','own_child','确认外部实际已学范围','ExposureRequest','Entity')
+add('learning','P1','POST','/study-exposures/history','importHistoryExposure','adult','导入历史学习声明','HistoricalExposureRequest','Entity')
+add('learning','P1','POST','/challenge-sessions','startChallenge','own_child','按scope创建冻结题单','StartSession','ChallengeSession','WINDOW_NOT_OPEN,CONTENT_COVERAGE_MISSING')
+add('learning','P1','GET','/challenge-sessions/{session_id}','getChallenge','own_child','恢复会话与公开题目',res='ChallengeSession')
+add('learning','P1','POST','/challenge-sessions/{session_id}/lease','renewChallengeLease','own_child','续租当前设备写入资格','SessionCommand','ChallengeSession','LEASE_STALE')
+add('learning','P1','POST','/challenge-sessions/{session_id}/transfer','transferChallenge','own_child','接管会话并递增租约','SessionCommand','ChallengeSession','REVISION_CONFLICT')
+add('learning','P1','POST','/challenge-sessions/{session_id}/answers','submitAnswer','own_child','提交服务端判分的响应','AnswerRequest','AttemptResult','LEASE_STALE,SUBMISSION_LATE')
+add('learning','P1','POST','/challenge-sessions/{session_id}/finalize','finalizeChallenge','own_child','计算任务完成并事务结算','SessionCommand','FinalizeResult','REQUIREMENT_UNMET')
+add('learning','P1','POST','/challenge-sessions/{session_id}/remediation','createRemediation','own_child','为缺失要求创建短补救题','SessionCommand','ChallengeSession','CONTENT_COVERAGE_MISSING')
+add('learning','P1','POST','/challenge-sessions/{session_id}/pause','pauseChallenge','own_child','保存并暂停当前会话','SessionCommand','ChallengeSession')
+add('learning','P1','GET','/review-requests','listReviewRequests','adult','查询口语迟交等待确认',res='ReviewRequest')
+add('learning','P1','POST','/review-requests/{review_id}/decision','decideReview','adult','新增人工结论并触发一次结算','ReviewDecision','FinalizeResult','REVISION_CONFLICT')
+add('learning','P2','GET','/children/{child_id}/evidence','getEvidenceSummary','adult','按目标能力查看学习证据',res='EvidenceSummary')
+add('learning','P2','GET','/children/{child_id}/review-suggestions','getReviewSuggestions','adult','薄弱到期内容排程建议',res='EvidenceSummary')
+add('rewards','P1','GET','/children/{child_id}/inventory','getInventory','own_child','查询已确认库存',res='Inventory')
+add('rewards','P1','GET','/reward-grants/{grant_id}','getGrantReceipt','own_child','查询稳定发放凭据',res='Receipt')
+add('rewards','P2','POST','/children/{child_id}/craft','craftDecoration','own_child','事务消耗材料制作装饰','CraftRequest','Inventory','INVENTORY_INSUFFICIENT')
+add('rewards','P2','POST','/children/{child_id}/gifts','grantParentGift','adult','管理赠物独立记账','FeedRequest','Receipt')
+add('pet','P1','POST','/children/{child_id}/pets','adoptPet','own_child','领养一只主宠','AdoptRequest','Pet')
+add('pet','P1','GET','/pets/{pet_id}','getPet','own_child','查询服务端推进后的状态',res='Pet')
+add('pet','P1','POST','/pets/{pet_id}/feed','feedPet','own_child','按需求消耗营养份额','FeedRequest','FeedResult','PET_FULL,SPECIES_INCOMPATIBLE')
+add('pet','P1','POST','/pets/{pet_id}/care','carePet','own_child','饮水清洁休息等照护','CareRequest','FeedResult')
+add('pet','P2','POST','/pets/{pet_id}/boarding','setPetBoarding','adult','批准托管或恢复照护','RevisionCommand','Pet')
+add('pet','P2','GET','/pets/{pet_id}/memories','listPetMemories','own_child','查看共同里程碑',res='Entity')
+add('pet','P2','POST','/pets/{pet_id}/hospital','openHospitalCase','own_child','就诊并关联预排复习','RevisionCommand','Entity')
+add('pet','P2','POST','/hospital-cases/{case_id}/challenge','startHospitalChallenge','own_child','调用同学习服务的医院复习','StartSession','ChallengeSession')
+add('pet','P2','GET','/scene-layouts/{scene_key}','getSceneLayout','own_child','查询安全槽位布局',res='Layout')
+add('pet','P2','PUT','/scene-layouts/{scene_key}','saveSceneLayout','own_child','保存装饰位置且不扣费','Layout','Layout','REVISION_CONFLICT')
+add('assets','P1','POST','/asset-builds','createAssetBuild','editor','请求隔离自动素材构建','BuildRequest','Job')
+add('assets','P1','GET','/asset-packages/{package_id}','getAssetPackage','own_child','读取已发布资源manifest',res='AssetPackage')
+add('assets','P1','POST','/asset-packages/{package_id}/publish','publishAssetPackage','publisher','校验兼容后原子激活资源','PublishRequest','AssetPackage')
+add('companion','P3','POST','/pairings','createPairing','device','创建限时TV配对',res='Pairing')
+add('companion','P3','POST','/pairings/{pairing_id}/claim','claimPairing','adult','认领TV并指定孩子','ChildInput','Pairing')
+add('companion','P3','POST','/pairings/{pairing_id}/confirm','confirmPairing','adult','确认一次性配对','RevisionCommand','SessionInfo')
+add('companion','P3','POST','/pairings/{pairing_id}/revoke','revokePairing','adult','撤销伴侣权限',res='Ack')
+add('ops','P1','GET','/jobs/{job_id}','getJob','adult','查看受权作业状态',res='Job')
+add('ops','P1','POST','/jobs/{job_id}/cancel','cancelJob','adult','取消未发布后续阶段','RevisionCommand','Job')
+add('ops','P1','GET','/idempotency/{key}','getIdempotentResult','any','同身份查询超时命令结果',res='Ack')
+add('ops','P1','GET','/system/health','getHealth','anonymous','最小健康检查',res='Health')
+add('ops','P1','POST','/system/backups','createBackup','owner','创建一致性备份',res='Job')
+add('ops','P1','POST','/system/restore-checks','createRestoreCheck','owner','在独立目标验证恢复',res='Job')
+add('ops','P1','GET','/system/ai-budget','getAiBudget','adult','查询生成预算',res='Budget')
+add('ops','P1','POST','/family/exports','exportFamily','owner','导出家庭与允许内容',res='Job')
+add('ops','P2','DELETE','/family','deleteFamily','owner','撤权并异步清理家庭数据',res='Job')
+# add concrete supporting request contracts for policy actions
+s['FamilyPatch']=O({'name':S(maxLength=80),'timezone':S(),'expected_revision':I(minimum=1)},['expected_revision'])
+s['PairClaim']=O({'code':S(minLength=6,maxLength=64),'child_id':U,'device_name':S(maxLength=80)})
+s['MakeupRequest']=O({'expected_revision':I(minimum=1),'open_at':DT,'finish_deadline':DT,'reason':S(minLength=1,maxLength=500)})
+s['GiftRequest']=O({'items':A(O({'item_id':U,'units':COUNT}),minItems=1,maxItems=10),'reason':S(minLength=1,maxLength=500)})
+s['ReleaseRequest']=O({'content_version_id':U,'question_version_ids':A(U,minItems=1,maxItems=5000),'quality_report_id':U,'expected_revision':I(minimum=1)})
+s['CareResult']=O({'pet_event_id':U,'state':R('PetState')})
+for op in ops:
+ if op['operation_id']=='updateFamily':op['request']='FamilyPatch'
+ if op['operation_id']=='claimPairing':op['request']='PairClaim'
+ if op['operation_id']=='authorizeMakeup':op['request']='MakeupRequest'
+ if op['operation_id']=='grantParentGift':op['request']='GiftRequest'
+ if op['operation_id']=='createContentRelease':op['request']='ReleaseRequest'
+ if op['operation_id']=='carePet':op['response']='CareResult'
+# Final domain contracts: transport fields are explicitly mapped to DB columns.
+s['ChildPatch']=O({'expected_revision':I(minimum=1),'nickname':S(minLength=1,maxLength=32),'capabilities':R('ChildInput')['$ref'] and J,'locale':S()},['expected_revision'])
+s['MediaFinalize']=O({'sha256':S(pattern='^[0-9a-f]{64}$'),'size_bytes':I(minimum=1)},['sha256','size_bytes'])
+s['PlanPublish']=O({'expected_revision':I(minimum=1),'coverage_report_id':U,'scope_hash':S(pattern='^[0-9a-f]{64}$')})
+s['BootstrapRequest']=O({'setup_token':S(minLength=16),'username':S(minLength=3,maxLength=120),'password':S(minLength=12,maxLength=1024),'family_name':S(minLength=1,maxLength=80),'timezone':S(default='Asia/Shanghai')})
+s['BootstrapStatus']=O({'initialized':B,'setup_required':B})
+s['Member']=O({'id':U,'account_id':U,'display_name':S(),'role':E('owner','admin','parent','content_editor','reviewer'),'status':E('active','revoked')})
+s['MemberCommand']=O({'account_id':U,'role':E('owner','admin','parent','content_editor','reviewer')})
+s['Settings']=O({'revision':I(minimum=1),'policy_version':S(),'time_policy':J,'reward_policy':J,'care_policy':J,'privacy_policy':J,'features':J})
+s['SettingsUpdate']=O({'expected_revision':I(minimum=1),'policy_key':E('time','reward','care','privacy','features'),'payload':J,'effective_from':DATE})
+s['Provider']=O({'id':U,'provider_key':S(),'base_url':S(format='uri'),'capabilities':A(E('question_generation','question_review','dialogue','asr','pronunciation','asset_generation')),'model':S(),'secret_ref':S(description='仅服务端引用，不含秘密值'),'enabled':B,'revision':I(minimum=1)})
+s['ProviderInput']=O({'provider_key':S(),'base_url':S(format='uri'),'capabilities':A(S(),minItems=1),'model':S(),'secret_ref':S(),'enabled':B},['provider_key','base_url','capabilities','model','enabled'])
+s['Objective']=O({'id':U,'skill':E('listening','word_recognition','oral_reading','sentence_comprehension','spelling','oral_expression'),'modality':E('audio','visual','text','speech'),'title':S(),'source_slice_ids':A(U,minItems=1),'vocabulary_sense_id':U},['id','skill','modality','title','source_slice_ids'])
+s['Exposure']=O({'id':U,'child_id':U,'task_id':U,'source':S(),'actual_source_slice_ids':A(U,minItems=1),'occurred_at':DT,'date_precision':E('known_day','approximate','unknown')},['id','child_id','source','actual_source_slice_ids','date_precision'])
+s['ItemDefinition']=O({'id':U,'stable_key':S(),'name':S(),'kind':E('food','material','decoration','care'),'unit_kind':E('nutrition_point','piece'),'compatible_species':A(S()),'asset_package_id':U},['id','stable_key','name','kind','unit_kind','compatible_species'])
+s['Issue']=O({'id':U,'subject_type':S(),'subject_id':U,'category':S(),'status':E('open','triaged','fixed','dismissed'),'message':S(),'revision':I(minimum=1)})
+s['SyncFeed']=O({'events':A(O({'event_id':U,'sequence_no':COUNT,'event_type':S(),'aggregate_id':U,'aggregate_revision':I(minimum=1),'payload':J,'occurred_at':DT})),'next_cursor':COUNT})
+s['SyncAck']=O({'last_sequence_no':COUNT,'expected_revision':I(minimum=0)})
+s['Heartbeat']=O({'expected_revision':I(minimum=1),'foreground':B,'interaction_seconds':I(minimum=0,maximum=30)})
+s['SourceVersion']=O({'id':U,'edition_id':U,'version_no':I(minimum=1),'status':S(),'published_at':DT,'retired_at':DT,'digest':S()},['id','edition_id','version_no','status','digest'])
+s['SourceRevision']=O({'base_version_id':U,'reason':S(minLength=1,maxLength=500),'changes':A(O({'source_slice_id':U,'new_original_text':S(maxLength=10000)}),minItems=1,maxItems=200)})
+s['SessionDraft']=O({'expected_revision':I(minimum=1),'lease_epoch':I(minimum=1),'client_event_id':U,'draft_items':A(O({'challenge_item_id':U,'response':R('AnswerResponse')},['challenge_item_id']),maxItems=24)})
+s['HintRequest']=O({'challenge_item_id':U,'hint_level':I(minimum=1,maximum=3),'expected_revision':I(minimum=1),'lease_epoch':I(minimum=1)})
+s['IdempotentResult']=O({'operation':S(),'status':E('processing','completed'),'http_status':I(minimum=100,maximum=599),'result':J},['operation','status'])
+s['LayoutRead']=O({'id':U,'scene_key':S(),'revision':I(minimum=1),'placements':s['Layout']['properties']['placements'],'locked':B})
+s['ReviewRequest']['properties']['status']=E('pending','approved','needs_help','cancelled')
+s['Inventory']['properties']['items']['items']['properties']['unit_kind']=E('nutrition_point','piece')
+s['QuestionAdmin']['properties']['objective_ids']=A(U,minItems=1,maxItems=1)
+s['Error']['properties']['server_time']=DT
+s['PetState']['properties']['disease_state']['description']='由当前未关闭hospital_case及规则推导；健康状态不靠客户端推断'
+add('identity','P1','GET','/setup/status','getSetupStatus','anonymous','查询初始配置状态',res='BootstrapStatus')
+add('identity','P1','POST','/setup','bootstrapFamily','anonymous','一次性创建owner与家庭','BootstrapRequest','SessionInfo')
+add('identity','P1','GET','/family/members','listMembers','adult','查询家庭成人与内容权限',res='Member')
+add('identity','P1','POST','/family/members','addMember','owner','添加已有成人账号的家庭权限','MemberCommand','Member')
+add('identity','P1','POST','/family/members/{member_id}/revoke','revokeMember','owner','撤销家庭成员且保护最后owner',res='Ack')
+add('identity','P1','GET','/family/settings','getFamilySettings','adult','读取版本化家庭策略',res='Settings')
+add('identity','P1','PUT','/family/settings','updateFamilySettings','owner','更新未来生效的家庭策略','SettingsUpdate','Settings')
+add('curriculum','P1','GET','/editions/{edition_id}/versions','listContentVersions','editor','查看教材内容快照历史',res='SourceVersion')
+add('curriculum','P1','GET','/content-versions/{version_id}/objectives','listObjectives','editor','按源范围查看可规划目标',res='Objective')
+add('curriculum','P1','POST','/content-versions/{version_id}/revisions','reviseSourceContent','editor','修正原文并新建源版本','SourceRevision','Job')
+add('authoring','P1','POST','/content-issues/{issue_id}/resolve','resolveContentIssue','editor','处理问题并保留修订关联','RetireRequest','Issue')
+add('learning','P1','GET','/children/{child_id}/study-exposures','listStudyExposures','adult','查看已学声明与历史来源',res='Exposure')
+add('learning','P1','POST','/challenge-sessions/{session_id}/draft','saveChallengeDraft','own_child','保存非评分草稿','SessionDraft','Ack')
+add('learning','P1','POST','/challenge-sessions/{session_id}/hint','revealHint','own_child','记录提示与答案暴露后返回引导','HintRequest','AttemptResult')
+add('learning','P1','POST','/challenge-sessions/{session_id}/resume','resumeChallenge','own_child','在允许时段恢复暂停会话','SessionCommand','ChallengeSession')
+add('pet','P1','POST','/pets/{pet_id}/heartbeat','recordPetInteraction','own_child','计量前台互动预算并阻止客户端快进','Heartbeat','CareResult')
+add('rewards','P1','GET','/item-definitions','listItemDefinitions','own_child','读取物品单位与适用种属',res='ItemDefinition')
+add('ops','P1','GET','/family/ai-providers','listAiProviders','owner','读取已脱敏模型适配配置',res='Provider')
+add('ops','P1','POST','/family/ai-providers','createAiProvider','owner','保存外部模型能力及secret引用','ProviderInput','Provider')
+add('ops','P1','GET','/sync/events','getSyncEvents','own_child','读取授权的单调事件游标',res='SyncFeed')
+add('ops','P1','POST','/sync/ack','ackSyncCursor','own_child','确认已接收同步游标','SyncAck','Ack')
+for op in ops:
+ if op['operation_id']=='updateChild':op['request']='ChildPatch'
+ if op['operation_id']=='finalizeMedia':op['request']='MediaFinalize'
+ if op['operation_id']=='publishPlan':op['request']='PlanPublish'
+ if op['operation_id']=='listContentIssues':op['response']='Issue'
+ if op['operation_id']=='recordExposure' or op['operation_id']=='importHistoryExposure':op['response']='Exposure'
+ if op['operation_id']=='getIdempotentResult':op['response']='IdempotentResult'
+ if op['operation_id']=='getSceneLayout':op['response']='LayoutRead'
+# envelope and collection for GET lists
+spec={'openapi':'3.1.0','info':{'title':'伴学小岛 API','version':'1.0.0-design','description':'模块化单体HTTP设计契约。P1/P2/P3用x-phase标识；未实现接口不代表可用。所有题目数据另按内容Schema与领域规则校验。'},'servers':[{'url':'https://pet.example.internal/api/v1'}],'security':[{'session_cookie':[]}],'tags':[{'name':m} for m in sorted({o['module'] for o in ops})],'paths':{},'components':{'securitySchemes':{'session_cookie':{'type':'apiKey','in':'cookie','name':'pet_session'}},'schemas':s}}
+list_ops={o['operation_id'] for o in ops if o['method']=='GET' and o['operation_id'].startswith('list')}
+for op in ops:
+ response=op['response']; binary=response=='binary'
+ data=A(R(response)) if op['operation_id'] in list_ops else R(response) if not binary else S(contentEncoding='binary')
+ if not binary:
+  env=O({'data':O({'items':data}) if op['operation_id'] in list_ops else data,'request_id':U,'server_time':DT,'next_cursor':S()},['data','request_id','server_time'])
+ else:env=data
+ code='202' if response=='Job' and op['method']!='GET' else '201' if op['method']=='POST' and (op['operation_id'].startswith('create') or op['operation_id'] in ['adoptPet','startChallenge','recordExposure']) else '200'
+ operation={'operationId':op['operation_id'],'summary':op['title'],'tags':[op['module']],'x-phase':op['phase'],'x-role':op['role'],'description':op['description'] or '家庭归属、孩子归属、角色及当前资源状态均由服务端校验。写操作返回已提交结果或异步作业，不信任客户端评分/余额。','parameters':[],'responses':{code:{'description':'成功或已受理','content':{('application/octet-stream' if binary else 'application/json'):{'schema':env}}},'400':{'description':'输入不合法','content':{'application/json':{'schema':R('Error')}}},'401':{'description':'身份无效','content':{'application/json':{'schema':R('Error')}}},'403':{'description':'权限不足','content':{'application/json':{'schema':R('Error')}}},'409':{'description':'版本/租约/幂等冲突','content':{'application/json':{'schema':R('Error')}}},'422':{'description':'业务前提不满足；'+op['errors'],'content':{'application/json':{'schema':R('Error')}}}}}
+ if op['role']=='anonymous':operation['security']=[]
+ import re
+ for param in re.findall(r'\{([^}]+)\}',op['path']):
+  schema=S() if param=='scene_key' else U
+  operation['parameters'].append({'in':'path','name':param,'required':True,'schema':schema})
+ if op['method'] not in ['GET'] and op['operation_id'] not in ['login','logout','uploadMediaBytes']:
+  operation['parameters'].append({'in':'header','name':'Idempotency-Key','required':True,'schema':U})
+ if op['method']=='GET' and op['operation_id'] in list_ops:
+  operation['parameters'] += [{'in':'query','name':'cursor','schema':S()},{'in':'query','name':'limit','schema':I(minimum=1,maximum=100,default=20)}]
+ if op['request']:
+  operation['requestBody']={'required':True,'content':{'application/octet-stream' if op['request']=='binary' else 'application/json':{'schema':S(contentEncoding='binary') if op['request']=='binary' else R(op['request'])}}}
+ spec['paths'].setdefault(op['path'],{})[op['method'].lower()]=operation
+(contracts/'openapi.json').write_text(json.dumps(spec,ensure_ascii=False,indent=2),encoding='utf-8')
+(contracts/'operations.json').write_text(json.dumps(ops,ensure_ascii=False,indent=2),encoding='utf-8')
+features=[]
+module_names={'identity':'家庭身份与设备','media':'文件媒体','curriculum':'教材导入与版本','authoring':'AI出题和质量','planning':'计划与时间','learning':'训练验证与证据','rewards':'奖励库存','pet':'宠物世界','assets':'自动素材','companion':'电视伴侣','ops':'部署运维'}
+for idx,op in enumerate(ops,1):
+ features.append({'功能ID':f'F-{idx:03d}','模块':module_names[op['module']],'功能':op['title'],'阶段':op['phase'],'角色':op['role'],'输入与前提':op['request'] or '认证范围内资源ID/查询条件','输出与规则':op['response'],'验收点':('同请求重复不重复写入；跨家庭/孩子拒绝；'+(op['errors'] or '状态与权限校验')),'operation_id':op['operation_id']})
+extras=[('内容语义切片','P1','段落/对话上下文不丢失，原子句可定位','source-slice.schema.json'),('教材重复和增量差异','P1','摘要相同不重复，修订新版本','previewImport'),('AI题目标准反例回归','P1','not缺失/多解/泄题/超scope阻断','validateQuestion'),('公开题目剥离私有答案','P1','DTO不含答案、correct标记和未提交解释','getChallenge'),('训练曝光与独立证据区分','P1','仅换序不形成独立成功日','submitAnswer'),('每日稳定资格编译','P1','删建任务/升级规则不重奖','publishPlan'),('同事务发奖和库存对账','P1','响应丢失与双设备只发一次','finalizeChallenge'),('营养份额与部分喂食','P1','饱腹90喂40只耗10剩30','feedPet'),('宠物惰性时间推进','P1','重启/时钟回拨不重复衰减','getPet'),('无手工资产重建门槛','P1','空目录可生成动作与换装样片','createAssetBuild'),('WebGL静态回退','P1','无GPU时仍能答题与照护','getAssetPackage'),('PWA草稿与录音恢复','P1','断网提示本机保存，前台重试','getChallenge'),('键盘和遥控替代拖拽','P2','连线两次选择，焦点不丢','getChallenge'),('医院与普通复习复用证据','P2','同task同资格无额外粮','startHospitalChallenge'),('设备租约接管与旧响应阻断','P1','旧epoch不覆盖新会话','transferChallenge'),('错误题撤回后的证据修复','P1','快照保留不追扣材料','retireQuestion'),('周请假目标重算','P2','未来分母可改，已发周奖不重发','excuseLearningDay'),('真实生命策略扩展','P4','feature默认关闭，危急命令需家长确认','reserved'),('AI宠物短对话','P3','白名单动作、预算、故障回退','reserved'),('专业童声评测适配','P3','实测误拒误放，人工路径保留','reserved')]
+for title,phase,accept,operation in extras:
+ features.append({'功能ID':f'F-{len(features)+1:03d}','模块':'跨模块规则与质量','功能':title,'阶段':phase,'角色':'系统/家长/孩子','输入与前提':'版本化规则和有效数据','输出与规则':accept,'验收点':accept,'operation_id':operation})
+with (root/'功能清单.csv').open('w',encoding='utf-8-sig',newline='') as f:
+ w=csv.DictWriter(f,fieldnames=list(features[0]));w.writeheader();w.writerows(features)
+(root/'功能清单.json').write_text(json.dumps(features,ensure_ascii=False,indent=2),encoding='utf-8')
+# generate document appendix, using exactly the operation data
+lines=['## 14. 接口清单\n','| operation_id | 方法与路径 | 权限 | 阶段 | 输入 → 输出 |','|---|---|---|---|---|']
+for o in ops:lines.append(f"| {o['operation_id']} | {o['method']} /api/v1{o['path']} | {o['role']} | {o['phase']} | {o['request'] or '无body'} → {o['response']} |")
+lines += ['\n## 15. 功能清单\n','| 功能ID | 模块 | 功能 | 阶段 | 验收点 |','|---|---|---|---|---|']
+for f in features:lines.append(f"| {f['功能ID']} | {f['模块']} | {f['功能']} | {f['阶段']} | {f['验收点']} |")
+(root/'章节/06-功能与接口清单.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+print(json.dumps({'operations':len(ops),'schemas':len(s),'features':len(features)},ensure_ascii=False))

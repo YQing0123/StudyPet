@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0.0",
+  "id": "06ca1475-9e09-5624-874e-11eaed4842ad",
+  "blueprint_id": "66b3aff5-e0a8-519a-b4a6-c1af7f691656",
+  "phase": "p2",
+  "question_family_key": "fixture.matching.bag",
+  "question_type": "matching",
+  "source_slice_ids": [
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+    "7735e957-e92d-52bb-a6be-24d82bcf0d34"
+  ],
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "objective_ids": [
+    "9cc93429-ff2d-56f3-b23d-35c287b036ea"
+  ],
+  "skill": "word_recognition",
+  "modality": "text",
+  "difficulty": 1,
+  "estimated_seconds": 30,
+  "presentation_kind": "verbatim",
+  "prompt_text": "把英文和意思配起来。",
+  "instruction_text": "把英文和意思配起来。",
+  "public_payload": {
+    "left_items": [
+      {
+        "id": "3e5cf329-9911-51b3-99b4-fc193585a470",
+        "text": "bag"
+      },
+      {
+        "id": "d0b2893d-d0ea-533f-8283-efc3508e42b8",
+        "text": "blue"
+      }
+    ],
+    "right_items": [
+      {
+        "id": "3d24e787-75b3-5d3d-aebc-bec0ec29a9f6",
+        "text": "蓝色"
+      },
+      {
+        "id": "3821096e-4307-5c50-bf9b-cb0391845bd3",
+        "text": "包"
+      }
+    ]
+  },
+  "answer_spec": {
+    "answer_kind": "matching",
+    "pairs": [
+      {
+        "left_id": "3e5cf329-9911-51b3-99b4-fc193585a470",
+        "right_id": "3821096e-4307-5c50-bf9b-cb0391845bd3"
+      },
+      {
+        "left_id": "d0b2893d-d0ea-533f-8283-efc3508e42b8",
+        "right_id": "3d24e787-75b3-5d3d-aebc-bec0ec29a9f6"
+      }
+    ],
+    "one_to_one": true
+  },
+  "explanation": "本题来自家庭自编页句，按所列目标验证。",
+  "requires_microphone": false,
+  "requires_typing": false,
+  "quality_risks": [],
+  "source_quotes": [
+    {
+      "slice_id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+      "source_role": "assessed",
+      "quote": "This is my bag.",
+      "start_char": 0,
+      "end_char": 15
+    },
+    {
+      "slice_id": "7735e957-e92d-52bb-a6be-24d82bcf0d34",
+      "source_role": "assessed",
+      "quote": "It is blue.",
+      "start_char": 0,
+      "end_char": 11
+    }
+  ]
+}

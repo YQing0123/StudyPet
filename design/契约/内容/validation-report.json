@@ -1,0 +1,103 @@
+{
+  "schema_draft": "2020-12",
+  "schemas_checked": 3,
+  "valid_examples": 16,
+  "candidate_types": 11,
+  "negative_checks": [
+    {
+      "name": "family_id_injection",
+      "rejected": true,
+      "reason": "schema::Additional properties are not allowed ('family_id' was unexpected)"
+    },
+    {
+      "name": "public_explanation_injection",
+      "rejected": true,
+      "reason": "schema:public_payload:Additional properties are not allowed ('explanation' was unexpected)"
+    },
+    {
+      "name": "p1_forbidden_type",
+      "rejected": true,
+      "reason": "schema:public_payload:'prompt_text' is a required property"
+    },
+    {
+      "name": "unknown_source",
+      "rejected": true,
+      "reason": "slot_mismatch:source_slice_ids"
+    },
+    {
+      "name": "unregistered_asset",
+      "rejected": true,
+      "reason": "unregistered_asset:b8ff4cdb-a102-5a5a-a7b2-f62291ad9519"
+    },
+    {
+      "name": "answer_option_not_found",
+      "rejected": true,
+      "reason": "answer_option_not_found"
+    },
+    {
+      "name": "quote_text_mismatch",
+      "rejected": true,
+      "reason": "quote_text_mismatch"
+    },
+    {
+      "name": "duplicate_option",
+      "rejected": true,
+      "reason": "duplicate_option_asset"
+    },
+    {
+      "name": "capability_mismatch",
+      "rejected": true,
+      "reason": "slot_mismatch:skill"
+    },
+    {
+      "name": "candidate_uuid_not_allocated",
+      "rejected": true,
+      "reason": "candidate_id_not_allocated"
+    },
+    {
+      "name": "p1_complete_retell_payload",
+      "rejected": true,
+      "reason": "p1_phase_forbids_retell"
+    },
+    {
+      "name": "self_context",
+      "rejected": true,
+      "reason": "self_context"
+    },
+    {
+      "name": "source_hash_mismatch",
+      "rejected": true,
+      "reason": "source_hash_mismatch"
+    },
+    {
+      "name": "invalid_audio_range",
+      "rejected": true,
+      "reason": "invalid_audio_range"
+    },
+    {
+      "name": "sequence_missing_token",
+      "rejected": true,
+      "reason": "sequence_token_multiset_mismatch"
+    },
+    {
+      "name": "matching_reused_right",
+      "rejected": true,
+      "reason": "matching_not_bijection"
+    }
+  ],
+  "public_projection_checks": 11,
+  "openapi_compatibility": {
+    "status": "pass",
+    "checked": 16,
+    "source_slices": 3,
+    "generation_requests": 2,
+    "public_questions": 11
+  },
+  "network_calls": 0,
+  "llm_calls": 0,
+  "result": "pass",
+  "limitations": [
+    "No production DB tenancy/state constraints are tested.",
+    "No semantic correctness, asset bytes, or child pronunciation quality is certified."
+  ]
+}

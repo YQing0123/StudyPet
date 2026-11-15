@@ -1,0 +1,555 @@
+{
+  "model": "gpt-image-2.6-sunburst",
+  "quality": "high",
+  "master": "character-master.png",
+  "nativeAnimationSources": {
+    "sit": {
+      "file": "sit-native-retry.gif",
+      "originalFrames": 9,
+      "originalDurationMs": 1800,
+      "originalSize": [
+        414,
+        414
+      ],
+      "originalSHA256": "5948e86d6f121d1da35025576d6b9659951b495f82c787096dac7cb7d278777c",
+      "scale": 0.9766763848396502,
+      "offset": [
+        57.98979591836732,
+        63.23615160349851
+      ],
+      "normalizedBounds": [
+        [
+          113,
+          79,
+          380,
+          450
+        ],
+        [
+          113,
+          78,
+          377,
+          450
+        ],
+        [
+          114,
+          79,
+          378,
+          450
+        ],
+        [
+          115,
+          78,
+          380,
+          450
+        ],
+        [
+          112,
+          78,
+          382,
+          450
+        ],
+        [
+          115,
+          78,
+          379,
+          450
+        ],
+        [
+          113,
+          78,
+          380,
+          450
+        ],
+        [
+          113,
+          77,
+          382,
+          450
+        ],
+        [
+          114,
+          77,
+          379,
+          450
+        ]
+      ]
+    },
+    "walk": {
+      "file": "walk-native.gif",
+      "originalFrames": 9,
+      "originalDurationMs": 1800,
+      "originalSize": [
+        439,
+        388
+      ],
+      "originalSHA256": "cfd2cea38906d05c2fe7a734c791ada2ae1425d4bb97c209ff76c5921231a657",
+      "scale": 1.0339506172839508,
+      "offset": [
+        20.59876543209873,
+        76.74382716049377
+      ],
+      "normalizedBounds": [
+        [
+          78,
+          102,
+          414,
+          450
+        ],
+        [
+          79,
+          100,
+          409,
+          450
+        ],
+        [
+          78,
+          111,
+          406,
+          450
+        ],
+        [
+          77,
+          113,
+          416,
+          450
+        ],
+        [
+          80,
+          100,
+          411,
+          450
+        ],
+        [
+          77,
+          109,
+          407,
+          450
+        ],
+        [
+          80,
+          106,
+          413,
+          450
+        ],
+        [
+          83,
+          110,
+          410,
+          450
+        ],
+        [
+          79,
+          103,
+          407,
+          450
+        ]
+      ]
+    },
+    "eat": {
+      "file": "eat-native.gif",
+      "originalFrames": 9,
+      "originalDurationMs": 1800,
+      "originalSize": [
+        439,
+        390
+      ],
+      "originalSHA256": "14616083cdf0096f214e4ad978175e36bfddd577e79b50a455389fe47bb09c4a",
+      "scale": 1.0136157337367626,
+      "offset": [
+        20.470499243570316,
+        69.894099848714
+      ],
+      "normalizedBounds": [
+        [
+          64,
+          83,
+          428,
+          450
+        ],
+        [
+          66,
+          111,
+          431,
+          450
+        ],
+        [
+          67,
+          138,
+          433,
+          450
+        ],
+        [
+          64,
+          148,
+          425,
+          450
+        ],
+        [
+          66,
+          147,
+          430,
+          450
+        ],
+        [
+          68,
+          147,
+          433,
+          450
+        ],
+        [
+          64,
+          134,
+          427,
+          450
+        ],
+        [
+          66,
+          120,
+          431,
+          450
+        ],
+        [
+          67,
+          96,
+          433,
+          450
+        ]
+      ]
+    },
+    "pet": {
+      "file": "pet-native.gif",
+      "originalFrames": 9,
+      "originalDurationMs": 1800,
+      "originalSize": [
+        413,
+        412
+      ],
+      "originalSHA256": "95f740a0933a4afe396cad19040eb5b69d8d31a6ab90f9b456515dc009fb1164",
+      "scale": 0.9571428571428572,
+      "offset": [
+        49.78571428571428,
+        62.35714285714283
+      ],
+      "normalizedBounds": [
+        [
+          93,
+          75,
+          399,
+          450
+        ],
+        [
+          98,
+          82,
+          402,
+          450
+        ],
+        [
+          107,
+          84,
+          413,
+          450
+        ],
+        [
+          102,
+          81,
+          410,
+          450
+        ],
+        [
+          101,
+          81,
+          408,
+          450
+        ],
+        [
+          105,
+          82,
+          408,
+          450
+        ],
+        [
+          91,
+          76,
+          396,
+          450
+        ],
+        [
+          98,
+          75,
+          403,
+          450
+        ],
+        [
+          101,
+          73,
+          409,
+          450
+        ]
+      ]
+    },
+    "play": {
+      "file": "play-native.gif",
+      "originalFrames": 9,
+      "originalDurationMs": 1800,
+      "originalSize": [
+        414,
+        413
+      ],
+      "originalSHA256": "3356d50f91cf95504ac268fb78ae917ed95a2c9013985552af3d51fa42e6aa5a",
+      "scale": 0.9357541899441342,
+      "offset": [
+        62.12430167597765,
+        90.6703910614525
+      ],
+      "normalizedBounds": [
+        [
+          95,
+          106,
+          412,
+          450
+        ],
+        [
+          97,
+          105,
+          411,
+          450
+        ],
+        [
+          95,
+          111,
+          409,
+          450
+        ],
+        [
+          93,
+          110,
+          435,
+          450
+        ],
+        [
+          97,
+          109,
+          405,
+          450
+        ],
+        [
+          96,
+          106,
+          393,
+          450
+        ],
+        [
+          93,
+          110,
+          403,
+          450
+        ],
+        [
+          96,
+          103,
+          408,
+          450
+        ],
+        [
+          95,
+          112,
+          433,
+          450
+        ]
+      ]
+    },
+    "sleep": {
+      "file": "sleep-native.gif",
+      "originalFrames": 9,
+      "originalDurationMs": 1800,
+      "originalSize": [
+        439,
+        386
+      ],
+      "originalSHA256": "b89b556092f0e9deab2148bc92be437bd6963c2b82e57ae8c517f06ffb4efd84",
+      "scale": 0.9809663250366033,
+      "offset": [
+        41.959004392386504,
+        77.23279648609076
+      ],
+      "normalizedBounds": [
+        [
+          100,
+          84,
+          392,
+          450
+        ],
+        [
+          90,
+          120,
+          386,
+          450
+        ],
+        [
+          88,
+          149,
+          392,
+          450
+        ],
+        [
+          84,
+          171,
+          399,
+          450
+        ],
+        [
+          84,
+          211,
+          406,
+          450
+        ],
+        [
+          82,
+          248,
+          417,
+          450
+        ],
+        [
+          79,
+          257,
+          419,
+          450
+        ],
+        [
+          82,
+          257,
+          423,
+          450
+        ],
+        [
+          84,
+          257,
+          423,
+          450
+        ]
+      ]
+    }
+  },
+  "derivations": {
+    "wake": "reverse sleep",
+    "eatrev": "last four eat keys",
+    "petted-out": "last four pet keys",
+    "hug": "reuses petted"
+  },
+  "processing": "magenta matte; fixed scale and floor contact; RIFE 4.25 learned occlusion-aware intermediate RGBA frames; 30fps VP9 alpha",
+  "interpolation": {
+    "method": "RIFE 4.25, arbitrary timestep, learned flow and occlusion mask, premultiplied RGBA",
+    "fps": 30,
+    "checkpointSHA256": "6615790efd627772917205db291f51cd392528a157ecbb2ecaeec3bff8eb6de2",
+    "codeSHA256": "655b4c772b037967b86c2dd31c8fa3b5323b79dd9a0e0088708d89149bbc8a32",
+    "source": "https://huggingface.co/MonsterMMORPG/Practical-RIFE",
+    "device": "mps",
+    "actions": {
+      "walk": {
+        "frames": 54,
+        "distinctFrames": 54,
+        "duration": 1.8,
+        "originalKeys": 9,
+        "meanAdjacentDifference": 2.5946700617952168,
+        "maxAdjacentDifference": 4.965015411376953,
+        "bytes": 445087
+      },
+      "greet": {
+        "frames": 72,
+        "distinctFrames": 72,
+        "duration": 2.4,
+        "originalKeys": 9,
+        "meanAdjacentDifference": 0.6273131437704597,
+        "maxAdjacentDifference": 1.1729965209960938,
+        "bytes": 391604
+      },
+      "eat": {
+        "frames": 54,
+        "distinctFrames": 54,
+        "duration": 1.8,
+        "originalKeys": 6,
+        "meanAdjacentDifference": 1.6121462156187814,
+        "maxAdjacentDifference": 3.8052263259887695,
+        "bytes": 370576
+      },
+      "eatrev": {
+        "frames": 24,
+        "distinctFrames": 24,
+        "duration": 0.8,
+        "originalKeys": 4,
+        "meanAdjacentDifference": 2.566625926805579,
+        "maxAdjacentDifference": 4.885357856750488,
+        "bytes": 222353
+      },
+      "petted": {
+        "frames": 54,
+        "distinctFrames": 54,
+        "duration": 1.8,
+        "originalKeys": 6,
+        "meanAdjacentDifference": 1.0783972110388413,
+        "maxAdjacentDifference": 3.210979461669922,
+        "bytes": 348678
+      },
+      "petted-out": {
+        "frames": 21,
+        "distinctFrames": 21,
+        "duration": 0.7,
+        "originalKeys": 4,
+        "meanAdjacentDifference": 2.3273470878601072,
+        "maxAdjacentDifference": 4.845609664916992,
+        "bytes": 182503
+      },
+      "play": {
+        "frames": 78,
+        "distinctFrames": 78,
+        "duration": 2.6,
+        "originalKeys": 9,
+        "usedKeys": 6,
+        "meanAdjacentDifference": 1.522679328918457,
+        "maxAdjacentDifference": 4.493143081665039,
+        "bytes": 528126
+      },
+      "sleep": {
+        "frames": 72,
+        "distinctFrames": 72,
+        "duration": 2.4,
+        "originalKeys": 9,
+        "meanAdjacentDifference": 1.9892126271422481,
+        "maxAdjacentDifference": 6.385986328125,
+        "bytes": 434318
+      },
+      "wake": {
+        "frames": 60,
+        "distinctFrames": 60,
+        "duration": 2.0,
+        "originalKeys": 9,
+        "meanAdjacentDifference": 2.2915906421208785,
+        "maxAdjacentDifference": 7.338435173034668,
+        "bytes": 383312
+      }
+    },
+    "keyCuration": {
+      "play": {
+        "source": "play",
+        "normalizedKeysSHA256": "57e6de7943e0d9cc2293ba961f83f8af80ea2d5e4778d924d2ab273234ad920a",
+        "keep": [
+          0,
+          1,
+          2,
+          5,
+          7,
+          8
+        ],
+        "exclude": [
+          3,
+          4,
+          6
+        ],
+        "reason": "Native GIF keys 3, 4 and 6 contain an extra foreleg. Do not interpolate toward these poses. Original timeline retained; missing poses reconstructed only between reviewed two-foreleg keys."
+      }
+    }
+  },
+  "failedAttempts": [
+    "first sit request returned non-GIF, discarded; retry returned valid native GIF"
+  ]
+}

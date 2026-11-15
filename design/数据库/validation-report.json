@@ -1,0 +1,18 @@
+{
+  "validation": "static_only",
+  "postgres_executed": false,
+  "postgres_parser_used": false,
+  "table_count": 70,
+  "mandatory_family_tables": 68,
+  "foreign_keys_checked": 248,
+  "question_types_contract_checked": 11,
+  "sql_statements_lexically_counted": 2337,
+  "trigger_functions": 33,
+  "errors": [],
+  "warnings": [],
+  "limits": [
+    "No PostgreSQL16 server/client found on PATH.",
+    "No installed PostgreSQL AST parser was available.",
+    "Static validation checks model references/types/unique target keys, trigger references, tenant keys and lexical balance; it cannot prove PostgreSQL execution, PL/pgSQL runtime or concurrency correctness."
+  ]
+}

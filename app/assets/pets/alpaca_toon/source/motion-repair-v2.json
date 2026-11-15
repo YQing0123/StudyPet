@@ -1,0 +1,54 @@
+{
+  "version": "2026-11-15.alpaca-motion-v2",
+  "method": "single opaque textures; independent hoof layers; invertible deformation; lossless VP9 alpha",
+  "sourceKeys": "output/alpaca-toon-20261114/keys.npz",
+  "sourceSHA256": "9b1092eadca2003a2aa2e42a778e4368f6e19b62f57a1a5b4c8646529f26a7f6",
+  "sourceModel": "gpt-image-2.6-sunburst",
+  "sourceQuality": "high",
+  "fps": 30,
+  "walkDutyFactor": 0.68,
+  "walkPhases": [
+    0,
+    0.5,
+    0.75,
+    0.25
+  ],
+  "actions": {
+    "walk": {
+      "frames": 48,
+      "seconds": 1.6,
+      "sha256": "e4749e6ece5c8d677c5f67911ee1080e7840fe55786edec82c7ce7ac20c41879",
+      "distinctFrames": 48
+    },
+    "play": {
+      "frames": 72,
+      "seconds": 2.4,
+      "sha256": "f885f5f4fdec595b829d930f0138edddc25dc6e342682ee182c800fc992b4560",
+      "distinctFrames": 37
+    },
+    "petted": {
+      "frames": 48,
+      "seconds": 1.6,
+      "sha256": "73a74baeaaf4c00637e23c88c38e6177cbc87fb54a1c26c221d16e651236f8a8",
+      "distinctFrames": 36
+    },
+    "petted-out": {
+      "frames": 21,
+      "seconds": 0.7,
+      "sha256": "cf88e8b5ae0e24701ecfcae0094bdeaaab0fe92856b1e4cafd002de826858e69",
+      "distinctFrames": 21
+    },
+    "stretch": {
+      "frames": 60,
+      "seconds": 2.0,
+      "sha256": "ef5998d859a778b5ce799c07a9f2db73a20981cdbe8d08ff2e8cb416073783d8",
+      "distinctFrames": 30
+    },
+    "hug": {
+      "frames": 60,
+      "seconds": 2.0,
+      "sha256": "591fe26477db3caae0d1f5b7e4a494858ce27e9c7701f2f5310e4f4c31150756",
+      "distinctFrames": 30
+    }
+  }
+}

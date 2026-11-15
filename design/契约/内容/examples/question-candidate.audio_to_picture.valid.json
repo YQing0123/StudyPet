@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "id": "1ddacb38-21fb-5ca6-ab0f-61164e67e924",
+  "blueprint_id": "4511d1b1-171f-5514-a522-fc7166e7e025",
+  "phase": "p1",
+  "question_family_key": "fixture.audio-to-picture.bag",
+  "question_type": "audio_to_picture",
+  "source_slice_ids": [
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+  ],
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "objective_ids": [
+    "137b0846-b4c1-573d-884e-b140da8a8551"
+  ],
+  "skill": "listening",
+  "modality": "audio",
+  "difficulty": 1,
+  "estimated_seconds": 15,
+  "presentation_kind": "verbatim",
+  "prompt_text": "听单词，选图片。",
+  "instruction_text": "听单词，选图片。",
+  "public_payload": {
+    "audio_asset_id": "60776e54-98bc-593e-9312-6712f7d445c5",
+    "options": [
+      {
+        "id": "7be96c3e-9ad5-5950-b086-33d5c45f5c11",
+        "asset_id": "3f981930-8e18-511c-8274-007c324b23b5"
+      },
+      {
+        "id": "da977947-b334-5979-a3be-b857be7b0088",
+        "asset_id": "3e57234b-2e44-587b-9d18-5ca25c9b931c"
+      },
+      {
+        "id": "60622c9c-02a4-54a9-81d5-69b17e2b7a54",
+        "asset_id": "81f4ea90-591a-568c-9e7a-983b50d87e38"
+      }
+    ]
+  },
+  "answer_spec": {
+    "answer_kind": "single_choice",
+    "accepted_option_ids": [
+      "7be96c3e-9ad5-5950-b086-33d5c45f5c11"
+    ]
+  },
+  "explanation": "本题来自家庭自编页句，按所列目标验证。",
+  "requires_microphone": false,
+  "requires_typing": false,
+  "quality_risks": [],
+  "source_quotes": [
+    {
+      "slice_id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+      "source_role": "assessed",
+      "quote": "This is my bag.",
+      "start_char": 0,
+      "end_char": 15
+    }
+  ]
+}

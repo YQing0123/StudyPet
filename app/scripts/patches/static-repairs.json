@@ -1,0 +1,267 @@
+[
+  {
+    "breed": "cat_ragdoll",
+    "pose": "frame-jump",
+    "method": [
+      "reviewed silhouette excluding black/teal fringe"
+    ],
+    "sourceSHA256": "152957557d6875d0a6e72162df81aa09bb2809c95a88cb03b482eb24731b0a7b"
+  },
+  {
+    "breed": "cat_ragdoll",
+    "pose": "frame-roll",
+    "method": [
+      "reviewed silhouette excluding black/teal fringe"
+    ],
+    "sourceSHA256": "152957557d6875d0a6e72162df81aa09bb2809c95a88cb03b482eb24731b0a7b"
+  },
+  {
+    "breed": "cat_ragdoll",
+    "pose": "frame-sit",
+    "method": [
+      "reviewed silhouette excluding black/teal fringe"
+    ],
+    "sourceSHA256": "152957557d6875d0a6e72162df81aa09bb2809c95a88cb03b482eb24731b0a7b"
+  },
+  {
+    "breed": "cat_ragdoll",
+    "pose": "frame-sleep",
+    "method": [
+      "reviewed silhouette excluding black/teal fringe"
+    ],
+    "sourceSHA256": "152957557d6875d0a6e72162df81aa09bb2809c95a88cb03b482eb24731b0a7b"
+  },
+  {
+    "breed": "cat_ragdoll",
+    "pose": "frame-stretch",
+    "method": [
+      "reviewed silhouette excluding black/teal fringe"
+    ],
+    "sourceSHA256": "152957557d6875d0a6e72162df81aa09bb2809c95a88cb03b482eb24731b0a7b"
+  },
+  {
+    "breed": "cat_ragdoll",
+    "pose": "frame-walk",
+    "method": [
+      "reviewed silhouette excluding black/teal fringe"
+    ],
+    "sourceSHA256": "152957557d6875d0a6e72162df81aa09bb2809c95a88cb03b482eb24731b0a7b"
+  },
+  {
+    "breed": "cat_black",
+    "pose": "frame-sit",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "f73643be51980d951b74cd5ac2adf09961560926b4565546ed07f492aefe5939"
+  },
+  {
+    "breed": "cat_blue",
+    "pose": "frame-sit",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "8bd277f009a07c1fe7cf893b7037780be9edc9d0102b8c2a64e650d56451c8bb"
+  },
+  {
+    "breed": "dog_dairy",
+    "pose": "frame-sit",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "a3c130c8ff80a785eafdc5e367e7fbdc1464ad050b1bed47cc78503582c9fd3f"
+  },
+  {
+    "breed": "dog_golden",
+    "pose": "frame-sit",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "aaffdc3d88813f2ba5185f015bbd5b7383aab6f2838765096947116dc9c062bd"
+  },
+  {
+    "breed": "dog_corgi",
+    "pose": "frame-sit",
+    "method": [
+      "reviewed floor boundary",
+      "local mirrored forepaw reconstruction"
+    ],
+    "sourceSHA256": "2427549c49fe7f9302ad7ffba24a02c66f6b7bbb3f671aa639218d41c1b5cced"
+  },
+  {
+    "breed": "dog_german",
+    "pose": "frame-sit",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "65366189f055c7be4a60a86da87b7ce26114c5b4dbeb6a668ba88d0f7b645dda"
+  },
+  {
+    "breed": "bird_parakeet",
+    "pose": "frame-sit",
+    "method": [
+      "perch endpoints trimmed"
+    ],
+    "sourceSHA256": "f8c6390f56d6dd467c5be11e9513d7ce7ab1157e3940e1505e3b61133f3f08bc"
+  },
+  {
+    "breed": "bird_peachface",
+    "pose": "frame-sit",
+    "method": [
+      "perch endpoints trimmed"
+    ],
+    "sourceSHA256": "7675e805512de5fb822f4e3a0baeff89a112305ee6701084f6e7f50aad041dd1"
+  },
+  {
+    "breed": "turtle_redear",
+    "pose": "frame-jump",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "a5d404d4c400953a9fcd3ae7f3cd322c1ba4637483fea6783d8e54ac0e3e6115"
+  },
+  {
+    "breed": "turtle_redear",
+    "pose": "frame-roll",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "a5d404d4c400953a9fcd3ae7f3cd322c1ba4637483fea6783d8e54ac0e3e6115"
+  },
+  {
+    "breed": "turtle_redear",
+    "pose": "frame-sit",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "a5d404d4c400953a9fcd3ae7f3cd322c1ba4637483fea6783d8e54ac0e3e6115"
+  },
+  {
+    "breed": "turtle_redear",
+    "pose": "frame-sleep",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "a5d404d4c400953a9fcd3ae7f3cd322c1ba4637483fea6783d8e54ac0e3e6115"
+  },
+  {
+    "breed": "turtle_redear",
+    "pose": "frame-stretch",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "a5d404d4c400953a9fcd3ae7f3cd322c1ba4637483fea6783d8e54ac0e3e6115"
+  },
+  {
+    "breed": "turtle_redear",
+    "pose": "frame-walk",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "a5d404d4c400953a9fcd3ae7f3cd322c1ba4637483fea6783d8e54ac0e3e6115"
+  },
+  {
+    "breed": "turtle_grass",
+    "pose": "frame-jump",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "d2d23fb1d1d5201b5018f2c42c181d1aac53ca5ad84d78f0e6819cc5aa231742"
+  },
+  {
+    "breed": "turtle_grass",
+    "pose": "frame-roll",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "d2d23fb1d1d5201b5018f2c42c181d1aac53ca5ad84d78f0e6819cc5aa231742"
+  },
+  {
+    "breed": "turtle_grass",
+    "pose": "frame-sit",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "d2d23fb1d1d5201b5018f2c42c181d1aac53ca5ad84d78f0e6819cc5aa231742"
+  },
+  {
+    "breed": "turtle_grass",
+    "pose": "frame-sleep",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "d2d23fb1d1d5201b5018f2c42c181d1aac53ca5ad84d78f0e6819cc5aa231742"
+  },
+  {
+    "breed": "turtle_grass",
+    "pose": "frame-stretch",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "d2d23fb1d1d5201b5018f2c42c181d1aac53ca5ad84d78f0e6819cc5aa231742"
+  },
+  {
+    "breed": "turtle_grass",
+    "pose": "frame-walk",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "d2d23fb1d1d5201b5018f2c42c181d1aac53ca5ad84d78f0e6819cc5aa231742"
+  },
+  {
+    "breed": "turtle_flower",
+    "pose": "frame-sit",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "023fdf90d85ff0679480330783efba1ba77545a952608c5d36d6e23dca3afe60"
+  },
+  {
+    "breed": "turtle_map",
+    "pose": "frame-jump",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "78aed853d57a2586cd3bb1291512e55ef28c3ed6da0dc98f5c727ff60f540e98"
+  },
+  {
+    "breed": "turtle_map",
+    "pose": "frame-roll",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "78aed853d57a2586cd3bb1291512e55ef28c3ed6da0dc98f5c727ff60f540e98"
+  },
+  {
+    "breed": "turtle_map",
+    "pose": "frame-sit",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "78aed853d57a2586cd3bb1291512e55ef28c3ed6da0dc98f5c727ff60f540e98"
+  },
+  {
+    "breed": "turtle_map",
+    "pose": "frame-sleep",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "78aed853d57a2586cd3bb1291512e55ef28c3ed6da0dc98f5c727ff60f540e98"
+  },
+  {
+    "breed": "turtle_map",
+    "pose": "frame-stretch",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "78aed853d57a2586cd3bb1291512e55ef28c3ed6da0dc98f5c727ff60f540e98"
+  },
+  {
+    "breed": "turtle_map",
+    "pose": "frame-walk",
+    "method": [
+      "reviewed floor boundary"
+    ],
+    "sourceSHA256": "78aed853d57a2586cd3bb1291512e55ef28c3ed6da0dc98f5c727ff60f540e98"
+  }
+]

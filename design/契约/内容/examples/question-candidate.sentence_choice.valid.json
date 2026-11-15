@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "id": "9bd16c0b-0dbf-5b14-95cc-b14e19269425",
+  "blueprint_id": "66b3aff5-e0a8-519a-b4a6-c1af7f691656",
+  "phase": "p2",
+  "question_family_key": "fixture.sentence-choice.bag",
+  "question_type": "sentence_choice",
+  "source_slice_ids": [
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+  ],
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "objective_ids": [
+    "2e18ab0e-457d-54e9-a3bd-a7511ea36da2"
+  ],
+  "skill": "sentence_comprehension",
+  "modality": "text",
+  "difficulty": 1,
+  "estimated_seconds": 30,
+  "presentation_kind": "verbatim",
+  "prompt_text": "选出意思相同的一项。",
+  "instruction_text": "选出意思相同的一项。",
+  "public_payload": {
+    "stimulus": {
+      "kind": "text",
+      "text": "This is my bag."
+    },
+    "options": [
+      {
+        "id": "cc0a295d-74a5-581c-8fb1-4efb3633e9fd",
+        "text": "这是我的包。"
+      },
+      {
+        "id": "baf28c11-34d2-5642-8169-28d3715f662d",
+        "text": "这是我的猫。"
+      },
+      {
+        "id": "b53dc824-eb05-5b82-b9cd-db71b3ec77aa",
+        "text": "这是我的狗。"
+      }
+    ]
+  },
+  "answer_spec": {
+    "answer_kind": "single_choice",
+    "accepted_option_ids": [
+      "cc0a295d-74a5-581c-8fb1-4efb3633e9fd"
+    ]
+  },
+  "explanation": "本题来自家庭自编页句，按所列目标验证。",
+  "requires_microphone": false,
+  "requires_typing": false,
+  "quality_risks": [],
+  "source_quotes": [
+    {
+      "slice_id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+      "source_role": "assessed",
+      "quote": "This is my bag.",
+      "start_char": 0,
+      "end_char": 15
+    }
+  ]
+}

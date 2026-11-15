@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0.0",
+  "id": "345feee8-8430-53f3-ad36-a4f5648fbc7a",
+  "blueprint_id": "66b3aff5-e0a8-519a-b4a6-c1af7f691656",
+  "phase": "p2",
+  "question_family_key": "fixture.word-order.bag",
+  "question_type": "word_order",
+  "source_slice_ids": [
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+  ],
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "objective_ids": [
+    "1869e79a-fa00-5934-a050-b53f7d3ace10"
+  ],
+  "skill": "sentence_comprehension",
+  "modality": "text",
+  "difficulty": 1,
+  "estimated_seconds": 30,
+  "presentation_kind": "verbatim",
+  "prompt_text": "把词块排成原句。",
+  "instruction_text": "把词块排成原句。",
+  "public_payload": {
+    "tokens": [
+      {
+        "id": "527f15c6-b4c2-59f0-a724-cef229ab3e6f",
+        "text": "bag"
+      },
+      {
+        "id": "704d2706-475c-5518-95f2-c0326c00e167",
+        "text": "is"
+      },
+      {
+        "id": "f456ec6f-2084-5e4d-b3a6-9649a062a3ea",
+        "text": "my"
+      },
+      {
+        "id": "74f8af8f-7681-5ff2-880d-6564e449924b",
+        "text": "this"
+      }
+    ]
+  },
+  "answer_spec": {
+    "answer_kind": "sequence",
+    "accepted_sequences": [
+      [
+        "74f8af8f-7681-5ff2-880d-6564e449924b",
+        "704d2706-475c-5518-95f2-c0326c00e167",
+        "f456ec6f-2084-5e4d-b3a6-9649a062a3ea",
+        "527f15c6-b4c2-59f0-a724-cef229ab3e6f"
+      ]
+    ]
+  },
+  "explanation": "本题来自家庭自编页句，按所列目标验证。",
+  "requires_microphone": false,
+  "requires_typing": false,
+  "quality_risks": [],
+  "source_quotes": [
+    {
+      "slice_id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+      "source_role": "assessed",
+      "quote": "This is my bag.",
+      "start_char": 0,
+      "end_char": 15
+    }
+  ]
+}

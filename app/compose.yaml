@@ -1,0 +1,41 @@
+name: banxue-island
+services:
+  app:
+    image: ${BANXUE_IMAGE:-banxue-island:0.1.0}
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    init: true
+    user: "${BANXUE_UID:-1000}:${BANXUE_GID:-1000}"
+    ports:
+      - "${BANXUE_BIND_IP:-0.0.0.0}:${BANXUE_PORT:-7788}:7717"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "7717"
+      TZ: Asia/Shanghai
+      BANXUE_DATA_DIR: /data
+      BANXUE_PUBLIC_ORIGIN: ${BANXUE_PUBLIC_ORIGIN:-}
+    volumes:
+      - type: bind
+        source: ${BANXUE_DATA_PATH:-./data}
+        target: /data
+        bind:
+          create_host_path: false
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    cpus: 1.5
+    mem_limit: 768m
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"

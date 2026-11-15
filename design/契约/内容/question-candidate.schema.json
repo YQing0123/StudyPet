@@ -1,0 +1,1215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:banxue:content:question-candidate:1.0.0",
+  "title": "question-candidate",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "blueprint_id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "phase": {
+      "enum": [
+        "p1",
+        "p2"
+      ]
+    },
+    "question_family_key": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+    },
+    "question_type": {
+      "enum": [
+        "audio_to_picture",
+        "word_to_picture",
+        "picture_to_word",
+        "oral_reading",
+        "sentence_choice",
+        "cloze_choice",
+        "cloze_text",
+        "matching",
+        "word_order",
+        "reading_choice",
+        "retell"
+      ]
+    },
+    "source_slice_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+      },
+      "minItems": 1,
+      "maxItems": 16,
+      "uniqueItems": true
+    },
+    "context_slice_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+      },
+      "minItems": 0,
+      "maxItems": 16,
+      "uniqueItems": true
+    },
+    "objective_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+      },
+      "minItems": 1,
+      "maxItems": 1,
+      "uniqueItems": true
+    },
+    "skill": {
+      "enum": [
+        "listening",
+        "word_recognition",
+        "oral_reading",
+        "sentence_comprehension",
+        "spelling",
+        "oral_expression"
+      ]
+    },
+    "modality": {
+      "enum": [
+        "audio",
+        "visual",
+        "text",
+        "speech"
+      ]
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "estimated_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 600
+    },
+    "presentation_kind": {
+      "enum": [
+        "verbatim",
+        "paraphrase",
+        "contextualized"
+      ]
+    },
+    "prompt_text": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 3000
+    },
+    "instruction_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "public_payload": {
+      "type": "object"
+    },
+    "answer_spec": {
+      "type": "object"
+    },
+    "explanation": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "requires_microphone": {
+      "type": "boolean"
+    },
+    "requires_typing": {
+      "type": "boolean"
+    },
+    "quality_risks": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "ambiguous_answer",
+          "context_missing",
+          "source_uncertain",
+          "media_uncertain",
+          "scope_uncertain",
+          "language_variant",
+          "target_leakage",
+          "open_response"
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 8,
+      "uniqueItems": true
+    },
+    "source_quotes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "slice_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "source_role": {
+            "enum": [
+              "assessed",
+              "context",
+              "distractor"
+            ]
+          },
+          "quote": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "start_char": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "end_char": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "slice_id",
+          "source_role",
+          "quote",
+          "start_char",
+          "end_char"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 16
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "blueprint_id",
+    "phase",
+    "question_family_key",
+    "question_type",
+    "source_slice_ids",
+    "context_slice_ids",
+    "objective_ids",
+    "skill",
+    "modality",
+    "difficulty",
+    "estimated_seconds",
+    "presentation_kind",
+    "prompt_text",
+    "instruction_text",
+    "public_payload",
+    "answer_spec",
+    "explanation",
+    "requires_microphone",
+    "requires_typing",
+    "quality_risks",
+    "source_quotes"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "payload_audio_to_picture": {
+      "type": "object",
+      "properties": {
+        "audio_asset_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "asset_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              }
+            },
+            "required": [
+              "id",
+              "asset_id"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 6
+        }
+      },
+      "required": [
+        "audio_asset_id",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "payload_word_to_picture": {
+      "type": "object",
+      "properties": {
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "asset_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              }
+            },
+            "required": [
+              "id",
+              "asset_id"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 6
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "payload_picture_to_word": {
+      "type": "object",
+      "properties": {
+        "image_asset_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "id",
+              "text"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 6
+        }
+      },
+      "required": [
+        "image_asset_id",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "payload_oral_reading": {
+      "type": "object",
+      "properties": {
+        "target_text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600
+        },
+        "recording_max_seconds": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 30
+        }
+      },
+      "required": [
+        "target_text",
+        "recording_max_seconds"
+      ],
+      "additionalProperties": false
+    },
+    "payload_sentence_choice": {
+      "type": "object",
+      "properties": {
+        "stimulus": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "text"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 600
+                }
+              },
+              "required": [
+                "kind",
+                "text"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "const": "audio"
+                },
+                "asset_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                }
+              },
+              "required": [
+                "kind",
+                "asset_id"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "id",
+              "text"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 6
+        }
+      },
+      "required": [
+        "stimulus",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "payload_cloze_choice": {
+      "type": "object",
+      "properties": {
+        "prefix_text": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 600
+        },
+        "suffix_text": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 600
+        },
+        "gap_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "id",
+              "text"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 6
+        }
+      },
+      "required": [
+        "prefix_text",
+        "suffix_text",
+        "gap_id",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "payload_cloze_text": {
+      "type": "object",
+      "properties": {
+        "prefix_text": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 600
+        },
+        "suffix_text": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 600
+        },
+        "gap_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "max_answer_characters": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        }
+      },
+      "required": [
+        "prefix_text",
+        "suffix_text",
+        "gap_id",
+        "max_answer_characters"
+      ],
+      "additionalProperties": false
+    },
+    "payload_matching": {
+      "type": "object",
+      "properties": {
+        "left_items": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "id",
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                  },
+                  "asset_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                  }
+                },
+                "required": [
+                  "id",
+                  "asset_id"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 6
+        },
+        "right_items": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "id",
+                  "text"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                  },
+                  "asset_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                  }
+                },
+                "required": [
+                  "id",
+                  "asset_id"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 6
+        }
+      },
+      "required": [
+        "left_items",
+        "right_items"
+      ],
+      "additionalProperties": false
+    },
+    "payload_word_order": {
+      "type": "object",
+      "properties": {
+        "tokens": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "id",
+              "text"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 12
+        }
+      },
+      "required": [
+        "tokens"
+      ],
+      "additionalProperties": false
+    },
+    "payload_reading_choice": {
+      "type": "object",
+      "properties": {
+        "passage_text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 3000
+        },
+        "question_text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "id",
+              "text"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 6
+        }
+      },
+      "required": [
+        "passage_text",
+        "question_text",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "payload_retell": {
+      "type": "object",
+      "properties": {
+        "prompt_text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "source_text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 3000
+        },
+        "image_asset_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "recording_max_seconds": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 60
+        }
+      },
+      "required": [
+        "prompt_text",
+        "recording_max_seconds"
+      ],
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "source_text"
+          ]
+        },
+        {
+          "required": [
+            "image_asset_id"
+          ]
+        }
+      ]
+    },
+    "answer_single_choice": {
+      "type": "object",
+      "properties": {
+        "answer_kind": {
+          "const": "single_choice"
+        },
+        "accepted_option_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "minItems": 1,
+          "maxItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "answer_kind",
+        "accepted_option_ids"
+      ],
+      "additionalProperties": false
+    },
+    "answer_text": {
+      "type": "object",
+      "properties": {
+        "answer_kind": {
+          "const": "text"
+        },
+        "accepted_texts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "minItems": 1,
+          "maxItems": 12,
+          "uniqueItems": true
+        },
+        "normalization": {
+          "type": "object",
+          "properties": {
+            "case_sensitive": {
+              "type": "boolean"
+            },
+            "trim_whitespace": {
+              "type": "boolean"
+            },
+            "collapse_whitespace": {
+              "type": "boolean"
+            },
+            "punctuation_mode": {
+              "enum": [
+                "strict",
+                "ignore"
+              ]
+            }
+          },
+          "required": [
+            "case_sensitive",
+            "trim_whitespace",
+            "collapse_whitespace",
+            "punctuation_mode"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "answer_kind",
+        "accepted_texts",
+        "normalization"
+      ],
+      "additionalProperties": false
+    },
+    "answer_matching": {
+      "type": "object",
+      "properties": {
+        "answer_kind": {
+          "const": "matching"
+        },
+        "pairs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "left_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "right_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              }
+            },
+            "required": [
+              "left_id",
+              "right_id"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 6
+        },
+        "one_to_one": {
+          "const": true
+        }
+      },
+      "required": [
+        "answer_kind",
+        "pairs",
+        "one_to_one"
+      ],
+      "additionalProperties": false
+    },
+    "answer_sequence": {
+      "type": "object",
+      "properties": {
+        "answer_kind": {
+          "const": "sequence"
+        },
+        "accepted_sequences": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            },
+            "minItems": 2,
+            "maxItems": 12,
+            "uniqueItems": true
+          },
+          "minItems": 1,
+          "maxItems": 6
+        }
+      },
+      "required": [
+        "answer_kind",
+        "accepted_sequences"
+      ],
+      "additionalProperties": false
+    },
+    "answer_manual_review": {
+      "type": "object",
+      "properties": {
+        "answer_kind": {
+          "const": "manual_review"
+        },
+        "rubric": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "criterion": {
+                "enum": [
+                  "content_accuracy",
+                  "readability",
+                  "meaning_coverage",
+                  "independent_expression"
+                ]
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              }
+            },
+            "required": [
+              "criterion",
+              "description"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 4
+        },
+        "confirmation_mode": {
+          "const": "parent_confirmation"
+        }
+      },
+      "required": [
+        "answer_kind",
+        "rubric",
+        "confirmation_mode"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "question_type": {
+            "const": "audio_to_picture"
+          }
+        },
+        "required": [
+          "question_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "public_payload": {
+            "$ref": "#/$defs/payload_audio_to_picture"
+          },
+          "answer_spec": {
+            "$ref": "#/$defs/answer_single_choice"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "question_type": {
+            "const": "word_to_picture"
+          }
+        },
+        "required": [
+          "question_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "public_payload": {
+            "$ref": "#/$defs/payload_word_to_picture"
+          },
+          "answer_spec": {
+            "$ref": "#/$defs/answer_single_choice"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "question_type": {
+            "const": "picture_to_word"
+          }
+        },
+        "required": [
+          "question_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "public_payload": {
+            "$ref": "#/$defs/payload_picture_to_word"
+          },
+          "answer_spec": {
+            "$ref": "#/$defs/answer_single_choice"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "question_type": {
+            "const": "oral_reading"
+          }
+        },
+        "required": [
+          "question_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "public_payload": {
+            "$ref": "#/$defs/payload_oral_reading"
+          },
+          "answer_spec": {
+            "$ref": "#/$defs/answer_manual_review"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "question_type": {
+            "const": "sentence_choice"
+          }
+        },
+        "required": [
+          "question_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "public_payload": {
+            "$ref": "#/$defs/payload_sentence_choice"
+          },
+          "answer_spec": {
+            "$ref": "#/$defs/answer_single_choice"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "question_type": {
+            "const": "cloze_choice"
+          }
+        },
+        "required": [
+          "question_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "public_payload": {
+            "$ref": "#/$defs/payload_cloze_choice"
+          },
+          "answer_spec": {
+            "$ref": "#/$defs/answer_single_choice"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "question_type": {
+            "const": "cloze_text"
+          }
+        },
+        "required": [
+          "question_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "public_payload": {
+            "$ref": "#/$defs/payload_cloze_text"
+          },
+          "answer_spec": {
+            "$ref": "#/$defs/answer_text"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "question_type": {
+            "const": "matching"
+          }
+        },
+        "required": [
+          "question_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "public_payload": {
+            "$ref": "#/$defs/payload_matching"
+          },
+          "answer_spec": {
+            "$ref": "#/$defs/answer_matching"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "question_type": {
+            "const": "word_order"
+          }
+        },
+        "required": [
+          "question_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "public_payload": {
+            "$ref": "#/$defs/payload_word_order"
+          },
+          "answer_spec": {
+            "$ref": "#/$defs/answer_sequence"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "question_type": {
+            "const": "reading_choice"
+          }
+        },
+        "required": [
+          "question_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "public_payload": {
+            "$ref": "#/$defs/payload_reading_choice"
+          },
+          "answer_spec": {
+            "$ref": "#/$defs/answer_single_choice"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "question_type": {
+            "const": "retell"
+          }
+        },
+        "required": [
+          "question_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "public_payload": {
+            "$ref": "#/$defs/payload_retell"
+          },
+          "answer_spec": {
+            "$ref": "#/$defs/answer_manual_review"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "phase": {
+            "const": "p1"
+          }
+        },
+        "required": [
+          "phase"
+        ]
+      },
+      "then": {
+        "properties": {
+          "question_type": {
+            "enum": [
+              "audio_to_picture",
+              "word_to_picture",
+              "picture_to_word",
+              "oral_reading"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

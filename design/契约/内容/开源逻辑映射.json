@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "reviewed_at": "2026-11-06",
+  "purpose": "内容生产与判分逻辑的局部复用映射，不复制完整产品或课程。",
+  "mappings": [
+    {
+      "project": "Anzo",
+      "source_url": "https://github.com/eduardwichner/anzo/blob/main/server/src/content/grading.js",
+      "raw_url": "https://raw.githubusercontent.com/eduardwichner/anzo/main/server/src/content/grading.js",
+      "verified_blob_sha": "15dd2076a629f009d0778d5571f41450dcf1e453",
+      "inspected_logic": ["normalize", "gradeBuildSentence", "gradeFillBlank", "gradeCloze", "gradeMatchPairs"],
+      "adopt": [
+        "评分使用纯函数，输入答案形状和长度先验证，不在评分器做I/O。",
+        "词块排序既验证所用词块多重集，也验证允许的完整顺序，重复词块不能遗漏或多用。",
+        "选词填空和手输填空分支独立；每空维护允许答案变体并提供逐空反馈。",
+        "显示轻微差异和内容错误可以分开，但保存实际评分规则与结果来源。"
+      ],
+      "adapt": [
+        "本项目把全局normalize改成每题answer_spec.normalization，拼写目标不接受模糊编辑距离自动通过。",
+        "本项目选项使用服务端分配UUID而非文字本身，排序公开词块不泄露源序号。",
+        "英语缩写、数字、英美拼写仅在明确允许的目标中配置，不全局放宽。"
+      ],
+      "do_not_copy": [
+        "不采用gradeMatchPairs中仅信客户端mistakes=0的结算方式；服务端逐一校验真实left/right UUID配对。",
+        "不直接复制成人/其他语种容错策略到儿童拼写验证。"
+      ],
+      "license": "项目自身代码MIT；依赖、课程及媒体另按THIRD_PARTY核查。",
+      "implementation_status": "设计映射及本地契约lint，未引入或运行Anzo应用代码。"
+    },
+    {
+      "project": "Anzo",
+      "source_url": "https://github.com/eduardwichner/anzo/blob/main/server/src/content/texts.js",
+      "inspected_logic": ["textWords", "containsWord", "questionProblems", "clozeProblems", "clozeParts"],
+      "adopt": [
+        "阅读与对话分结构保存，句子/话轮均有稳定ID。",
+        "选项规范化去重，答案必须存在且在允许范围。",
+        "cloze目标必须在源句中以完整词或词组出现，每个空必须能实际放置在呈现文本中。",
+        "同一个句子/词不能重复开相同空，词干与答案相同的变形题不发布。"
+      ],
+      "adapt": [
+        "首版填空限定单空，后续增加多空按gap UUID分别判分。",
+        "不照搬B1/B2题量和最少字数；按孩子能力和计划时长设置蓝图。",
+        "对话说话人可多于两人，同一人连续话轮只给编辑提示，不能机械拒绝真实教材。"
+      ],
+      "license": "代码MIT，课程文本另有CC BY-NC-SA要求。",
+      "implementation_status": "已读源码，采用规则思想，未复制大段实现。"
+    },
+    {
+      "project": "Anzo",
+      "source_url": "https://github.com/eduardwichner/anzo/blob/main/scripts/content/generator.js",
+      "inspected_logic": ["seeded shuffle", "distractors", "introduced", "blankPosition", "generatePack"],
+      "adopt": [
+        "源内容先结构化，生成包是可重建产物，不原地手改已发布包。",
+        "固定种子只负责模板选择和选项排列，未改变源内容的题目不因加词而漂移。",
+        "先接触再测试，干扰项优先同单元同词性，排除同义、同文本和互相包容的类别词。",
+        "无合适干扰项时返回缺题，不用任意词补足选项。"
+      ],
+      "adapt": [
+        "教材scope和学习exposure替代全包introduced集合，不把生成顺序当孩子真实已学。",
+        "AI调用不可宣称跨模型逐字可重现；冻结已验候选，记录模型和提示版本。",
+        "同家族题仅换序不产生独立掌握证据，新增内容不能改变既有题目与奖励资格。"
+      ],
+      "license": "代码MIT，衍生数据和媒体单独核查。",
+      "implementation_status": "已读源码，首版自研受限生成器和AI候选管线。"
+    },
+    {
+      "project": "Lute",
+      "source_url": "https://luteorg.github.io/lute-manual/usage/terms/parent-terms.html",
+      "additional_source_urls": ["https://luteorg.github.io/lute-manual/", "https://luteorg.github.io/lute-manual/usage/terms/terms.html"],
+      "inspected_logic": ["parent terms", "multiple parents", "multi-word terms", "filtered term export"],
+      "adopt": [
+        "词形与父词条建立关系，原句中的has可关联have，不丢失实际词形。",
+        "词条允许多词短语和多个父关系，不靠空格机械拆开短语。",
+        "词条管理按状态和来源筛选，批量导出明确是否包含例句和图片。"
+      ],
+      "adapt": [
+        "父词义关系只共享解释与检索，不自动复制听说读写掌握。",
+        "同词多义需语境选定，不以字符串相同自动合并。",
+        "本项目导出教材需同时处理版本、来源和媒体权利，不以简单CSV当完整教材备份。"
+      ],
+      "license": "Lute应用代码MIT；本条为手册功能逻辑参考，不复制内容或图像。",
+      "implementation_status": "已核查官方手册，未运行Lute应用。"
+    }
+  ]
+}

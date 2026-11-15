@@ -1,0 +1,108 @@
+{
+  "id": "alpaca_toon",
+  "name": "羊驼",
+  "species": "alpaca",
+  "walkTransitions": false,
+  "avatar": "avatar.png",
+  "frames": [
+    {
+      "key": "sit",
+      "file": "frames/frame-sit.png",
+      "bottom": 0.878906
+    },
+    {
+      "key": "walk",
+      "file": "frames/frame-walk.png",
+      "bottom": 0.876953
+    },
+    {
+      "key": "sleep",
+      "file": "frames/frame-sleep.png",
+      "bottom": 0.878906
+    },
+    {
+      "key": "stretch",
+      "file": "frames/frame-stretch.png",
+      "bottom": 0.876953
+    },
+    {
+      "key": "roll",
+      "file": "frames/frame-roll.png",
+      "bottom": 0.876953
+    },
+    {
+      "key": "jump",
+      "file": "frames/frame-jump.png",
+      "bottom": 0.878906
+    }
+  ],
+  "videos": {
+    "greet": {
+      "file": "videos/greet.alpha.webm",
+      "mode": "alpha",
+      "bottom": 0.878906
+    },
+    "eat": {
+      "file": "videos/eat.alpha.webm",
+      "mode": "alpha",
+      "bottom": 0.878906
+    },
+    "eatrev": {
+      "file": "videos/eatrev.alpha.webm",
+      "mode": "alpha",
+      "bottom": 0.878906
+    },
+    "petted": {
+      "file": "videos/petted.alpha.webm",
+      "mode": "alpha",
+      "bottom": 0.878906,
+      "sha256": "73a74baeaaf4c00637e23c88c38e6177cbc87fb54a1c26c221d16e651236f8a8"
+    },
+    "petted-out": {
+      "file": "videos/petted-out.alpha.webm",
+      "mode": "alpha",
+      "bottom": 0.878906,
+      "sha256": "cf88e8b5ae0e24701ecfcae0094bdeaaab0fe92856b1e4cafd002de826858e69"
+    },
+    "play": {
+      "file": "videos/play.alpha.webm",
+      "mode": "alpha",
+      "bottom": 0.878906,
+      "sha256": "f885f5f4fdec595b829d930f0138edddc25dc6e342682ee182c800fc992b4560"
+    },
+    "hug": {
+      "file": "videos/hug.alpha.webm",
+      "mode": "alpha",
+      "bottom": 0.878906,
+      "sha256": "591fe26477db3caae0d1f5b7e4a494858ce27e9c7701f2f5310e4f4c31150756"
+    },
+    "sleep": {
+      "file": "videos/sleep.alpha.webm",
+      "mode": "alpha",
+      "bottom": 0.878906
+    },
+    "wake": {
+      "file": "videos/wake.alpha.webm",
+      "mode": "alpha",
+      "bottom": 0.878906
+    },
+    "stretch": {
+      "file": "videos/stretch.alpha.webm",
+      "mode": "alpha",
+      "bottom": 0.878906,
+      "sha256": "ef5998d859a778b5ce799c07a9f2db73a20981cdbe8d08ff2e8cb416073783d8"
+    },
+    "walk": {
+      "file": "videos/walk.alpha.webm",
+      "mode": "alpha",
+      "bottom": 0.878906,
+      "gait": {
+        "stridePixels": 26,
+        "supportSeconds": 1.088,
+        "canvasPixels": 512
+      },
+      "sha256": "e4749e6ece5c8d677c5f67911ee1080e7840fe55786edec82c7ce7ac20c41879"
+    }
+  },
+  "version": "2026-11-15.alpaca-motion-v2"
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "id": "b8ff4cdb-a102-5a5a-a7b2-f62291ad9519",
+  "blueprint_id": "4511d1b1-171f-5514-a522-fc7166e7e025",
+  "phase": "p1",
+  "question_family_key": "fixture.word-to-picture.bag",
+  "question_type": "word_to_picture",
+  "source_slice_ids": [
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+  ],
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "objective_ids": [
+    "0ff35935-05fc-51ee-abd4-be7fd583c172"
+  ],
+  "skill": "word_recognition",
+  "modality": "text",
+  "difficulty": 1,
+  "estimated_seconds": 15,
+  "presentation_kind": "verbatim",
+  "prompt_text": "bag",
+  "instruction_text": "选出单词对应的图片。",
+  "public_payload": {
+    "options": [
+      {
+        "id": "847340f0-0e3d-5c17-a794-4c8569953995",
+        "asset_id": "3f981930-8e18-511c-8274-007c324b23b5"
+      },
+      {
+        "id": "6c416238-42f2-58b3-bd94-f278e731b7b9",
+        "asset_id": "3e57234b-2e44-587b-9d18-5ca25c9b931c"
+      },
+      {
+        "id": "1dc229c5-737f-54a6-ba59-37f86841664a",
+        "asset_id": "81f4ea90-591a-568c-9e7a-983b50d87e38"
+      }
+    ]
+  },
+  "answer_spec": {
+    "answer_kind": "single_choice",
+    "accepted_option_ids": [
+      "847340f0-0e3d-5c17-a794-4c8569953995"
+    ]
+  },
+  "explanation": "本题来自家庭自编页句，按所列目标验证。",
+  "requires_microphone": false,
+  "requires_typing": false,
+  "quality_risks": [],
+  "source_quotes": [
+    {
+      "slice_id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+      "source_role": "assessed",
+      "quote": "This is my bag.",
+      "start_char": 0,
+      "end_char": 15
+    }
+  ]
+}

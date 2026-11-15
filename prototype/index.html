@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>伴学小岛 · 儿童端小家（动效可行性样片）</title>
+<style>
+:root{
+  --paper:#FFF8EC; --paper-2:#FFFDF7; --ink:#453B32; --ink-soft:#8A7B6C;
+  --green:#245C49; --green-l:#3E7A62; --mint:#B8DDC5; --mint-2:#D9EEDF;
+  --apricot:#F3B592; --gold:#E9BE62; --line:#E8DFCF;
+  --r-s:10px; --r-m:16px; --r-l:26px; --r-xl:34px;
+  --sh-1:0 2px 6px rgba(96,75,50,.07), 0 8px 20px rgba(96,75,50,.06);
+  --sh-2:0 4px 12px rgba(96,75,50,.09), 0 18px 40px rgba(96,75,50,.09);
+  --t-fast:140ms; --t-base:220ms; --t-slow:420ms;
+  --ease:cubic-bezier(.32,.72,0,1);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(1200px 600px at 15% -10%, #FFFDF4 0%, transparent 60%),
+    radial-gradient(900px 500px at 100% 110%, #F6F0E1 0%, transparent 55%),
+    radial-gradient(600px 400px at 80% 0%, #FDF4E4 0%, transparent 60%);
+}
+.app{max-width:1180px;margin:0 auto;padding:26px 26px 30px;display:grid;grid-template-columns:1fr 336px;gap:22px;min-height:100vh}
+
+/* ---------- 舞台 ---------- */
+.stage{position:relative;border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh-2);
+  background:linear-gradient(180deg,#FFFCF2 0%,#FBF3E2 58%,#F4E9D4 100%);min-height:560px;
+  display:flex;align-items:flex-end;justify-content:center;
+  border:1px solid rgba(255,255,255,.7)}
+.stage::before{ /* 墙面光晕 */
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(680px 420px at 50% 18%, rgba(255,255,255,.85), transparent 68%);
+  pointer-events:none}
+.stage::after{ /* 窗光 */
+  content:"";position:absolute;left:-8%;top:-14%;width:62%;height:78%;
+  background:radial-gradient(closest-side, rgba(255,236,196,.55), transparent 72%);
+  transform:rotate(-12deg);pointer-events:none}
+#pet{display:block;width:100%;height:100%;position:absolute;inset:0;cursor:pointer;touch-action:manipulation}
+.ground{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);width:320px;height:56px;
+  background:radial-gradient(closest-side, rgba(120,92,60,.20), rgba(120,92,60,0) 72%);filter:blur(2px);pointer-events:none}
+
+/* ---------- 舞台内 HUD ---------- */
+.nameplate{position:absolute;left:22px;top:20px;display:flex;align-items:center;gap:10px;
+  background:rgba(255,253,247,.86);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.85);
+  border-radius:999px;padding:8px 16px 8px 10px;box-shadow:var(--sh-1)}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--mint-2);display:grid;place-items:center;font-size:17px}
+.nameplate b{font-size:16px;letter-spacing:.3px}
+.nameplate .lv{font-size:12px;color:var(--green);background:var(--mint-2);border-radius:999px;padding:2px 9px;font-weight:600}
+
+.mood{position:absolute;right:22px;top:20px;background:rgba(255,253,247,.86);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.85);border-radius:999px;padding:8px 15px;font-size:13.5px;
+  color:var(--ink-soft);box-shadow:var(--sh-1);display:flex;align-items:center;gap:7px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 3px rgba(184,221,197,.35)}
+
+/* ---------- 右侧信息 ---------- */
+.side{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r-l);padding:20px 20px 18px;box-shadow:var(--sh-1)}
+.card h2{margin:0 0 4px;font-size:15px;letter-spacing:.4px;color:var(--green);font-weight:700}
+.card .sub{margin:0 0 16px;font-size:12.5px;color:var(--ink-soft)}
+
+.needs{display:flex;flex-direction:column;gap:13px;margin-top:2px}
+.need{display:grid;grid-template-columns:52px 1fr 40px;align-items:center;gap:11px;font-size:13px;color:var(--ink-soft)}
+.bar{height:9px;border-radius:999px;background:#EFE7D6;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mint),var(--green-l));
+  transition:width var(--t-slow) var(--ease)}
+.bar.warm i{background:linear-gradient(90deg,#F9D9BE,var(--apricot))}
+.need span:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+.task{background:linear-gradient(160deg,#2C6A54,#1F5142);color:#F4FBF6;border:0}
+.task h2{color:#EAF6EE}
+.task .sub{color:rgba(234,246,238,.66)}
+.task .row{display:flex;align-items:baseline;justify-content:space-between;margin:14px 0 6px}
+.task .big{font-size:26px;font-weight:750;letter-spacing:-.4px}
+.task .meta{font-size:12.5px;color:rgba(234,246,238,.7)}
+.task .leaves{display:flex;gap:6px;margin-top:4px}
+.task .leaves i{width:26px;height:9px;border-radius:999px;background:rgba(255,255,255,.22)}
+.task .leaves i.on{background:var(--mint)}
+
+.btn{width:100%;margin-top:16px;border:0;border-radius:var(--r-m);padding:15px 18px;font:inherit;font-weight:700;
+  font-size:16px;letter-spacing:.5px;cursor:pointer;background:var(--mint);color:#123A2C;
+  box-shadow:0 6px 0 #9AC8AC, 0 12px 22px rgba(36,92,73,.22);
+  transition:transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease)}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #9AC8AC, 0 6px 14px rgba(36,92,73,.2)}
+.btn.ghost{background:transparent;color:var(--green);border:1.5px solid #CBDFD2;box-shadow:none;font-weight:600}
+.btn.ghost:active{transform:translateY(1px)}
+
+/* ---------- 验证控制台 ---------- */
+.console{grid-column:1/-1;background:var(--paper-2);border:1px dashed #D8CDB8;border-radius:var(--r-l);
+  padding:16px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:var(--sh-1)}
+.console .label{font-size:12.5px;color:var(--ink-soft);margin-right:4px}
+.chip{border:1px solid var(--line);background:#FFFDF8;border-radius:999px;padding:8px 15px;font:inherit;
+  font-size:13.5px;color:var(--ink);cursor:pointer;transition:all var(--t-fast) var(--ease)}
+.chip:hover{border-color:var(--mint);background:#F7FBF8}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#F4FBF6}
+.fps{margin-left:auto;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.fps b{color:var(--green)}
+
+@media (max-width:940px){
+  .app{grid-template-columns:1fr;padding:18px}
+  .stage{min-height:430px;border-radius:var(--r-l)}
+  .console{border-radius:var(--r-m)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <section class="stage" aria-label="宠物小家">
+    <canvas id="pet"></canvas>
+    <div class="ground"></div>
+    <div class="nameplate">
+      <div class="avatar">🐶</div>
+      <b>豆豆</b><span class="lv">Lv.4</span>
+    </div>
+    <div class="mood"><span class="dot"></span><span id="moodText">心情很好</span></div>
+  </section>
+
+  <aside class="side">
+    <div class="card">
+      <h2>豆豆的状态</h2>
+      <p class="sub">刚吃过早饭 · 今天还没有学习</p>
+      <div class="needs">
+        <div class="need"><span>饱腹</span><div class="bar warm"><i style="width:82%"></i></div><span>82</span></div>
+        <div class="need"><span>清洁</span><div class="bar"><i style="width:74%"></i></div><span>74</span></div>
+        <div class="need"><span>开心</span><div class="bar"><i style="width:91%"></i></div><span>91</span></div>
+      </div>
+    </div>
+
+    <div class="card task">
+      <h2>今天的小约定</h2>
+      <p class="sub">RAZ · The Bag · 第 3–6 页</p>
+      <div class="row"><span class="big">2 / 3</span><span class="meta">已完成 2 项</span></div>
+      <div class="leaves"><i class="on"></i><i class="on"></i><i></i></div>
+      <button class="btn" id="startBtn">开始第 3 项挑战</button>
+    </div>
+
+    <div class="card">
+      <h2>背包</h2>
+      <p class="sub">今天可以喂 2 次</p>
+      <button class="btn ghost" id="feedBtn">喂一颗小饼干</button>
+    </div>
+  </aside>
+
+  <div class="console">
+    <span class="label">样片验证</span>
+    <button class="chip" data-act="idle" aria-pressed="true">待机</button>
+    <button class="chip" data-act="look">看向指针</button>
+    <button class="chip" data-act="pat">摸头</button>
+    <button class="chip" data-act="feed">进食</button>
+    <button class="chip" data-act="sleep">睡觉</button>
+    <span class="fps">渲染 <b id="fps">—</b> fps · 网格 <b id="mesh">—</b></span>
+  </div>
+</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('pet');
+  const gl = canvas.getContext('webgl2', { alpha: true, antialias: true, premultipliedAlpha: true });
+  if (!gl) { document.querySelector('.stage').innerHTML = '<p style="padding:40px;color:#8A7B6C">当前浏览器不支持 WebGL2</p>'; return; }
+
+  /* ---------- 着色器 ---------- */
+  const VS = `#version 300 es
+  in vec2 a_uv;
+  uniform vec2 u_res, u_size, u_offset, u_look;
+  uniform float u_time, u_blink, u_hop, u_tilt;
+  out vec2 v_uv;
+  void main(){
+    vec2 uv = a_uv;
+    float t = u_time;
+    float wHead = 1.0 - smoothstep(0.30, 0.52, uv.y);
+    float wEarL = 1.0 - smoothstep(0.10, 0.30, uv.x);
+    float wEarR = smoothstep(0.70, 0.90, uv.x);
+    float wEar  = (wEarL + wEarR) * wHead;
+    float wTail = smoothstep(0.05, 0.30, 0.25 - abs(uv.y - 0.62)) * (1.0 - smoothstep(0.18, 0.40, uv.x));
+    float wBot  = smoothstep(0.55, 1.0, uv.y);
+
+    vec2 d = vec2(0.0);
+    float br = sin(t * 1.95);
+    d.x += (uv.x - 0.5) * 0.012 * br * (1.0 - wHead * 0.5);
+    d.y -= 0.006 * br * wHead;
+
+    float sw = sin(t * 0.62);
+    d.x += 0.008 * sw * (1.0 - wBot * 0.85);
+
+    d.x += u_look.x * 0.045 * wHead;
+    d.y += u_look.y * 0.026 * wHead;
+    d.x += sin(t * 0.9) * 0.004 * wHead;
+
+    float fl = sin(t * 1.35);
+    d.x += fl * 0.010 * wEar;
+    d.y += cos(t * 1.35) * 0.006 * wEar;
+
+    d.x += sin(t * 2.6) * 0.014 * wTail;
+    d.y += cos(t * 2.6) * 0.006 * wTail;
+
+    float band = smoothstep(0.16, 0.22, uv.y) * (1.0 - smoothstep(0.27, 0.33, uv.y));
+    d.y += (0.245 - uv.y) * 0.90 * band * u_blink;
+
+    d.y -= 0.032 * u_hop * (1.0 - smoothstep(0.62, 1.0, uv.y));
+    d.x += (uv.y - 0.5) * u_tilt * 0.10 * wHead;
+
+    uv += d;
+    vec2 px = u_offset + vec2((uv.x - 0.5) * u_size.x, (uv.y - 0.5) * u_size.y);
+    gl_Position = vec4(px.x / u_res.x * 2.0 - 1.0, 1.0 - px.y / u_res.y * 2.0, 0.0, 1.0);
+    v_uv = a_uv;
+  }`;
+
+  const FS = `#version 300 es
+  precision mediump float;
+  in vec2 v_uv;
+  uniform sampler2D u_tex;
+  out vec4 o;
+  void main(){
+    vec4 c = texture(u_tex, v_uv);
+    o = vec4(c.rgb * c.a, c.a);
+  }`;
+
+  const compile = (type, src) => {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  };
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, VS));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+  gl.useProgram(prog);
+
+  /* ---------- 网格 ---------- */
+  const NX = 56, NY = 84;
+  const verts = [], idx = [];
+  for (let j = 0; j <= NY; j++) for (let i = 0; i <= NX; i++) verts.push(i / NX, j / NY);
+  for (let j = 0; j < NY; j++) for (let i = 0; i < NX; i++) {
+    const a = j * (NX + 1) + i, b = a + 1, c = a + NX + 1, d = c + 1;
+    idx.push(a, c, b, b, c, d);
+  }
+  const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
+  const vbo = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'a_uv');
+  gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const ibo = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint32Array(idx), gl.STATIC_DRAW);
+  const triCount = idx.length / 3;
+  document.getElementById('mesh').textContent = (NX + 1) + '×' + (NY + 1);
+
+  /* ---------- 纹理 ---------- */
+  const tex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+
+  const U = {};
+  ['u_res','u_size','u_offset','u_look','u_time','u_blink','u_hop','u_tilt','u_tex'].forEach(n => U[n] = gl.getUniformLocation(prog, n));
+
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  gl.clearColor(0, 0, 0, 0);
+
+  let imgW = 1, imgH = 1, ready = false;
+  const img = new Image();
+  img.onload = () => {
+    imgW = img.naturalWidth; imgH = img.naturalHeight;
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+    ready = true;
+  };
+  img.src = 'assets/pet_idle.png';
+
+  /* ---------- 尺寸 ---------- */
+  let W = 1, H = 1, dpr = 1;
+  function resize() {
+    const r = canvas.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = Math.max(1, Math.round(r.width * dpr));
+    H = Math.max(1, Math.round(r.height * dpr));
+    canvas.width = W; canvas.height = H;
+    gl.viewport(0, 0, W, H);
+  }
+  new ResizeObserver(resize).observe(canvas);
+  resize();
+
+  /* ---------- 状态机 ---------- */
+  const state = {
+    look: { x: 0, y: 0 }, lookTarget: { x: 0, y: 0 },
+    blink: 0, blinkNext: 2.2, blinkT: -1,
+    hop: 0, hopV: 0, tilt: 0, tiltTarget: 0,
+    mode: 'idle', t0: performance.now() / 1000,
+    energy: 0
+  };
+
+  const MOOD = { idle: '心情很好', look: '在看你', pat: '好舒服呀', feed: '在吃饭', sleep: '睡着了' };
+  const moodEl = document.getElementById('moodText');
+
+  function setMode(m) {
+    state.mode = m;
+    moodEl.textContent = MOOD[m] || '心情很好';
+    if (m === 'pat') { state.hopV = 0.9; state.tiltTarget = 0.55; }
+    if (m === 'feed') { state.hopV = 0.5; state.tiltTarget = -0.35; state.energy = 1; }
+    if (m === 'sleep') { state.tiltTarget = 0.25; }
+    if (m === 'idle' || m === 'look') { state.tiltTarget = 0; }
+    document.querySelectorAll('.chip').forEach(c =>
+      c.setAttribute('aria-pressed', String(c.dataset.act === m)));
+  }
+
+  document.querySelectorAll('.chip').forEach(c =>
+    c.addEventListener('click', () => setMode(c.dataset.act)));
+
+  // 无头截图用：?act=sleep&freeze=1.6 定格某一状态
+  const Q = new URLSearchParams(location.search);
+  const FREEZE = Q.has('freeze') ? parseFloat(Q.get('freeze')) : null;
+  if (Q.has('act')) setTimeout(() => setMode(Q.get('act')), 60);
+
+  canvas.addEventListener('pointermove', e => {
+    const r = canvas.getBoundingClientRect();
+    state.lookTarget.x = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (r.width * 0.5)));
+    state.lookTarget.y = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height * 0.34)) / (r.height * 0.5)));
+    if (state.mode === 'idle') state.mode = 'look';
+  });
+  canvas.addEventListener('pointerleave', () => { state.lookTarget.x = 0; state.lookTarget.y = 0; });
+  canvas.addEventListener('pointerdown', () => { state.hopV = 1.1; state.tiltTarget = 0.4; setMode('pat'); });
+  document.getElementById('feedBtn').addEventListener('click', () => setMode('feed'));
+  document.getElementById('startBtn').addEventListener('click', () => {
+    state.hopV = 1.4; setMode('pat');
+    setTimeout(() => setMode('idle'), 900);
+  });
+
+  /* ---------- 循环 ---------- */
+  let last = performance.now(), fpsAcc = 0, fpsN = 0;
+  const fpsEl = document.getElementById('fps');
+  const lerp = (a, b, k) => a + (b - a) * k;
+
+  function frame(now) {
+    const dt = Math.min((now - last) / 1000, 0.05); last = now;
+    const t = FREEZE !== null ? FREEZE : (now / 1000 - state.t0);
+
+    // 平滑跟随
+    state.look.x = lerp(state.look.x, state.lookTarget.x, 0.08);
+    state.look.y = lerp(state.look.y, state.lookTarget.y, 0.08);
+    state.tilt = lerp(state.tilt, state.tiltTarget, 0.09);
+
+    // 眨眼调度
+    if (state.blinkT < 0 && t > state.blinkNext) { state.blinkT = 0; }
+    if (state.blinkT >= 0) {
+      state.blinkT += dt;
+      const d = 0.17;
+      state.blink = state.blinkT < d / 2 ? state.blinkT / (d / 2) : Math.max(0, 1 - (state.blinkT - d / 2) / (d / 2));
+      if (state.blinkT > d) { state.blinkT = -1; state.blink = 0; state.blinkNext = t + 2.4 + Math.random() * 3.2; }
+    }
+
+    // 弹跳弹簧
+    state.hopV += -state.hop * 120 * dt;
+    state.hopV *= 0.90;
+    state.hop += state.hopV * dt;
+    state.energy = lerp(state.energy, 0, 0.02);
+
+    // 睡觉时低频呼吸
+    const speed = state.mode === 'sleep' ? 0.55 : 1.0;
+
+    if (ready) {
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      const pad = 0.92;
+      const fit = Math.min(W / imgW, H / imgH) * pad;
+      const sizeX = imgW * fit, sizeY = imgH * fit;
+      gl.uniform2f(U.u_res, W, H);
+      gl.uniform2f(U.u_size, sizeX, sizeY);
+      gl.uniform2f(U.u_offset, W / 2, H / 2 + sizeY * 0.02);
+      gl.uniform2f(U.u_look, state.look.x, state.look.y);
+      gl.uniform1f(U.u_time, t * speed);
+      gl.uniform1f(U.u_blink, state.blink);
+      gl.uniform1f(U.u_hop, Math.max(0, state.hop));
+      gl.uniform1f(U.u_tilt, state.tilt);
+      gl.uniform1i(U.u_tex, 0);
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.drawElements(gl.TRIANGLES, triCount * 3, gl.UNSIGNED_INT, 0);
+    }
+
+    fpsAcc += dt; fpsN++;
+    if (fpsAcc > 0.5) { fpsEl.textContent = Math.round(fpsN / fpsAcc); fpsAcc = 0; fpsN = 0; }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

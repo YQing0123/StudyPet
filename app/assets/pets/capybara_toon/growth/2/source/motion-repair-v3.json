@@ -1,0 +1,92 @@
+{
+  "version": "2026-11-15.capybara-motion-v3",
+  "fps": 30,
+  "sourceKeys": "output/pet-growth-20261114/capybara-2/keys.npz",
+  "sourceSHA256": "b8325aad24d860a1ee34c4db0debe2e7c4c4972a7bc931d2afca5f2339db1990",
+  "weightSHA256": "6615790efd627772917205db291f51cd392528a157ecbb2ecaeec3bff8eb6de2",
+  "method": "local geometry/rig repair; no generation/API calls",
+  "actions": {
+    "walk": {
+      "frames": 36,
+      "seconds": 1.2,
+      "sha256": "6338e16456ebb07ae170d332d1e75cd340102b4ac376cd28a292dfb1a687bd30",
+      "distinctFrames": 36,
+      "method": "v2 independent opaque paws; faster continuous four-beat cycle",
+      "gait": {
+        "stridePixels": 60,
+        "supportSeconds": 0.744,
+        "canvasPixels": 512
+      }
+    },
+    "greet": {
+      "frames": 72,
+      "seconds": 2.4,
+      "sha256": "33de3c8b4ff9801dbe008a0d6d80b79865c87728b3cf6ec36b1d84deb157808a",
+      "distinctFrames": 72,
+      "method": "single-source RGBA warp; local RIFE geometry only; no pose blending",
+      "loop": true,
+      "sourceCountPerFrame": 1,
+      "keySHA256": "d4c63ca624a4defe51ff6720714fa3d874dbc8f6f436abf3a181044e86d277f4"
+    },
+    "eat": {
+      "frames": 48,
+      "seconds": 1.6,
+      "sha256": "69fac0bfc3d2ddb8e899233299f5c8b0a118dad5292537d0e750ac370d701fd4",
+      "distinctFrames": 48,
+      "method": "single-source RGBA warp; local RIFE geometry only; no pose blending",
+      "loop": false,
+      "sourceCountPerFrame": 1,
+      "keySHA256": "b6b125171bd18bdc7acb7500ab75b8c7c5b6e841af6758de35ed1e60d97ef3e8"
+    },
+    "eatrev": {
+      "frames": 24,
+      "seconds": 0.8,
+      "sha256": "b81840e3d5f78000badee0512e090abe4b68f211fa8a86b4189c4c8c9a187ab2",
+      "distinctFrames": 24,
+      "method": "single-source RGBA warp; local RIFE geometry only; no pose blending",
+      "loop": false,
+      "sourceCountPerFrame": 1,
+      "keySHA256": "500f8e9312bfb3c82b17aedd7775877e046c4c7dda0bab1626ab2e575b353dc0"
+    },
+    "hug": {
+      "frames": 66,
+      "seconds": 2.2,
+      "sha256": "e4f51036e7eafed2204b3e8f28d70652cc687f2502d4052cf4f91a22ce82f85d",
+      "distinctFrames": 66,
+      "method": "single-source RGBA warp; local RIFE geometry only; no pose blending",
+      "loop": false,
+      "sourceCountPerFrame": 1,
+      "keySHA256": "c89c908d3293d8b0480d600637c8f59d2188e4716d485cc69eb75878d8eb8160"
+    },
+    "sleep": {
+      "frames": 72,
+      "seconds": 2.4,
+      "sha256": "92e9f5ae5a8f10fbbd097f5cb5492c841cc1cecc3d2826b472fc23681316fe4a",
+      "distinctFrames": 72,
+      "method": "single-source RGBA warp; local RIFE geometry only; no pose blending",
+      "loop": false,
+      "sourceCountPerFrame": 1,
+      "keySHA256": "fa1283a0f83617705bac2eb4715391b602abae2cce74de3653199143934bc72f"
+    },
+    "wake": {
+      "frames": 60,
+      "seconds": 2.0,
+      "sha256": "d5f0ff30c93add4ee794aeb2329dc2bcdba70b3c43eb48e21ca569492aed3fb9",
+      "distinctFrames": 60,
+      "method": "single-source RGBA warp; local RIFE geometry only; no pose blending",
+      "loop": false,
+      "sourceCountPerFrame": 1,
+      "keySHA256": "1da53ee77162163b4a8203e4f767dace001583a06a8c7946971d8149ed948d3f"
+    },
+    "stretch": {
+      "frames": 78,
+      "seconds": 2.6,
+      "sha256": "39291a8efdd9da12731eaa2ef6b6b944b23ac84a02c96fcbd98f0839a374ffd8",
+      "distinctFrames": 78,
+      "method": "single-source RGBA warp; local RIFE geometry only; no pose blending",
+      "loop": false,
+      "sourceCountPerFrame": 1,
+      "keySHA256": "0fc6306a5abf7fb6af42455ab1f34d007a1683f5b38e35f34e52d4e5674d93a1"
+    }
+  }
+}

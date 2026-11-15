@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "id": "48bf283c-b9cb-578d-9a6a-335d9ca4b6e0",
+  "blueprint_id": "66b3aff5-e0a8-519a-b4a6-c1af7f691656",
+  "phase": "p2",
+  "question_family_key": "fixture.retell.bag",
+  "question_type": "retell",
+  "source_slice_ids": [
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+    "7735e957-e92d-52bb-a6be-24d82bcf0d34"
+  ],
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "objective_ids": [
+    "2941816f-9b28-57a2-bac5-b801b8a67aca"
+  ],
+  "skill": "oral_expression",
+  "modality": "speech",
+  "difficulty": 1,
+  "estimated_seconds": 30,
+  "presentation_kind": "verbatim",
+  "prompt_text": "用学过的句子介绍这个包。",
+  "instruction_text": "用学过的句子介绍这个包。",
+  "public_payload": {
+    "prompt_text": "可以说它是谁的、是什么颜色。",
+    "source_text": "This is my bag. It is blue.",
+    "image_asset_id": "3f981930-8e18-511c-8274-007c324b23b5",
+    "recording_max_seconds": 30
+  },
+  "answer_spec": {
+    "answer_kind": "manual_review",
+    "rubric": [
+      {
+        "criterion": "meaning_coverage",
+        "description": "家长依据源片段确认目标内容；未听清可重录，不计知识错误。"
+      }
+    ],
+    "confirmation_mode": "parent_confirmation"
+  },
+  "explanation": "本题来自家庭自编页句，按所列目标验证。",
+  "requires_microphone": true,
+  "requires_typing": false,
+  "quality_risks": [
+    "open_response"
+  ],
+  "source_quotes": [
+    {
+      "slice_id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+      "source_role": "assessed",
+      "quote": "This is my bag.",
+      "start_char": 0,
+      "end_char": 15
+    },
+    {
+      "slice_id": "7735e957-e92d-52bb-a6be-24d82bcf0d34",
+      "source_role": "assessed",
+      "quote": "It is blue.",
+      "start_char": 0,
+      "end_char": 11
+    }
+  ]
+}

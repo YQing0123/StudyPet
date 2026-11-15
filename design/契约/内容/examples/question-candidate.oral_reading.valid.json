@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "id": "5327cfde-d7be-52e4-83e5-41f9f96df42d",
+  "blueprint_id": "4511d1b1-171f-5514-a522-fc7166e7e025",
+  "phase": "p1",
+  "question_family_key": "fixture.oral-reading.bag",
+  "question_type": "oral_reading",
+  "source_slice_ids": [
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+  ],
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "objective_ids": [
+    "c79edcff-3568-53c3-8f9d-f0137c3f3efb"
+  ],
+  "skill": "oral_reading",
+  "modality": "speech",
+  "difficulty": 1,
+  "estimated_seconds": 15,
+  "presentation_kind": "verbatim",
+  "prompt_text": "This is my bag.",
+  "instruction_text": "读一读这句话，可以请家长帮忙。",
+  "public_payload": {
+    "target_text": "This is my bag.",
+    "recording_max_seconds": 15
+  },
+  "answer_spec": {
+    "answer_kind": "manual_review",
+    "rubric": [
+      {
+        "criterion": "content_accuracy",
+        "description": "家长依据源片段确认目标内容；未听清可重录，不计知识错误。"
+      }
+    ],
+    "confirmation_mode": "parent_confirmation"
+  },
+  "explanation": "本题来自家庭自编页句，按所列目标验证。",
+  "requires_microphone": true,
+  "requires_typing": false,
+  "quality_risks": [
+    "open_response"
+  ],
+  "source_quotes": [
+    {
+      "slice_id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+      "source_role": "assessed",
+      "quote": "This is my bag.",
+      "start_char": 0,
+      "end_char": 15
+    }
+  ]
+}

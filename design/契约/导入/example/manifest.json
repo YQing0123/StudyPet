@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0.0",
+  "bundle_id": "demo-raz-b-bag-001",
+  "created_by": "agent:claude-code",
+  "library_ref": { "series": "RAZ", "level": "B", "book": "The Bag" },
+  "generator": { "provider": "openai", "model": "gpt-5", "prompt_version": "v3" },
+  "candidate_count": 3,
+  "note": "第 3-6 页，词图识别 + 句子理解"
+}

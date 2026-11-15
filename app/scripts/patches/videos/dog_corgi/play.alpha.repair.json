@@ -1,0 +1,1097 @@
+{
+  "source": "MengChong_Research_20261111/research/recovered/assets/videos/dog_corgi/play.alpha.webm",
+  "frames": 121,
+  "fps": 24,
+  "method": "interior alpha restoration; original RGB retained",
+  "measurements": [
+    {
+      "frame": 0,
+      "center": [
+        366.5,
+        433.5
+      ],
+      "radius": 34.29999923706055,
+      "restoredPixels": 1217
+    },
+    {
+      "frame": 1,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1336
+    },
+    {
+      "frame": 2,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1338
+    },
+    {
+      "frame": 3,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1338
+    },
+    {
+      "frame": 4,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1337
+    },
+    {
+      "frame": 5,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1337
+    },
+    {
+      "frame": 6,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1344
+    },
+    {
+      "frame": 7,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1344
+    },
+    {
+      "frame": 8,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1342
+    },
+    {
+      "frame": 9,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1342
+    },
+    {
+      "frame": 10,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1359
+    },
+    {
+      "frame": 11,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1359
+    },
+    {
+      "frame": 12,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1382
+    },
+    {
+      "frame": 13,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1476
+    },
+    {
+      "frame": 14,
+      "center": [
+        365.5,
+        434.5
+      ],
+      "radius": 36.400001525878906,
+      "restoredPixels": 1623
+    },
+    {
+      "frame": 15,
+      "center": [
+        365.5,
+        434.5
+      ],
+      "radius": 36.400001525878906,
+      "restoredPixels": 1619
+    },
+    {
+      "frame": 16,
+      "center": [
+        367.5,
+        437.5
+      ],
+      "radius": 33.79999923706055,
+      "restoredPixels": 1317
+    },
+    {
+      "frame": 17,
+      "center": [
+        370.5,
+        435.5
+      ],
+      "radius": 34.70000076293945,
+      "restoredPixels": 1418
+    },
+    {
+      "frame": 18,
+      "center": [
+        376.5,
+        436.5
+      ],
+      "radius": 35.900001525878906,
+      "restoredPixels": 1877
+    },
+    {
+      "frame": 19,
+      "center": [
+        375.5,
+        436.5
+      ],
+      "radius": 35.900001525878906,
+      "restoredPixels": 1831
+    },
+    {
+      "frame": 20,
+      "center": [
+        378.5,
+        436.5
+      ],
+      "radius": 34.0,
+      "restoredPixels": 1770
+    },
+    {
+      "frame": 21,
+      "center": [
+        385.5,
+        436.5
+      ],
+      "radius": 35.79999923706055,
+      "restoredPixels": 2237
+    },
+    {
+      "frame": 22,
+      "center": [
+        397.5,
+        437.5
+      ],
+      "radius": 33.79999923706055,
+      "restoredPixels": 2021
+    },
+    {
+      "frame": 23,
+      "center": [
+        399.5,
+        435.5
+      ],
+      "radius": 35.20000076293945,
+      "restoredPixels": 2365
+    },
+    {
+      "frame": 24,
+      "center": [
+        404.5,
+        434.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 2263
+    },
+    {
+      "frame": 25,
+      "center": [
+        410.5,
+        436.5
+      ],
+      "radius": 36.29999923706055,
+      "restoredPixels": 2430
+    },
+    {
+      "frame": 26,
+      "center": [
+        421.5,
+        434.5
+      ],
+      "radius": 34.599998474121094,
+      "restoredPixels": 2192
+    },
+    {
+      "frame": 27,
+      "center": [
+        422.5,
+        436.5
+      ],
+      "radius": 36.29999923706055,
+      "restoredPixels": 2514
+    },
+    {
+      "frame": 28,
+      "center": [
+        425.5,
+        436.5
+      ],
+      "radius": 36.400001525878906,
+      "restoredPixels": 2537
+    },
+    {
+      "frame": 29,
+      "center": [
+        429.5,
+        435.5
+      ],
+      "radius": 35.900001525878906,
+      "restoredPixels": 2456
+    },
+    {
+      "frame": 30,
+      "center": [
+        435.5,
+        436.5
+      ],
+      "radius": 35.900001525878906,
+      "restoredPixels": 2302
+    },
+    {
+      "frame": 31,
+      "center": [
+        433.5,
+        436.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 2152
+    },
+    {
+      "frame": 32,
+      "center": [
+        435.5,
+        437.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 2192
+    },
+    {
+      "frame": 33,
+      "center": [
+        435.5,
+        437.5
+      ],
+      "radius": 36.0,
+      "restoredPixels": 2305
+    },
+    {
+      "frame": 34,
+      "center": [
+        435.5,
+        437.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 2288
+    },
+    {
+      "frame": 35,
+      "center": [
+        435.5,
+        437.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 2287
+    },
+    {
+      "frame": 36,
+      "center": [
+        434.5,
+        436.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 2208
+    },
+    {
+      "frame": 37,
+      "center": [
+        432.5,
+        437.5
+      ],
+      "radius": 35.900001525878906,
+      "restoredPixels": 2292
+    },
+    {
+      "frame": 38,
+      "center": [
+        427.5,
+        436.5
+      ],
+      "radius": 35.70000076293945,
+      "restoredPixels": 2366
+    },
+    {
+      "frame": 39,
+      "center": [
+        427.5,
+        436.5
+      ],
+      "radius": 35.400001525878906,
+      "restoredPixels": 2338
+    },
+    {
+      "frame": 40,
+      "center": [
+        423.5,
+        436.5
+      ],
+      "radius": 36.400001525878906,
+      "restoredPixels": 2445
+    },
+    {
+      "frame": 41,
+      "center": [
+        422.5,
+        436.5
+      ],
+      "radius": 34.29999923706055,
+      "restoredPixels": 2119
+    },
+    {
+      "frame": 42,
+      "center": [
+        412.5,
+        434.5
+      ],
+      "radius": 34.29999923706055,
+      "restoredPixels": 2023
+    },
+    {
+      "frame": 43,
+      "center": [
+        413.5,
+        436.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 2244
+    },
+    {
+      "frame": 44,
+      "center": [
+        407.5,
+        436.5
+      ],
+      "radius": 33.79999923706055,
+      "restoredPixels": 2050
+    },
+    {
+      "frame": 45,
+      "center": [
+        404.5,
+        436.5
+      ],
+      "radius": 36.20000076293945,
+      "restoredPixels": 2512
+    },
+    {
+      "frame": 46,
+      "center": [
+        395.5,
+        435.5
+      ],
+      "radius": 36.29999923706055,
+      "restoredPixels": 2393
+    },
+    {
+      "frame": 47,
+      "center": [
+        395.5,
+        435.5
+      ],
+      "radius": 36.29999923706055,
+      "restoredPixels": 2380
+    },
+    {
+      "frame": 48,
+      "center": [
+        391.5,
+        435.5
+      ],
+      "radius": 36.79999923706055,
+      "restoredPixels": 2395
+    },
+    {
+      "frame": 49,
+      "center": [
+        385.5,
+        434.5
+      ],
+      "radius": 34.900001525878906,
+      "restoredPixels": 2093
+    },
+    {
+      "frame": 50,
+      "center": [
+        377.5,
+        436.5
+      ],
+      "radius": 34.400001525878906,
+      "restoredPixels": 1762
+    },
+    {
+      "frame": 51,
+      "center": [
+        378.5,
+        435.5
+      ],
+      "radius": 36.29999923706055,
+      "restoredPixels": 2006
+    },
+    {
+      "frame": 52,
+      "center": [
+        375.5,
+        436.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1811
+    },
+    {
+      "frame": 53,
+      "center": [
+        372.5,
+        435.5
+      ],
+      "radius": 36.20000076293945,
+      "restoredPixels": 1739
+    },
+    {
+      "frame": 54,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 36.0,
+      "restoredPixels": 1539
+    },
+    {
+      "frame": 55,
+      "center": [
+        368.5,
+        436.5
+      ],
+      "radius": 35.79999923706055,
+      "restoredPixels": 1578
+    },
+    {
+      "frame": 56,
+      "center": [
+        366.5,
+        434.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1394
+    },
+    {
+      "frame": 57,
+      "center": [
+        364.5,
+        436.5
+      ],
+      "radius": 36.900001525878906,
+      "restoredPixels": 1602
+    },
+    {
+      "frame": 58,
+      "center": [
+        365.5,
+        435.5
+      ],
+      "radius": 35.900001525878906,
+      "restoredPixels": 1449
+    },
+    {
+      "frame": 59,
+      "center": [
+        365.5,
+        435.5
+      ],
+      "radius": 35.900001525878906,
+      "restoredPixels": 1446
+    },
+    {
+      "frame": 60,
+      "center": [
+        366.5,
+        434.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1411
+    },
+    {
+      "frame": 61,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 36.0,
+      "restoredPixels": 1492
+    },
+    {
+      "frame": 62,
+      "center": [
+        370.5,
+        436.5
+      ],
+      "radius": 33.79999923706055,
+      "restoredPixels": 1385
+    },
+    {
+      "frame": 63,
+      "center": [
+        368.5,
+        434.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1489
+    },
+    {
+      "frame": 64,
+      "center": [
+        368.5,
+        435.5
+      ],
+      "radius": 36.0,
+      "restoredPixels": 1550
+    },
+    {
+      "frame": 65,
+      "center": [
+        368.5,
+        435.5
+      ],
+      "radius": 36.0,
+      "restoredPixels": 1541
+    },
+    {
+      "frame": 66,
+      "center": [
+        368.5,
+        435.5
+      ],
+      "radius": 36.0,
+      "restoredPixels": 1500
+    },
+    {
+      "frame": 67,
+      "center": [
+        368.5,
+        435.5
+      ],
+      "radius": 36.0,
+      "restoredPixels": 1500
+    },
+    {
+      "frame": 68,
+      "center": [
+        368.5,
+        435.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1486
+    },
+    {
+      "frame": 69,
+      "center": [
+        368.5,
+        435.5
+      ],
+      "radius": 35.79999923706055,
+      "restoredPixels": 1520
+    },
+    {
+      "frame": 70,
+      "center": [
+        369.5,
+        438.5
+      ],
+      "radius": 33.79999923706055,
+      "restoredPixels": 1366
+    },
+    {
+      "frame": 71,
+      "center": [
+        369.5,
+        436.5
+      ],
+      "radius": 36.400001525878906,
+      "restoredPixels": 1584
+    },
+    {
+      "frame": 72,
+      "center": [
+        373.5,
+        437.5
+      ],
+      "radius": 34.400001525878906,
+      "restoredPixels": 1632
+    },
+    {
+      "frame": 73,
+      "center": [
+        376.5,
+        433.5
+      ],
+      "radius": 37.099998474121094,
+      "restoredPixels": 2372
+    },
+    {
+      "frame": 74,
+      "center": [
+        387.5,
+        436.5
+      ],
+      "radius": 35.900001525878906,
+      "restoredPixels": 2165
+    },
+    {
+      "frame": 75,
+      "center": [
+        387.5,
+        436.5
+      ],
+      "radius": 35.900001525878906,
+      "restoredPixels": 2180
+    },
+    {
+      "frame": 76,
+      "center": [
+        390.5,
+        436.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1715
+    },
+    {
+      "frame": 77,
+      "center": [
+        392.5,
+        436.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1601
+    },
+    {
+      "frame": 78,
+      "center": [
+        394.5,
+        436.5
+      ],
+      "radius": 36.099998474121094,
+      "restoredPixels": 1221
+    },
+    {
+      "frame": 79,
+      "center": [
+        397.5,
+        439.5
+      ],
+      "radius": 33.599998474121094,
+      "restoredPixels": 1063
+    },
+    {
+      "frame": 80,
+      "center": [
+        395.5,
+        435.5
+      ],
+      "radius": 36.099998474121094,
+      "restoredPixels": 1237
+    },
+    {
+      "frame": 81,
+      "center": [
+        394.5,
+        437.5
+      ],
+      "radius": 37.400001525878906,
+      "restoredPixels": 1668
+    },
+    {
+      "frame": 82,
+      "center": [
+        395.5,
+        437.5
+      ],
+      "radius": 34.29999923706055,
+      "restoredPixels": 1965
+    },
+    {
+      "frame": 83,
+      "center": [
+        395.5,
+        437.5
+      ],
+      "radius": 34.29999923706055,
+      "restoredPixels": 1963
+    },
+    {
+      "frame": 84,
+      "center": [
+        396.5,
+        436.5
+      ],
+      "radius": 35.5,
+      "restoredPixels": 2092
+    },
+    {
+      "frame": 85,
+      "center": [
+        397.5,
+        436.5
+      ],
+      "radius": 35.20000076293945,
+      "restoredPixels": 2040
+    },
+    {
+      "frame": 86,
+      "center": [
+        397.5,
+        436.5
+      ],
+      "radius": 35.79999923706055,
+      "restoredPixels": 2138
+    },
+    {
+      "frame": 87,
+      "center": [
+        397.5,
+        436.5
+      ],
+      "radius": 35.900001525878906,
+      "restoredPixels": 2126
+    },
+    {
+      "frame": 88,
+      "center": [
+        397.5,
+        436.5
+      ],
+      "radius": 34.900001525878906,
+      "restoredPixels": 2027
+    },
+    {
+      "frame": 89,
+      "center": [
+        397.5,
+        436.5
+      ],
+      "radius": 34.400001525878906,
+      "restoredPixels": 1938
+    },
+    {
+      "frame": 90,
+      "center": [
+        393.5,
+        435.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1934
+    },
+    {
+      "frame": 91,
+      "center": [
+        389.5,
+        439.5
+      ],
+      "radius": 36.29999923706055,
+      "restoredPixels": 2071
+    },
+    {
+      "frame": 92,
+      "center": [
+        385.0,
+        436.0
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1793
+    },
+    {
+      "frame": 93,
+      "center": [
+        380.0,
+        436.0
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1706
+    },
+    {
+      "frame": 94,
+      "center": [
+        376.0,
+        436.0
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1711
+    },
+    {
+      "frame": 95,
+      "center": [
+        373.0,
+        436.0
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1526
+    },
+    {
+      "frame": 96,
+      "center": [
+        371.0,
+        436.0
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1502
+    },
+    {
+      "frame": 97,
+      "center": [
+        369.0,
+        436.0
+      ],
+      "radius": 35.5,
+      "restoredPixels": 1657
+    },
+    {
+      "frame": 98,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 36.0,
+      "restoredPixels": 1543
+    },
+    {
+      "frame": 99,
+      "center": [
+        367.5,
+        435.5
+      ],
+      "radius": 36.0,
+      "restoredPixels": 1528
+    },
+    {
+      "frame": 100,
+      "center": [
+        366.5,
+        434.5
+      ],
+      "radius": 35.099998474121094,
+      "restoredPixels": 1358
+    },
+    {
+      "frame": 101,
+      "center": [
+        365.5,
+        435.5
+      ],
+      "radius": 35.900001525878906,
+      "restoredPixels": 1316
+    },
+    {
+      "frame": 102,
+      "center": [
+        363.5,
+        437.5
+      ],
+      "radius": 34.29999923706055,
+      "restoredPixels": 1048
+    },
+    {
+      "frame": 103,
+      "center": [
+        363.5,
+        437.5
+      ],
+      "radius": 34.29999923706055,
+      "restoredPixels": 1048
+    },
+    {
+      "frame": 104,
+      "center": [
+        364.5,
+        434.5
+      ],
+      "radius": 34.900001525878906,
+      "restoredPixels": 1124
+    },
+    {
+      "frame": 105,
+      "center": [
+        365.5,
+        436.5
+      ],
+      "radius": 35.79999923706055,
+      "restoredPixels": 1335
+    },
+    {
+      "frame": 106,
+      "center": [
+        366.5,
+        435.5
+      ],
+      "radius": 35.79999923706055,
+      "restoredPixels": 1371
+    },
+    {
+      "frame": 107,
+      "center": [
+        366.5,
+        435.5
+      ],
+      "radius": 35.79999923706055,
+      "restoredPixels": 1371
+    },
+    {
+      "frame": 108,
+      "center": [
+        366.5,
+        435.5
+      ],
+      "radius": 35.70000076293945,
+      "restoredPixels": 1363
+    },
+    {
+      "frame": 109,
+      "center": [
+        366.5,
+        435.5
+      ],
+      "radius": 35.70000076293945,
+      "restoredPixels": 1390
+    },
+    {
+      "frame": 110,
+      "center": [
+        366.5,
+        435.5
+      ],
+      "radius": 35.70000076293945,
+      "restoredPixels": 1397
+    },
+    {
+      "frame": 111,
+      "center": [
+        367.5,
+        433.5
+      ],
+      "radius": 34.599998474121094,
+      "restoredPixels": 1257
+    },
+    {
+      "frame": 112,
+      "center": [
+        366.5,
+        435.5
+      ],
+      "radius": 35.70000076293945,
+      "restoredPixels": 1379
+    },
+    {
+      "frame": 113,
+      "center": [
+        367.5,
+        433.5
+      ],
+      "radius": 34.599998474121094,
+      "restoredPixels": 1249
+    },
+    {
+      "frame": 114,
+      "center": [
+        366.5,
+        435.5
+      ],
+      "radius": 35.70000076293945,
+      "restoredPixels": 1376
+    },
+    {
+      "frame": 115,
+      "center": [
+        366.5,
+        435.5
+      ],
+      "radius": 35.70000076293945,
+      "restoredPixels": 1376
+    },
+    {
+      "frame": 116,
+      "center": [
+        368.5,
+        435.5
+      ],
+      "radius": 34.400001525878906,
+      "restoredPixels": 1305
+    },
+    {
+      "frame": 117,
+      "center": [
+        366.5,
+        433.5
+      ],
+      "radius": 34.29999923706055,
+      "restoredPixels": 1200
+    },
+    {
+      "frame": 118,
+      "center": [
+        368.5,
+        435.5
+      ],
+      "radius": 34.400001525878906,
+      "restoredPixels": 1308
+    },
+    {
+      "frame": 119,
+      "center": [
+        368.5,
+        435.5
+      ],
+      "radius": 34.400001525878906,
+      "restoredPixels": 1303
+    },
+    {
+      "frame": 120,
+      "center": [
+        365.5,
+        434.5
+      ],
+      "radius": 35.79999923706055,
+      "restoredPixels": 1412
+    }
+  ]
+}

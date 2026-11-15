@@ -1,0 +1,42 @@
+{
+  "version": "2026-11-14.capybara-motion-v2",
+  "method": "fixed sunburst textures; independent opaque paws; analytic continuous rig; lossless VP9 alpha",
+  "sourceKeys": "output/pet-growth-20261114/capybara-3/keys.npz",
+  "sourceSHA256": "801dd2cd689fb85f52770941a148b5a601d4f2b8159470380782d830b7b05963",
+  "sourceModel": "gpt-image-2.6-sunburst",
+  "sourceQuality": "high",
+  "fps": 30,
+  "walkDutyFactor": 0.68,
+  "walkPhases": [
+    0,
+    0.5,
+    0.75,
+    0.25
+  ],
+  "actions": {
+    "walk": {
+      "frames": 48,
+      "seconds": 1.6,
+      "sha256": "7d6f574f3b2c89f1da14c245b124a3181ee5c931295f8e6466491a06fda90ccc",
+      "distinctFrames": 48
+    },
+    "play": {
+      "frames": 84,
+      "seconds": 2.8,
+      "sha256": "edb4c3e309702d815d7a67a9ab9048626c36b0cd36014fba9b7c8c406ca275a1",
+      "distinctFrames": 73
+    },
+    "petted": {
+      "frames": 60,
+      "seconds": 2.0,
+      "sha256": "645dc36d87468322c82f0abd39b8f44e7214c8b937ba5fe46c8f03e00713c1ec",
+      "distinctFrames": 60
+    },
+    "petted-out": {
+      "frames": 27,
+      "seconds": 0.9,
+      "sha256": "9121c18c64144578d1a971b5c5b486a7bb10fd8751a52f2d30709e6711299c01",
+      "distinctFrames": 27
+    }
+  }
+}

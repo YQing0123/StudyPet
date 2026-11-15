@@ -1,0 +1,38 @@
+import {useState} from 'react';
+import {Sheet} from '../mvp/Sheets';
+import {accounts,type FamilySession} from './accounts';
+export default function FamilyPanel({session,onChange,onBack,onLogout}:{session:FamilySession;onChange:(s:FamilySession)=>void;onBack:()=>void;onLogout:()=>void}){
+ const [editor,setEditor]=useState<'child'|'student'|'password'|'join'|null>(null),[childId,setChildId]=useState('');
+ const [form,setForm]=useState({name:'',grade:'2',login:'',password:'',currentPassword:'',code:'',relation:'妈妈'});
+ const [error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false),[remove,setRemove]=useState('');
+ const [invite,setInvite]=useState<{id:string;code:string;expiresAt:number}|null>(null);
+ const set=(key:keyof typeof form,v:string)=>{setForm(f=>({...f,[key]:v}));setError('');};
+ const open=(kind:typeof editor,id='')=>{setEditor(kind);setChildId(id);setError('');setNotice('');setForm({name:'',grade:'2',login:'',password:'',currentPassword:'',code:'',relation:'妈妈'});};
+ const run=async(fn:()=>Promise<void>)=>{if(busy)return;setBusy(true);setError('');try{await fn();}catch(e:any){setError(e.message);}finally{setBusy(false);}};
+ const save=(e:React.FormEvent)=>{e.preventDefault();run(async()=>{
+  if(editor==='child'){onChange(await accounts.addChild({name:form.name,grade:Number(form.grade)}));setNotice('孩子已添加，可以从顶部切换。');}
+  if(editor==='student'){onChange(await accounts.studentAccount(childId,{login:form.login,password:form.password}));setNotice('学生账号已保存，孩子可以使用自己的账号登录。');}
+  if(editor==='password'){await accounts.password(form);setNotice('密码已修改，其他设备需要重新登录。');}
+  if(editor==='join'){onChange(await accounts.joinSignedIn({code:form.code,relation:form.relation}));setNotice('已加入家庭。');}
+  setEditor(null);setForm(f=>({...f,password:'',currentPassword:''}));
+ });};
+ const child=session.children?.find(x=>x.id===childId),hasAccount=!!session.members?.find(m=>m.role==='student'&&m.childId===childId);
+ return <div className="family-page"><header className="family-heading"><div><span className="eyebrow">家庭管理</span><h1>{session.family?.name}</h1><p>每位家长共同管理，每个孩子独立成长。</p></div><button className="btn ghost" onClick={onBack}>返回小岛</button></header>
+ {notice&&<p className="account-notice" role="status">{notice}</p>}{error&&!editor&&<p className="account-error" role="alert">{error}</p>}
+ <div className="family-columns"><section className="parent-card"><div className="parent-card-head"><div><h2>家里的孩子</h2><p>计划、宠物、材料和星贝分别保存。</p></div><button className="btn primary sm" onClick={()=>open('child')}>添加孩子</button></div>
+ <div className="family-members">{session.children?.map(c=>{const student=session.members?.find(m=>m.childId===c.id);return <article className="family-member" key={c.id}><span className="family-avatar">{c.avatar||'🌱'}</span><div><strong>{c.name}</strong><p>{c.grade?`${c.grade} 年级`:'学龄前'}{student?` · 账号：${student.login}`:' · 尚未开通学生账号'}</p></div><button className="btn ghost sm" onClick={()=>open('student',c.id)}>{student?'重设密码':'开通账号'}</button></article>;})}</div></section>
+ <section className="parent-card"><div className="parent-card-head"><div><h2>一起陪伴的家长</h2><p>爸爸、妈妈拥有同样的管理和审核权限。</p></div><button className="btn ghost sm" disabled={busy} onClick={()=>run(async()=>{setInvite(await accounts.invite());onChange(await accounts.family());})}>邀请家长</button></div>
+ <div className="family-members">{session.members?.filter(m=>m.role==='parent').map(m=><article className="family-member" key={m.id}><span className="family-avatar">{m.relation==='爸爸'?'👨':'👩'}</span><div><strong>{m.name}{m.id===session.user?.id?'（我）':''}</strong><p>{m.relation} · 管理与审核</p></div>{m.id!==session.user?.id&&<button className="btn ghost sm" onClick={()=>setRemove(m.id)}>移除</button>}</article>)}</div>
+ {remove&&<div className="family-inline-confirm"><p>移除后，这位家长将无法访问本家庭，已登录的设备也会退出本家庭。</p><button className="btn ghost sm" onClick={()=>setRemove('')}>取消</button><button className="btn danger sm" disabled={busy} onClick={()=>run(async()=>{onChange(await accounts.removeParent(remove));setRemove('');})}>移除家庭权限</button></div>}
+ {invite&&<div className="family-invite"><strong>一次性家庭邀请码</strong><code>{invite.code}</code><p>48 小时有效，仅可使用一次。请发给要邀请的家长。</p><button className="btn primary sm" onClick={()=>run(async()=>{await navigator.clipboard.writeText(`${location.origin}/?invite=${invite.code}`);setNotice('邀请链接已复制。');})}>复制邀请链接</button></div>}
+ {!!session.invitations?.length&&<div className="family-invites">{session.invitations.map(i=><div key={i.id}><span>待使用邀请 · {new Date(i.expiresAt).toLocaleDateString('zh-CN',{month:'numeric',day:'numeric'})}到期</span><button className="btn ghost sm" disabled={busy} onClick={()=>run(async()=>{onChange(await accounts.revokeInvite(i.id));if(invite?.id===i.id)setInvite(null);})}>撤销</button></div>)}</div>}</section>
+ <section className="parent-card family-account-card"><div><h2>我的账号</h2><p>{session.user?.name} · {session.user?.login}</p></div><div className="family-account-actions"><button className="btn ghost" onClick={()=>open('join')}>加入其他家庭</button><button className="btn ghost" onClick={()=>open('password')}>修改密码</button><button className="btn ghost" onClick={onLogout}>退出账号</button></div></section></div>
+ <Sheet open={!!editor} onClose={()=>{if(!busy)setEditor(null);}} title={editor==='child'?'添加孩子':editor==='student'?`${hasAccount?'重设':'开通'}${child?.name}的学生账号`:editor==='password'?'修改我的密码':'加入其他家庭'} sub={editor==='student'?'学生账号只能查看与完成自己的计划，不能管理或审核。':undefined}>
+ <form className="account-edit-form" onSubmit={save}>
+ {editor==='child'&&<><label>孩子名字<input required maxLength={20} value={form.name} onChange={e=>set('name',e.target.value)}/></label><label>年级<select value={form.grade} onChange={e=>set('grade',e.target.value)}>{Array.from({length:13},(_,n)=><option key={n} value={n}>{n?`${n} 年级`:'学龄前'}</option>)}</select></label></>}
+ {editor==='student'&&<>{!hasAccount&&<label>学生账号<input required minLength={3} maxLength={80} autoCapitalize="none" autoComplete="off" placeholder="3 位以上字母或数字" value={form.login} onChange={e=>set('login',e.target.value)}/></label>}<label>新的学生密码<input placeholder="至少 8 个字符" required type="password" minLength={8} maxLength={128} autoComplete="new-password" value={form.password} onChange={e=>set('password',e.target.value)}/></label>{hasAccount&&<p className="account-intro">重设后，孩子已登录的设备需要用新密码重新登录。</p>}</>}
+ {editor==='password'&&<><label>当前密码<input required type="password" autoComplete="current-password" value={form.currentPassword} onChange={e=>set('currentPassword',e.target.value)}/></label><label>新密码<input required type="password" minLength={8} maxLength={128} autoComplete="new-password" value={form.password} onChange={e=>set('password',e.target.value)}/></label></>}
+ {editor==='join'&&<><label>家庭邀请码<input required value={form.code} onChange={e=>set('code',e.target.value)}/></label><label>我在这个家的身份<select value={form.relation} onChange={e=>set('relation',e.target.value)}>{['爸爸','妈妈','爷爷','奶奶','其他家长'].map(x=><option key={x}>{x}</option>)}</select></label></>}
+ {error&&<p className="account-error" role="alert">{error}</p>}<div className="account-edit-actions"><button type="button" className="btn ghost" disabled={busy} onClick={()=>setEditor(null)}>取消</button><button type="submit" className="btn primary" disabled={busy}>{busy?'保存中…':editor==='join'?'加入家庭':'保存'}</button></div>
+ </form></Sheet></div>;
+}

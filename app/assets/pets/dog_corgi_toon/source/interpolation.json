@@ -1,0 +1,112 @@
+{
+  "method": "RIFE 4.25, arbitrary timestep, learned flow and occlusion mask, premultiplied RGBA",
+  "fps": 30,
+  "checkpointSHA256": "6615790efd627772917205db291f51cd392528a157ecbb2ecaeec3bff8eb6de2",
+  "codeSHA256": "655b4c772b037967b86c2dd31c8fa3b5323b79dd9a0e0088708d89149bbc8a32",
+  "source": "https://huggingface.co/MonsterMMORPG/Practical-RIFE",
+  "device": "mps",
+  "actions": {
+    "walk": {
+      "frames": 54,
+      "distinctFrames": 54,
+      "duration": 1.8,
+      "originalKeys": 9,
+      "meanAdjacentDifference": 2.5946700617952168,
+      "maxAdjacentDifference": 4.965015411376953,
+      "bytes": 445087
+    },
+    "greet": {
+      "frames": 72,
+      "distinctFrames": 72,
+      "duration": 2.4,
+      "originalKeys": 9,
+      "meanAdjacentDifference": 0.6273131437704597,
+      "maxAdjacentDifference": 1.1729965209960938,
+      "bytes": 391604
+    },
+    "eat": {
+      "frames": 54,
+      "distinctFrames": 54,
+      "duration": 1.8,
+      "originalKeys": 6,
+      "meanAdjacentDifference": 1.6121462156187814,
+      "maxAdjacentDifference": 3.8052263259887695,
+      "bytes": 370576
+    },
+    "eatrev": {
+      "frames": 24,
+      "distinctFrames": 24,
+      "duration": 0.8,
+      "originalKeys": 4,
+      "meanAdjacentDifference": 2.566625926805579,
+      "maxAdjacentDifference": 4.885357856750488,
+      "bytes": 222353
+    },
+    "petted": {
+      "frames": 54,
+      "distinctFrames": 54,
+      "duration": 1.8,
+      "originalKeys": 6,
+      "meanAdjacentDifference": 1.0783972110388413,
+      "maxAdjacentDifference": 3.210979461669922,
+      "bytes": 348678
+    },
+    "petted-out": {
+      "frames": 21,
+      "distinctFrames": 21,
+      "duration": 0.7,
+      "originalKeys": 4,
+      "meanAdjacentDifference": 2.3273470878601072,
+      "maxAdjacentDifference": 4.845609664916992,
+      "bytes": 182503
+    },
+    "play": {
+      "frames": 78,
+      "distinctFrames": 78,
+      "duration": 2.6,
+      "originalKeys": 9,
+      "usedKeys": 6,
+      "meanAdjacentDifference": 1.522679328918457,
+      "maxAdjacentDifference": 4.493143081665039,
+      "bytes": 528126
+    },
+    "sleep": {
+      "frames": 72,
+      "distinctFrames": 72,
+      "duration": 2.4,
+      "originalKeys": 9,
+      "meanAdjacentDifference": 1.9892126271422481,
+      "maxAdjacentDifference": 6.385986328125,
+      "bytes": 434318
+    },
+    "wake": {
+      "frames": 60,
+      "distinctFrames": 60,
+      "duration": 2.0,
+      "originalKeys": 9,
+      "meanAdjacentDifference": 2.2915906421208785,
+      "maxAdjacentDifference": 7.338435173034668,
+      "bytes": 383312
+    }
+  },
+  "keyCuration": {
+    "play": {
+      "source": "play",
+      "normalizedKeysSHA256": "57e6de7943e0d9cc2293ba961f83f8af80ea2d5e4778d924d2ab273234ad920a",
+      "keep": [
+        0,
+        1,
+        2,
+        5,
+        7,
+        8
+      ],
+      "exclude": [
+        3,
+        4,
+        6
+      ],
+      "reason": "Native GIF keys 3, 4 and 6 contain an extra foreleg. Do not interpolate toward these poses. Original timeline retained; missing poses reconstructed only between reviewed two-foreleg keys."
+    }
+  }
+}

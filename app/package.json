@@ -1,0 +1,29 @@
+{
+  "name": "banxue-island",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "伴学小岛 · 学习打卡养宠物",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "server": "node server/index.mjs",
+    "build": "node node_modules/vite/bin/vite.js build",
+    "preview": "node server/index.mjs --static",
+    "test": "node scripts/verify-isolated.mjs",
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit -p web/tsconfig.json",
+    "assets:copy": "node scripts/copy-pet-assets.mjs",
+    "assets:compatible": "node scripts/build-compatible-pet-videos.mjs"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "pdfjs-dist": "^4.10.38"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  }
+}

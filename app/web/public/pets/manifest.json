@@ -1,0 +1,4367 @@
+{
+  "version": 2,
+  "breeds": {
+    "cat_orange": {
+      "name": "橘猫",
+      "species": "cat",
+      "avatar": "avatars/cat_orange.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/cat_orange/frames/frame-sit.png",
+          "bottom": 0.93359375
+        },
+        {
+          "key": "walk",
+          "file": "breeds/cat_orange/frames/frame-walk.png",
+          "bottom": 0.787109375
+        },
+        {
+          "key": "jump",
+          "file": "breeds/cat_orange/frames/frame-jump.png",
+          "bottom": 0.80859375
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/cat_orange/frames/frame-sleep.png",
+          "bottom": 0.771484375
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/cat_orange/frames/frame-stretch.png",
+          "bottom": 0.91015625
+        },
+        {
+          "key": "roll",
+          "file": "breeds/cat_orange/frames/frame-roll.png",
+          "bottom": 0.939453125
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/cat_orange/eat.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.919921875,
+          "compatible": {
+            "file": "compatible/3c0f6f9e12de54fe7ceb.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "eatrev": {
+          "file": "videos/cat_orange/eatrev.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.919921875,
+          "compatible": {
+            "file": "compatible/d98381c157dc08880186.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/cat_orange/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.93359375,
+          "compatible": {
+            "file": "compatible/18763381ad5470ddb3e7.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/cat_orange/greet.webm",
+          "mode": "green",
+          "bottom": 0.89453125,
+          "compatible": {
+            "file": "compatible/3524d366f2e93df79988.mp4",
+            "mode": "green"
+          }
+        },
+        "hug": {
+          "file": "videos/cat_orange/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.912109375,
+          "compatible": {
+            "file": "compatible/d451f1ce3c65176cd4e7.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/cat_orange/petted-out.webm",
+          "mode": "green",
+          "bottom": 0.884765625,
+          "compatible": {
+            "file": "compatible/ea4e6b9250d7a38fc7d7.mp4",
+            "mode": "green"
+          }
+        },
+        "petted": {
+          "file": "videos/cat_orange/petted.webm",
+          "mode": "green",
+          "bottom": 0.884765625,
+          "compatible": {
+            "file": "compatible/0da95d218b96fb62caca.mp4",
+            "mode": "green"
+          }
+        },
+        "play": {
+          "file": "videos/cat_orange/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.84765625,
+          "compatible": {
+            "file": "compatible/74dd711376d61f4f3534.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/cat_orange/sleep.webm",
+          "mode": "green",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/395da00a3ae1a4760d43.mp4",
+            "mode": "green"
+          }
+        },
+        "wake": {
+          "file": "videos/cat_orange/wake.webm",
+          "mode": "green",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/a1b663c8663b0e318964.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-start": {
+          "file": "videos/cat_orange/walk-start.webm",
+          "mode": "green",
+          "bottom": 0.73828125,
+          "compatible": {
+            "file": "compatible/8e97417b37b12086aa1f.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/cat_orange/walk-stop.webm",
+          "mode": "green",
+          "bottom": 0.73828125,
+          "compatible": {
+            "file": "compatible/0efc56c7b3c646fa6f1f.mp4",
+            "mode": "green"
+          }
+        },
+        "walk": {
+          "file": "videos/cat_orange/walk.webm",
+          "mode": "green",
+          "bottom": 0.916015625,
+          "compatible": {
+            "file": "compatible/dd3baeefe07d015998e8.mp4",
+            "mode": "green"
+          }
+        }
+      },
+      "walkTransitions": false
+    },
+    "cat_ragdoll": {
+      "name": "布偶猫",
+      "species": "cat",
+      "avatar": "avatars/cat_ragdoll.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/cat_ragdoll/frames/frame-sit.png",
+          "bottom": 0.873046875
+        },
+        {
+          "key": "walk",
+          "file": "breeds/cat_ragdoll/frames/frame-walk.png",
+          "bottom": 0.873046875
+        },
+        {
+          "key": "jump",
+          "file": "breeds/cat_ragdoll/frames/frame-jump.png",
+          "bottom": 0.873046875
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/cat_ragdoll/frames/frame-sleep.png",
+          "bottom": 0.873046875
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/cat_ragdoll/frames/frame-stretch.png",
+          "bottom": 0.873046875
+        },
+        {
+          "key": "roll",
+          "file": "breeds/cat_ragdoll/frames/frame-roll.png",
+          "bottom": 0.873046875
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/cat_ragdoll/eat.webm",
+          "mode": "green",
+          "bottom": 0.8828125,
+          "compatible": {
+            "file": "compatible/871cc9e57b0473b4b240.mp4",
+            "mode": "green"
+          }
+        },
+        "eatrev": {
+          "file": "videos/cat_ragdoll/eatrev.webm",
+          "mode": "green",
+          "bottom": 0.8828125,
+          "compatible": {
+            "file": "compatible/2c37574b1922ca704a79.mp4",
+            "mode": "green"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/cat_ragdoll/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.9296875,
+          "compatible": {
+            "file": "compatible/482f2ed3d13c45ea86cc.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/cat_ragdoll/greet.webm",
+          "mode": "green",
+          "bottom": 0.865234375,
+          "compatible": {
+            "file": "compatible/e20d833af55b5f14621f.mp4",
+            "mode": "green"
+          }
+        },
+        "hug": {
+          "file": "videos/cat_ragdoll/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.869140625,
+          "compatible": {
+            "file": "compatible/9f5ede78b728f7f2fa05.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/cat_ragdoll/petted-out.webm",
+          "mode": "green",
+          "bottom": 0.9765625,
+          "compatible": {
+            "file": "compatible/2d0af088888bd21170f4.mp4",
+            "mode": "green"
+          }
+        },
+        "petted": {
+          "file": "videos/cat_ragdoll/petted.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.96875,
+          "compatible": {
+            "file": "compatible/50322e7b340b9bdc5e46.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "play": {
+          "file": "videos/cat_ragdoll/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.884765625,
+          "compatible": {
+            "file": "compatible/bc0cd9a32c510d97221d.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/cat_ragdoll/sleep.webm",
+          "mode": "green",
+          "bottom": 0.888671875,
+          "compatible": {
+            "file": "compatible/e2c8c093bd20ade98914.mp4",
+            "mode": "green"
+          }
+        },
+        "wake": {
+          "file": "videos/cat_ragdoll/wake.webm",
+          "mode": "green",
+          "bottom": 0.888671875,
+          "compatible": {
+            "file": "compatible/62da41626da6633f941b.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-start": {
+          "file": "videos/cat_ragdoll/walk-start.webm",
+          "mode": "green",
+          "bottom": 0.873046875,
+          "compatible": {
+            "file": "compatible/a74ca221bd61dd1247d3.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/cat_ragdoll/walk-stop.webm",
+          "mode": "green",
+          "bottom": 0.873046875,
+          "compatible": {
+            "file": "compatible/fadcf473b241141cf122.mp4",
+            "mode": "green"
+          }
+        },
+        "walk": {
+          "file": "videos/cat_ragdoll/walk.webm",
+          "mode": "green",
+          "bottom": 0.818359375,
+          "compatible": {
+            "file": "compatible/25ec9596f770bfb58db1.mp4",
+            "mode": "green"
+          }
+        }
+      },
+      "walkTransitions": true
+    },
+    "cat_black": {
+      "name": "黑猫",
+      "species": "cat",
+      "avatar": "avatars/cat_black.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/cat_black/frames/frame-sit.png",
+          "bottom": 0.927734375
+        },
+        {
+          "key": "walk",
+          "file": "breeds/cat_black/frames/frame-walk.png",
+          "bottom": 0.841796875
+        },
+        {
+          "key": "jump",
+          "file": "breeds/cat_black/frames/frame-jump.png",
+          "bottom": 0.82421875
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/cat_black/frames/frame-sleep.png",
+          "bottom": 0.892578125
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/cat_black/frames/frame-stretch.png",
+          "bottom": 0.927734375
+        },
+        {
+          "key": "roll",
+          "file": "breeds/cat_black/frames/frame-roll.png",
+          "bottom": 0.865234375
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/cat_black/eat.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.916015625,
+          "compatible": {
+            "file": "compatible/ab5ab25c340ee780631f.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "eatrev": {
+          "file": "videos/cat_black/eatrev.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.916015625,
+          "compatible": {
+            "file": "compatible/33a8acd0800a7f56acd6.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/cat_black/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.943359375,
+          "compatible": {
+            "file": "compatible/8bac1532bff582bf4983.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/cat_black/greet.webm",
+          "mode": "green",
+          "bottom": 0.90625,
+          "compatible": {
+            "file": "compatible/b3deb6448427dc0ed58d.mp4",
+            "mode": "green"
+          }
+        },
+        "hug": {
+          "file": "videos/cat_black/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.91796875,
+          "compatible": {
+            "file": "compatible/32eab3f483dfdab441d7.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/cat_black/petted-out.webm",
+          "mode": "green",
+          "bottom": 0.96484375,
+          "compatible": {
+            "file": "compatible/dcbc600953a5bd337b09.mp4",
+            "mode": "green"
+          }
+        },
+        "petted": {
+          "file": "videos/cat_black/petted.webm",
+          "mode": "green",
+          "bottom": 0.96484375,
+          "compatible": {
+            "file": "compatible/e2fe5cf28a7262beb3ae.mp4",
+            "mode": "green"
+          }
+        },
+        "play": {
+          "file": "videos/cat_black/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.91796875,
+          "compatible": {
+            "file": "compatible/3b9be843e2bd1c9870b4.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/cat_black/sleep.webm",
+          "mode": "green",
+          "bottom": 0.908203125,
+          "compatible": {
+            "file": "compatible/d70d2fe9c4dfcf41aa63.mp4",
+            "mode": "green"
+          }
+        },
+        "wake": {
+          "file": "videos/cat_black/wake.webm",
+          "mode": "green",
+          "bottom": 0.908203125,
+          "compatible": {
+            "file": "compatible/3a47b62b4122a8e36ecf.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-start": {
+          "file": "videos/cat_black/walk-start.webm",
+          "mode": "green",
+          "bottom": 0.74609375,
+          "compatible": {
+            "file": "compatible/91b9af561db2609124fc.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/cat_black/walk-stop.webm",
+          "mode": "green",
+          "bottom": 0.73828125,
+          "compatible": {
+            "file": "compatible/883a63cdb4e6b2f2cb95.mp4",
+            "mode": "green"
+          }
+        },
+        "walk": {
+          "file": "videos/cat_black/walk.webm",
+          "mode": "green",
+          "bottom": 0.8828125,
+          "compatible": {
+            "file": "compatible/5847d11507068fd1981e.mp4",
+            "mode": "green"
+          }
+        }
+      },
+      "walkTransitions": false
+    },
+    "cat_blue": {
+      "name": "蓝猫",
+      "species": "cat",
+      "avatar": "avatars/cat_blue.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/cat_blue/frames/frame-sit.png",
+          "bottom": 0.900390625
+        },
+        {
+          "key": "walk",
+          "file": "breeds/cat_blue/frames/frame-walk.png",
+          "bottom": 0.865234375
+        },
+        {
+          "key": "jump",
+          "file": "breeds/cat_blue/frames/frame-jump.png",
+          "bottom": 0.939453125
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/cat_blue/frames/frame-sleep.png",
+          "bottom": 0.896484375
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/cat_blue/frames/frame-stretch.png",
+          "bottom": 0.91796875
+        },
+        {
+          "key": "roll",
+          "file": "breeds/cat_blue/frames/frame-roll.png",
+          "bottom": 0.8828125
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/cat_blue/eat.webm",
+          "mode": "green",
+          "bottom": 0.892578125,
+          "compatible": {
+            "file": "compatible/d486baf4c9866a3b551f.mp4",
+            "mode": "green"
+          }
+        },
+        "eatrev": {
+          "file": "videos/cat_blue/eatrev.webm",
+          "mode": "green",
+          "bottom": 0.892578125,
+          "compatible": {
+            "file": "compatible/c2da37d885de651e08eb.mp4",
+            "mode": "green"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/cat_blue/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.85546875,
+          "compatible": {
+            "file": "compatible/772b6abf2cba27c03bf9.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/cat_blue/greet.webm",
+          "mode": "green",
+          "bottom": 0.873046875,
+          "compatible": {
+            "file": "compatible/e3cead1ad02437fa169e.mp4",
+            "mode": "green"
+          }
+        },
+        "hug": {
+          "file": "videos/cat_blue/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.84375,
+          "compatible": {
+            "file": "compatible/7e408d76f66d8b1e1708.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/cat_blue/petted-out.webm",
+          "mode": "green",
+          "bottom": 0.927734375,
+          "compatible": {
+            "file": "compatible/454c1f091b93e9b4bad2.mp4",
+            "mode": "green"
+          }
+        },
+        "petted": {
+          "file": "videos/cat_blue/petted.webm",
+          "mode": "green",
+          "bottom": 0.927734375,
+          "compatible": {
+            "file": "compatible/ac9ade3dc5c9f2def811.mp4",
+            "mode": "green"
+          }
+        },
+        "play": {
+          "file": "videos/cat_blue/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.890625,
+          "compatible": {
+            "file": "compatible/bd8d3935791071ff517d.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/cat_blue/sleep.webm",
+          "mode": "green",
+          "bottom": 0.8828125,
+          "compatible": {
+            "file": "compatible/701eb080d461866ba157.mp4",
+            "mode": "green"
+          }
+        },
+        "wake": {
+          "file": "videos/cat_blue/wake.webm",
+          "mode": "green",
+          "bottom": 0.88671875,
+          "compatible": {
+            "file": "compatible/c7c0644efbe92dfd135a.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-start": {
+          "file": "videos/cat_blue/walk-start.webm",
+          "mode": "green",
+          "bottom": 0.75,
+          "compatible": {
+            "file": "compatible/ae22fcab786c5b4bc4ed.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/cat_blue/walk-stop.webm",
+          "mode": "green",
+          "bottom": 0.73046875,
+          "compatible": {
+            "file": "compatible/d6277f2cfbe35895c8b5.mp4",
+            "mode": "green"
+          }
+        },
+        "walk": {
+          "file": "videos/cat_blue/walk.webm",
+          "mode": "green",
+          "bottom": 0.84765625,
+          "compatible": {
+            "file": "compatible/42a34878ed25ee3af734.mp4",
+            "mode": "green"
+          }
+        }
+      },
+      "walkTransitions": false
+    },
+    "dog_dairy": {
+      "name": "橘白奶狗",
+      "species": "dog",
+      "avatar": "avatars/dog_dairy.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/dog_dairy/frames/frame-sit.png",
+          "bottom": 0.90234375
+        },
+        {
+          "key": "walk",
+          "file": "breeds/dog_dairy/frames/frame-walk.png",
+          "bottom": 0.86328125
+        },
+        {
+          "key": "jump",
+          "file": "breeds/dog_dairy/frames/frame-jump.png",
+          "bottom": 0.9453125
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/dog_dairy/frames/frame-sleep.png",
+          "bottom": 0.724609375
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/dog_dairy/frames/frame-stretch.png",
+          "bottom": 0.91015625
+        },
+        {
+          "key": "roll",
+          "file": "breeds/dog_dairy/frames/frame-roll.png",
+          "bottom": 0.8671875
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/dog_dairy/eat.webm",
+          "mode": "green",
+          "bottom": 0.9453125,
+          "compatible": {
+            "file": "compatible/f780c5fac7cbeeaf0d76.mp4",
+            "mode": "green"
+          }
+        },
+        "eatrev": {
+          "file": "videos/dog_dairy/eatrev.webm",
+          "mode": "green",
+          "bottom": 0.9453125,
+          "compatible": {
+            "file": "compatible/9bd7a0e379c3e951a51f.mp4",
+            "mode": "green"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/dog_dairy/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.931640625,
+          "compatible": {
+            "file": "compatible/d6fdebd31bac5932a783.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/dog_dairy/greet.webm",
+          "mode": "green",
+          "bottom": 0.90625,
+          "compatible": {
+            "file": "compatible/bbff5d1f1c4c224c4bca.mp4",
+            "mode": "green"
+          }
+        },
+        "hug": {
+          "file": "videos/dog_dairy/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.896484375,
+          "compatible": {
+            "file": "compatible/7bd6529985f20136f38a.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/dog_dairy/petted-out.webm",
+          "mode": "green",
+          "bottom": 0.94140625,
+          "compatible": {
+            "file": "compatible/071758c30eadec2de565.mp4",
+            "mode": "green"
+          }
+        },
+        "petted": {
+          "file": "videos/dog_dairy/petted.webm",
+          "mode": "green",
+          "bottom": 0.939453125,
+          "compatible": {
+            "file": "compatible/cdd8c9eeefbe3c4a0176.mp4",
+            "mode": "green"
+          }
+        },
+        "play": {
+          "file": "videos/dog_dairy/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.86328125,
+          "compatible": {
+            "file": "compatible/d6067aa1fccd68e17857.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/dog_dairy/sleep.webm",
+          "mode": "green",
+          "bottom": 0.93359375,
+          "compatible": {
+            "file": "compatible/2816a9bb942170ad9341.mp4",
+            "mode": "green"
+          }
+        },
+        "wake": {
+          "file": "videos/dog_dairy/wake.webm",
+          "mode": "green",
+          "bottom": 0.93359375,
+          "compatible": {
+            "file": "compatible/a1360f5f78f07c99f5a5.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-start": {
+          "file": "videos/dog_dairy/walk-start.webm",
+          "mode": "green",
+          "bottom": 0.85546875,
+          "compatible": {
+            "file": "compatible/21ee24da3a6440ccd8be.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/dog_dairy/walk-stop.webm",
+          "mode": "green",
+          "bottom": 0.853515625,
+          "compatible": {
+            "file": "compatible/07d3501e29857e9491de.mp4",
+            "mode": "green"
+          }
+        },
+        "walk": {
+          "file": "videos/dog_dairy/walk.webm",
+          "mode": "green",
+          "bottom": 0.8515625,
+          "compatible": {
+            "file": "compatible/430fbb5f01d83e0e41fc.mp4",
+            "mode": "green"
+          }
+        }
+      },
+      "walkTransitions": true
+    },
+    "dog_golden": {
+      "name": "金毛",
+      "species": "dog",
+      "avatar": "avatars/dog_golden.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/dog_golden/frames/frame-sit.png",
+          "bottom": 0.9140625
+        },
+        {
+          "key": "walk",
+          "file": "breeds/dog_golden/frames/frame-walk.png",
+          "bottom": 0.912109375
+        },
+        {
+          "key": "jump",
+          "file": "breeds/dog_golden/frames/frame-jump.png",
+          "bottom": 0.87109375
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/dog_golden/frames/frame-sleep.png",
+          "bottom": 0.9140625
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/dog_golden/frames/frame-stretch.png",
+          "bottom": 0.87890625
+        },
+        {
+          "key": "roll",
+          "file": "breeds/dog_golden/frames/frame-roll.png",
+          "bottom": 0.93359375
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/dog_golden/eat.webm",
+          "mode": "green",
+          "bottom": 0.958984375,
+          "compatible": {
+            "file": "compatible/629db73ce6d4398f4543.mp4",
+            "mode": "green"
+          }
+        },
+        "eatrev": {
+          "file": "videos/dog_golden/eatrev.webm",
+          "mode": "green",
+          "bottom": 0.958984375,
+          "compatible": {
+            "file": "compatible/ed79ea94423820a43955.mp4",
+            "mode": "green"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/dog_golden/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.9453125,
+          "compatible": {
+            "file": "compatible/e746ef5ed028ca632dd3.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/dog_golden/greet.webm",
+          "mode": "green",
+          "bottom": 0.869140625,
+          "compatible": {
+            "file": "compatible/541063894602f541f8fc.mp4",
+            "mode": "green"
+          }
+        },
+        "hug": {
+          "file": "videos/dog_golden/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.908203125,
+          "compatible": {
+            "file": "compatible/1c858af4923ac263c230.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/dog_golden/petted-out.webm",
+          "mode": "green",
+          "bottom": 0.955078125,
+          "compatible": {
+            "file": "compatible/733f1f7d0a8f177d8b30.mp4",
+            "mode": "green"
+          }
+        },
+        "petted": {
+          "file": "videos/dog_golden/petted.webm",
+          "mode": "green",
+          "bottom": 0.955078125,
+          "compatible": {
+            "file": "compatible/9d66b4e22a27a6ee307c.mp4",
+            "mode": "green"
+          }
+        },
+        "play": {
+          "file": "videos/dog_golden/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.890625,
+          "compatible": {
+            "file": "compatible/53a290a7263b2d7027c7.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/dog_golden/sleep.webm",
+          "mode": "green",
+          "bottom": 0.9140625,
+          "compatible": {
+            "file": "compatible/f8d5130572d2eba24195.mp4",
+            "mode": "green"
+          }
+        },
+        "wake": {
+          "file": "videos/dog_golden/wake.webm",
+          "mode": "green",
+          "bottom": 0.916015625,
+          "compatible": {
+            "file": "compatible/fb0021ed5f6cfdde3f44.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-start": {
+          "file": "videos/dog_golden/walk-start.webm",
+          "mode": "green",
+          "bottom": 0.904296875,
+          "compatible": {
+            "file": "compatible/6b4e795fcfa2cebb9fa7.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/dog_golden/walk-stop.webm",
+          "mode": "green",
+          "bottom": 0.90234375,
+          "compatible": {
+            "file": "compatible/fab2a247e7e5636bf55d.mp4",
+            "mode": "green"
+          }
+        },
+        "walk": {
+          "file": "videos/dog_golden/walk.webm",
+          "mode": "green",
+          "bottom": 0.9140625,
+          "compatible": {
+            "file": "compatible/b406ca65d577784e9f4d.mp4",
+            "mode": "green"
+          }
+        }
+      },
+      "walkTransitions": true
+    },
+    "dog_corgi": {
+      "name": "柯基",
+      "species": "dog",
+      "avatar": "avatars/dog_corgi.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/dog_corgi/frames/frame-sit.png",
+          "bottom": 0.95703125
+        },
+        {
+          "key": "walk",
+          "file": "breeds/dog_corgi/frames/frame-walk.png",
+          "bottom": 0.87890625
+        },
+        {
+          "key": "jump",
+          "file": "breeds/dog_corgi/frames/frame-jump.png",
+          "bottom": 0.953125
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/dog_corgi/frames/frame-sleep.png",
+          "bottom": 0.8515625
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/dog_corgi/frames/frame-stretch.png",
+          "bottom": 0.94140625
+        },
+        {
+          "key": "roll",
+          "file": "breeds/dog_corgi/frames/frame-roll.png",
+          "bottom": 0.943359375
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/dog_corgi/eat.webm",
+          "mode": "green",
+          "bottom": 0.927734375,
+          "compatible": {
+            "file": "compatible/25fbd13a85f8b114551a.mp4",
+            "mode": "green"
+          }
+        },
+        "eatrev": {
+          "file": "videos/dog_corgi/eatrev.webm",
+          "mode": "green",
+          "bottom": 0.927734375,
+          "compatible": {
+            "file": "compatible/7db0a97ad401bd60f6e0.mp4",
+            "mode": "green"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/dog_corgi/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.912109375,
+          "compatible": {
+            "file": "compatible/445790f89edc1d0007a6.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/dog_corgi/greet.webm",
+          "mode": "green",
+          "bottom": 0.861328125,
+          "compatible": {
+            "file": "compatible/d5a88ec8855c55ac9be1.mp4",
+            "mode": "green"
+          }
+        },
+        "hug": {
+          "file": "videos/dog_corgi/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.94921875,
+          "compatible": {
+            "file": "compatible/7682e697e7e7285ee62d.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/dog_corgi/petted-out.webm",
+          "mode": "green",
+          "bottom": 0.916015625,
+          "compatible": {
+            "file": "compatible/bdb281b01c8b63adfeff.mp4",
+            "mode": "green"
+          }
+        },
+        "petted": {
+          "file": "videos/dog_corgi/petted.webm",
+          "mode": "green",
+          "bottom": 0.916015625,
+          "compatible": {
+            "file": "compatible/9aeac2f830e584a78689.mp4",
+            "mode": "green"
+          }
+        },
+        "play": {
+          "file": "videos/dog_corgi/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.921875,
+          "compatible": {
+            "file": "compatible/bb6be6aabc09ddef4a27.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/dog_corgi/sleep.webm",
+          "mode": "green",
+          "bottom": 0.8671875,
+          "compatible": {
+            "file": "compatible/e8bd9c6763cf6daa3b94.mp4",
+            "mode": "green"
+          }
+        },
+        "wake": {
+          "file": "videos/dog_corgi/wake.webm",
+          "mode": "green",
+          "bottom": 0.8671875,
+          "compatible": {
+            "file": "compatible/407261d1999507d19904.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-start": {
+          "file": "videos/dog_corgi/walk-start.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.869140625,
+          "compatible": {
+            "file": "compatible/7eeec8e57385ce9fa1b4.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/dog_corgi/walk-stop.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87109375,
+          "compatible": {
+            "file": "compatible/0436856df3143c438104.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk": {
+          "file": "videos/dog_corgi/walk.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87109375,
+          "compatible": {
+            "file": "compatible/9395d30d80f33216b40b.mp4",
+            "mode": "packed-alpha"
+          }
+        }
+      },
+      "walkTransitions": true
+    },
+    "dog_german": {
+      "name": "德国牧羊犬",
+      "species": "dog",
+      "avatar": "avatars/dog_german.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/dog_german/frames/frame-sit.png",
+          "bottom": 0.947265625
+        },
+        {
+          "key": "walk",
+          "file": "breeds/dog_german/frames/frame-walk.png",
+          "bottom": 0.955078125
+        },
+        {
+          "key": "jump",
+          "file": "breeds/dog_german/frames/frame-jump.png",
+          "bottom": 0.955078125
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/dog_german/frames/frame-sleep.png",
+          "bottom": 0.955078125
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/dog_german/frames/frame-stretch.png",
+          "bottom": 0.955078125
+        },
+        {
+          "key": "roll",
+          "file": "breeds/dog_german/frames/frame-roll.png",
+          "bottom": 0.955078125
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/dog_german/eat.webm",
+          "mode": "green",
+          "bottom": 0.93359375,
+          "compatible": {
+            "file": "compatible/8a63e12fdbaeedd8ca4a.mp4",
+            "mode": "green"
+          }
+        },
+        "eatrev": {
+          "file": "videos/dog_german/eatrev.webm",
+          "mode": "green",
+          "bottom": 0.93359375,
+          "compatible": {
+            "file": "compatible/8c1d084c3921e625d690.mp4",
+            "mode": "green"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/dog_german/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.931640625,
+          "compatible": {
+            "file": "compatible/f30453fa0168424713cc.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/dog_german/greet.webm",
+          "mode": "green",
+          "bottom": 0.90625,
+          "compatible": {
+            "file": "compatible/7890b8e6ac6b71d6e236.mp4",
+            "mode": "green"
+          }
+        },
+        "hug": {
+          "file": "videos/dog_german/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.94140625,
+          "compatible": {
+            "file": "compatible/127afe57c04344c6873d.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/dog_german/petted-out.webm",
+          "mode": "green",
+          "bottom": 0.923828125,
+          "compatible": {
+            "file": "compatible/798e4252992c29420108.mp4",
+            "mode": "green"
+          }
+        },
+        "petted": {
+          "file": "videos/dog_german/petted.webm",
+          "mode": "green",
+          "bottom": 0.923828125,
+          "compatible": {
+            "file": "compatible/29ffbe64fcca281fff57.mp4",
+            "mode": "green"
+          }
+        },
+        "play": {
+          "file": "videos/dog_german/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.91796875,
+          "compatible": {
+            "file": "compatible/d51e92689408691740c3.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/dog_german/sleep.webm",
+          "mode": "green",
+          "bottom": 0.900390625,
+          "compatible": {
+            "file": "compatible/6a0989c8224193a55de2.mp4",
+            "mode": "green"
+          }
+        },
+        "wake": {
+          "file": "videos/dog_german/wake.webm",
+          "mode": "green",
+          "bottom": 0.900390625,
+          "compatible": {
+            "file": "compatible/ea4f32644f2d649097ca.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-start": {
+          "file": "videos/dog_german/walk-start.webm",
+          "mode": "green",
+          "bottom": 0.951171875,
+          "compatible": {
+            "file": "compatible/395f6c77a1803b85efa6.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/dog_german/walk-stop.webm",
+          "mode": "green",
+          "bottom": 0.94921875,
+          "compatible": {
+            "file": "compatible/3cc7218602f9b89f5ba6.mp4",
+            "mode": "green"
+          }
+        },
+        "walk": {
+          "file": "videos/dog_german/walk.webm",
+          "mode": "green",
+          "bottom": 0.9296875,
+          "compatible": {
+            "file": "compatible/0521b7b8cb1f168134b9.mp4",
+            "mode": "green"
+          }
+        }
+      },
+      "walkTransitions": false
+    },
+    "bird_parakeet": {
+      "name": "虎皮鹦鹉",
+      "species": "bird",
+      "avatar": "avatars/bird_parakeet.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/bird_parakeet/frames/frame-sit.png",
+          "bottom": 1
+        },
+        {
+          "key": "walk",
+          "file": "breeds/bird_parakeet/frames/frame-walk.png",
+          "bottom": 1
+        },
+        {
+          "key": "jump",
+          "file": "breeds/bird_parakeet/frames/frame-jump.png",
+          "bottom": 1
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/bird_parakeet/frames/frame-sleep.png",
+          "bottom": 1
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/bird_parakeet/frames/frame-stretch.png",
+          "bottom": 1
+        },
+        {
+          "key": "roll",
+          "file": "breeds/bird_parakeet/frames/frame-roll.png",
+          "bottom": 1
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/bird_parakeet/eat.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.921875,
+          "compatible": {
+            "file": "compatible/5f98b17e8af3b43a1f89.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "eatrev": {
+          "file": "videos/bird_parakeet/eatrev.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.921875,
+          "compatible": {
+            "file": "compatible/b05ce20006ba134bc08d.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/bird_parakeet/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.880859375,
+          "compatible": {
+            "file": "compatible/c0a8c4ea948c2fb02bb3.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/bird_parakeet/greet.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.921875,
+          "compatible": {
+            "file": "compatible/ac3983746c7cf94d39b9.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "hug": {
+          "file": "videos/bird_parakeet/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.8828125,
+          "compatible": {
+            "file": "compatible/66eb8af595f8ea002d71.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/bird_parakeet/petted-out.webm",
+          "mode": "blue",
+          "bottom": 0.998046875,
+          "compatible": {
+            "file": "compatible/389e6b4dbce12e6b5d54.mp4",
+            "mode": "blue"
+          }
+        },
+        "petted": {
+          "file": "videos/bird_parakeet/petted.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.998046875,
+          "compatible": {
+            "file": "compatible/9f47217264d5cae0b6ad.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "play": {
+          "file": "videos/bird_parakeet/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.771484375,
+          "compatible": {
+            "file": "compatible/cee3b3d28a8982e7177a.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/bird_parakeet/sleep.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.919921875,
+          "compatible": {
+            "file": "compatible/5b44201a977934abe6ba.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "wake": {
+          "file": "videos/bird_parakeet/wake.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.91796875,
+          "compatible": {
+            "file": "compatible/2e539546961a2eeec525.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk-start": {
+          "file": "videos/bird_parakeet/walk-start.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.994140625,
+          "compatible": {
+            "file": "compatible/6ae9abdb7d0bb8f1cc52.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/bird_parakeet/walk-stop.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.994140625,
+          "compatible": {
+            "file": "compatible/8b1fde62f2cf42f328ef.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk": {
+          "file": "videos/bird_parakeet/walk.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.755859375,
+          "compatible": {
+            "file": "compatible/b0a6ebbdcdf81b6e4402.mp4",
+            "mode": "packed-alpha"
+          }
+        }
+      },
+      "walkTransitions": true
+    },
+    "bird_cockatiel": {
+      "name": "玄凤鹦鹉",
+      "species": "bird",
+      "avatar": "avatars/bird_cockatiel.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/bird_cockatiel/frames/frame-sit.png",
+          "bottom": 0.953125
+        },
+        {
+          "key": "walk",
+          "file": "breeds/bird_cockatiel/frames/frame-walk.png",
+          "bottom": 0.953125
+        },
+        {
+          "key": "jump",
+          "file": "breeds/bird_cockatiel/frames/frame-jump.png",
+          "bottom": 0.953125
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/bird_cockatiel/frames/frame-sleep.png",
+          "bottom": 0.953125
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/bird_cockatiel/frames/frame-stretch.png",
+          "bottom": 0.953125
+        },
+        {
+          "key": "roll",
+          "file": "breeds/bird_cockatiel/frames/frame-roll.png",
+          "bottom": 0.953125
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/bird_cockatiel/eat.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.99609375,
+          "compatible": {
+            "file": "compatible/9921edf14f829de33527.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "eatrev": {
+          "file": "videos/bird_cockatiel/eatrev.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.99609375,
+          "compatible": {
+            "file": "compatible/997f38b240d04622e596.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/bird_cockatiel/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.90234375,
+          "compatible": {
+            "file": "compatible/4c3473ce98d5d97fb0d7.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/bird_cockatiel/greet.webm",
+          "mode": "green",
+          "bottom": 0.953125,
+          "compatible": {
+            "file": "compatible/f6060b339f0e3d06f38f.mp4",
+            "mode": "green"
+          }
+        },
+        "hug": {
+          "file": "videos/bird_cockatiel/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.91796875,
+          "compatible": {
+            "file": "compatible/d6339a47755d88f7e07c.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/bird_cockatiel/petted-out.webm",
+          "mode": "green",
+          "bottom": 0.99609375,
+          "compatible": {
+            "file": "compatible/c3252c1c78f68192b77c.mp4",
+            "mode": "green"
+          }
+        },
+        "petted": {
+          "file": "videos/bird_cockatiel/petted.webm",
+          "mode": "green",
+          "bottom": 0.99609375,
+          "compatible": {
+            "file": "compatible/78613753be2c4327dc33.mp4",
+            "mode": "green"
+          }
+        },
+        "play": {
+          "file": "videos/bird_cockatiel/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.890625,
+          "compatible": {
+            "file": "compatible/e56a4c4446ac5120ff5f.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/bird_cockatiel/sleep.webm",
+          "mode": "green",
+          "bottom": 0.89453125,
+          "compatible": {
+            "file": "compatible/4a293be9297fb9bce0e2.mp4",
+            "mode": "green"
+          }
+        },
+        "wake": {
+          "file": "videos/bird_cockatiel/wake.webm",
+          "mode": "green",
+          "bottom": 0.896484375,
+          "compatible": {
+            "file": "compatible/0e9d2e26bbeb789e08e4.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-start": {
+          "file": "videos/bird_cockatiel/walk-start.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.9453125,
+          "compatible": {
+            "file": "compatible/5b1aee695ccf72667fb0.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/bird_cockatiel/walk-stop.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.9453125,
+          "compatible": {
+            "file": "compatible/cdcf02d8266a32d62fdf.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk": {
+          "file": "videos/bird_cockatiel/walk.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.8125,
+          "compatible": {
+            "file": "compatible/86343e9e9a87e5331cd8.mp4",
+            "mode": "packed-alpha"
+          }
+        }
+      },
+      "walkTransitions": true
+    },
+    "bird_peachface": {
+      "name": "牡丹鹦鹉",
+      "species": "bird",
+      "avatar": "avatars/bird_peachface.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/bird_peachface/frames/frame-sit.png",
+          "bottom": 0.9609375
+        },
+        {
+          "key": "walk",
+          "file": "breeds/bird_peachface/frames/frame-walk.png",
+          "bottom": 0.9609375
+        },
+        {
+          "key": "jump",
+          "file": "breeds/bird_peachface/frames/frame-jump.png",
+          "bottom": 0.9609375
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/bird_peachface/frames/frame-sleep.png",
+          "bottom": 0.9609375
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/bird_peachface/frames/frame-stretch.png",
+          "bottom": 0.9609375
+        },
+        {
+          "key": "roll",
+          "file": "breeds/bird_peachface/frames/frame-roll.png",
+          "bottom": 0.9609375
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/bird_peachface/eat.webm",
+          "mode": "blue",
+          "bottom": 0.90234375,
+          "compatible": {
+            "file": "compatible/3e6fdd2d0e2ec1044b2f.mp4",
+            "mode": "blue"
+          }
+        },
+        "eatrev": {
+          "file": "videos/bird_peachface/eatrev.webm",
+          "mode": "blue",
+          "bottom": 0.90234375,
+          "compatible": {
+            "file": "compatible/3abdc759f181db93bb81.mp4",
+            "mode": "blue"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/bird_peachface/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.927734375,
+          "compatible": {
+            "file": "compatible/0f4e8bb310a914321ea5.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/bird_peachface/greet.webm",
+          "mode": "blue",
+          "bottom": 0.921875,
+          "compatible": {
+            "file": "compatible/a96fe8d0f833043c623f.mp4",
+            "mode": "blue"
+          }
+        },
+        "hug": {
+          "file": "videos/bird_peachface/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.919921875,
+          "compatible": {
+            "file": "compatible/295f1682b4c072d1e01e.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/bird_peachface/petted-out.webm",
+          "mode": "blue",
+          "bottom": 0.953125,
+          "compatible": {
+            "file": "compatible/1820f48abc7ca97e20b2.mp4",
+            "mode": "blue"
+          }
+        },
+        "petted": {
+          "file": "videos/bird_peachface/petted.webm",
+          "mode": "blue",
+          "bottom": 0.95703125,
+          "compatible": {
+            "file": "compatible/c68d0f5e276d7c40d14b.mp4",
+            "mode": "blue"
+          }
+        },
+        "play": {
+          "file": "videos/bird_peachface/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.875,
+          "compatible": {
+            "file": "compatible/2dbfc218cb8821b64025.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/bird_peachface/sleep.webm",
+          "mode": "blue",
+          "bottom": 0.9765625,
+          "compatible": {
+            "file": "compatible/ce6455fb4bef7787b4a8.mp4",
+            "mode": "blue"
+          }
+        },
+        "wake": {
+          "file": "videos/bird_peachface/wake.webm",
+          "mode": "blue",
+          "bottom": 0.9765625,
+          "compatible": {
+            "file": "compatible/2bc009b9a76881a42195.mp4",
+            "mode": "blue"
+          }
+        },
+        "walk-start": {
+          "file": "videos/bird_peachface/walk-start.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.955078125,
+          "compatible": {
+            "file": "compatible/5705078fcd79b879f9d0.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/bird_peachface/walk-stop.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.955078125,
+          "compatible": {
+            "file": "compatible/7243a5159db0df772793.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk": {
+          "file": "videos/bird_peachface/walk.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.814453125,
+          "compatible": {
+            "file": "compatible/6b61e32397ff316ddddb.mp4",
+            "mode": "packed-alpha"
+          }
+        }
+      },
+      "walkTransitions": true
+    },
+    "bird_pigeon": {
+      "name": "信鸽",
+      "species": "bird",
+      "avatar": "avatars/bird_pigeon.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/bird_pigeon/frames/frame-sit.png",
+          "bottom": 1
+        },
+        {
+          "key": "walk",
+          "file": "breeds/bird_pigeon/frames/frame-walk.png",
+          "bottom": 1
+        },
+        {
+          "key": "jump",
+          "file": "breeds/bird_pigeon/frames/frame-jump.png",
+          "bottom": 1
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/bird_pigeon/frames/frame-sleep.png",
+          "bottom": 1
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/bird_pigeon/frames/frame-stretch.png",
+          "bottom": 1
+        },
+        {
+          "key": "roll",
+          "file": "breeds/bird_pigeon/frames/frame-roll.png",
+          "bottom": 1
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/bird_pigeon/eat.webm",
+          "mode": "green",
+          "bottom": 0.92578125,
+          "compatible": {
+            "file": "compatible/9f87181f3994ab0c8e3f.mp4",
+            "mode": "green"
+          }
+        },
+        "eatrev": {
+          "file": "videos/bird_pigeon/eatrev.webm",
+          "mode": "green",
+          "bottom": 0.92578125,
+          "compatible": {
+            "file": "compatible/f90fc2832538c30a3807.mp4",
+            "mode": "green"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/bird_pigeon/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.873046875,
+          "compatible": {
+            "file": "compatible/262d4bf92a2db8be1ed1.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/bird_pigeon/greet.alpha.webm",
+          "mode": "alpha",
+          "bottom": 1,
+          "compatible": {
+            "file": "compatible/47ddc2092c29eef5b56f.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "hug": {
+          "file": "videos/bird_pigeon/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.880859375,
+          "compatible": {
+            "file": "compatible/9160494118ec6e2227f3.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/bird_pigeon/petted-out.webm",
+          "mode": "green",
+          "bottom": 0.935546875,
+          "compatible": {
+            "file": "compatible/23bfc2efd35ae3b87003.mp4",
+            "mode": "green"
+          }
+        },
+        "petted": {
+          "file": "videos/bird_pigeon/petted.webm",
+          "mode": "green",
+          "bottom": 0.935546875,
+          "compatible": {
+            "file": "compatible/0ee918b92a5b5fe2e21c.mp4",
+            "mode": "green"
+          }
+        },
+        "play": {
+          "file": "videos/bird_pigeon/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87109375,
+          "compatible": {
+            "file": "compatible/8dd55a2806477db7dad3.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/bird_pigeon/sleep.webm",
+          "mode": "green",
+          "bottom": 0.92578125,
+          "compatible": {
+            "file": "compatible/d448b4d149fb8f0a0bda.mp4",
+            "mode": "green"
+          }
+        },
+        "wake": {
+          "file": "videos/bird_pigeon/wake.webm",
+          "mode": "green",
+          "bottom": 0.92578125,
+          "compatible": {
+            "file": "compatible/72a2b5a67a93ea545170.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-start": {
+          "file": "videos/bird_pigeon/walk-start.alpha.webm",
+          "mode": "alpha",
+          "bottom": 1,
+          "compatible": {
+            "file": "compatible/28c435692416c333d4d9.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/bird_pigeon/walk-stop.alpha.webm",
+          "mode": "alpha",
+          "bottom": 1,
+          "compatible": {
+            "file": "compatible/4298f20d028a275712e4.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk": {
+          "file": "videos/bird_pigeon/walk.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.8359375,
+          "compatible": {
+            "file": "compatible/cc254221136f57e426d9.mp4",
+            "mode": "packed-alpha"
+          }
+        }
+      },
+      "walkTransitions": true
+    },
+    "turtle_redear": {
+      "name": "巴西红耳龟",
+      "species": "turtle",
+      "avatar": "avatars/turtle_redear.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/turtle_redear/frames/frame-sit.png",
+          "bottom": 0.876953125
+        },
+        {
+          "key": "walk",
+          "file": "breeds/turtle_redear/frames/frame-walk.png",
+          "bottom": 0.876953125
+        },
+        {
+          "key": "jump",
+          "file": "breeds/turtle_redear/frames/frame-jump.png",
+          "bottom": 0.876953125
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/turtle_redear/frames/frame-sleep.png",
+          "bottom": 0.876953125
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/turtle_redear/frames/frame-stretch.png",
+          "bottom": 0.876953125
+        },
+        {
+          "key": "roll",
+          "file": "breeds/turtle_redear/frames/frame-roll.png",
+          "bottom": 0.876953125
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/turtle_redear/eat.webm",
+          "mode": "blue",
+          "bottom": 0.8125,
+          "compatible": {
+            "file": "compatible/4c4f17faf860d7399a65.mp4",
+            "mode": "blue"
+          }
+        },
+        "eatrev": {
+          "file": "videos/turtle_redear/eatrev.webm",
+          "mode": "blue",
+          "bottom": 0.8125,
+          "compatible": {
+            "file": "compatible/026707c33330720c33d9.mp4",
+            "mode": "blue"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/turtle_redear/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.943359375,
+          "compatible": {
+            "file": "compatible/25e8caaeb75f849c721a.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/turtle_redear/greet.webm",
+          "mode": "blue",
+          "bottom": 0.916015625,
+          "compatible": {
+            "file": "compatible/af545519f97738d01244.mp4",
+            "mode": "blue"
+          }
+        },
+        "hug": {
+          "file": "videos/turtle_redear/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.873046875,
+          "compatible": {
+            "file": "compatible/ca49e546b8ef5f09f61e.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/turtle_redear/petted-out.webm",
+          "mode": "blue",
+          "bottom": 0.85546875,
+          "compatible": {
+            "file": "compatible/7f4506ca3f1dc218bc8f.mp4",
+            "mode": "blue"
+          }
+        },
+        "petted": {
+          "file": "videos/turtle_redear/petted.webm",
+          "mode": "blue",
+          "bottom": 0.85546875,
+          "compatible": {
+            "file": "compatible/12fe97dc0941d0f8262c.mp4",
+            "mode": "blue"
+          }
+        },
+        "play": {
+          "file": "videos/turtle_redear/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.873046875,
+          "compatible": {
+            "file": "compatible/ff0138067384ae18193a.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/turtle_redear/sleep.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.740234375,
+          "compatible": {
+            "file": "compatible/1507dd6f1c072617f3db.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "wake": {
+          "file": "videos/turtle_redear/wake.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.73828125,
+          "compatible": {
+            "file": "compatible/db08765f1901d1f20cf6.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk-start": {
+          "file": "videos/turtle_redear/walk-start.webm",
+          "mode": "green",
+          "bottom": 0.880859375,
+          "compatible": {
+            "file": "compatible/14c5e27a0bed3c75fab7.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/turtle_redear/walk-stop.webm",
+          "mode": "green",
+          "bottom": 0.880859375,
+          "compatible": {
+            "file": "compatible/d27186c593eaef1bbc88.mp4",
+            "mode": "green"
+          }
+        },
+        "walk": {
+          "file": "videos/turtle_redear/walk.webm",
+          "mode": "green",
+          "bottom": 0.720703125,
+          "compatible": {
+            "file": "compatible/b4ee9c2296e183225b5b.mp4",
+            "mode": "green"
+          }
+        }
+      },
+      "walkTransitions": false
+    },
+    "turtle_grass": {
+      "name": "中华草龟",
+      "species": "turtle",
+      "avatar": "avatars/turtle_grass.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/turtle_grass/frames/frame-sit.png",
+          "bottom": 0.80859375
+        },
+        {
+          "key": "walk",
+          "file": "breeds/turtle_grass/frames/frame-walk.png",
+          "bottom": 0.80859375
+        },
+        {
+          "key": "jump",
+          "file": "breeds/turtle_grass/frames/frame-jump.png",
+          "bottom": 0.80859375
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/turtle_grass/frames/frame-sleep.png",
+          "bottom": 0.80859375
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/turtle_grass/frames/frame-stretch.png",
+          "bottom": 0.80859375
+        },
+        {
+          "key": "roll",
+          "file": "breeds/turtle_grass/frames/frame-roll.png",
+          "bottom": 0.80859375
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/turtle_grass/eat.webm",
+          "mode": "blue",
+          "bottom": 0.876953125,
+          "compatible": {
+            "file": "compatible/906f4fb22497dd10104d.mp4",
+            "mode": "blue"
+          }
+        },
+        "eatrev": {
+          "file": "videos/turtle_grass/eatrev.webm",
+          "mode": "blue",
+          "bottom": 0.876953125,
+          "compatible": {
+            "file": "compatible/3608e8eee415d40c4bbb.mp4",
+            "mode": "blue"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/turtle_grass/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.908203125,
+          "compatible": {
+            "file": "compatible/2501f223fdc1102da981.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/turtle_grass/greet.webm",
+          "mode": "blue",
+          "bottom": 0.83984375,
+          "compatible": {
+            "file": "compatible/5207fa47a5860eb2a814.mp4",
+            "mode": "blue"
+          }
+        },
+        "hug": {
+          "file": "videos/turtle_grass/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.6875,
+          "compatible": {
+            "file": "compatible/33ad0bda578e9d63493c.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/turtle_grass/petted-out.webm",
+          "mode": "blue",
+          "bottom": 0.873046875,
+          "compatible": {
+            "file": "compatible/78be0ecd28190b58df07.mp4",
+            "mode": "blue"
+          }
+        },
+        "petted": {
+          "file": "videos/turtle_grass/petted.webm",
+          "mode": "blue",
+          "bottom": 0.87109375,
+          "compatible": {
+            "file": "compatible/d46fd38904c39c0c4ea3.mp4",
+            "mode": "blue"
+          }
+        },
+        "play": {
+          "file": "videos/turtle_grass/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.69140625,
+          "compatible": {
+            "file": "compatible/80f59b2398a0af11b336.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/turtle_grass/sleep.webm",
+          "mode": "blue",
+          "bottom": 0.7890625,
+          "compatible": {
+            "file": "compatible/6f4cc4ed8bda1a7c9bf7.mp4",
+            "mode": "blue"
+          }
+        },
+        "wake": {
+          "file": "videos/turtle_grass/wake.webm",
+          "mode": "blue",
+          "bottom": 0.787109375,
+          "compatible": {
+            "file": "compatible/d0960c1d19078f1a9d00.mp4",
+            "mode": "blue"
+          }
+        },
+        "walk-start": {
+          "file": "videos/turtle_grass/walk-start.webm",
+          "mode": "green",
+          "bottom": 0.64453125,
+          "compatible": {
+            "file": "compatible/9972b908ab01c9022970.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/turtle_grass/walk-stop.webm",
+          "mode": "green",
+          "bottom": 0.634765625,
+          "compatible": {
+            "file": "compatible/df1bdbd51b3c3371ad36.mp4",
+            "mode": "green"
+          }
+        },
+        "walk": {
+          "file": "videos/turtle_grass/walk.webm",
+          "mode": "green",
+          "bottom": 0.69140625,
+          "compatible": {
+            "file": "compatible/2dd425bfac8a822169e6.mp4",
+            "mode": "green"
+          }
+        }
+      },
+      "walkTransitions": false
+    },
+    "turtle_flower": {
+      "name": "中华花龟",
+      "species": "turtle",
+      "avatar": "avatars/turtle_flower.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/turtle_flower/frames/frame-sit.png",
+          "bottom": 0.85546875
+        },
+        {
+          "key": "walk",
+          "file": "breeds/turtle_flower/frames/frame-walk.png",
+          "bottom": 0.859375
+        },
+        {
+          "key": "jump",
+          "file": "breeds/turtle_flower/frames/frame-jump.png",
+          "bottom": 0.859375
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/turtle_flower/frames/frame-sleep.png",
+          "bottom": 0.859375
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/turtle_flower/frames/frame-stretch.png",
+          "bottom": 0.859375
+        },
+        {
+          "key": "roll",
+          "file": "breeds/turtle_flower/frames/frame-roll.png",
+          "bottom": 0.859375
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/turtle_flower/eat.webm",
+          "mode": "blue",
+          "bottom": 0.85546875,
+          "compatible": {
+            "file": "compatible/02a35a27cab98e6a6adb.mp4",
+            "mode": "blue"
+          }
+        },
+        "eatrev": {
+          "file": "videos/turtle_flower/eatrev.webm",
+          "mode": "blue",
+          "bottom": 0.85546875,
+          "compatible": {
+            "file": "compatible/cfefadade331d7835154.mp4",
+            "mode": "blue"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/turtle_flower/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.85546875,
+          "compatible": {
+            "file": "compatible/ff26f7cde4984c3273fa.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/turtle_flower/greet.webm",
+          "mode": "blue",
+          "bottom": 0.822265625,
+          "compatible": {
+            "file": "compatible/43babb26c647fc84cf4d.mp4",
+            "mode": "blue"
+          }
+        },
+        "hug": {
+          "file": "videos/turtle_flower/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.85546875,
+          "compatible": {
+            "file": "compatible/ccb14baad6398a19871f.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/turtle_flower/petted-out.webm",
+          "mode": "blue",
+          "bottom": 0.8203125,
+          "compatible": {
+            "file": "compatible/bbf7b154f314eb7abc21.mp4",
+            "mode": "blue"
+          }
+        },
+        "petted": {
+          "file": "videos/turtle_flower/petted.webm",
+          "mode": "blue",
+          "bottom": 0.8203125,
+          "compatible": {
+            "file": "compatible/ee35036055512237174d.mp4",
+            "mode": "blue"
+          }
+        },
+        "play": {
+          "file": "videos/turtle_flower/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/29206942acaaa1ed352a.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/turtle_flower/sleep.webm",
+          "mode": "blue",
+          "bottom": 0.8203125,
+          "compatible": {
+            "file": "compatible/a081fc6665a9f11427cb.mp4",
+            "mode": "blue"
+          }
+        },
+        "wake": {
+          "file": "videos/turtle_flower/wake.webm",
+          "mode": "blue",
+          "bottom": 0.8203125,
+          "compatible": {
+            "file": "compatible/91e47a07a556f08e0fc5.mp4",
+            "mode": "blue"
+          }
+        },
+        "walk-start": {
+          "file": "videos/turtle_flower/walk-start.webm",
+          "mode": "green",
+          "bottom": 0.857421875,
+          "compatible": {
+            "file": "compatible/fea7b2b1d5a27e82be38.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/turtle_flower/walk-stop.webm",
+          "mode": "green",
+          "bottom": 0.85546875,
+          "compatible": {
+            "file": "compatible/f26f1835d41b68a254e1.mp4",
+            "mode": "green"
+          }
+        },
+        "walk": {
+          "file": "videos/turtle_flower/walk.webm",
+          "mode": "green",
+          "bottom": 0.857421875,
+          "compatible": {
+            "file": "compatible/c44e2fefd743ecaaf1a7.mp4",
+            "mode": "green"
+          }
+        }
+      },
+      "walkTransitions": true
+    },
+    "turtle_map": {
+      "name": "地图龟",
+      "species": "turtle",
+      "avatar": "avatars/turtle_map.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/turtle_map/frames/frame-sit.png",
+          "bottom": 0.818359375
+        },
+        {
+          "key": "walk",
+          "file": "breeds/turtle_map/frames/frame-walk.png",
+          "bottom": 0.818359375
+        },
+        {
+          "key": "jump",
+          "file": "breeds/turtle_map/frames/frame-jump.png",
+          "bottom": 0.818359375
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/turtle_map/frames/frame-sleep.png",
+          "bottom": 0.818359375
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/turtle_map/frames/frame-stretch.png",
+          "bottom": 0.818359375
+        },
+        {
+          "key": "roll",
+          "file": "breeds/turtle_map/frames/frame-roll.png",
+          "bottom": 0.818359375
+        }
+      ],
+      "videos": {
+        "eat": {
+          "file": "videos/turtle_map/eat.webm",
+          "mode": "green",
+          "bottom": 0.876953125,
+          "compatible": {
+            "file": "compatible/19cbab62a1be99f8fb3c.mp4",
+            "mode": "green"
+          }
+        },
+        "eatrev": {
+          "file": "videos/turtle_map/eatrev.webm",
+          "mode": "green",
+          "bottom": 0.876953125,
+          "compatible": {
+            "file": "compatible/5127b6b3967b49046a54.mp4",
+            "mode": "green"
+          }
+        },
+        "feedcatch": {
+          "file": "videos/turtle_map/feedcatch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.919921875,
+          "compatible": {
+            "file": "compatible/5d42e7592a0e9f229038.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "greet": {
+          "file": "videos/turtle_map/greet.webm",
+          "mode": "green",
+          "bottom": 0.8125,
+          "compatible": {
+            "file": "compatible/d69b54a30a288d98f266.mp4",
+            "mode": "green"
+          }
+        },
+        "hug": {
+          "file": "videos/turtle_map/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.818359375,
+          "compatible": {
+            "file": "compatible/8608126c679cd0746229.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/turtle_map/petted-out.webm",
+          "mode": "green",
+          "bottom": 0.841796875,
+          "compatible": {
+            "file": "compatible/341547653dac4110d18f.mp4",
+            "mode": "green"
+          }
+        },
+        "petted": {
+          "file": "videos/turtle_map/petted.webm",
+          "mode": "green",
+          "bottom": 0.841796875,
+          "compatible": {
+            "file": "compatible/d4e8e15bc5ce30a1bc20.mp4",
+            "mode": "green"
+          }
+        },
+        "play": {
+          "file": "videos/turtle_map/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.755859375,
+          "compatible": {
+            "file": "compatible/09067c1db02af3b976e4.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/turtle_map/sleep.webm",
+          "mode": "green",
+          "bottom": 0.77734375,
+          "compatible": {
+            "file": "compatible/b707e9506b1bc3b43cd8.mp4",
+            "mode": "green"
+          }
+        },
+        "wake": {
+          "file": "videos/turtle_map/wake.webm",
+          "mode": "green",
+          "bottom": 0.77734375,
+          "compatible": {
+            "file": "compatible/c2a2ea76041893576659.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-start": {
+          "file": "videos/turtle_map/walk-start.webm",
+          "mode": "green",
+          "bottom": 0.828125,
+          "compatible": {
+            "file": "compatible/229e22436965124bc50f.mp4",
+            "mode": "green"
+          }
+        },
+        "walk-stop": {
+          "file": "videos/turtle_map/walk-stop.webm",
+          "mode": "green",
+          "bottom": 0.828125,
+          "compatible": {
+            "file": "compatible/60b55a75b8c7e321b731.mp4",
+            "mode": "green"
+          }
+        },
+        "walk": {
+          "file": "videos/turtle_map/walk.webm",
+          "mode": "green",
+          "bottom": 0.7421875,
+          "compatible": {
+            "file": "compatible/22fb4af9a5a6f555b45a.mp4",
+            "mode": "green"
+          }
+        }
+      },
+      "walkTransitions": true
+    },
+    "alpaca_toon": {
+      "name": "羊驼",
+      "species": "alpaca",
+      "avatar": "avatars/alpaca_toon.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/alpaca_toon/frames/frame-sit.png",
+          "bottom": 0.878906
+        },
+        {
+          "key": "walk",
+          "file": "breeds/alpaca_toon/frames/frame-walk.png",
+          "bottom": 0.876953
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/alpaca_toon/frames/frame-sleep.png",
+          "bottom": 0.878906
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/alpaca_toon/frames/frame-stretch.png",
+          "bottom": 0.876953
+        },
+        {
+          "key": "roll",
+          "file": "breeds/alpaca_toon/frames/frame-roll.png",
+          "bottom": 0.876953
+        },
+        {
+          "key": "jump",
+          "file": "breeds/alpaca_toon/frames/frame-jump.png",
+          "bottom": 0.878906
+        }
+      ],
+      "videos": {
+        "greet": {
+          "file": "videos/alpaca_toon/greet.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.878906,
+          "compatible": {
+            "file": "compatible/9cec25283ba7d80e08e5.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "eat": {
+          "file": "videos/alpaca_toon/eat.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.878906,
+          "compatible": {
+            "file": "compatible/28df13ede7d6022a7d48.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "eatrev": {
+          "file": "videos/alpaca_toon/eatrev.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.878906,
+          "compatible": {
+            "file": "compatible/311b760526979042d2c8.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted": {
+          "file": "videos/alpaca_toon/petted.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.878906,
+          "sha256": "73a74baeaaf4c00637e23c88c38e6177cbc87fb54a1c26c221d16e651236f8a8",
+          "compatible": {
+            "file": "compatible/5fefa53eeffc4cc5dfcb.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/alpaca_toon/petted-out.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.878906,
+          "sha256": "cf88e8b5ae0e24701ecfcae0094bdeaaab0fe92856b1e4cafd002de826858e69",
+          "compatible": {
+            "file": "compatible/f626c55e9fc77a88bfe7.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "play": {
+          "file": "videos/alpaca_toon/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.878906,
+          "sha256": "f885f5f4fdec595b829d930f0138edddc25dc6e342682ee182c800fc992b4560",
+          "compatible": {
+            "file": "compatible/9d44df2f09be1b37f78d.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "hug": {
+          "file": "videos/alpaca_toon/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.878906,
+          "sha256": "591fe26477db3caae0d1f5b7e4a494858ce27e9c7701f2f5310e4f4c31150756",
+          "compatible": {
+            "file": "compatible/a468175ab3f0b6f13516.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/alpaca_toon/sleep.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.878906,
+          "compatible": {
+            "file": "compatible/e1f7cceec9dd9d09b9eb.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "wake": {
+          "file": "videos/alpaca_toon/wake.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.878906,
+          "compatible": {
+            "file": "compatible/5ac99525c816dc849301.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "stretch": {
+          "file": "videos/alpaca_toon/stretch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.878906,
+          "sha256": "ef5998d859a778b5ce799c07a9f2db73a20981cdbe8d08ff2e8cb416073783d8",
+          "compatible": {
+            "file": "compatible/6d455e04a64b0d99e8b3.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk": {
+          "file": "videos/alpaca_toon/walk.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.878906,
+          "gait": {
+            "stridePixels": 26,
+            "supportSeconds": 1.088,
+            "canvasPixels": 512
+          },
+          "sha256": "e4749e6ece5c8d677c5f67911ee1080e7840fe55786edec82c7ce7ac20c41879",
+          "compatible": {
+            "file": "compatible/3d5c858075f98a1a5ffd.mp4",
+            "mode": "packed-alpha"
+          }
+        }
+      },
+      "walkTransitions": false,
+      "sourceVersion": "2026-11-15.alpaca-motion-v2"
+    },
+    "capybara_toon": {
+      "name": "卡皮巴拉",
+      "species": "capybara",
+      "avatar": "avatars/capybara_toon.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/capybara_toon/frames/frame-sit.png",
+          "bottom": 0.87890625
+        },
+        {
+          "key": "walk",
+          "file": "breeds/capybara_toon/frames/frame-walk.png",
+          "bottom": 0.87890625
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/capybara_toon/frames/frame-sleep.png",
+          "bottom": 0.87890625
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/capybara_toon/frames/frame-stretch.png",
+          "bottom": 0.87890625
+        },
+        {
+          "key": "roll",
+          "file": "breeds/capybara_toon/frames/frame-roll.png",
+          "bottom": 0.876953125
+        },
+        {
+          "key": "jump",
+          "file": "breeds/capybara_toon/frames/frame-jump.png",
+          "bottom": 0.87890625
+        }
+      ],
+      "videos": {
+        "greet": {
+          "file": "videos/capybara_toon/greet.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/24e504ffbc96fb675ac6.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk": {
+          "file": "videos/capybara_toon/walk.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "gait": {
+            "stridePixels": 60,
+            "supportSeconds": 0.744,
+            "canvasPixels": 512
+          },
+          "compatible": {
+            "file": "compatible/c1dcdc08e00fbd7c6517.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "eat": {
+          "file": "videos/capybara_toon/eat.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/c2ff71213a41a18729b6.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "eatrev": {
+          "file": "videos/capybara_toon/eatrev.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/6b6abe31d3a800602bcc.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted": {
+          "file": "videos/capybara_toon/petted.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/917ad4b5c41e806122a4.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/capybara_toon/petted-out.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/0ec9caa680575989d2b1.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "play": {
+          "file": "videos/capybara_toon/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/0ef87b18f9747a99122f.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "hug": {
+          "file": "videos/capybara_toon/hug.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/270675961d41849861df.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/capybara_toon/sleep.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/0be6fd764b7eb0ae7abf.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "wake": {
+          "file": "videos/capybara_toon/wake.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/3e2ccc35a22b39e221bb.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "stretch": {
+          "file": "videos/capybara_toon/stretch.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/53c67dd83bfac298c9c3.mp4",
+            "mode": "packed-alpha"
+          }
+        }
+      },
+      "walkTransitions": false,
+      "sourceVersion": "2026-11-15.capybara-motion-v3",
+      "growth": {
+        "2": {
+          "avatar": "breeds/capybara_toon/growth/2/avatar.png",
+          "frames": [
+            {
+              "key": "sit",
+              "file": "breeds/capybara_toon/growth/2/frames/frame-sit.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "walk",
+              "file": "breeds/capybara_toon/growth/2/frames/frame-walk.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "sleep",
+              "file": "breeds/capybara_toon/growth/2/frames/frame-sleep.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "stretch",
+              "file": "breeds/capybara_toon/growth/2/frames/frame-stretch.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "roll",
+              "file": "breeds/capybara_toon/growth/2/frames/frame-roll.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "jump",
+              "file": "breeds/capybara_toon/growth/2/frames/frame-jump.png",
+              "bottom": 0.87890625
+            }
+          ],
+          "videos": {
+            "greet": {
+              "file": "breeds/capybara_toon/growth/2/videos/greet.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/b3a33fd933240e4d807c.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "walk": {
+              "file": "breeds/capybara_toon/growth/2/videos/walk.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "gait": {
+                "stridePixels": 60,
+                "supportSeconds": 0.744,
+                "canvasPixels": 512
+              },
+              "compatible": {
+                "file": "compatible/520227be62ebd8c3c792.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eat": {
+              "file": "breeds/capybara_toon/growth/2/videos/eat.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/15afcd53531fbf57d6d7.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eatrev": {
+              "file": "breeds/capybara_toon/growth/2/videos/eatrev.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/a945540f9019e7d25262.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted": {
+              "file": "breeds/capybara_toon/growth/2/videos/petted.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/1e5b044077ea296fa2b3.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted-out": {
+              "file": "breeds/capybara_toon/growth/2/videos/petted-out.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/3a9011fb86f1507939c6.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "play": {
+              "file": "breeds/capybara_toon/growth/2/videos/play.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/fd31be71cb6d6d31544a.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "hug": {
+              "file": "breeds/capybara_toon/growth/2/videos/hug.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/5413ce25641ac70488bb.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "sleep": {
+              "file": "breeds/capybara_toon/growth/2/videos/sleep.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/229819484a2c07566f52.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "wake": {
+              "file": "breeds/capybara_toon/growth/2/videos/wake.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/87c9214ae044a5c72423.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "stretch": {
+              "file": "breeds/capybara_toon/growth/2/videos/stretch.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/305d4d60bad9bfed89ae.mp4",
+                "mode": "packed-alpha"
+              }
+            }
+          }
+        },
+        "3": {
+          "avatar": "breeds/capybara_toon/growth/3/avatar.png",
+          "frames": [
+            {
+              "key": "sit",
+              "file": "breeds/capybara_toon/growth/3/frames/frame-sit.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "walk",
+              "file": "breeds/capybara_toon/growth/3/frames/frame-walk.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "sleep",
+              "file": "breeds/capybara_toon/growth/3/frames/frame-sleep.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "stretch",
+              "file": "breeds/capybara_toon/growth/3/frames/frame-stretch.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "roll",
+              "file": "breeds/capybara_toon/growth/3/frames/frame-roll.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "jump",
+              "file": "breeds/capybara_toon/growth/3/frames/frame-jump.png",
+              "bottom": 0.87890625
+            }
+          ],
+          "videos": {
+            "greet": {
+              "file": "breeds/capybara_toon/growth/3/videos/greet.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/cb5edffb6fb3099fbc56.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "walk": {
+              "file": "breeds/capybara_toon/growth/3/videos/walk.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "gait": {
+                "stridePixels": 60,
+                "supportSeconds": 0.744,
+                "canvasPixels": 512
+              },
+              "compatible": {
+                "file": "compatible/2a32e3dcec3d8d299c5e.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eat": {
+              "file": "breeds/capybara_toon/growth/3/videos/eat.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/e6dbea7c9873ddf4e531.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eatrev": {
+              "file": "breeds/capybara_toon/growth/3/videos/eatrev.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/413476a6d41a5e746457.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted": {
+              "file": "breeds/capybara_toon/growth/3/videos/petted.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/d176c5cc23d83c4effd8.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted-out": {
+              "file": "breeds/capybara_toon/growth/3/videos/petted-out.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/5269bc7c1954bce59625.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "play": {
+              "file": "breeds/capybara_toon/growth/3/videos/play.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/a15d43fb12164043dcaa.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "hug": {
+              "file": "breeds/capybara_toon/growth/3/videos/hug.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/c64bfc720a0c46bc595d.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "sleep": {
+              "file": "breeds/capybara_toon/growth/3/videos/sleep.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/d5ed8fe81b38340a2207.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "wake": {
+              "file": "breeds/capybara_toon/growth/3/videos/wake.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/a17f16456c794b779258.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "stretch": {
+              "file": "breeds/capybara_toon/growth/3/videos/stretch.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/95831439d1814ceb7917.mp4",
+                "mode": "packed-alpha"
+              }
+            }
+          }
+        },
+        "4": {
+          "avatar": "breeds/capybara_toon/growth/4/avatar.png",
+          "frames": [
+            {
+              "key": "sit",
+              "file": "breeds/capybara_toon/growth/4/frames/frame-sit.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "walk",
+              "file": "breeds/capybara_toon/growth/4/frames/frame-walk.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "sleep",
+              "file": "breeds/capybara_toon/growth/4/frames/frame-sleep.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "stretch",
+              "file": "breeds/capybara_toon/growth/4/frames/frame-stretch.png",
+              "bottom": 0.876953125
+            },
+            {
+              "key": "roll",
+              "file": "breeds/capybara_toon/growth/4/frames/frame-roll.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "jump",
+              "file": "breeds/capybara_toon/growth/4/frames/frame-jump.png",
+              "bottom": 0.876953125
+            }
+          ],
+          "videos": {
+            "greet": {
+              "file": "breeds/capybara_toon/growth/4/videos/greet.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/ac9679dbd72f850d9599.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "walk": {
+              "file": "breeds/capybara_toon/growth/4/videos/walk.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "gait": {
+                "stridePixels": 60,
+                "supportSeconds": 0.744,
+                "canvasPixels": 512
+              },
+              "compatible": {
+                "file": "compatible/e12894874eb578ba09cb.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eat": {
+              "file": "breeds/capybara_toon/growth/4/videos/eat.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/a22e6c4546aafc37457c.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eatrev": {
+              "file": "breeds/capybara_toon/growth/4/videos/eatrev.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/0b12d66f02e133623182.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted": {
+              "file": "breeds/capybara_toon/growth/4/videos/petted.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/1672d0c74276cf727597.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted-out": {
+              "file": "breeds/capybara_toon/growth/4/videos/petted-out.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/c8e4ca08d20dd9895e15.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "play": {
+              "file": "breeds/capybara_toon/growth/4/videos/play.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/112b453a576504da4caf.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "hug": {
+              "file": "breeds/capybara_toon/growth/4/videos/hug.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/ad93fcf3b01209258b9d.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "sleep": {
+              "file": "breeds/capybara_toon/growth/4/videos/sleep.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/f604a7d0a72a305dd6d1.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "wake": {
+              "file": "breeds/capybara_toon/growth/4/videos/wake.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/05753a204577589db7a1.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "stretch": {
+              "file": "breeds/capybara_toon/growth/4/videos/stretch.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/4d904e56dd0b219d2154.mp4",
+                "mode": "packed-alpha"
+              }
+            }
+          }
+        },
+        "5": {
+          "avatar": "breeds/capybara_toon/growth/5/avatar.png",
+          "frames": [
+            {
+              "key": "sit",
+              "file": "breeds/capybara_toon/growth/5/frames/frame-sit.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "walk",
+              "file": "breeds/capybara_toon/growth/5/frames/frame-walk.png",
+              "bottom": 0.876953125
+            },
+            {
+              "key": "sleep",
+              "file": "breeds/capybara_toon/growth/5/frames/frame-sleep.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "stretch",
+              "file": "breeds/capybara_toon/growth/5/frames/frame-stretch.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "roll",
+              "file": "breeds/capybara_toon/growth/5/frames/frame-roll.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "jump",
+              "file": "breeds/capybara_toon/growth/5/frames/frame-jump.png",
+              "bottom": 0.876953125
+            }
+          ],
+          "videos": {
+            "greet": {
+              "file": "breeds/capybara_toon/growth/5/videos/greet.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/837746296d511671aed0.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "walk": {
+              "file": "breeds/capybara_toon/growth/5/videos/walk.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "gait": {
+                "stridePixels": 60,
+                "supportSeconds": 0.744,
+                "canvasPixels": 512
+              },
+              "compatible": {
+                "file": "compatible/860e7ff2ad15f208d7d8.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eat": {
+              "file": "breeds/capybara_toon/growth/5/videos/eat.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/371404131aa9ebabad28.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eatrev": {
+              "file": "breeds/capybara_toon/growth/5/videos/eatrev.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/d108b8391631ad3a5b01.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted": {
+              "file": "breeds/capybara_toon/growth/5/videos/petted.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/2e4637d1678cb7e667a7.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted-out": {
+              "file": "breeds/capybara_toon/growth/5/videos/petted-out.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/1c990bdc6ecbf4170172.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "play": {
+              "file": "breeds/capybara_toon/growth/5/videos/play.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/5c2edd3693193291ebc7.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "hug": {
+              "file": "breeds/capybara_toon/growth/5/videos/hug.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/dce6f15a3c312877fd8f.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "sleep": {
+              "file": "breeds/capybara_toon/growth/5/videos/sleep.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/39f7176d7ded9417119c.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "wake": {
+              "file": "breeds/capybara_toon/growth/5/videos/wake.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/7b7147191ebef99476ef.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "stretch": {
+              "file": "breeds/capybara_toon/growth/5/videos/stretch.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/4fb1117363a95882fec9.mp4",
+                "mode": "packed-alpha"
+              }
+            }
+          }
+        },
+        "6": {
+          "avatar": "breeds/capybara_toon/growth/6/avatar.png",
+          "frames": [
+            {
+              "key": "sit",
+              "file": "breeds/capybara_toon/growth/6/frames/frame-sit.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "walk",
+              "file": "breeds/capybara_toon/growth/6/frames/frame-walk.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "sleep",
+              "file": "breeds/capybara_toon/growth/6/frames/frame-sleep.png",
+              "bottom": 0.876953125
+            },
+            {
+              "key": "stretch",
+              "file": "breeds/capybara_toon/growth/6/frames/frame-stretch.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "roll",
+              "file": "breeds/capybara_toon/growth/6/frames/frame-roll.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "jump",
+              "file": "breeds/capybara_toon/growth/6/frames/frame-jump.png",
+              "bottom": 0.87890625
+            }
+          ],
+          "videos": {
+            "greet": {
+              "file": "breeds/capybara_toon/growth/6/videos/greet.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/6f75301565d660c52e5e.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "walk": {
+              "file": "breeds/capybara_toon/growth/6/videos/walk.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "gait": {
+                "stridePixels": 60,
+                "supportSeconds": 0.744,
+                "canvasPixels": 512
+              },
+              "compatible": {
+                "file": "compatible/6d5ecf782f76132c4109.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eat": {
+              "file": "breeds/capybara_toon/growth/6/videos/eat.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/588053f6e513950b326d.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eatrev": {
+              "file": "breeds/capybara_toon/growth/6/videos/eatrev.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/2d11b97132d69e074226.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted": {
+              "file": "breeds/capybara_toon/growth/6/videos/petted.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/86aa16b3eebc7cae9a13.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted-out": {
+              "file": "breeds/capybara_toon/growth/6/videos/petted-out.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/2063f5800dbde79fcea9.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "play": {
+              "file": "breeds/capybara_toon/growth/6/videos/play.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/568aa5c5ebde205647a6.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "hug": {
+              "file": "breeds/capybara_toon/growth/6/videos/hug.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/ece3f3f6af29a2854780.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "sleep": {
+              "file": "breeds/capybara_toon/growth/6/videos/sleep.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/2f2c1cf1f6fa305f62c3.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "wake": {
+              "file": "breeds/capybara_toon/growth/6/videos/wake.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/4535c70c30bed5b41907.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "stretch": {
+              "file": "breeds/capybara_toon/growth/6/videos/stretch.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/ecd2d88ba56579e3bc91.mp4",
+                "mode": "packed-alpha"
+              }
+            }
+          }
+        }
+      }
+    },
+    "dog_corgi_toon": {
+      "name": "卡通柯基",
+      "species": "dog",
+      "avatar": "avatars/dog_corgi_toon.png",
+      "frames": [
+        {
+          "key": "sit",
+          "file": "breeds/dog_corgi_toon/frames/frame-sit.png",
+          "bottom": 0.87890625
+        },
+        {
+          "key": "walk",
+          "file": "breeds/dog_corgi_toon/frames/frame-walk.png",
+          "bottom": 0.87890625
+        },
+        {
+          "key": "jump",
+          "file": "breeds/dog_corgi_toon/frames/frame-jump.png",
+          "bottom": 0.87890625
+        },
+        {
+          "key": "sleep",
+          "file": "breeds/dog_corgi_toon/frames/frame-sleep.png",
+          "bottom": 0.87890625
+        },
+        {
+          "key": "stretch",
+          "file": "breeds/dog_corgi_toon/frames/frame-stretch.png",
+          "bottom": 0.87890625
+        },
+        {
+          "key": "roll",
+          "file": "breeds/dog_corgi_toon/frames/frame-roll.png",
+          "bottom": 0.87890625
+        }
+      ],
+      "videos": {
+        "greet": {
+          "file": "videos/dog_corgi_toon/greet.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/1d7b77b4417f0c7cfdfd.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "walk": {
+          "file": "videos/dog_corgi_toon/walk.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/7a45a5e90356c6808aa5.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "eat": {
+          "file": "videos/dog_corgi_toon/eat.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/804b3c5627a03e5aae49.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "eatrev": {
+          "file": "videos/dog_corgi_toon/eatrev.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/04e084c0df6630723d8b.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted": {
+          "file": "videos/dog_corgi_toon/petted.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/8d0bc7e2b934ae3f71f8.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "petted-out": {
+          "file": "videos/dog_corgi_toon/petted-out.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/7ba0a7c4eba8787f7a9a.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "play": {
+          "file": "videos/dog_corgi_toon/play.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/140e2c3f693ab78ca030.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "sleep": {
+          "file": "videos/dog_corgi_toon/sleep.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/d323189a558a0d978ccf.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "wake": {
+          "file": "videos/dog_corgi_toon/wake.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/f624f9541076c402c1b3.mp4",
+            "mode": "packed-alpha"
+          }
+        },
+        "hug": {
+          "file": "videos/dog_corgi_toon/petted.alpha.webm",
+          "mode": "alpha",
+          "bottom": 0.87890625,
+          "compatible": {
+            "file": "compatible/8d0bc7e2b934ae3f71f8.mp4",
+            "mode": "packed-alpha"
+          }
+        }
+      },
+      "walkTransitions": false,
+      "sourceVersion": "2026-11-14.growth-v1",
+      "growth": {
+        "2": {
+          "avatar": "breeds/dog_corgi_toon/growth/2/avatar.png",
+          "frames": [
+            {
+              "key": "sit",
+              "file": "breeds/dog_corgi_toon/growth/2/frames/frame-sit.png",
+              "bottom": 0.876953125
+            },
+            {
+              "key": "walk",
+              "file": "breeds/dog_corgi_toon/growth/2/frames/frame-walk.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "sleep",
+              "file": "breeds/dog_corgi_toon/growth/2/frames/frame-sleep.png",
+              "bottom": 0.876953125
+            },
+            {
+              "key": "stretch",
+              "file": "breeds/dog_corgi_toon/growth/2/frames/frame-stretch.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "roll",
+              "file": "breeds/dog_corgi_toon/growth/2/frames/frame-roll.png",
+              "bottom": 0.876953125
+            },
+            {
+              "key": "jump",
+              "file": "breeds/dog_corgi_toon/growth/2/frames/frame-jump.png",
+              "bottom": 0.876953125
+            }
+          ],
+          "videos": {
+            "greet": {
+              "file": "breeds/dog_corgi_toon/growth/2/videos/greet.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/35aa37a9cfdaa9bb2cfc.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "walk": {
+              "file": "breeds/dog_corgi_toon/growth/2/videos/walk.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/60576e6edff7a966e780.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eat": {
+              "file": "breeds/dog_corgi_toon/growth/2/videos/eat.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/70917c4a3c68765fccbd.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eatrev": {
+              "file": "breeds/dog_corgi_toon/growth/2/videos/eatrev.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/00e6314757a183f4c545.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted": {
+              "file": "breeds/dog_corgi_toon/growth/2/videos/petted.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/8101bfc5856380c32bd2.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted-out": {
+              "file": "breeds/dog_corgi_toon/growth/2/videos/petted-out.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/f45a82f826b3fc00224d.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "play": {
+              "file": "breeds/dog_corgi_toon/growth/2/videos/play.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/0a6522f424b984612150.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "hug": {
+              "file": "breeds/dog_corgi_toon/growth/2/videos/hug.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/f7ea2d9148a131a39103.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "sleep": {
+              "file": "breeds/dog_corgi_toon/growth/2/videos/sleep.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/ff7368f5939a8860d4b9.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "wake": {
+              "file": "breeds/dog_corgi_toon/growth/2/videos/wake.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/d64361ac01b8200774f5.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "stretch": {
+              "file": "breeds/dog_corgi_toon/growth/2/videos/stretch.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/55e9727351ade16c68f7.mp4",
+                "mode": "packed-alpha"
+              }
+            }
+          }
+        },
+        "3": {
+          "avatar": "breeds/dog_corgi_toon/growth/3/avatar.png",
+          "frames": [
+            {
+              "key": "sit",
+              "file": "breeds/dog_corgi_toon/growth/3/frames/frame-sit.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "walk",
+              "file": "breeds/dog_corgi_toon/growth/3/frames/frame-walk.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "sleep",
+              "file": "breeds/dog_corgi_toon/growth/3/frames/frame-sleep.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "stretch",
+              "file": "breeds/dog_corgi_toon/growth/3/frames/frame-stretch.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "roll",
+              "file": "breeds/dog_corgi_toon/growth/3/frames/frame-roll.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "jump",
+              "file": "breeds/dog_corgi_toon/growth/3/frames/frame-jump.png",
+              "bottom": 0.87890625
+            }
+          ],
+          "videos": {
+            "greet": {
+              "file": "breeds/dog_corgi_toon/growth/3/videos/greet.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/6601c40306c179d89e30.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "walk": {
+              "file": "breeds/dog_corgi_toon/growth/3/videos/walk.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/d883bb4a73cda9fd08ff.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eat": {
+              "file": "breeds/dog_corgi_toon/growth/3/videos/eat.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/5761bc0dee334e929b1a.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eatrev": {
+              "file": "breeds/dog_corgi_toon/growth/3/videos/eatrev.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/fbf3978decaf82829490.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted": {
+              "file": "breeds/dog_corgi_toon/growth/3/videos/petted.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/78026be1288daa08178e.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted-out": {
+              "file": "breeds/dog_corgi_toon/growth/3/videos/petted-out.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/17a781fd0a2b162c009b.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "play": {
+              "file": "breeds/dog_corgi_toon/growth/3/videos/play.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/1b3363b4071988d9fe18.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "hug": {
+              "file": "breeds/dog_corgi_toon/growth/3/videos/hug.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/0566c2dc006c6080164c.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "sleep": {
+              "file": "breeds/dog_corgi_toon/growth/3/videos/sleep.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/7b4c0a02dc5e204abe73.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "wake": {
+              "file": "breeds/dog_corgi_toon/growth/3/videos/wake.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/cfbcf57c8930be491c9e.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "stretch": {
+              "file": "breeds/dog_corgi_toon/growth/3/videos/stretch.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/08f0781465547ee7b801.mp4",
+                "mode": "packed-alpha"
+              }
+            }
+          }
+        },
+        "4": {
+          "avatar": "breeds/dog_corgi_toon/growth/4/avatar.png",
+          "frames": [
+            {
+              "key": "sit",
+              "file": "breeds/dog_corgi_toon/growth/4/frames/frame-sit.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "walk",
+              "file": "breeds/dog_corgi_toon/growth/4/frames/frame-walk.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "sleep",
+              "file": "breeds/dog_corgi_toon/growth/4/frames/frame-sleep.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "stretch",
+              "file": "breeds/dog_corgi_toon/growth/4/frames/frame-stretch.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "roll",
+              "file": "breeds/dog_corgi_toon/growth/4/frames/frame-roll.png",
+              "bottom": 0.876953125
+            },
+            {
+              "key": "jump",
+              "file": "breeds/dog_corgi_toon/growth/4/frames/frame-jump.png",
+              "bottom": 0.87890625
+            }
+          ],
+          "videos": {
+            "greet": {
+              "file": "breeds/dog_corgi_toon/growth/4/videos/greet.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/4b67986562853080fba1.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "walk": {
+              "file": "breeds/dog_corgi_toon/growth/4/videos/walk.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/5f8e1d4529029c16479e.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eat": {
+              "file": "breeds/dog_corgi_toon/growth/4/videos/eat.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/d43f6180eecb43f63f5e.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eatrev": {
+              "file": "breeds/dog_corgi_toon/growth/4/videos/eatrev.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/1d6b753117e7a2941a32.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted": {
+              "file": "breeds/dog_corgi_toon/growth/4/videos/petted.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/746ea595149d95d41a72.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted-out": {
+              "file": "breeds/dog_corgi_toon/growth/4/videos/petted-out.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/69035b75846c8f8a3ccb.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "play": {
+              "file": "breeds/dog_corgi_toon/growth/4/videos/play.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/8899c1c4feb07209b111.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "hug": {
+              "file": "breeds/dog_corgi_toon/growth/4/videos/hug.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/89fa6c50751bc51be974.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "sleep": {
+              "file": "breeds/dog_corgi_toon/growth/4/videos/sleep.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/0a05c8a81e54b1a02ac2.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "wake": {
+              "file": "breeds/dog_corgi_toon/growth/4/videos/wake.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/95b2bfb234c69d3c23ca.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "stretch": {
+              "file": "breeds/dog_corgi_toon/growth/4/videos/stretch.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/0fa5f369e8a8b381755b.mp4",
+                "mode": "packed-alpha"
+              }
+            }
+          }
+        },
+        "5": {
+          "avatar": "breeds/dog_corgi_toon/growth/5/avatar.png",
+          "frames": [
+            {
+              "key": "sit",
+              "file": "breeds/dog_corgi_toon/growth/5/frames/frame-sit.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "walk",
+              "file": "breeds/dog_corgi_toon/growth/5/frames/frame-walk.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "sleep",
+              "file": "breeds/dog_corgi_toon/growth/5/frames/frame-sleep.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "stretch",
+              "file": "breeds/dog_corgi_toon/growth/5/frames/frame-stretch.png",
+              "bottom": 0.876953125
+            },
+            {
+              "key": "roll",
+              "file": "breeds/dog_corgi_toon/growth/5/frames/frame-roll.png",
+              "bottom": 0.876953125
+            },
+            {
+              "key": "jump",
+              "file": "breeds/dog_corgi_toon/growth/5/frames/frame-jump.png",
+              "bottom": 0.87890625
+            }
+          ],
+          "videos": {
+            "greet": {
+              "file": "breeds/dog_corgi_toon/growth/5/videos/greet.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/925217f02a2bb7779de0.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "walk": {
+              "file": "breeds/dog_corgi_toon/growth/5/videos/walk.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/ce132368503d57b0c657.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eat": {
+              "file": "breeds/dog_corgi_toon/growth/5/videos/eat.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/63430ec4c18117e6278c.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eatrev": {
+              "file": "breeds/dog_corgi_toon/growth/5/videos/eatrev.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/29877794fe8fbe1fce4d.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted": {
+              "file": "breeds/dog_corgi_toon/growth/5/videos/petted.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/49480d63217b4c8540c1.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted-out": {
+              "file": "breeds/dog_corgi_toon/growth/5/videos/petted-out.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/0e902bdd12119f935901.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "play": {
+              "file": "breeds/dog_corgi_toon/growth/5/videos/play.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/edb4c87332dc1f094e32.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "hug": {
+              "file": "breeds/dog_corgi_toon/growth/5/videos/hug.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/28550fbe74fd19ec47b4.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "sleep": {
+              "file": "breeds/dog_corgi_toon/growth/5/videos/sleep.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/96655bd2ce3018f6b47d.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "wake": {
+              "file": "breeds/dog_corgi_toon/growth/5/videos/wake.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/8fac707b7ba148867908.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "stretch": {
+              "file": "breeds/dog_corgi_toon/growth/5/videos/stretch.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/6fe43674e45e3839e6d9.mp4",
+                "mode": "packed-alpha"
+              }
+            }
+          }
+        },
+        "6": {
+          "avatar": "breeds/dog_corgi_toon/growth/6/avatar.png",
+          "frames": [
+            {
+              "key": "sit",
+              "file": "breeds/dog_corgi_toon/growth/6/frames/frame-sit.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "walk",
+              "file": "breeds/dog_corgi_toon/growth/6/frames/frame-walk.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "sleep",
+              "file": "breeds/dog_corgi_toon/growth/6/frames/frame-sleep.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "stretch",
+              "file": "breeds/dog_corgi_toon/growth/6/frames/frame-stretch.png",
+              "bottom": 0.87890625
+            },
+            {
+              "key": "roll",
+              "file": "breeds/dog_corgi_toon/growth/6/frames/frame-roll.png",
+              "bottom": 0.876953125
+            },
+            {
+              "key": "jump",
+              "file": "breeds/dog_corgi_toon/growth/6/frames/frame-jump.png",
+              "bottom": 0.876953125
+            }
+          ],
+          "videos": {
+            "greet": {
+              "file": "breeds/dog_corgi_toon/growth/6/videos/greet.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/d32f6cdabc5961a25fb0.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "walk": {
+              "file": "breeds/dog_corgi_toon/growth/6/videos/walk.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/0b0c407f6edd5e49bcc7.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eat": {
+              "file": "breeds/dog_corgi_toon/growth/6/videos/eat.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/b3a5b511344a9a957e39.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "eatrev": {
+              "file": "breeds/dog_corgi_toon/growth/6/videos/eatrev.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/8edf60090d164d2b7854.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted": {
+              "file": "breeds/dog_corgi_toon/growth/6/videos/petted.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/95b67cd63ee0cdd88fe6.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "petted-out": {
+              "file": "breeds/dog_corgi_toon/growth/6/videos/petted-out.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/60242876ad2288bd4eb9.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "play": {
+              "file": "breeds/dog_corgi_toon/growth/6/videos/play.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/7cd1a7c5f54671527439.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "hug": {
+              "file": "breeds/dog_corgi_toon/growth/6/videos/hug.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/5fc80b7730a3d32f4d4a.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "sleep": {
+              "file": "breeds/dog_corgi_toon/growth/6/videos/sleep.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/8703b372ab2e6db980e9.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "wake": {
+              "file": "breeds/dog_corgi_toon/growth/6/videos/wake.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/0c3effe0198555b6fe47.mp4",
+                "mode": "packed-alpha"
+              }
+            },
+            "stretch": {
+              "file": "breeds/dog_corgi_toon/growth/6/videos/stretch.alpha.webm",
+              "mode": "alpha",
+              "bottom": 0.87890625,
+              "compatible": {
+                "file": "compatible/fb1fb7a102151c2db807.mp4",
+                "mode": "packed-alpha"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "eggs": {
+    "cat": {
+      "egg": "eggs/cat-egg.png",
+      "hatch": "eggs/cat-hatch.png"
+    },
+    "dog": {
+      "hatch": "eggs/dog-hatch.png"
+    },
+    "bird": {
+      "egg": "eggs/bird-egg.png",
+      "hatch": "eggs/bird-hatch.png"
+    },
+    "turtle": {
+      "egg": "eggs/turtle-egg.png",
+      "hatch": "eggs/turtle-hatch.png"
+    }
+  },
+  "sounds": {
+    "cat-meow": "sounds/cat-meow.mp3",
+    "cat-purr": "sounds/cat-purr.mp3",
+    "cat-hungry": "sounds/cat-hungry.mp3",
+    "cat-attention": "sounds/cat-attention.mp3",
+    "dog-woof": "sounds/dog-woof.mp3",
+    "dog-happy": "sounds/dog-happy.mp3",
+    "dog-puppy": "sounds/dog-puppy.mp3",
+    "dog-yap": "sounds/dog-yap.mp3",
+    "bird-chirp": "sounds/bird-chirp.mp3",
+    "bird-song": "sounds/bird-song.mp3",
+    "bird-call": "sounds/bird-call.mp3",
+    "turtle-grunt": "sounds/turtle-grunt.mp3",
+    "turtle-water": "sounds/turtle-water.mp3",
+    "startup-theme": "sounds/startup-theme.mp3"
+  },
+  "banner": "banner_task.jpg"
+}

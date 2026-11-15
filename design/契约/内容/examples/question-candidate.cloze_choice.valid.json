@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0.0",
+  "id": "07f498e3-50c3-53be-8963-8321cede47bf",
+  "blueprint_id": "66b3aff5-e0a8-519a-b4a6-c1af7f691656",
+  "phase": "p2",
+  "question_family_key": "fixture.cloze-choice.bag",
+  "question_type": "cloze_choice",
+  "source_slice_ids": [
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+  ],
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "objective_ids": [
+    "90fef5ed-87a1-51d0-bdab-b57673df9144"
+  ],
+  "skill": "sentence_comprehension",
+  "modality": "text",
+  "difficulty": 1,
+  "estimated_seconds": 30,
+  "presentation_kind": "verbatim",
+  "prompt_text": "补全这句话。",
+  "instruction_text": "补全这句话。",
+  "public_payload": {
+    "prefix_text": "This is my ",
+    "suffix_text": ".",
+    "gap_id": "55ea8482-8ab0-50f7-ad77-a87ccf7a2ddd",
+    "options": [
+      {
+        "id": "a14c7b40-d694-5609-afd5-8831fbb2fe8b",
+        "text": "bag"
+      },
+      {
+        "id": "77fca470-5f7d-507e-b172-36180838f264",
+        "text": "cat"
+      },
+      {
+        "id": "07534004-bad7-5768-9064-026fa0aac711",
+        "text": "dog"
+      }
+    ]
+  },
+  "answer_spec": {
+    "answer_kind": "single_choice",
+    "accepted_option_ids": [
+      "a14c7b40-d694-5609-afd5-8831fbb2fe8b"
+    ]
+  },
+  "explanation": "本题来自家庭自编页句，按所列目标验证。",
+  "requires_microphone": false,
+  "requires_typing": false,
+  "quality_risks": [],
+  "source_quotes": [
+    {
+      "slice_id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+      "source_role": "assessed",
+      "quote": "This is my bag.",
+      "start_char": 0,
+      "end_char": 15
+    }
+  ]
+}

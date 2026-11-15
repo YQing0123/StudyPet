@@ -1,0 +1,124 @@
+{
+  "fps": 30,
+  "method": "RIFE 4.25; articulated atlas keys, premultiplied RGBA; VP9 alpha",
+  "source": {
+    "source": "output/imagegen/pet-growth-20261114/corgi-child.png",
+    "sha256": "28605d19da76fa6c28cff6d8411d4e1a09392490779cab991820634cbc328bb0",
+    "model": "gpt-image-2.6-sunburst",
+    "quality": "high",
+    "size": [
+      2048,
+      2048
+    ],
+    "walkKeyOrder": [
+      3,
+      2,
+      1,
+      0,
+      5,
+      4
+    ],
+    "scale": 1.7054263565891472,
+    "extractedRowBoundaries": [
+      0,
+      270,
+      516,
+      772,
+      1028,
+      1284,
+      1528,
+      1781,
+      2048
+    ]
+  },
+  "actions": {
+    "greet": {
+      "frames": 72,
+      "distinctFrames": 72,
+      "seconds": 2.4,
+      "keys": 6,
+      "sha256": "9eca4a34c2e92419b1bb7f940f8fd7143b4a80a90b00a7b9b23ec861b55f34a6",
+      "keySHA256": "b6131654fc255f7352b937cba54237803f40f0c68a95cce536f2dccbc96e323b"
+    },
+    "walk": {
+      "frames": 36,
+      "distinctFrames": 36,
+      "seconds": 1.2,
+      "keys": 6,
+      "sha256": "80c3da7650bb15f5ebe40d7d7b73646f39b1100690ef67c02f8d389b964ca5e1",
+      "keySHA256": "16c0e2bf9359397cc38b85d804705cbbeda776149c92411aac688b169b8bd7b5"
+    },
+    "eat": {
+      "frames": 48,
+      "distinctFrames": 48,
+      "seconds": 1.6,
+      "keys": 4,
+      "sha256": "41a95e0319b05ed21ac319d70863ca008fd0799fc0f963dcc0481b40113665e1",
+      "keySHA256": "17e88f102986bba598c9d4eda84b9ad13bc8e1494a5b2689ac8c9d2c981c3319"
+    },
+    "eatrev": {
+      "frames": 24,
+      "distinctFrames": 24,
+      "seconds": 0.8,
+      "keys": 3,
+      "sha256": "a1be5b95191405ec4e5b3f8584cb4f8b241655188d5351eb13770fb38e56da57",
+      "keySHA256": "85f7bb33addc87bb66800c8fc63408bf815e92cc91f53a16d2c89dced51de957"
+    },
+    "petted": {
+      "frames": 48,
+      "distinctFrames": 48,
+      "seconds": 1.6,
+      "keys": 4,
+      "sha256": "d75ea80a835fa2b8b8ade1a024a685ff4c2a5a63356d7fec6d0ddfb9250ff9a7",
+      "keySHA256": "cdacf0b5745b63a0fe52a98056a06afe3e5cbd378f081b43d209385128bf7a9a"
+    },
+    "petted-out": {
+      "frames": 21,
+      "distinctFrames": 21,
+      "seconds": 0.7,
+      "keys": 3,
+      "sha256": "492eb5dbb2213f1de16ad20243fc8910a94fa2029bcd5dda57adc292127043c3",
+      "keySHA256": "80f5dc4bc43613694105a2ea3de9828f1bdaf667f39a960a814c7d06bb28de76"
+    },
+    "play": {
+      "frames": 72,
+      "distinctFrames": 72,
+      "seconds": 2.4,
+      "keys": 6,
+      "sha256": "0b70f08f7d21745b4cadf9a464819e3fff7d8dda2e18ebb2bf04579abbf4fb15",
+      "keySHA256": "188c121cb18594294e0bb8cbe30e07b07ca17d9d84667728c7724d741015a695"
+    },
+    "hug": {
+      "frames": 66,
+      "distinctFrames": 66,
+      "seconds": 2.2,
+      "keys": 6,
+      "sha256": "40cc43d103a8afb4731bc83de9e9b0e1e349005fdc92bddf67c51306e9437953",
+      "keySHA256": "a550ff6e3f1ba6f2ac4a9c195211865805cb8ec9f3fd3085b0545fe19e7247f4"
+    },
+    "sleep": {
+      "frames": 72,
+      "distinctFrames": 72,
+      "seconds": 2.4,
+      "keys": 6,
+      "sha256": "cf3dd46541ccd28affc9e94eccd6abfa18d99ec4d5622adc201ea45e16590a5c",
+      "keySHA256": "e2703de7182a99aeac74018c340822b2bf2fb1b1ef1b77a2e8cc1200a0b44f6e"
+    },
+    "wake": {
+      "frames": 60,
+      "distinctFrames": 60,
+      "seconds": 2.0,
+      "keys": 6,
+      "sha256": "b20b0a38c969b08ec05c28253c3a848299feb64f339b34589105504280e26a1b",
+      "keySHA256": "f56d00351be12d1a3b1eac7aec676bd52531b126bc3f89be352a32f29e1647f0"
+    },
+    "stretch": {
+      "frames": 78,
+      "distinctFrames": 78,
+      "seconds": 2.6,
+      "keys": 6,
+      "sha256": "3e0e91f3cdfb0252b2138cb7f62a0fa6b44d51b4343cce01a6ff353202deda61",
+      "keySHA256": "e863970eb80c43cfaa130b0625186edc105c6f537a98ffa45b96b1e97713d638"
+    }
+  }
+}

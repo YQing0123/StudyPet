@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "id": "4639756f-21b3-5b87-99eb-eb8e966935f3",
+  "blueprint_id": "66b3aff5-e0a8-519a-b4a6-c1af7f691656",
+  "phase": "p2",
+  "question_family_key": "fixture.cloze-text.bag",
+  "question_type": "cloze_text",
+  "source_slice_ids": [
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+  ],
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "objective_ids": [
+    "c630c296-870c-54a4-ba19-34af473efbec"
+  ],
+  "skill": "spelling",
+  "modality": "text",
+  "difficulty": 1,
+  "estimated_seconds": 30,
+  "presentation_kind": "verbatim",
+  "prompt_text": "补全这句话。",
+  "instruction_text": "补全这句话。",
+  "public_payload": {
+    "prefix_text": "This is my ",
+    "suffix_text": ".",
+    "gap_id": "d86e8bbf-fdcd-541a-abcb-3f481c2bbeb5",
+    "max_answer_characters": 20
+  },
+  "answer_spec": {
+    "answer_kind": "text",
+    "accepted_texts": [
+      "bag"
+    ],
+    "normalization": {
+      "case_sensitive": true,
+      "trim_whitespace": true,
+      "collapse_whitespace": true,
+      "punctuation_mode": "strict"
+    }
+  },
+  "explanation": "本题来自家庭自编页句，按所列目标验证。",
+  "requires_microphone": false,
+  "requires_typing": true,
+  "quality_risks": [],
+  "source_quotes": [
+    {
+      "slice_id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+      "source_role": "assessed",
+      "quote": "This is my bag.",
+      "start_char": 0,
+      "end_char": 15
+    }
+  ]
+}

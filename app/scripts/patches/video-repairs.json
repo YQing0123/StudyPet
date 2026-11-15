@@ -1,0 +1,82 @@
+[
+  {
+    "breed": "dog_corgi",
+    "action": "walk",
+    "frames": 135,
+    "changedPixels": 383458,
+    "output": "videos/dog_corgi/walk.alpha.webm",
+    "mode": "alpha"
+  },
+  {
+    "breed": "dog_corgi",
+    "action": "walk-start",
+    "frames": 21,
+    "changedPixels": 37403,
+    "output": "videos/dog_corgi/walk-start.alpha.webm",
+    "mode": "alpha"
+  },
+  {
+    "breed": "dog_corgi",
+    "action": "walk-stop",
+    "frames": 21,
+    "changedPixels": 43885,
+    "output": "videos/dog_corgi/walk-stop.alpha.webm",
+    "mode": "alpha"
+  },
+  {
+    "breed": "bird_parakeet",
+    "action": "greet",
+    "frames": 121,
+    "changedPixels": 116343,
+    "output": "videos/bird_parakeet/greet.alpha.webm",
+    "mode": "alpha"
+  },
+  {
+    "breed": "bird_parakeet",
+    "action": "sleep",
+    "frames": 121,
+    "changedPixels": 130695,
+    "output": "videos/bird_parakeet/sleep.alpha.webm",
+    "mode": "alpha"
+  },
+  {
+    "breed": "bird_parakeet",
+    "action": "wake",
+    "frames": 121,
+    "changedPixels": 128577,
+    "output": "videos/bird_parakeet/wake.alpha.webm",
+    "mode": "alpha"
+  },
+  {
+    "breed": "bird_parakeet",
+    "action": "walk-start",
+    "frames": 36,
+    "changedPixels": 183883,
+    "output": "videos/bird_parakeet/walk-start.alpha.webm",
+    "mode": "alpha"
+  },
+  {
+    "breed": "bird_parakeet",
+    "action": "walk-stop",
+    "frames": 36,
+    "changedPixels": 188994,
+    "output": "videos/bird_parakeet/walk-stop.alpha.webm",
+    "mode": "alpha"
+  },
+  {
+    "breed": "bird_parakeet",
+    "action": "eat",
+    "frames": 109,
+    "changedPixels": 284736,
+    "output": "videos/bird_parakeet/eat.alpha.webm",
+    "mode": "alpha"
+  },
+  {
+    "breed": "bird_parakeet",
+    "action": "eatrev",
+    "frames": 109,
+    "changedPixels": 284462,
+    "output": "videos/bird_parakeet/eatrev.alpha.webm",
+    "mode": "alpha"
+  }
+]

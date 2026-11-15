@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+  "content_version_id": "29e51114-a347-5b0b-8d00-4b9bf5390c1b",
+  "node_id": "b4c77a37-8b35-540a-8dc9-e2b2d9bf002c",
+  "kind": "sentence",
+  "original_text": "This is my bag.",
+  "normalized_text": "This is my bag.",
+  "source_hash": "df63101fed847354bade017ce86eea4bf83d6b0b31c29d7700919423ae37b621",
+  "source_media_id": "cfb3313f-5f18-5603-851d-f7614b127284",
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "media_asset_ids": [
+    "3f981930-8e18-511c-8274-007c324b23b5"
+  ],
+  "locator": {
+    "page_index": 1,
+    "page_label": "自编页1"
+  },
+  "media_bindings": [
+    {
+      "media_type": "image",
+      "asset_id": "3f981930-8e18-511c-8274-007c324b23b5",
+      "role": "illustration",
+      "ordinal": 0,
+      "region": {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 1
+      }
+    }
+  ],
+  "provenance": {
+    "origin_kind": "family_authored",
+    "extraction_method": "trusted_package",
+    "verification_status": "verified",
+    "adapter_version": "family-text-1.0.0",
+    "parser_version": "structured-1.0.0"
+  },
+  "rights": {
+    "rights_code": "family-original",
+    "usage_scope": "household_only",
+    "cloud_processing_allowed": false
+  }
+}

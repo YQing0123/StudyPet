@@ -1,0 +1,1010 @@
+{
+  "cat_orange": {
+    "frames": {
+      "sit": {
+        "bottom": 0.93359375
+      },
+      "walk": {
+        "bottom": 0.787109375
+      },
+      "jump": {
+        "bottom": 0.80859375
+      },
+      "sleep": {
+        "bottom": 0.771484375
+      },
+      "stretch": {
+        "bottom": 0.91015625
+      },
+      "roll": {
+        "bottom": 0.939453125
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.919921875
+      },
+      "eatrev": {
+        "bottom": 0.919921875
+      },
+      "feedcatch": {
+        "bottom": 0.93359375
+      },
+      "greet": {
+        "bottom": 0.89453125
+      },
+      "hug": {
+        "bottom": 0.912109375
+      },
+      "petted-out": {
+        "bottom": 0.884765625
+      },
+      "petted": {
+        "bottom": 0.884765625
+      },
+      "play": {
+        "bottom": 0.84765625
+      },
+      "sleep": {
+        "bottom": 0.87890625
+      },
+      "wake": {
+        "bottom": 0.87890625
+      },
+      "walk-start": {
+        "bottom": 0.73828125
+      },
+      "walk-stop": {
+        "bottom": 0.73828125
+      },
+      "walk": {
+        "bottom": 0.916015625
+      }
+    }
+  },
+  "cat_ragdoll": {
+    "frames": {
+      "sit": {
+        "bottom": 0.873046875
+      },
+      "walk": {
+        "bottom": 0.873046875
+      },
+      "jump": {
+        "bottom": 0.873046875
+      },
+      "sleep": {
+        "bottom": 0.873046875
+      },
+      "stretch": {
+        "bottom": 0.873046875
+      },
+      "roll": {
+        "bottom": 0.873046875
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.8828125
+      },
+      "eatrev": {
+        "bottom": 0.8828125
+      },
+      "feedcatch": {
+        "bottom": 0.9296875
+      },
+      "greet": {
+        "bottom": 0.865234375
+      },
+      "hug": {
+        "bottom": 0.869140625
+      },
+      "petted-out": {
+        "bottom": 0.9765625
+      },
+      "petted": {
+        "bottom": 0.96875
+      },
+      "play": {
+        "bottom": 0.884765625
+      },
+      "sleep": {
+        "bottom": 0.888671875
+      },
+      "wake": {
+        "bottom": 0.888671875
+      },
+      "walk-start": {
+        "bottom": 0.873046875
+      },
+      "walk-stop": {
+        "bottom": 0.873046875
+      },
+      "walk": {
+        "bottom": 0.818359375
+      }
+    }
+  },
+  "cat_black": {
+    "frames": {
+      "sit": {
+        "bottom": 0.927734375
+      },
+      "walk": {
+        "bottom": 0.841796875
+      },
+      "jump": {
+        "bottom": 0.82421875
+      },
+      "sleep": {
+        "bottom": 0.892578125
+      },
+      "stretch": {
+        "bottom": 0.927734375
+      },
+      "roll": {
+        "bottom": 0.865234375
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.916015625
+      },
+      "eatrev": {
+        "bottom": 0.916015625
+      },
+      "feedcatch": {
+        "bottom": 0.943359375
+      },
+      "greet": {
+        "bottom": 0.90625
+      },
+      "hug": {
+        "bottom": 0.91796875
+      },
+      "petted-out": {
+        "bottom": 0.96484375
+      },
+      "petted": {
+        "bottom": 0.96484375
+      },
+      "play": {
+        "bottom": 0.91796875
+      },
+      "sleep": {
+        "bottom": 0.908203125
+      },
+      "wake": {
+        "bottom": 0.908203125
+      },
+      "walk-start": {
+        "bottom": 0.74609375
+      },
+      "walk-stop": {
+        "bottom": 0.73828125
+      },
+      "walk": {
+        "bottom": 0.8828125
+      }
+    }
+  },
+  "cat_blue": {
+    "frames": {
+      "sit": {
+        "bottom": 0.900390625
+      },
+      "walk": {
+        "bottom": 0.865234375
+      },
+      "jump": {
+        "bottom": 0.939453125
+      },
+      "sleep": {
+        "bottom": 0.896484375
+      },
+      "stretch": {
+        "bottom": 0.91796875
+      },
+      "roll": {
+        "bottom": 0.8828125
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.892578125
+      },
+      "eatrev": {
+        "bottom": 0.892578125
+      },
+      "feedcatch": {
+        "bottom": 0.85546875
+      },
+      "greet": {
+        "bottom": 0.873046875
+      },
+      "hug": {
+        "bottom": 0.84375
+      },
+      "petted-out": {
+        "bottom": 0.927734375
+      },
+      "petted": {
+        "bottom": 0.927734375
+      },
+      "play": {
+        "bottom": 0.890625
+      },
+      "sleep": {
+        "bottom": 0.8828125
+      },
+      "wake": {
+        "bottom": 0.88671875
+      },
+      "walk-start": {
+        "bottom": 0.75
+      },
+      "walk-stop": {
+        "bottom": 0.73046875
+      },
+      "walk": {
+        "bottom": 0.84765625
+      }
+    }
+  },
+  "dog_dairy": {
+    "frames": {
+      "sit": {
+        "bottom": 0.90234375
+      },
+      "walk": {
+        "bottom": 0.86328125
+      },
+      "jump": {
+        "bottom": 0.9453125
+      },
+      "sleep": {
+        "bottom": 0.724609375
+      },
+      "stretch": {
+        "bottom": 0.91015625
+      },
+      "roll": {
+        "bottom": 0.8671875
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.9453125
+      },
+      "eatrev": {
+        "bottom": 0.9453125
+      },
+      "feedcatch": {
+        "bottom": 0.931640625
+      },
+      "greet": {
+        "bottom": 0.90625
+      },
+      "hug": {
+        "bottom": 0.896484375
+      },
+      "petted-out": {
+        "bottom": 0.94140625
+      },
+      "petted": {
+        "bottom": 0.939453125
+      },
+      "play": {
+        "bottom": 0.86328125
+      },
+      "sleep": {
+        "bottom": 0.93359375
+      },
+      "wake": {
+        "bottom": 0.93359375
+      },
+      "walk-start": {
+        "bottom": 0.85546875
+      },
+      "walk-stop": {
+        "bottom": 0.853515625
+      },
+      "walk": {
+        "bottom": 0.8515625
+      }
+    }
+  },
+  "dog_golden": {
+    "frames": {
+      "sit": {
+        "bottom": 0.9140625
+      },
+      "walk": {
+        "bottom": 0.912109375
+      },
+      "jump": {
+        "bottom": 0.87109375
+      },
+      "sleep": {
+        "bottom": 0.9140625
+      },
+      "stretch": {
+        "bottom": 0.87890625
+      },
+      "roll": {
+        "bottom": 0.93359375
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.958984375
+      },
+      "eatrev": {
+        "bottom": 0.958984375
+      },
+      "feedcatch": {
+        "bottom": 0.9453125
+      },
+      "greet": {
+        "bottom": 0.869140625
+      },
+      "hug": {
+        "bottom": 0.908203125
+      },
+      "petted-out": {
+        "bottom": 0.955078125
+      },
+      "petted": {
+        "bottom": 0.955078125
+      },
+      "play": {
+        "bottom": 0.890625
+      },
+      "sleep": {
+        "bottom": 0.9140625
+      },
+      "wake": {
+        "bottom": 0.916015625
+      },
+      "walk-start": {
+        "bottom": 0.904296875
+      },
+      "walk-stop": {
+        "bottom": 0.90234375
+      },
+      "walk": {
+        "bottom": 0.9140625
+      }
+    }
+  },
+  "dog_corgi": {
+    "frames": {
+      "sit": {
+        "bottom": 0.95703125
+      },
+      "walk": {
+        "bottom": 0.87890625
+      },
+      "jump": {
+        "bottom": 0.953125
+      },
+      "sleep": {
+        "bottom": 0.8515625
+      },
+      "stretch": {
+        "bottom": 0.94140625
+      },
+      "roll": {
+        "bottom": 0.943359375
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.927734375
+      },
+      "eatrev": {
+        "bottom": 0.927734375
+      },
+      "feedcatch": {
+        "bottom": 0.912109375
+      },
+      "greet": {
+        "bottom": 0.861328125
+      },
+      "hug": {
+        "bottom": 0.94921875
+      },
+      "petted-out": {
+        "bottom": 0.916015625
+      },
+      "petted": {
+        "bottom": 0.916015625
+      },
+      "play": {
+        "bottom": 0.921875
+      },
+      "sleep": {
+        "bottom": 0.8671875
+      },
+      "wake": {
+        "bottom": 0.8671875
+      },
+      "walk-start": {
+        "bottom": 0.869140625
+      },
+      "walk-stop": {
+        "bottom": 0.87109375
+      },
+      "walk": {
+        "bottom": 0.87109375
+      }
+    }
+  },
+  "dog_german": {
+    "frames": {
+      "sit": {
+        "bottom": 0.947265625
+      },
+      "walk": {
+        "bottom": 0.955078125
+      },
+      "jump": {
+        "bottom": 0.955078125
+      },
+      "sleep": {
+        "bottom": 0.955078125
+      },
+      "stretch": {
+        "bottom": 0.955078125
+      },
+      "roll": {
+        "bottom": 0.955078125
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.93359375
+      },
+      "eatrev": {
+        "bottom": 0.93359375
+      },
+      "feedcatch": {
+        "bottom": 0.931640625
+      },
+      "greet": {
+        "bottom": 0.90625
+      },
+      "hug": {
+        "bottom": 0.94140625
+      },
+      "petted-out": {
+        "bottom": 0.923828125
+      },
+      "petted": {
+        "bottom": 0.923828125
+      },
+      "play": {
+        "bottom": 0.91796875
+      },
+      "sleep": {
+        "bottom": 0.900390625
+      },
+      "wake": {
+        "bottom": 0.900390625
+      },
+      "walk-start": {
+        "bottom": 0.951171875
+      },
+      "walk-stop": {
+        "bottom": 0.94921875
+      },
+      "walk": {
+        "bottom": 0.9296875
+      }
+    }
+  },
+  "bird_parakeet": {
+    "frames": {
+      "sit": {
+        "bottom": 1.0
+      },
+      "walk": {
+        "bottom": 1.0
+      },
+      "jump": {
+        "bottom": 1.0
+      },
+      "sleep": {
+        "bottom": 1.0
+      },
+      "stretch": {
+        "bottom": 1.0
+      },
+      "roll": {
+        "bottom": 1.0
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.921875
+      },
+      "eatrev": {
+        "bottom": 0.921875
+      },
+      "feedcatch": {
+        "bottom": 0.880859375
+      },
+      "greet": {
+        "bottom": 0.921875
+      },
+      "hug": {
+        "bottom": 0.8828125
+      },
+      "petted-out": {
+        "bottom": 0.998046875
+      },
+      "petted": {
+        "bottom": 0.998046875
+      },
+      "play": {
+        "bottom": 0.771484375
+      },
+      "sleep": {
+        "bottom": 0.919921875
+      },
+      "wake": {
+        "bottom": 0.91796875
+      },
+      "walk-start": {
+        "bottom": 0.994140625
+      },
+      "walk-stop": {
+        "bottom": 0.994140625
+      },
+      "walk": {
+        "bottom": 0.755859375
+      }
+    }
+  },
+  "bird_cockatiel": {
+    "frames": {
+      "sit": {
+        "bottom": 0.953125
+      },
+      "walk": {
+        "bottom": 0.953125
+      },
+      "jump": {
+        "bottom": 0.953125
+      },
+      "sleep": {
+        "bottom": 0.953125
+      },
+      "stretch": {
+        "bottom": 0.953125
+      },
+      "roll": {
+        "bottom": 0.953125
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.99609375
+      },
+      "eatrev": {
+        "bottom": 0.99609375
+      },
+      "feedcatch": {
+        "bottom": 0.90234375
+      },
+      "greet": {
+        "bottom": 0.953125
+      },
+      "hug": {
+        "bottom": 0.91796875
+      },
+      "petted-out": {
+        "bottom": 0.99609375
+      },
+      "petted": {
+        "bottom": 0.99609375
+      },
+      "play": {
+        "bottom": 0.890625
+      },
+      "sleep": {
+        "bottom": 0.89453125
+      },
+      "wake": {
+        "bottom": 0.896484375
+      },
+      "walk-start": {
+        "bottom": 0.9453125
+      },
+      "walk-stop": {
+        "bottom": 0.9453125
+      },
+      "walk": {
+        "bottom": 0.8125
+      }
+    }
+  },
+  "bird_peachface": {
+    "frames": {
+      "sit": {
+        "bottom": 0.9609375
+      },
+      "walk": {
+        "bottom": 0.9609375
+      },
+      "jump": {
+        "bottom": 0.9609375
+      },
+      "sleep": {
+        "bottom": 0.9609375
+      },
+      "stretch": {
+        "bottom": 0.9609375
+      },
+      "roll": {
+        "bottom": 0.9609375
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.90234375
+      },
+      "eatrev": {
+        "bottom": 0.90234375
+      },
+      "feedcatch": {
+        "bottom": 0.927734375
+      },
+      "greet": {
+        "bottom": 0.921875
+      },
+      "hug": {
+        "bottom": 0.919921875
+      },
+      "petted-out": {
+        "bottom": 0.953125
+      },
+      "petted": {
+        "bottom": 0.95703125
+      },
+      "play": {
+        "bottom": 0.875
+      },
+      "sleep": {
+        "bottom": 0.9765625
+      },
+      "wake": {
+        "bottom": 0.9765625
+      },
+      "walk-start": {
+        "bottom": 0.955078125
+      },
+      "walk-stop": {
+        "bottom": 0.955078125
+      },
+      "walk": {
+        "bottom": 0.814453125
+      }
+    }
+  },
+  "bird_pigeon": {
+    "frames": {
+      "sit": {
+        "bottom": 1.0
+      },
+      "walk": {
+        "bottom": 1.0
+      },
+      "jump": {
+        "bottom": 1.0
+      },
+      "sleep": {
+        "bottom": 1.0
+      },
+      "stretch": {
+        "bottom": 1.0
+      },
+      "roll": {
+        "bottom": 1.0
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.92578125
+      },
+      "eatrev": {
+        "bottom": 0.92578125
+      },
+      "feedcatch": {
+        "bottom": 0.873046875
+      },
+      "greet": {
+        "bottom": 1.0
+      },
+      "hug": {
+        "bottom": 0.880859375
+      },
+      "petted-out": {
+        "bottom": 0.935546875
+      },
+      "petted": {
+        "bottom": 0.935546875
+      },
+      "play": {
+        "bottom": 0.87109375
+      },
+      "sleep": {
+        "bottom": 0.92578125
+      },
+      "wake": {
+        "bottom": 0.92578125
+      },
+      "walk-start": {
+        "bottom": 1.0
+      },
+      "walk-stop": {
+        "bottom": 1.0
+      },
+      "walk": {
+        "bottom": 0.8359375
+      }
+    }
+  },
+  "turtle_redear": {
+    "frames": {
+      "sit": {
+        "bottom": 0.876953125
+      },
+      "walk": {
+        "bottom": 0.876953125
+      },
+      "jump": {
+        "bottom": 0.876953125
+      },
+      "sleep": {
+        "bottom": 0.876953125
+      },
+      "stretch": {
+        "bottom": 0.876953125
+      },
+      "roll": {
+        "bottom": 0.876953125
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.8125
+      },
+      "eatrev": {
+        "bottom": 0.8125
+      },
+      "feedcatch": {
+        "bottom": 0.943359375
+      },
+      "greet": {
+        "bottom": 0.916015625
+      },
+      "hug": {
+        "bottom": 0.873046875
+      },
+      "petted-out": {
+        "bottom": 0.85546875
+      },
+      "petted": {
+        "bottom": 0.85546875
+      },
+      "play": {
+        "bottom": 0.873046875
+      },
+      "sleep": {
+        "bottom": 0.740234375
+      },
+      "wake": {
+        "bottom": 0.73828125
+      },
+      "walk-start": {
+        "bottom": 0.880859375
+      },
+      "walk-stop": {
+        "bottom": 0.880859375
+      },
+      "walk": {
+        "bottom": 0.720703125
+      }
+    }
+  },
+  "turtle_grass": {
+    "frames": {
+      "sit": {
+        "bottom": 0.80859375
+      },
+      "walk": {
+        "bottom": 0.80859375
+      },
+      "jump": {
+        "bottom": 0.80859375
+      },
+      "sleep": {
+        "bottom": 0.80859375
+      },
+      "stretch": {
+        "bottom": 0.80859375
+      },
+      "roll": {
+        "bottom": 0.80859375
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.876953125
+      },
+      "eatrev": {
+        "bottom": 0.876953125
+      },
+      "feedcatch": {
+        "bottom": 0.908203125
+      },
+      "greet": {
+        "bottom": 0.83984375
+      },
+      "hug": {
+        "bottom": 0.6875
+      },
+      "petted-out": {
+        "bottom": 0.873046875
+      },
+      "petted": {
+        "bottom": 0.87109375
+      },
+      "play": {
+        "bottom": 0.69140625
+      },
+      "sleep": {
+        "bottom": 0.7890625
+      },
+      "wake": {
+        "bottom": 0.787109375
+      },
+      "walk-start": {
+        "bottom": 0.64453125
+      },
+      "walk-stop": {
+        "bottom": 0.634765625
+      },
+      "walk": {
+        "bottom": 0.69140625
+      }
+    }
+  },
+  "turtle_flower": {
+    "frames": {
+      "sit": {
+        "bottom": 0.85546875
+      },
+      "walk": {
+        "bottom": 0.859375
+      },
+      "jump": {
+        "bottom": 0.859375
+      },
+      "sleep": {
+        "bottom": 0.859375
+      },
+      "stretch": {
+        "bottom": 0.859375
+      },
+      "roll": {
+        "bottom": 0.859375
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.85546875
+      },
+      "eatrev": {
+        "bottom": 0.85546875
+      },
+      "feedcatch": {
+        "bottom": 0.85546875
+      },
+      "greet": {
+        "bottom": 0.822265625
+      },
+      "hug": {
+        "bottom": 0.85546875
+      },
+      "petted-out": {
+        "bottom": 0.8203125
+      },
+      "petted": {
+        "bottom": 0.8203125
+      },
+      "play": {
+        "bottom": 0.87890625
+      },
+      "sleep": {
+        "bottom": 0.8203125
+      },
+      "wake": {
+        "bottom": 0.8203125
+      },
+      "walk-start": {
+        "bottom": 0.857421875
+      },
+      "walk-stop": {
+        "bottom": 0.85546875
+      },
+      "walk": {
+        "bottom": 0.857421875
+      }
+    }
+  },
+  "turtle_map": {
+    "frames": {
+      "sit": {
+        "bottom": 0.818359375
+      },
+      "walk": {
+        "bottom": 0.818359375
+      },
+      "jump": {
+        "bottom": 0.818359375
+      },
+      "sleep": {
+        "bottom": 0.818359375
+      },
+      "stretch": {
+        "bottom": 0.818359375
+      },
+      "roll": {
+        "bottom": 0.818359375
+      }
+    },
+    "videos": {
+      "eat": {
+        "bottom": 0.876953125
+      },
+      "eatrev": {
+        "bottom": 0.876953125
+      },
+      "feedcatch": {
+        "bottom": 0.919921875
+      },
+      "greet": {
+        "bottom": 0.8125
+      },
+      "hug": {
+        "bottom": 0.818359375
+      },
+      "petted-out": {
+        "bottom": 0.841796875
+      },
+      "petted": {
+        "bottom": 0.841796875
+      },
+      "play": {
+        "bottom": 0.755859375
+      },
+      "sleep": {
+        "bottom": 0.77734375
+      },
+      "wake": {
+        "bottom": 0.77734375
+      },
+      "walk-start": {
+        "bottom": 0.828125
+      },
+      "walk-stop": {
+        "bottom": 0.828125
+      },
+      "walk": {
+        "bottom": 0.7421875
+      }
+    }
+  }
+}

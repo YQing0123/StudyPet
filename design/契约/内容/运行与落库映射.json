@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0.0",
+  "direction": "private_generation_contract_to_runtime_and_database",
+  "rules": {
+    "family_id": "禁止模型填写；从可信家庭上下文注入。",
+    "question_family_id": "服务端规范化question_family_key后分配真实UUID，不采用模型自造身份。",
+    "objective_ids": "候选和每槽恰好一个主目标；蓝图/计划可包含多个目标。",
+    "difficulty": "1..5，与GenerationRequest.difficulty_band和question_versions.difficulty一致。"
+  },
+  "source_slice": {
+    "node_id": "source_slices.node_id",
+    "kind": "source_slices.slice_kind",
+    "normalized_text": "source_slices.normalized_text",
+    "source_media_id": "media_assets.id/source_slices.source_media_id",
+    "context_slice_ids": "slice_contexts.context_slice_id；主父上下文relation_kind=parent_context",
+    "media_bindings.asset_id": "slice_media_bindings.media_asset_id",
+    "media_bindings.role": "slice_media_bindings.binding_role",
+    "media_bindings.ordinal": "slice_media_bindings.ordinal",
+    "media_bindings.start_ms/end_ms": "slice_media_bindings.start_ms/end_ms",
+    "media_bindings.region": "region_x/region_y/region_w/region_h",
+    "provenance_and_rights": "服务端核查源资产rights_code/rights_note与导入checkpoint；模型不能覆盖媒体权利。"
+  },
+  "generation": {
+    "request": "严格复用OpenAPI GenerationRequest字段；服务端展开为source_snapshots、objectives、registered_assets及candidate_slots。",
+    "blueprint": "generation_runs.blueprint；源引用同时关系化写generation_inputs。",
+    "input_role": "source_slice_ids=target，context_slice_ids=context，允许干扰源另记allowed_distractor。"
+  },
+  "question": {
+    "id": "question_versions.id",
+    "question_family_key": "规范化后question_families.stable_key，不作为用户可写UUID",
+    "objective_ids[0]": "question_versions.objective_id和question_families.objective_id",
+    "instruction_text": "question_versions.instruction_text；运行时PublicQuestion.instruction",
+    "prompt_text": "question_versions.prompt_text；运行时public_payload.prompt_text",
+    "public_payload": "按题型生成公开字段，分解到question_versions/question_options；候选payload不同于整个PublicQuestion信封。",
+    "public_payload.options[].id": "question_options.id，API option_id采用此UUID；option_key只作内部稳定键，不用文字下标。",
+    "source_quotes": "question_sources.slice_id/source_role/evidence_quote，字符范围存质量审计详情。",
+    "presentation_kind": "verbatim=>is_source_quote=true，其余false。",
+    "requires_microphone": "question_versions.requires_microphone",
+    "requires_typing": "question_versions.requires_typing",
+    "estimated_seconds": "question_versions.estimated_seconds"
+  },
+  "answer_mapping": {
+    "single_choice": "accepted_option_ids每项展开为answer_kind=option、option_id=UUID；本阶段单选要求只有一个正确项。",
+    "text": "accepted_texts每个变体一行answer_kind=text、expected_text=文本，gap_key=public gap UUID字符串。",
+    "matching": "每对一行answer_kind=match、option_id=left_id、match_option_id=right_id，服务端检查双射。",
+    "sequence": "每个允许序列分组，answer_key使用序列组键+词块键，每词块一行answer_kind=order、option_id=token UUID、ordering_position=位置；组内必须完整词块多重集。",
+    "manual_review": "rubric标准序列化为rubric_text，answer_kind=rubric；不同时填expected_text，目标内容由公开target_text/题源提供。",
+    "normalization": "case_sensitive/trim_whitespace/collapse_whitespace/punctuation_mode直接映射同名列。NFC固定在评分器normalizer版本，不由模型开关。",
+    "explanation": "仅private.question_answers.explanation，验证PublicQuestion不得含答案或解释。"
+  },
+  "response_kind": {
+    "audio_to_picture": "option",
+    "word_to_picture": "option",
+    "picture_to_word": "option",
+    "oral_reading": "recording",
+    "sentence_choice": "option",
+    "cloze_choice": "gaps",
+    "cloze_text": "gaps",
+    "matching": "pairs",
+    "word_order": "tokens",
+    "reading_choice": "option",
+    "retell": "recording"
+  },
+  "status_mapping": {
+    "received": "import_jobs.stage=received + background_jobs queued/running",
+    "validating": "import_jobs.stage=received直到校验通过，后台phase=validating",
+    "validated": "import_jobs.stage=validated",
+    "parsing": "import_jobs.stage=parsing",
+    "aligning": "import_jobs.stage=aligning",
+    "slicing": "import_jobs.stage=slicing",
+    "checking": "import_jobs.stage=qa",
+    "ready": "import_jobs.stage=ready；内容是否发布另看published_at",
+    "review_required": "import stage保留qa，quality_reports=warn/需人工与候选状态review_required",
+    "published": "content_versions.status=ready且published_at非空，不写不存在的import published枚举",
+    "failed": "background_jobs.status=failed与import_jobs.stage=failed，checkpoint保留最后完整阶段",
+    "cancelled": "background_jobs.status=cancelled；import checkpoint记录取消，保留产物，不强造import cancelled值"
+  },
+  "quality_mapping": {
+    "checks[].passed_true": "quality_reports.verdict=pass",
+    "checks[].error_failed": "quality_reports.verdict=fail，聚合OpenAPI verdict=blocked",
+    "checks[].warning_failed": "quality_reports.verdict=warn，聚合OpenAPI verdict=review_required",
+    "all_required_passed": "按发布策略聚合OpenAPI verdict=ready；发布仍独立校验权限及revision"
+  }
+}

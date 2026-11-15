@@ -1,0 +1,508 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>伴学小岛 · 开源参考与内容体系优化</title><style>
+:root{color-scheme:light;--paper:#fffaf1;--ink:#363e35;--muted:#667065;--green:#245c49;--line:#dbe2d6;--soft:#ecf1e6}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.85 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}a{color:var(--green);text-underline-offset:4px}a:focus-visible,button:focus-visible{outline:3px solid #b56c26;outline-offset:4px}aside{position:fixed;inset:0 auto 0 0;width:270px;background:#edf2e8;padding:34px 25px;overflow:auto;border-right:1px solid var(--line)}.brand{font-size:25px;font-weight:750;color:var(--green);letter-spacing:1px}.sub{font-size:13px;color:var(--muted);margin:7px 0 24px}aside ul{padding:0;list-style:none}aside li{margin:7px 0}aside a{font-size:14px;text-decoration:none;display:block;border-radius:7px;padding:5px 8px}aside a:hover{background:#dce8d7}.utility{display:flex;gap:8px;margin-top:24px}.utility button{border:1px solid #aabda9;border-radius:8px;background:transparent;color:var(--green);padding:9px 16px;cursor:pointer;font:inherit;font-size:13px}main{margin-left:270px;max-width:1330px;padding:58px 64px 90px}header{padding:0 0 35px;border-bottom:1px solid var(--line);margin-bottom:36px}.eyebrow{color:var(--green);font-weight:650;font-size:14px;letter-spacing:2px}header h1{font-size:46px;line-height:1.25;color:var(--green);letter-spacing:-1.5px;margin:12px 0 15px}header p{max-width:690px;font-size:18px;color:var(--muted);margin:0}.core-flow{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}.core-flow span{font-size:13px;border-bottom:2px solid #acc9a8;padding:5px 2px}.lead-image{width:100%;height:auto;display:block;border-radius:14px;margin:28px 0 9px}.caption{font-size:13px;color:var(--muted)}article h2{font-size:27px;line-height:1.5;color:var(--green);margin:60px 0 22px;padding-top:8px;letter-spacing:-.4px}article h3{font-size:20px;line-height:1.6;margin:33px 0 13px}article p{margin:12px 0 18px;overflow-wrap:anywhere}article li{margin:8px 0}article ul,article ol{padding-left:24px}.table-wrap{overflow:auto;max-width:100%;margin:22px 0;border:1px solid var(--line);border-radius:9px}table{border-collapse:collapse;width:100%;font-size:14px;min-width:590px}th{text-align:left;background:#e9f0e4;font-weight:650;color:#244b3b}th,td{padding:13px 15px;vertical-align:top;border-bottom:1px solid var(--line);line-height:1.7;min-width:95px}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fffef9}pre{max-width:100%;overflow:auto;background:#1f332b;color:#eff6e8;border-radius:9px;padding:24px;font-size:13px;line-height:1.7}code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}article img{width:100%;height:auto;border-radius:12px}blockquote{margin:22px 0;border-left:4px solid #b0c9a7;padding:4px 20px;color:var(--muted)}.architecture{border:1px solid var(--line);border-radius:12px;padding:25px;margin:20px 0;background:#f2f5eb}.arch-line{display:flex;gap:24px;align-items:center;background:#fffdf7;border:1px solid #d5e0cd;border-radius:8px;padding:15px 18px}.arch-line b{min-width:100px;color:var(--green);font-size:15px}.arch-line span{font-size:14px}.connector{height:20px;width:2px;background:#9fb791;margin-left:67px}footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}.mobile-nav{display:none}#top-link{display:block;margin-top:20px}
+@media(min-width:1550px){main{margin-left:300px;padding-left:90px;padding-right:90px}aside{width:300px}}@media(max-width:1080px){aside{width:230px;padding:28px 16px}main{margin-left:230px;padding:40px 30px 70px}header h1{font-size:37px}article h2{font-size:24px}}@media(max-width:760px){aside{position:static;width:auto;padding:22px 23px;max-height:none;border-right:0;border-bottom:1px solid var(--line)}aside .toc{display:none}aside.expanded .toc{display:block}aside .sub{margin-bottom:0}.utility{margin-top:15px}.mobile-nav{display:block}main{margin:0;padding:32px 22px 60px}header h1{font-size:32px;letter-spacing:-.5px}header p{font-size:16px}article h2{font-size:23px;margin-top:43px}article h3{font-size:19px}.arch-line{display:block}.arch-line b{display:block;margin-bottom:5px}body{font-size:16px}pre{padding:16px}article li{margin:10px 0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{aside,.utility,.core-flow{display:none!important}main{margin:0;max-width:none;padding:0}body{background:white;color:#222;font-size:10pt;line-height:1.65}header h1{font-size:28pt}header{margin-bottom:20px}article h2{font-size:18pt;page-break-after:avoid;margin-top:28px}article h3{font-size:13pt;page-break-after:avoid}table{min-width:0;font-size:8pt}th,td{padding:7px;min-width:0}tr{break-inside:avoid}.table-wrap{overflow:visible}pre{white-space:pre-wrap;background:#eee;color:#222;font-size:8pt}a{color:#222;text-decoration:none}img{break-inside:avoid}.arch-line{break-inside:avoid}}
+</style></head><body id="top"><aside id="nav"><div class="brand">伴学小岛</div><div class="sub">开源参考 · 内容生产 · 方案优化</div><div class="utility"><button type="button" onclick="window.print()">打印 / 存为 PDF</button><button type="button" class="mobile-nav" aria-expanded="false" onclick="document.getElementById('nav').classList.toggle('expanded');this.setAttribute('aria-expanded',document.getElementById('nav').classList.contains('expanded'))">章节</button></div><div class="toc">
+<ul>
+<li><a href="#1">1. 优先决策</a></li>
+<li><a href="#2">2. 开源英语学习项目</a></li>
+<li><a href="#3">3. 相似应用的体验借鉴</a></li>
+<li><a href="#4-skillsai">4. 相关Skills与AI制作工具</a></li>
+<li><a href="#5">5. 技术框架的收敛</a></li>
+<li><a href="#6">6. 教材内容生产与管理</a></li>
+<li><a href="#7-ai">7. AI出题与挑战生产</a></li>
+<li><a href="#8">8. 已学内容与学习证据</a></li>
+<li><a href="#9">9. 现有方案覆盖与缺口</a></li>
+<li><a href="#10">10. 下一阶段的验证顺序</a></li>
+</ul>
+</div>
+<a href="#top" id="top-link">返回顶部</a></aside><main><header><div class="eyebrow">开源参考与内容体系优化</div><h1>内容有出处，<br>挑战有质量。</h1><p>复用成熟能力，建立教材导入、语义切片、AI出题、质量检查和学习证据的完整链路。</p><div class="core-flow"><span>开源学习项目</span><span>相似应用</span><span>Skills与框架</span><span>内容质量</span><span>方案缺口</span></div></header><article>
+<h2 id="1">1. 优先决策</h2>
+<p>保留“同版本教材→周日计划→外部学习→内部训练验证→宠物生活”的主线，将教材内容工作台与题目质量生产提升为首版核心。宠物负责情感与动机，内容系统负责学习范围、题目正确性和证据，两者通过受控事件连接。</p>
+<p>建议采用组合复用：从Lute借鉴内容与词条管理，从Anzo借鉴家庭部署、内容检查和纠错，从TypeWords借鉴按句训练，从Finch和Study Bunny借鉴陪伴与空间建设；核心奖励账本、教材范围与验证证据仍按本产品需求实现。没有理由仅为了宠物养成就整体改造一个成人背词或习惯打卡系统。</p>
+<p>本次核验的项目中，未找到已证实同时覆盖教材对齐、家庭计划、学习验证、宠物生活、NAS、多端和免手工素材生产的现成应用。现成库可以减少基础设施工作，不能替代教材内容与儿童体验的专门设计。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>应做调整</th>
+<th>价值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0</td>
+<td>建立教材来源、导入、切片、目标与版本链</td>
+<td>保证学的和考的是同一内容</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>AI候选题、检查、发布与挑战组题分离</td>
+<td>防止未经检查的即时结果影响奖励</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>已学声明、训练参与、验证证据、掌握趋势分开</td>
+<td>不把排计划或计时当作学会</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>试做一只自动生产宠物与一周真实教材</td>
+<td>同时验证最难的两条生产链</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>修正喂食事务、饱腹上限、题目变式与设备回退</td>
+<td>消除规则冲突和兼容性假设</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>家长内容问题收件箱、版本撤回和批量修复</td>
+<td>让持续更新可以维护</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>自适应复习、ASR与专业发音评测试验</td>
+<td>在有效数据与真机验证后增强</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="2">2. 开源英语学习项目</h2>
+<h3 id="21">2.1 精选对比</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>已核实能力</th>
+<th>可复用/参考部分</th>
+<th>不直接作为整体底座的原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/LuteOrg/lute-v3">Lute v3</a></td>
+<td>Python/Flask独立Web应用，文本学习、语言与词典配置、词条/多词短语、父词条及词图</td>
+<td>优先参考教材文本、语境、词形/词义、例句和词条关联；MIT代码可评估局部复用</td>
+<td>以阅读学习为中心，缺少本产品周计划、儿童题型验证和宠物规则；其数据模型不自动提供精确教材版本映射</td>
+</tr>
+<tr>
+<td><a href="https://github.com/eduardwichner/anzo">Anzo</a></td>
+<td>家庭自部署、浏览器/平板使用、多账号、多题型、管理员纠错、音频检查、内容包校验与进度</td>
+<td>最值得参考内容源→生成题包→校验→原子更新→纠错回滚的结构，参考家庭运维状态页</td>
+<td>个人项目、维护规模小且不承诺支持；现成课程面向其他母语背景，不对应RAZ/新概念；内容和依赖许可不等于全部MIT</td>
+</tr>
+<tr>
+<td><a href="https://github.com/zyronon/TypeWords">TypeWords</a></td>
+<td>词汇练习、跟打/默写/自测、文章导入、按句输入与发音、错词和掌握集合</td>
+<td>参考句段训练、文章与词汇互相定位、错题与训练反馈；GPL代码可在满足许可时复用</td>
+<td>Nuxt技术栈、键盘输入导向；本地数据跨设备要处理备份；触屏低龄和电视不能照搬</td>
+</tr>
+<tr>
+<td><a href="https://github.com/RealKai42/qwerty-learner">Qwerty Learner</a></td>
+<td>React单词记忆、音标发音、章节默写、词库JSON与导入索引</td>
+<td>参考简单词库规范、错误反馈与练习组织；GPL代码可评估</td>
+<td>面向键盘工作者；内置词表不等于完整教材内容，词形输入不等于听说能力</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ZuodaoTech/everyone-can-use-english">Enjoy / 人人都能用英语</a></td>
+<td>官方仓库提供学习软件源码与训练文档；README当前展示网页、电子书、闪卡、课程和浏览器插件方向</td>
+<td>参考材料驱动练习、媒体/句段组织与学习工具组合</td>
+<td>GPL代码；线上服务能力是否与仓库完整对应需进一步核对，不能仅凭网页截图宣称新版全部可复用</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Halleck45/OpenPronounce">OpenPronounce</a></td>
+<td>参考文本＋录音的音素/单词分析、CLI/Python/API、Docker，代码MIT</td>
+<td>作为后续自托管发音反馈研究候选，可对家庭样本测试</td>
+<td>作者明确披露童声、强口音、噪声影响以及误报问题；非首版自动通关裁判，模型和TTS依赖需另审</td>
+</tr>
+</tbody>
+</table></div>
+<p><a href="https://luteorg.github.io/lute-manual/">Lute手册</a>明确列出多词条、父词条和词图，适合改善本方案“同一单词不同词义/词形”的结构。<a href="https://github.com/RealKai42/qwerty-learner/blob/master/docs/toBuildDict.md">Qwerty的词库导入说明</a>使用词条JSON及索引，便于批量处理，但不足以承载页图、原句、音频片段、题源和能力证据，不能直接当教材schema。</p>
+<p><a href="https://github.com/eduardwichner/anzo/blob/main/docs/developer/architecture.md">Anzo架构文档</a>值得优先阅读：其源内容、确定性题目生成、Ajv跨字段检查、稳定ID锁、音频manifest、服务端判分、内容原子重载和历史完整性检查，都是本项目可落地借鉴的组织方式。其服务流程与安全实现仍需代码审查，文档列出某项检查不等于已经满足本项目奖励幂等与反重放要求。</p>
+<h3 id="22">2.2 许可与直接复用判断</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>对象</th>
+<th>已核验许可/来源</th>
+<th>使用建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lute源代码</td>
+<td><a href="https://github.com/LuteOrg/lute-v3/blob/develop/LICENSE.txt">MIT</a></td>
+<td>可评估提取独立算法/模型，保留许可；外部词典和导入书籍另算</td>
+</tr>
+<tr>
+<td>Anzo自身代码</td>
+<td><a href="https://github.com/eduardwichner/anzo/blob/main/THIRD_PARTY.md">MIT及第三方说明</a></td>
+<td>可参考或择取代码；容器分发前审查依赖，文档明确包含一个GPL会话存储依赖</td>
+</tr>
+<tr>
+<td>Anzo课程</td>
+<td><a href="https://github.com/eduardwichner/anzo/blob/main/content/LICENSE">content/LICENSE</a>，CC BY-NC-SA 4.0</td>
+<td>非商业、署名、相同方式共享；不能自动变成可商业分发教材库</td>
+</tr>
+<tr>
+<td>TypeWords / Qwerty / Enjoy代码</td>
+<td>各仓库GPL-3.0许可</td>
+<td>复制和分发派生代码需满足GPL义务；不是“GPL禁止商用”，也不是可不处理许可直接合入任意闭源发行包</td>
+</tr>
+<tr>
+<td>开源仓库中的词典、教材、音频</td>
+<td>需独立核查权利链</td>
+<td>Qwerty README明确词典数据来源及外部发音API，代码许可不自动授权第三方材料或服务</td>
+</tr>
+<tr>
+<td>OpenPronounce</td>
+<td>代码MIT；模型、TTS等有独立依赖</td>
+<td>先保留实验适配器，不承诺童声正确率或NAS实时性能</td>
+</tr>
+</tbody>
+</table></div>
+<p>Anzo README明确音频存在人工听检、内容独立审阅环节；它证明了内容治理的价值，不证明“无人审核即可生产零错误课程”。其小型项目维护风险应纳入复用决策，不能仅因功能接近就整套迁入。</p>
+<h2 id="3">3. 相似应用的体验借鉴</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>应用</th>
+<th>官方可核实能力</th>
+<th>建议借鉴</th>
+<th>本项目必须补的部分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://finchcare.com/about-finch">Finch</a></td>
+<td>日常目标、自我照顾活动、宠物冒险分享故事、换装和家装</td>
+<td>共同经历、偏好和回归后的短故事，让宠物有连续性</td>
+<td>任务勾选不验证教材；需要家长范围、训练与证据</td>
+</tr>
+<tr>
+<td><a href="https://www.superbyte.site/tutorial">Study Bunny</a></td>
+<td>学习计时、休息模式、房间物品、待办、闪卡与学习记录</td>
+<td>学习时限制商店/布置干扰，结束后短时间照顾，装扮锁定</td>
+<td>计时发币和自评闪卡不等于结果验证；不能无限延长学习换粮</td>
+</tr>
+<tr>
+<td><a href="https://github.com/HabitRPG/habitica">Habitica</a></td>
+<td>Habits/Dailies/To-Dos/Rewards、经验金币、装备、宠物与成长</td>
+<td>不同任务类型、成长与消费资源分开</td>
+<td>不照搬漏学扣血、复杂社交和反复点任务增发</td>
+</tr>
+<tr>
+<td><a href="https://studycat.com/products/english/">Studycat</a></td>
+<td>儿童英语游戏、故事、听说训练；<a href="https://studycat.com/about/voiceplay/">VoicePlay</a>描述语音参与互动</td>
+<td>图示/语音操作、口语触发世界动作、具体反馈</td>
+<td>自有课程不等于相同RAZ/新概念；厂商语音能力不等于开放SDK</td>
+</tr>
+<tr>
+<td><a href="https://www.raz-kids.com/main/ViewPage/name/rocket_launch/">Raz-Kids</a></td>
+<td>练习、完成、成功分别发星星；火箭房间与头像装饰；激励入口可关闭</td>
+<td>学习证据分层、学习和自由互动入口分开、已拥有物品保留</td>
+<td>点读版教材映射、跨教材、固定日窗口、家庭NAS与宠物生命</td>
+</tr>
+</tbody>
+</table></div>
+<p><a href="https://www.raz-kids.com/main/ViewPage/name/ebooks/">Raz-Kids电子书说明</a>还提供朗读录音、回听、测验及开放题教师复核。口语或开放题有人工确认入口是合理边界，不需要为了宣称“AI全自动”隐藏这个边界。</p>
+<p>Habitica虽开源，但<a href="https://github.com/HabitRPG/habitica/blob/develop/LICENSE">LICENSE</a>区分GPL代码、CC BY-SA素材和HabitRPG自制CC BY-NC-SA素材，不宜把宠物图片直接拿来做商业版本。Finch、Study Bunny、Studycat、RAZ在本次核验中属于体验参考，不具有已证实可直接复制其代码/教材/美术的开放授权。</p>
+<h3 id="31">3.1 新增的产品优化</h3>
+<p>外部APP已做测验或已有奖励时，内部验证采用短抽样、薄弱项优先或家长认可的已有证据，不重复要求整套训练。没有平台接口时不把截图OCR或计时伪装成官方成绩。</p>
+<p>学习时段、必要照护、自由装扮和静态查看分开配置。允许等待家长复核的孩子查看完成记录，基础托管不被学习门禁锁死；装扮预览不消费，保存可撤销，电视采用槽位选择。</p>
+<p>宠物成年后用新发现、共同相册和少量生活故事延续意义，避免只能不断加高材料价格。不同年龄孩子的题量与速度不直接决定生存资源，先保证完成各自合理计划的基础供给公平。</p>
+<h2 id="4-skillsai">4. 相关Skills与AI制作工具</h2>
+<p>Skills是AI操作指南与脚本组合，不是运行时引擎，也不是安装后自动获得完整产品。选取已核实来源和具体文件，按任务加载，不一次安装大量重复技能。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>候选</th>
+<th>已核实内容</th>
+<th>本项目定位</th>
+<th>成熟度与适配限制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/pixijs/pixijs-skills">PixiJS官方skills</a></td>
+<td>v8应用、图形、精灵、资源、事件、性能与可访问性；MIT</td>
+<td>优先候选；补足AI写PixiJS时的版本和资源管理规范</td>
+<td><a href="https://www.skills.sh/pixijs/pixijs-skills">目录页</a>显示官方来源和使用记录；运行库仍需安装并实测</td>
+</tr>
+<tr>
+<td><a href="https://github.com/openai/skills/tree/main/skills/.curated/hatch-pet">OpenAI hatch-pet</a></td>
+<td>原角色参考、分状态生成、切帧、图集校验、预览与局部修复；Apache-2.0</td>
+<td>参考图驱动宠物精灵图的重点试验候选，补充纯参数化角色路线</td>
+<td><a href="https://www.skills.sh/openai/skills/hatch-pet">技能页</a>可核验；默认状态与尺寸服务Codex宠物，需适配吃喝/医院/换装；生图服务不必然免费</td>
+</tr>
+<tr>
+<td><a href="https://github.com/arjun988/blender-skills">Blender Skills</a></td>
+<td>参数建模、动画、检查、导出等社区技能，README采用Blender MCP执行；MIT</td>
+<td>三维卡通样片的后续候选，只挑必要技能</td>
+<td>社区维护，单技能采用量较低；支持脚本/MCP不等于自动达到高质量；可用直接Python/CLI减少交互依赖</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ybuild-ai/ai-game-art-pipeline-skill">AI Game Art Pipeline</a></td>
+<td>背景透明处理、接触表、视频抽帧、锚点与运行检查；MIT</td>
+<td>借鉴确定性后处理和资源检查脚本</td>
+<td>README明确不适合无筛选的整套全自动游戏美术，不能作为满足用户无人手工要求的现成保证</td>
+</tr>
+<tr>
+<td><a href="https://github.com/openai/skills/tree/main/skills/.curated/playwright">OpenAI Playwright</a> / <a href="https://github.com/anthropics/skills/tree/main/skills/webapp-testing">Anthropic webapp-testing</a></td>
+<td>浏览器操作、截图、控制台和交互检查</td>
+<td>本地已具Playwright能力，优先复用现有技能</td>
+<td>无需重复装两套；桌面浏览器自动化不能代替真实iPad/电视测录音和焦点</td>
+</tr>
+</tbody>
+</table></div>
+<p>PixiJS官方<a href="https://github.com/pixijs/pixijs-skills/blob/main/README.md">技能README</a>、hatch-pet的<a href="https://github.com/openai/skills/blob/main/skills/.curated/hatch-pet/SKILL.md">具体SKILL</a>与<a href="https://github.com/openai/skills/blob/main/skills/.curated/hatch-pet/LICENSE.txt">许可证</a>已逐项核验；本次只研究，不安装、不执行远程技能脚本。</p>
+<h3 id="41">4.1 素材路线的调整</h3>
+<p>纯参数化角色继续作为可确定重建的基础路线，但不应过早排除AI参考图精灵图。可以用同一只宠物与相同互动比较：程序部件动画、参考图分状态生成精灵图，两者都经过自动检查与重试。</p>
+<p>hatch-pet值得借鉴的重点是“图像模型负责视觉，确定性程序负责几何与打包”，而不是让模型一次生成精确可用图集。它现成的失败、等待、工作等状态不直接映射儿童学习表现；须重新定义温和的动作词汇，并增加进食、睡眠、饮水和康复。换装若采用整套精灵图会产生组合成本，应单独定义挂点和遮挡或限制为少量套装。</p>
+<p>素材AI在隔离构建环境操作，无家庭隐私与生产密钥；生成的代码不在儿童客户端任意执行。失败重试有预算上限，不能以“必须无人操作”为理由发布不合格资产。用户只评审喜好，不负责修图绑骨。</p>
+<h2 id="5">5. 技术框架的收敛</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>技术</th>
+<th>推荐阶段</th>
+<th>采用方式</th>
+<th>不能替代</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://pixijs.com/8.x/guides/components/scene-objects">PixiJS</a></td>
+<td>首版</td>
+<td>宠物渲染与场景；原生API封装，React绑定可选</td>
+<td>原画拆件、自动优秀动作和角色行为设计</td>
+</tr>
+<tr>
+<td><a href="https://github.com/statelyai/xstate">XState</a></td>
+<td>首版可选但建议</td>
+<td>训练/验证/待复核状态、动作队列和打断</td>
+<td>数据库事务、幂等奖励、分布式并发</td>
+</tr>
+<tr>
+<td><a href="https://ajv.js.org/">Ajv</a></td>
+<td>首版</td>
+<td>JSON Schema＋应用自研跨字段lint</td>
+<td>语义正确、题目无歧义、图片含义</td>
+</tr>
+<tr>
+<td><a href="https://github.com/docling-project/docling">Docling</a></td>
+<td>可选导入worker</td>
+<td>PDF/Office/EPUB/OCR解析与结构JSON、CLI/API</td>
+<td>教材忠实性、版本识别、图片语义和最终内容质量</td>
+</tr>
+<tr>
+<td><a href="https://h5p.org/content-types-and-applications">H5P题型</a> / <a href="https://www.imsglobal.org/spec/qti/v3p0/oview">QTI</a></td>
+<td>首版参考，互通后置</td>
+<td>借鉴题目、答案、评分、恢复与包结构；自行实现少量适龄题型</td>
+<td>教材库、服务端奖励、TV输入；不先做完整LMS/标准认证</td>
+</tr>
+<tr>
+<td><a href="https://github.com/open-spaced-repetition/ts-fsrs">ts-fsrs</a></td>
+<td>后续</td>
+<td>基于目标/能力证据推荐复习到期日</td>
+<td>家长周计划、儿童掌握判定、时间门禁</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ggml-org/whisper.cpp">whisper.cpp</a></td>
+<td>后续</td>
+<td>可选本地ASR worker，平台独立适配</td>
+<td>发音音素评分、童声准确率、说话人身份</td>
+</tr>
+<tr>
+<td><a href="https://www.blender.org/about/license/">Blender</a> / <a href="https://threejs.org/">Three.js</a></td>
+<td>质感升级</td>
+<td>参数化三维生产，预渲染或GLB</td>
+<td>任意网格自动清理、四足动作完美生成、全部旧TV兼容</td>
+</tr>
+</tbody>
+</table></div>
+<p>首版保持React/TypeScript/Vite＋Fastify＋PostgreSQL＋Docker。内容工具放导入/生成worker，不常驻挤占NAS；不因采用AI出题就强加向量库、LangChain、Redis、整套H5P平台和实时三维引擎。</p>
+<h3 id="51">5.1 版本与设备陷阱</h3>
+<p>2026-11-06核验npm发布元数据：<a href="https://registry.npmjs.org/@pixi/react/latest">@pixi/react 8.0.5</a>要求React&gt;=19、PixiJS ^8.2.6；<a href="https://registry.npmjs.org/xstate/latest">XState 5.33.3</a>为稳定发布，官网alpha文档不应直接混用；<a href="https://registry.npmjs.org/ts-fsrs/latest">ts-fsrs 6.0.0</a>要求Node&gt;=24。开发时锁精确版本并再次核验，不把文档main分支等同已发布兼容范围。</p>
+<p><a href="https://pixijs.com/8.x/guides/components/renderers">PixiJS当前v8渲染器指南</a>将WebGL列为推荐，WebGPU为实验，CanvasRenderer为coming-soon。首版低配回退应采用独立DOM/SVG静态或低动效视图，不能承诺自动切Canvas就兼容所有电视。</p>
+<p><a href="https://github.com/ggml-org/whisper.cpp">whisper.cpp</a>提供CPU、量化与Docker入口，但浏览器录音仍需格式探测、解码与资源限制，NAS速度要实测。<a href="https://github.com/Halleck45/OpenPronounce">OpenPronounce</a>是发音研究候选，作者明确披露成人训练语音对童声的局限和误报，不用它未经校准的分数决定孩子是否拿到食物。</p>
+<h2 id="6">6. 教材内容生产与管理</h2>
+<h3 id="61">6.1 可扩展数据结构</h3>
+<p>统一模型为“教材系列→版本→层级内容节点→源片段→学习目标”。RAZ和新概念用适配映射配置，其他绘本、学校课本和家庭原创内容也映射到同一结构。新增教材不应修改宠物、奖励和挑战业务代码。</p>
+<p>教材原文、目标词义、教学能力、题目、孩子证据分别保存。同一个单词的不同词义不合并；同一词义的听辨、词形识别、朗读、拼写也不合并成一个掌握值。原图、教材音频和合成示范明确区分。</p>
+<h3 id="62">6.2 原文来源与导入</h3>
+<p>真实教材从可合法使用的文档/结构化包进入；AI可以提取、对齐、标注与切片，不能靠“记得某课”生成原文。AI原创扩展内容另立教材类型。</p>
+<p>导入支持结构化JSON/ZIP、XLSX/CSV、纯文本，PDF/EPUB/DOCX和扫描图通过可选worker。保存原文件摘要、页码、阅读顺序、文字坐标、音频时间片和提取结果。重复导入先比较版本和内容摘要，显示新增、重复、修订和缺失项，不原地覆盖。</p>
+<p>导入任务有进度、失败原因、暂停重试和按单元发布；异常片段进入隔离区，不拖累已完成内容。原文件只读，提取文本与规范化文本分开；修订产生新版本并显示受影响计划与题目。</p>
+<h3 id="63">6.3 语义切片</h3>
+<p>按完整页段/对话保留上下文，再将句子与目标词作为可选择原子片。图片相关信息与音频片段随语义绑定。代词、问答和否定句不被机械字数切片割断。</p>
+<p>SourceSlice必须可回答：来自哪个版本、哪本书/课、哪页/句、依赖哪段上下文、哪些图片/音频、所含词义与目标、源内容摘要和切片版本是什么。</p>
+<p>首版先按计划ID精确筛选，再按需要带入上下文；不用向量相似度决定学习范围。未来语义检索也先做版本和范围过滤。</p>
+<h2 id="7-ai">7. AI出题与挑战生产</h2>
+<h3 id="71">7.1 生产流程</h3>
+<p>教材原文入库→语义切片→学习目标蓝图→AI生成候选题→schema和领域规则检查→语义复核→可执行预览→发布题库→今日计划组题→孩子作答→验证证据与复习更新。</p>
+<p>AI出题是后台生产能力，挑战组题是受规则约束的运行能力。二者分离后，可以批量扩充、失败重试和控成本，也能在模型不可用时正常训练。</p>
+<h3 id="72">7.2 出题输入与输出</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>对象</th>
+<th>必需内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>输入范围</td>
+<td>已发布教材版本、选中片段、必要上下文、允许复习范围</td>
+</tr>
+<tr>
+<td>教学蓝图</td>
+<td>所测目标、能力类型、题型、难度、孩子识字/拼写前提、设备输入方式</td>
+</tr>
+<tr>
+<td>词汇约束</td>
+<td>目标词义、已学干扰词、语言变体、不得增加的理解前提</td>
+</tr>
+<tr>
+<td>题目输出</td>
+<td>题干、稳定选项ID、答案/允许答案集合、解释、提示、媒体引用</td>
+</tr>
+<tr>
+<td>可追溯信息</td>
+<td>具体源句ID与证据摘录、原文/变式标签、question_family_id</td>
+</tr>
+<tr>
+<td>生产记录</td>
+<td>model、prompt/template版本、源摘要、成本、检查报告、发布时间</td>
+</tr>
+</tbody>
+</table></div>
+<p>基础客观题优先由可靠模板抽取/组装，AI补充多样性和核对；理解题和情境表达由AI生成但需要更严的质量门槛。不要让模型自由生成评分代码。</p>
+<h3 id="73">7.3 自动质量门槛</h3>
+<p>检查引用和scope、源句忠实性、单选唯一性、填空多解、词图/音文一致、指令是否泄题、难度与能力前提、训练暴露和题目家族重复，以及目标设备可操作性。</p>
+<p>复核模型先依据源文独立答题，再比较答案并报告歧义。模型一致只降低风险，不构成无误证明。低风险且可确定校验的模板题可按启用策略自动发布；不确定源文、开放题与分歧项隔离等待确认或重生成。</p>
+<p>标准反例要覆盖：blue图同时出现多种颜色、a/an空格多解、bag/bags评分目标混淆、否定句遗漏not、代词缺上下文、听力提示念出阅读答案、缩写与等价答案、选项仅换序却当独立新题。</p>
+<h3 id="74">7.4 一个可检验的小例子</h3>
+<p>家庭自编源片段：“This is my bag. It is blue.”。当天只选这两句与bag、blue。可生成bag词图关联、blue颜色识别、原句朗读或听句选图，源句关系保持可查。</p>
+<p>“The bag is under the table.”不能成为当天必需验证，因为under the table未在所选材料和已学范围中。即使模型觉得“题目很简单”，也不能越过scope。</p>
+<p>“Whose bag is it?”涉及my的归属理解，如果当日蓝图只测bag词形识别，应单独标记所测能力或不用。出题依据不仅是文本相似，还必须符合能力目标。</p>
+<h3 id="75">7.5 场景调用与错误修复</h3>
+<p>医院、公园和小家调用同一题库与证据系统；场景传目标和允许范围，不直接生成一条任意题决定治疗或发奖。缺题时同目标替换、转帮助或暂停，不拿超纲题凑数。</p>
+<p>题目报告后先停用受影响版本，再生成修订并回归。已经作答的孩子保留原题快照和修正说明；无效证据可修订，不追扣已获材料，不把教材或题目错误算孩子失败。</p>
+<h2 id="8">8. 已学内容与学习证据</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>状态/事实</th>
+<th>由什么产生</th>
+<th>是否证明掌握</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>已计划</td>
+<td>家长选定范围并发布计划</td>
+<td>否</td>
+</tr>
+<tr>
+<td>声明已学</td>
+<td>孩子在原工具学习后确认实际页句，或家长导入历史</td>
+<td>否，保存来源</td>
+</tr>
+<tr>
+<td>已训练</td>
+<td>应用内实际练习、试听、提示与跟读事件</td>
+<td>仅说明参与与帮助程度</td>
+</tr>
+<tr>
+<td>已验证</td>
+<td>客观判分、经校准评估或家长确认，绑定能力与题源</td>
+<td>本次证据</td>
+</tr>
+<tr>
+<td>掌握趋势</td>
+<td>多次有间隔且能力相符的证据汇总</td>
+<td>支持当前趋势，非永久保证</td>
+</tr>
+</tbody>
+</table></div>
+<p>“已学集合”由真实学习声明/来源记录形成，计划过去不自动加入。历史学过内容可用勾选书课初始化，不补发过去奖励，也不自动标全会；必要时安排短诊断。</p>
+<p>医院应该从已经接触、当前适合且需要复习的范围抽取，而不是只从答对过的题抽取。否则最薄弱内容反而永远不进入复习。</p>
+<h2 id="9">9. 现有方案覆盖与缺口</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>领域</th>
+<th>原有覆盖</th>
+<th>优化结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>同教材与页句scope</td>
+<td>已有明确主线</td>
+<td>保留，增加通用教材适配与source slice</td>
+</tr>
+<tr>
+<td>导入与版本包</td>
+<td>已有导入/发布描述</td>
+<td>补导入job、差异预览、原文对照、隔离、稳定ID与撤回</td>
+</tr>
+<tr>
+<td>AI出题</td>
+<td>原偏向题目草稿</td>
+<td>提升为后台生产主线，加入蓝图、复核、质量报告和成本缓存</td>
+</tr>
+<tr>
+<td>已学与掌握</td>
+<td>已区分学习/验证/掌握概念</td>
+<td>补可执行事实来源、历史初始化和医院候选规则</td>
+</tr>
+<tr>
+<td>题型与通过条件</td>
+<td>已有多题型和人工兜底</td>
+<td>明确分母与必需能力，不能总分掩盖未测能力</td>
+</tr>
+<tr>
+<td>周计划</td>
+<td>已有周日安排与窗口</td>
+<td>补draft/validated/published编译、稳定奖励资格、改计划分母规则</td>
+</tr>
+<tr>
+<td>宠物生命与情绪</td>
+<td>已覆盖身体状态、成长与场所</td>
+<td>继续，新增成年后故事与非交易化陪伴</td>
+</tr>
+<tr>
+<td>饱腹与消费</td>
+<td>事务描述和动画文案冲突</td>
+<td>统一服务端先提交后表现，食物份额未吃下部分保留</td>
+</tr>
+<tr>
+<td>自动素材</td>
+<td>已有程序化角色路线</td>
+<td>补hatch-pet试验路线、包构建契约、重试停止和隔离执行</td>
+</tr>
+<tr>
+<td>电视与低配</td>
+<td>已有遥控和伴侣录音</td>
+<td>补WebGL能力矩阵、独立静态回退，不能假定Canvas自动可用</td>
+</tr>
+<tr>
+<td>离线与多设备</td>
+<td>已有服务端账本与待同步</td>
+<td>补租约/修订号、迟到提交、次日复核归原学习日</td>
+</tr>
+<tr>
+<td>家长维护负担</td>
+<td>已有计划和录音复核</td>
+<td>补问题收件箱、批量发布/修复、成本与导入状态</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="10">10. 下一阶段的验证顺序</h2>
+<p>先做一周内容生产样本：RAZ实际版本的若干页和新概念实际版本的一小段课文，完成导入、对齐、切片、目标蓝图、AI候选题与检查报告。包含故意错误和缺媒体样本，验证确实会阻止发布。</p>
+<p>再做两个素材样片：参数化角色与参考图精灵图采用相同场景、动作和围巾，比较生成稳定性、重试成本与设备表现；两者都不要求用户手动修图。选定一条主路线后再扩大素材量。</p>
+<p>随后把真实iPadHTTPS录音、目标电视遥控/回退、双设备重复提交和次日复核接入最小闭环。P0通过后重新估算首版工期，不把尚未验证的自动内容与动画生产成本藏在原估算中。</p>
+<p>首版不追求整套RAZ/新概念一口气入库。先证明增加新书、改一条源句、撤回一道错误题、升级一个宠物包，都不需要重写业务，也不破坏孩子已有记录。可持续更新的正确链路，比首发数量更重要。</p></article><footer>伴学小岛 · 开源参考与内容体系优化</footer></main></body></html>

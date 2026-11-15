@@ -1,0 +1,2099 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>伴学小岛 · 完整落地方案</title><style>
+:root{color-scheme:light;--paper:#fffaf1;--ink:#363e35;--muted:#667065;--green:#245c49;--line:#dbe2d6;--soft:#ecf1e6}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.85 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}a{color:var(--green);text-underline-offset:4px}a:focus-visible,button:focus-visible{outline:3px solid #b56c26;outline-offset:4px}aside{position:fixed;inset:0 auto 0 0;width:270px;background:#edf2e8;padding:34px 25px;overflow:auto;border-right:1px solid var(--line)}.brand{font-size:25px;font-weight:750;color:var(--green);letter-spacing:1px}.sub{font-size:13px;color:var(--muted);margin:7px 0 24px}aside ul{padding:0;list-style:none}aside li{margin:7px 0}aside a{font-size:14px;text-decoration:none;display:block;border-radius:7px;padding:5px 8px}aside a:hover{background:#dce8d7}.utility{display:flex;gap:8px;margin-top:24px}.utility button{border:1px solid #aabda9;border-radius:8px;background:transparent;color:var(--green);padding:9px 16px;cursor:pointer;font:inherit;font-size:13px}main{margin-left:270px;max-width:1330px;padding:58px 64px 90px;overflow-x:clip}header{padding:0 0 35px;border-bottom:1px solid var(--line);margin-bottom:36px}.eyebrow{color:var(--green);font-weight:650;font-size:14px;letter-spacing:2px}header h1{font-size:46px;line-height:1.25;color:var(--green);letter-spacing:-1.5px;margin:12px 0 15px}header p{max-width:690px;font-size:18px;color:var(--muted);margin:0}.core-flow{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}.core-flow span{font-size:13px;border-bottom:2px solid #acc9a8;padding:5px 2px}.lead-image{width:100%;height:auto;display:block;border-radius:14px;margin:28px 0 9px}.caption{font-size:13px;color:var(--muted)}article h2{font-size:27px;line-height:1.5;color:var(--green);margin:60px 0 22px;padding-top:8px;letter-spacing:-.4px}article h3{font-size:20px;line-height:1.6;margin:33px 0 13px}article p{margin:12px 0 18px;overflow-wrap:anywhere}article li{margin:8px 0}article ul,article ol{padding-left:24px}.table-wrap{overflow:auto;max-width:100%;margin:22px 0;border:1px solid var(--line);border-radius:9px;-webkit-overflow-scrolling:touch}table{border-collapse:collapse;width:100%;font-size:14px;min-width:590px}th{text-align:left;background:#e9f0e4;font-weight:650;color:#244b3b}th,td{padding:13px 15px;vertical-align:top;border-bottom:1px solid var(--line);line-height:1.7;min-width:95px}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fffef9}pre{max-width:100%;overflow:auto;background:#1f332b;color:#eff6e8;border-radius:9px;padding:24px;font-size:13px;line-height:1.7}code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}article img{width:100%;height:auto;border-radius:12px}blockquote{margin:22px 0;border-left:4px solid #b0c9a7;padding:4px 20px;color:var(--muted)}.architecture{border:1px solid var(--line);border-radius:12px;padding:25px;margin:20px 0;background:#f2f5eb}.arch-line{display:flex;gap:24px;align-items:center;background:#fffdf7;border:1px solid #d5e0cd;border-radius:8px;padding:15px 18px}.arch-line b{min-width:100px;color:var(--green);font-size:15px}.arch-line span{font-size:14px}.connector{height:20px;width:2px;background:#9fb791;margin-left:67px}footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}.mobile-nav{display:none}#top-link{display:block;margin-top:20px}
+@media(min-width:1550px){main{margin-left:300px;padding-left:90px;padding-right:90px}aside{width:300px}}@media(max-width:1080px){th,td{min-width:72px;padding:11px 12px}aside{width:230px;padding:28px 16px}main{margin-left:230px;padding:40px 30px 70px}header h1{font-size:37px}article h2{font-size:24px}}@media(max-width:760px){aside{position:static;width:auto;padding:22px 23px;max-height:none;border-right:0;border-bottom:1px solid var(--line)}aside .toc{display:none}aside.expanded .toc{display:block}aside .sub{margin-bottom:0}.utility{margin-top:15px}.mobile-nav{display:block}main{margin:0;padding:32px 22px 60px}header h1{font-size:32px;letter-spacing:-.5px}header p{font-size:16px}article h2{font-size:23px;margin-top:43px}article h3{font-size:19px}.arch-line{display:block}.arch-line b{display:block;margin-bottom:5px}body{font-size:16px}pre{padding:16px}article li{margin:10px 0}table{min-width:0}th,td{min-width:64px;padding:10px 11px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{aside,.utility,.core-flow{display:none!important}main{margin:0;max-width:none;padding:0}body{background:white;color:#222;font-size:10pt;line-height:1.65}header h1{font-size:28pt}header{margin-bottom:20px}article h2{font-size:18pt;page-break-after:avoid;margin-top:28px}article h3{font-size:13pt;page-break-after:avoid}table{min-width:0;font-size:8pt}th,td{padding:7px;min-width:0}tr{break-inside:avoid}.table-wrap{overflow:visible}pre{white-space:pre-wrap;background:#eee;color:#222;font-size:8pt}a{color:#222;text-decoration:none}img{break-inside:avoid}.arch-line{break-inside:avoid}}
+
+article h4{font-size:18px;margin-top:28px}article h5{font-size:17px;color:#245c49;margin-top:24px}aside a{font-size:13px}table{font-size:13px}pre{font-size:12px}article p{overflow-wrap:anywhere}main{overflow-x:clip}.table-wrap{-webkit-overflow-scrolling:touch}@media(max-width:1080px){th,td{min-width:72px;padding:11px 12px}}@media(max-width:760px){table{min-width:0}th,td{min-width:64px;padding:10px 11px}}</style></head><body id="top"><aside id="nav"><div class="brand">伴学小岛</div><div class="sub">完整落地方案 · v1.0</div><div class="utility"><button onclick="window.print()">打印 / 存为PDF</button><button class="mobile-nav" onclick="document.getElementById('nav').classList.toggle('expanded')">章节</button></div><div class="toc">
+<ul>
+<li><a href="#1">1. 项目定义</a></li>
+<li><a href="#2">2. 关键设计决策</a></li>
+<li><a href="#3">3. 系统架构</a></li>
+<li><a href="#4">4. 内容链路</a></li>
+<li><a href="#5">5. 教材来源与已学范围</a></li>
+<li><a href="#6">6. 美术资产链路</a></li>
+<li><a href="#7">7. 动效实现</a></li>
+<li><a href="#8">8. 设计系统</a></li>
+<li><a href="#9">9. 学习与验证</a></li>
+<li><a href="#10">10. 奖励与宠物</a></li>
+<li><a href="#11_1">11. 部署与运维</a></li>
+<li><a href="#12_1">12. 里程碑</a></li>
+<li><a href="#13">13. 风险登记册</a></li>
+<li><a href="#14">14. 验收清单</a></li>
+<li><a href="#15">15. 待决策事项</a></li>
+</ul>
+</div>
+</aside><main><header><div class="eyebrow">产品 · 内容 · 美术 · 动效 · 工程</div><h1>伴学小岛<br>完整落地方案</h1><p>教材内容、学习证据与宠物生活共用一条可追溯链路，支持家庭自部署与持续更新。</p></header><article>
+<h2 id="1">1. 项目定义</h2>
+<p><strong>一句话</strong>：孩子继续用自己熟悉的工具（点读笔、RAZ / 新概念 APP）学生词和课文，回到伴学小岛用同一批内容做训练与验证，验证结果转化为宠物的粮食、成长和生活事件。</p>
+<p><strong>核心闭环（七步）</strong></p>
+<ol>
+<li>家长选定教材与范围（如 RAZ《The Bag》第 3–6 页）→ 制定本周每日计划</li>
+<li>系统把原文切成可定位的语义片，绑定学习目标</li>
+<li>AI 按蓝图生成候选题，质量门拦截后入库</li>
+<li>孩子照常用点读笔学习，家长确认「今天学了哪几页」</li>
+<li>孩子在小岛完成训练（可帮助）与验证（独立作答）</li>
+<li>验证结果产生掌握标签与复习到期，同时结算奖励</li>
+<li>奖励变成粮食/装扮/回忆，宠物状态随时间推进</li>
+</ol>
+<p><strong>产品的不可替代点</strong>：不是又一个题库 App，而是「同一批教材内容」的闭环验证 + 有生命感的宠物。少了前者是普通游戏，少了后者是普通刷题。</p>
+<h3 id="11">1.1 可度量验收目标</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>目标</th>
+<th>判定方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>内容可回查</td>
+<td>任意一道题可定位到教材页、句、码点区间</td>
+<td>抽检 30 题，全部命中</td>
+</tr>
+<tr>
+<td>计划稳定性</td>
+<td>改计划不重置已发奖励</td>
+<td>同一资格重放 50 次，账本不增加</td>
+</tr>
+<tr>
+<td>判分可信</td>
+<td>独立/帮助/未识别三态分开记录</td>
+<td>证据矩阵可区分，不合并为正确率</td>
+</tr>
+<tr>
+<td>宠物生命感</td>
+<td>待机 60 秒内出现 2 次以上自然动作，无静止感</td>
+<td>录屏抽检</td>
+</tr>
+<tr>
+<td>界面一致性</td>
+<td>所有页面使用同一令牌，无硬编码色值</td>
+<td>代码扫描</td>
+</tr>
+<tr>
+<td>真机可用</td>
+<td>iPad 2019 + 电视遥控完成一整天流程</td>
+<td>连续 7 天试用</td>
+</tr>
+<tr>
+<td>响应性能</td>
+<td>儿童端交互 60fps，低配 30fps 不崩</td>
+<td>真机性能面板</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="12">1.2 差异化位置</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>代表</th>
+<th>强项</th>
+<th>缺口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分级阅读 App</td>
+<td>RAZ / 牛津树配套</td>
+<td>内容权威、体系完整</td>
+<td>无长线激励，孩子被动</td>
+</tr>
+<tr>
+<td>打卡养成 App</td>
+<td>各类宠物养成</td>
+<td>激励强、粘性高</td>
+<td>学习与宠物脱钩，可「只玩不学」</td>
+</tr>
+<tr>
+<td>通用题库</td>
+<td>各类英语练习</td>
+<td>题量大</td>
+<td>与孩子实际所学教材不对齐</td>
+</tr>
+<tr>
+<td><strong>本项目</strong></td>
+<td>—</td>
+<td><strong>同一批教材内容 + 有生命感的宠物 + 证据可追溯</strong></td>
+<td>内容导入与素材生产是主要成本</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>护城河不在题量，在三件事</strong>：教材版本对齐的精度、验证与证据的区分度、宠物的生命感。三者任一缺失，都会退化成上面某一类产品。</p>
+<hr />
+<h2 id="2">2. 关键设计决策</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>决策点</th>
+<th>采用</th>
+<th>理由</th>
+<th>已否决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D1</td>
+<td>美术生产技术</td>
+<td>AI 生成高质感立绘 + 自动抠图 + 自动网格变形</td>
+<td>保留水彩绘本感染力，且无需手工绑骨</td>
+<td>纯参数化 SVG（质感塌陷为贴纸风）</td>
+</tr>
+<tr>
+<td>D2</td>
+<td>动效引擎</td>
+<td>WebGL2 网格变形，Canvas2D 降级</td>
+<td>单张立绘即可持续运动，资产极小</td>
+<td>逐帧序列（体积×30）、Spine（需人工作业）</td>
+</tr>
+<tr>
+<td>D3</td>
+<td>宠物换装</td>
+<td>分层挂点，不依赖整图</td>
+<td>避免重新生成全身</td>
+<td>每次换装重出整图（一致性差、成本高）</td>
+</tr>
+<tr>
+<td>D4</td>
+<td>已学范围来源</td>
+<td>家长显式确认 + 可选扫码/拍照辅助</td>
+<td>点读笔闭源，无法可靠自动同步</td>
+<td>「自动同步点读笔数据」（不可实现）</td>
+</tr>
+<tr>
+<td>D5</td>
+<td>发音评测</td>
+<td>三档置信度，低置信不下「错」结论</td>
+<td>误判比不判更伤信任</td>
+<td>二元对错</td>
+</tr>
+<tr>
+<td>D6</td>
+<td>出题生产形态</td>
+<td><strong>外部 Agent 出题 + MCP/文件导入</strong></td>
+<td>系统不绑定模型，prompt 可快速迭代，成本透明</td>
+<td>系统内接模型（换模型即改代码）、内置 Web 出题界面</td>
+</tr>
+<tr>
+<td>D7</td>
+<td>部署形态</td>
+<td>单家庭 Docker Compose + NAS</td>
+<td>数据留在家中，运维成本低</td>
+<td>多租户 SaaS（首版无必要）</td>
+</tr>
+<tr>
+<td>D8</td>
+<td>前端框架</td>
+<td>React 19 + PixiJS 8 封装</td>
+<td>业务与渲染解耦，逐帧不触发 React 重渲染</td>
+<td>游戏引擎（教材管理与家长端不合适）</td>
+</tr>
+<tr>
+<td>D9</td>
+<td>英文字体</td>
+<td>Andika（SIL OFL）</td>
+<td>专为识字设计，单层 a/g，符合教材习惯</td>
+<td>装饰性手写体（字形辨识差）</td>
+</tr>
+<tr>
+<td>D10</td>
+<td>外部引用方式</td>
+<td>自然键（页码/句序/相对路径）由系统解析</td>
+<td>agent 会编造 UUID，但不会编造页码</td>
+<td>直接传 UUID（必然产生悬空引用）</td>
+</tr>
+<tr>
+<td>D11</td>
+<td>视频生成</td>
+<td>不做</td>
+<td>不能交互、不能响应事件、无法换装组合，体积大</td>
+<td>用视频做宠物动作</td>
+</tr>
+<tr>
+<td>D12</td>
+<td>Blender 三维</td>
+<td>不做主路线</td>
+<td>水彩笔触在 3D 渲染中丢失，复杂度陡增</td>
+<td>三维建模做宠物</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="3">3. 系统架构</h2>
+<h3 id="31">3.1 服务拓扑</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>进程</th>
+<th>职责</th>
+<th>是否在答题关键路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>web</td>
+<td>儿童端 / 家长端 / 电视布局，一套路由三种外壳</td>
+<td>是</td>
+</tr>
+<tr>
+<td>api</td>
+<td>身份、内容、计划、学习、奖励、宠物</td>
+<td>是</td>
+</tr>
+<tr>
+<td>worker</td>
+<td>导入、出题、素材构建、备份、对账</td>
+<td>否</td>
+</tr>
+<tr>
+<td>postgres</td>
+<td>业务真值</td>
+<td>是</td>
+</tr>
+<tr>
+<td>media</td>
+<td>立绘、音频、教材页图</td>
+<td>是（只读）</td>
+</tr>
+<tr>
+<td>docling</td>
+<td>PDF/OCR 解析，独立 Python 进程</td>
+<td>否</td>
+</tr>
+<tr>
+<td>asset-builder</td>
+<td>素材构建，隔离沙箱</td>
+<td>否</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>约束</strong>：任何可选增强（AI 对白、ASR、素材重建）失败，都不能回滚已确认的学习与奖励。</p>
+<h3 id="32">3.2 技术栈</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>层</th>
+<th>选型</th>
+<th>关键约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>运行时</td>
+<td>Node.js 24 LTS</td>
+<td>镜像锁 digest</td>
+</tr>
+<tr>
+<td>API</td>
+<td>Fastify 5 + TypeBox + Ajv 8</td>
+<td>统一校验、公开/私有 DTO 分离</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>PostgreSQL 16 + node-postgres + Kysely</td>
+<td>显式事务、行锁、约束优先</td>
+</tr>
+<tr>
+<td>Web</td>
+<td>React 19 + Vite + React Router + TanStack Query</td>
+<td>缓存不作余额真值</td>
+</tr>
+<tr>
+<td>状态机</td>
+<td>XState 5.x</td>
+<td>会话与宠物行为，快照带 machine_version</td>
+</tr>
+<tr>
+<td>渲染</td>
+<td>PixiJS 8 (WebGL)</td>
+<td>ref 封装，逐帧不触发 React</td>
+</tr>
+<tr>
+<td>任务</td>
+<td>PG 任务表 + SKIP LOCKED + 租约</td>
+<td>单家庭无需 Redis</td>
+</tr>
+<tr>
+<td>测试</td>
+<td>Vitest + Fastify inject + Playwright + 真机</td>
+<td>风险驱动</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="33">3.3 模块边界</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>拥有</th>
+<th>禁止</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>identity</td>
+<td>家庭、账号、孩子、设备、会话</td>
+<td>前端提交 family_id 即授权</td>
+</tr>
+<tr>
+<td>curriculum</td>
+<td>原文、版本、节点、切片、目标、媒体映射</td>
+<td>修改已发布原文</td>
+</tr>
+<tr>
+<td>authoring</td>
+<td>导入、候选、质量报告、发布/撤回</td>
+<td>模型输出直接给孩子</td>
+</tr>
+<tr>
+<td>planning</td>
+<td>周计划、修订、学习日、稳定任务</td>
+<td>改计划重置资格</td>
+</tr>
+<tr>
+<td>learning</td>
+<td>接触、训练、验证、作答、复核、证据</td>
+<td>计时自动产生掌握</td>
+</tr>
+<tr>
+<td>rewards</td>
+<td>资格、发放、库存、账本</td>
+<td>动画回调发奖</td>
+</tr>
+<tr>
+<td>pet-world</td>
+<td>宠物状态、照顾、成长、场景、回忆</td>
+<td>自行判题、绕过账本</td>
+</tr>
+<tr>
+<td>asset-factory</td>
+<td>角色参数、图集、动作包</td>
+<td>在客户端执行生成代码</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="4">4. 内容链路</h2>
+<h3 id="41">4.1 教材树</h3>
+<pre><code>出版社 → 系列 → 级别/册 → 单元/课 → 页 → 句 → 语义片
+                                    ↘ 媒体（页图、音频）
+</code></pre>
+<p>每层带稳定 ID 与版本号。已发布层不可改，只能发新版本。</p>
+<h3 id="42">4.2 导入</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>输入</th>
+<th>处理</th>
+<th>产物</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>教材 PDF</td>
+<td>OCR + 版面还原</td>
+<td>页图 + 文本块 + 坐标</td>
+</tr>
+<tr>
+<td>官方音频</td>
+<td>切分对齐</td>
+<td>句级音频 + 时间戳</td>
+</tr>
+<tr>
+<td>结构化 CSV/Excel</td>
+<td>列映射向导</td>
+<td>页-句-词三层记录</td>
+</tr>
+<tr>
+<td>扫描照片</td>
+<td>纠偏 + OCR</td>
+<td>同上，低置信标记</td>
+</tr>
+</tbody>
+</table></div>
+<p>导入状态机：<code>uploaded → parsed → reviewed → published</code>，失败可重试，错误隔离在本次导入。</p>
+<h3 id="43">4.3 语义切片</h3>
+<p><strong>原则</strong>：切片是「可出题的最小语义单位」，不是固定词数切分。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>片类型</th>
+<th>定义</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>原子片</td>
+<td>单个词或固定短语 + 词义 ID</td>
+<td>词图识别、词序、拼写</td>
+</tr>
+<tr>
+<td>上下文片</td>
+<td>完整句 + 前后各一句</td>
+<td>阅读理解、完形、复述</td>
+</tr>
+</tbody>
+</table></div>
+<p>每个片必须携带：<code>slice_id</code>、来源角色、原文引文、码点区间。<strong>没有码点区间的片不允许出题。</strong></p>
+<h3 id="44">4.4 学习目标</h3>
+<p>不用「RAZ 级别 = CEFR」这种粗暴映射，也不用年龄推识字量。</p>
+<p>目标粒度示例：<code>在《The Bag》语境下，看词识别 bag（词义ID v_bag_01）</code>。</p>
+<ul>
+<li>能力：listening / word_recognition / oral_reading / sentence_comprehension / spelling / oral_expression</li>
+<li>通道：audio / visual / text / speech</li>
+<li>一个候选题恰有一个主目标</li>
+</ul>
+<h3 id="45">4.5 出题与质量门</h3>
+<pre><code>蓝图（目标 + 允许源片 + 题型 + 难度 + 呈现意图）
+  → 模板生成（客观题，确定性）
+  → 模型生成（开放题，受控 schema）
+  → 结构校验（JSON Schema）
+  → 语义检查（答案唯一性、干扰项合理性、原文可回查）
+  → 分级发布（P0 自动、P1 人工抽检、P2 必审）
+</code></pre>
+<p>11 种题型已有契约：<code>sentence_choice</code>、<code>cloze_choice</code>、<code>cloze_text</code>、<code>word_order</code>、<code>matching</code>、<code>word_to_picture</code>、<code>picture_to_word</code>、<code>audio_to_picture</code>、<code>reading_choice</code>、<code>oral_reading</code>、<code>retell</code>。</p>
+<p><strong>硬规则</strong>：公开 DTO 不得包含 <code>explanation</code>、<code>answer_spec</code>、<code>family_id</code>。已用负例验证会被 Schema 拒绝。</p>
+<h3 id="46">4.6 出题成本模型</h3>
+<pre><code>单本成本 = 题数 × (输入token × 单价_in + 输出token × 单价_out) × 重试系数
+</code></pre>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>RAZ 一本</th>
+<th>新概念一课</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页数 / 句数</td>
+<td>12–16 页，24–40 句</td>
+<td>1 课，15–25 句</td>
+</tr>
+<tr>
+<td>生成题数</td>
+<td>40–60</td>
+<td>30–45</td>
+</tr>
+<tr>
+<td>单题输入 token</td>
+<td>~1,500（切片 + 上下文 + 蓝图 + few-shot）</td>
+<td>同</td>
+</tr>
+<tr>
+<td>单题输出 token</td>
+<td>~400</td>
+<td>同</td>
+</tr>
+<tr>
+<td>重试系数</td>
+<td>1.3</td>
+<td>1.3</td>
+</tr>
+</tbody>
+</table></div>
+<p>按中端模型（输入 $2.5/M、输出 $10/M）估算：一本约 <strong>$0.5–0.8（3.5–5.5 元）</strong>；换低成本模型可降到 <strong>0.2–0.4 元</strong>。</p>
+<p><strong>控制手段</strong>：结果缓存（同片同目标不重复生成）、蓝图去重、失败只重生失败项、每家庭并发 1 个生成任务。</p>
+<p>生产外置后成本由外部 agent 侧承担，但上述估算仍是<strong>单价参考</strong>——用于判断走中端模型还是低成本模型、以及一次批量导入是否值得重跑。</p>
+<hr />
+<h3 id="47-agent">4.7 题库生产形态：外部 Agent + 导入</h3>
+<p>系统内部不接模型。题库的生产完全外置：</p>
+<pre><code>外部 Agent（任意模型）
+  ① 通过 MCP 读取教材切片、上下文与蓝图
+  ② 自行出题（模型与 prompt 由 agent 侧决定）
+  ③ 产出 import bundle
+  ④ 通过 MCP 或界面上传
+  ⑤ 系统校验 → 质量门 → 题库抽检 → 发布
+</code></pre>
+<p><strong>收益</strong>：换模型不改代码；prompt 迭代不触碰业务；成本用自己的额度、完全透明；可批量重跑与 diff。</p>
+<p><strong>代价</strong>：必须有一个 MCP Server；外部输入一律不可信，校验要严。</p>
+<h4 id="_2">导入格式</h4>
+<p>三种入口共用同一套校验：MCP 工具、HTTP 上传、界面拖拽。</p>
+<pre><code>bundle/
+  manifest.json      批次信息
+  candidates.jsonl   每行一个候选题
+  assets/            图片、音频（按相对路径引用）
+</code></pre>
+<p><code>manifest.json</code></p>
+<pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;1.0.0&quot;,
+  &quot;bundle_id&quot;: &quot;01J9Z8K3QW&quot;,
+  &quot;created_by&quot;: &quot;agent:claude-code&quot;,
+  &quot;library_ref&quot;: { &quot;series&quot;: &quot;RAZ&quot;, &quot;level&quot;: &quot;B&quot;, &quot;book&quot;: &quot;The Bag&quot; },
+  &quot;generator&quot;: { &quot;provider&quot;: &quot;openai&quot;, &quot;model&quot;: &quot;gpt-5&quot;, &quot;prompt_version&quot;: &quot;v3&quot; },
+  &quot;candidate_count&quot;: 42,
+  &quot;note&quot;: &quot;第 3-6 页，词图识别 + 句子理解&quot;
+}
+</code></pre>
+<p><code>candidates.jsonl</code> —— 每行沿用既有 23 字段契约，<strong>但引用一律用自然键</strong>：</p>
+<pre><code class="language-jsonl">{&quot;schema_version&quot;:&quot;1.0.0&quot;,&quot;question_type&quot;:&quot;word_to_picture&quot;,&quot;question_family_key&quot;:&quot;raz.b.bag.w2p.01&quot;,&quot;phase&quot;:&quot;p1&quot;,&quot;source_refs&quot;:[{&quot;page&quot;:3,&quot;sentence_index&quot;:1}],&quot;objective_refs&quot;:[&quot;raz.b.bag.read.bag&quot;],&quot;skill&quot;:&quot;word_recognition&quot;,&quot;modality&quot;:&quot;visual&quot;,&quot;difficulty&quot;:1,&quot;estimated_seconds&quot;:15,&quot;presentation_kind&quot;:&quot;verbatim&quot;,&quot;prompt_text&quot;:&quot;bag&quot;,&quot;instruction_text&quot;:&quot;选出单词对应的图片。&quot;,&quot;public_payload&quot;:{&quot;options&quot;:[{&quot;asset&quot;:&quot;images/bag.png&quot;},{&quot;asset&quot;:&quot;images/cup.png&quot;},{&quot;asset&quot;:&quot;images/dog.png&quot;}]},&quot;answer_spec&quot;:{&quot;answer_kind&quot;:&quot;single_choice&quot;,&quot;accepted_option_indices&quot;:[0]},&quot;explanation&quot;:&quot;bag 是书包。&quot;,&quot;quality_risks&quot;:[],&quot;requires_microphone&quot;:false,&quot;requires_typing&quot;:false}
+</code></pre>
+<p><strong>关键设计：外部只写自然键，系统负责解析成 UUID。</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>外部写法</th>
+<th>系统解析为</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>page</code> + <code>sentence_index</code></td>
+<td><code>source_slice_ids</code></td>
+<td>agent 会编造 UUID，页码句序不会</td>
+</tr>
+<tr>
+<td><code>objective_refs</code></td>
+<td><code>objective_ids</code></td>
+<td>同上</td>
+</tr>
+<tr>
+<td><code>assets/xxx.png</code></td>
+<td><code>asset_id</code></td>
+<td>按内容哈希注册，天然幂等</td>
+</tr>
+<tr>
+<td><code>accepted_option_indices</code></td>
+<td><code>accepted_option_ids</code></td>
+<td>按 options 顺序映射</td>
+</tr>
+</tbody>
+</table></div>
+<p>解析失败不猜测，直接拒绝并给出行号与原因——agent 据此修正后重跑。</p>
+<p><strong>可执行规范</strong>：<code>design/契约/导入/</code></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>README.md</code></td>
+<td>格式说明与规则</td>
+</tr>
+<tr>
+<td><code>manifest.schema.json</code></td>
+<td>批次清单 Schema</td>
+</tr>
+<tr>
+<td><code>candidate.external.schema.json</code></td>
+<td>外部候选 Schema（自然键形式）</td>
+</tr>
+<tr>
+<td><code>validate_import.py</code></td>
+<td>预检器，实现 L1–L4</td>
+</tr>
+<tr>
+<td><code>example/</code></td>
+<td>合规样例，实测 3/3 通过</td>
+</tr>
+<tr>
+<td><code>example-bad/</code></td>
+<td>错误样例，实测拒绝 8/9，覆盖 4 层错误</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="_3">校验层级</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>层</th>
+<th>检查内容</th>
+<th>失败处置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1 结构</td>
+<td>JSON Schema 2020-12</td>
+<td>拒绝该条</td>
+</tr>
+<tr>
+<td>L2 引用</td>
+<td>切片/目标/资产存在，且属于同一 unit</td>
+<td>拒绝该条</td>
+</tr>
+<tr>
+<td>L3 语义</td>
+<td>答案唯一、干扰项不重复、源文可回查、题干与目标匹配、选项数合规</td>
+<td>拒绝或降级待审</td>
+</tr>
+<tr>
+<td>L4 重复</td>
+<td><code>dedupe_key</code> 已存在</td>
+<td>标记 duplicate，不新建</td>
+</tr>
+<tr>
+<td>L5 人工</td>
+<td>按风险抽检</td>
+<td>进待审队列</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>dedupe_key = sha256(question_type | question_family_key | sorted(slice_ids) | prompt_text)</code></p>
+<h4 id="_4">状态机</h4>
+<pre><code>imported → validated → ready → published → retracted
+                ↘ rejected（保留原因，可重跑）
+</code></pre>
+<p><strong>已发布不可改</strong>，只能撤回后重新导入，保证孩子看到的题目可追溯。</p>
+<h4 id="_5">题库管理界面</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>区域</th>
+<th>能力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>列表</td>
+<td>按题型/目标/难度/状态/来源模型筛选，支持批量选择</td>
+</tr>
+<tr>
+<td>详情</td>
+<td>题干、选项、答案、源文对照（页图 + 高亮句 + 码点区间）、音频试听</td>
+</tr>
+<tr>
+<td>质量报告</td>
+<td>拒绝原因分布、各模型通过率、重复率</td>
+</tr>
+<tr>
+<td>导入历史</td>
+<td>批次、条数、accepted/rejected/duplicate、耗时、可回滚</td>
+</tr>
+<tr>
+<td>批量操作</td>
+<td>发布、撤回、删除草稿、重新校验</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h3 id="48-mcp">4.8 MCP 工具集</h3>
+<p>MCP Server 名 <code>banxue-bank</code>，仅监听本机回环，token 由家庭管理员生成。</p>
+<p><strong>只读</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>library.list_series</code></td>
+<td>教材系列列表</td>
+</tr>
+<tr>
+<td><code>library.list_books</code></td>
+<td>某级别下的书</td>
+</tr>
+<tr>
+<td><code>library.list_slices</code></td>
+<td>某书的切片（含页码、句序、码点区间）</td>
+</tr>
+<tr>
+<td><code>library.get_context</code></td>
+<td>切片上下文（前后句、音频、页图）</td>
+</tr>
+<tr>
+<td><code>objective.list</code></td>
+<td>学习目标</td>
+</tr>
+<tr>
+<td><code>blueprint.list</code> / <code>blueprint.get</code></td>
+<td>出题蓝图（目标 + 允许源片 + 题型 + 难度区间）</td>
+</tr>
+<tr>
+<td><code>question.search</code></td>
+<td>按题型/状态/目标/难度检索</td>
+</tr>
+<tr>
+<td><code>question.get</code></td>
+<td>单题完整信息（含私有答案，仅管理员 token）</td>
+</tr>
+<tr>
+<td><code>asset.list_unresolved</code></td>
+<td>待注册资产</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>写入（全部幂等）</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>作用</th>
+<th>幂等键</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>question.create_batch</code></td>
+<td>批量创建候选，逐条返回结果</td>
+<td>dedupe_key</td>
+</tr>
+<tr>
+<td><code>question.validate</code></td>
+<td>触发 L3/L4 校验</td>
+<td>内容不变则结果不变</td>
+</tr>
+<tr>
+<td><code>question.update</code></td>
+<td>修改草稿（已发布不可改）</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>question.publish</code></td>
+<td>发布</td>
+<td>状态机保证</td>
+</tr>
+<tr>
+<td><code>question.retract</code></td>
+<td>撤回，保留记录</td>
+<td>状态机保证</td>
+</tr>
+<tr>
+<td><code>asset.register</code></td>
+<td>注册资产，返回 asset_id</td>
+<td>内容 sha256</td>
+</tr>
+<tr>
+<td><code>import.create_bundle</code></td>
+<td>提交完整 bundle</td>
+<td>bundle_id</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>统一响应</strong></p>
+<pre><code class="language-json">{
+  &quot;accepted&quot;: 38,
+  &quot;duplicates&quot;: 4,
+  &quot;rejected&quot;: [
+    { &quot;line&quot;: 12, &quot;code&quot;: &quot;L3_DUPLICATE_OPTIONS&quot;, &quot;message&quot;: &quot;干扰项出现重复图片&quot; },
+    { &quot;line&quot;: 27, &quot;code&quot;: &quot;L2_SLICE_NOT_FOUND&quot;, &quot;message&quot;: &quot;page=7 无第 3 句&quot; }
+  ]
+}
+</code></pre>
+<p>错误必须定位到行号与原因，agent 才能自我修正。</p>
+<p><strong>限制</strong>：单次 <code>create_batch</code> ≤ 200 条；单家庭并发 1 个导入任务；写入类工具需管理员 token，儿童端不可达。</p>
+<hr />
+<h2 id="5">5. 教材来源与已学范围</h2>
+<h3 id="51">5.1 可用资源评估</h3>
+<p>点读笔配套资源是本项目最被低估的资产。按可用性分四类：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>资源</th>
+<th>价值</th>
+<th>用途</th>
+<th>可用性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>原版朗读音频</td>
+<td>★★★</td>
+<td>听力题、发音示范、跟读比对</td>
+<td>直接可用，质量远高于 TTS</td>
+</tr>
+<tr>
+<td>教材扫描页图</td>
+<td>★★★</td>
+<td>页级定位、词图识别素材、家长端对照</td>
+<td>直接可用</td>
+</tr>
+<tr>
+<td>点读码表 / oid 表</td>
+<td>★★★</td>
+<td>天然的「页 → 句 → 音频」索引，切片自动化</td>
+<td>需确认格式是否可解析</td>
+</tr>
+<tr>
+<td>铺码 PDF</td>
+<td>★★</td>
+<td>反推词/句边界与位置</td>
+<td>需工具解析</td>
+</tr>
+<tr>
+<td>点读笔本体</td>
+<td>☆</td>
+<td>无法自动同步进度（闭源），仍需家长确认</td>
+<td>不作为数据源</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>结论</strong>：点读笔资源<strong>很有用</strong>，但价值集中在音频、页图、码表三项，不在「自动上报进度」。</p>
+<p><strong>最值钱的是点读码表</strong>。点读笔的工作原理是「点击位置 → oid → 播放对应音频」，这份映射本质上就是
+<code>页号 + 句子位置 + 音频文件</code> 的三元组。拿到它，语义切片与音频对齐可以从「人工校对」变成「程序生成」，
+是整个内容链路的加速器。</p>
+<p>需要确认的三个问题：</p>
+<ol>
+<li>手里是<strong>点读笔配套的整包资源</strong>（含 oid 码表），还是只有 MP3 音频？</li>
+<li>码表格式是什么（<code>.oid</code> / <code>.bnl</code> / <code>.bpi</code> / Excel 码表 / 内嵌在铺码 PDF 里）？</li>
+<li>音频是<strong>按句切分</strong>还是整页一条？</li>
+</ol>
+<p>第 3 点尤其关键：整页一条音频需要强制切分，按句切分则直接可用，工作量差一个量级。</p>
+<h3 id="511-dab">5.1.1 小达人 .dab 实测结论</h3>
+<p>对实际样本（376 MB，单个 .dab）做了只读结构分析，结果如下。</p>
+<p><strong>可确认的部分</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>位置</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x00</td>
+<td>魔数 <code>deb3</code></td>
+</tr>
+<tr>
+<td>0x04</td>
+<td>GBK 编码的书名（如「吴明兰55」）</td>
+</tr>
+<tr>
+<td>0xC8</td>
+<td>包 GUID <code>{7BEEA67A-…}</code></td>
+</tr>
+<tr>
+<td>0x12A</td>
+<td>制作者 <code>Administrator</code></td>
+</tr>
+<tr>
+<td>0x14E</td>
+<td>数值 55，与文件名中的编号一致</td>
+</tr>
+<tr>
+<td>0x18A</td>
+<td><code>Create by Builder 2019-08-02 14:56:27</code></td>
+</tr>
+<tr>
+<td>末尾</td>
+<td><code>EOID</code> 结束标记，紧邻 8 KB 的 <code>BOID…EOID</code> 区间</td>
+</tr>
+<tr>
+<td>0x15A</td>
+<td>16 字节随机值，疑似密钥或 IV</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>不能确认的部分</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>目标</th>
+<th>实测</th>
+<th>判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>音频流</td>
+<td>正文熵 6.99–7.97，接近随机；zlib/gzip/MP3 签名出现次数等于随机期望</td>
+<td>已加密，非明文音频</td>
+</tr>
+<tr>
+<td>码表</td>
+<td><code>BOID…EOID</code> 区间 8 KB，99% 为零，无递增整数序列</td>
+<td>不是完整 OID 表</td>
+</tr>
+<tr>
+<td>块结构</td>
+<td>无固定周期、无可复用块头</td>
+<td>单一加密流</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>结论：属于路径 C —— 不能直接解包。</strong></p>
+<h3 id="512">5.1.2 因此采用的方案</h3>
+<p>不逆向 <code>.dab</code>。理由不是技术难度，而是三点：解密属于规避技术保护措施，存在法律风险；
+不同 Builder 版本密钥可能不同，维护成本高；一旦失效就阻塞整条内容链。</p>
+<p>改为三条合规且可落地的取音途径：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>途径</th>
+<th>质量</th>
+<th>工作量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>教材配套 MP3</td>
+<td>高</td>
+<td>低</td>
+<td>首选。RAZ / 新概念等常见教材多配有官方音频</td>
+</tr>
+<tr>
+<td>点读笔录音采集</td>
+<td>中</td>
+<td>中</td>
+<td>播放点读笔 → 高保真录音 → 按静音切分，自用合规</td>
+</tr>
+<tr>
+<td>TTS 合成</td>
+<td>低</td>
+<td>低</td>
+<td>仅用于兜底，不适合作为主要朗读来源</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>对产品的影响</strong></p>
+<p>点读笔的码表拿不到，意味着「页 → 句 → 音频」的自动对齐不能靠它。
+退回方案默认路径：家长勾选页码 + 音频按句切分。产品闭环不受影响，失去的只是一个加速项。</p>
+<p><strong>仍然可用的点读笔价值</strong></p>
+<p>孩子继续用点读笔学习这件事本身不变。点读笔是学习工具，不是数据源——
+应用不依赖它的数据，只依赖家长的确认。这也正是 5.3 的设计前提。</p>
+<h3 id="52">5.2 版本一致性</h3>
+<p>这是内容链路最容易翻车的地方。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>风险</th>
+<th>后果</th>
+<th>对策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>同一本书存在多个发行版本</td>
+<td>页数、句子编号不一致，切片对不上</td>
+<td>首次导入时生成「版本指纹」并锁定</td>
+</tr>
+<tr>
+<td>音频与文本版本不匹配</td>
+<td>听力题播了另一版内容</td>
+<td>指纹绑定音频时长与句数校验</td>
+</tr>
+<tr>
+<td>点读码表版本与手中教材不一致</td>
+<td>oid 对错句</td>
+<td>抽样试听 5 页人工确认</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>版本指纹</strong>：<code>sha256(页数 | 每页句数序列 | 首末句文本 | 音频总时长)</code>。
+指纹不同的资源不允许混入同一 <code>unit</code>；需要并存时建独立版本，已产生的学习记录不受影响。</p>
+<h3 id="53">5.3 已学范围的形成</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>操作</th>
+<th>适用</th>
+<th>可信度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>家长勾选</td>
+<td>在教材树上点选今天读的页</td>
+<td>默认，零设备要求</td>
+<td>高（家长负责）</td>
+</tr>
+<tr>
+<td>扫码/拍照</td>
+<td>拍教材页，OCR 定位到版本与页</td>
+<td>减少操作</td>
+<td>中（依赖版本指纹）</td>
+</tr>
+<tr>
+<td>点读笔音频指纹</td>
+<td>用点读笔录音与官方音频匹配</td>
+<td>未来增强</td>
+<td>低（首版不做）</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>流程</strong>：家长确认 → 写入 <code>contact_declaration</code>（孩子、日期、教材版本、页范围、来源方式）
+→ 计划编译时据此生成当日任务 → 训练/验证只针对已声明范围。</p>
+<p><strong>边界</strong>：不声明则不出题；声明与实际学习不一致时以最后一次确认为准，并保留历史供复习。</p>
+<hr />
+<h2 id="6">6. 美术资产链路</h2>
+<h3 id="61">6.1 风格锚定</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>令牌</th>
+<th>值</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>纸色</td>
+<td><code>#FFF8EC</code></td>
+<td>全局背景</td>
+</tr>
+<tr>
+<td>正文</td>
+<td><code>#453B32</code></td>
+<td>文字</td>
+</tr>
+<tr>
+<td>森林绿</td>
+<td><code>#245C49</code></td>
+<td>主操作、标题</td>
+</tr>
+<tr>
+<td>薄荷</td>
+<td><code>#B8DDC5</code></td>
+<td>次要操作、进度</td>
+</tr>
+<tr>
+<td>杏桃</td>
+<td><code>#F3B592</code></td>
+<td>宠物、暖色强调</td>
+</tr>
+<tr>
+<td>暖金</td>
+<td><code>#E9BE62</code></td>
+<td>奖励、高光</td>
+</tr>
+</tbody>
+</table></div>
+<p>风格：温暖绘本 × 轻量生活模拟。避免做成家长统计仪表盘，避免无意义漂浮粒子。</p>
+<h3 id="62">6.2 三条生产技术路线对比</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>路线</th>
+<th>审美上限</th>
+<th>自动化程度</th>
+<th>换装</th>
+<th>资产体积</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A 参数化 SVG / PixiJS Graphics</td>
+<td>低（扁平矢量）</td>
+<td>高</td>
+<td>好</td>
+<td>小</td>
+<td><strong>不作为主路线</strong>，仅用于图标与道具</td>
+</tr>
+<tr>
+<td>B AI 精灵图序列</td>
+<td>高</td>
+<td>中（需状态一致性校验）</td>
+<td>差（需逐帧挂点）</td>
+<td>大（×30）</td>
+<td>用于<strong>状态切换</strong>（吃、睡、生病）</td>
+</tr>
+<tr>
+<td>C AI 立绘 + 自动网格变形</td>
+<td>高</td>
+<td>高（实测可行）</td>
+<td>中（分层挂点）</td>
+<td>极小</td>
+<td><strong>主路线</strong>，承担持续生命感</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>选型结论</strong>：以 C 为日常表现主力，B 补离散状态，A 做 UI 图标。三者共存，不互相替代。</p>
+<h3 id="621">6.2.1 视频与三维的取舍</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>结论</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>图像生成</td>
+<td><strong>主力</strong>，全部静态资产</td>
+<td>质感最好，可控性最高，成本最低</td>
+</tr>
+<tr>
+<td>视频生成</td>
+<td><strong>不做</strong></td>
+<td>视频无法交互、无法响应点击/喂食/生病等事件，不能换装组合，体积是图片的数十倍；且已有网格变形提供连续运动。唯一可能的例外是相册里程碑的短片段（纯播放、不参与交互），P3 之后再评估</td>
+</tr>
+<tr>
+<td>Blender 三维</td>
+<td><strong>不做主路线</strong></td>
+<td>水彩笔触属于二维绘画语言，三维渲染会丢失笔触与纸感；引入三维后要多做建模、材质、骨骼、导出与性能验证，收益不抵成本</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>唯一保留的三维场景</strong>：如果未来需要宠物真正转身（侧身、背面），二维镜像不够用，可单独评估用 Blender 预渲染四方向序列帧。这是 P3 之后的可选项，不进入首版。</p>
+<p><strong>这意味着</strong>：首版全部美术产出来自图像生成，一条链路、一套工具、一种校验，不引入第二个生产体系。</p>
+<h3 id="63">6.3 生产工序（六步，全自动）</h3>
+<pre><code>① 白底生成    AI 出图，纯白背景，同一参考图锁定身份
+② 自动抠图    边缘泛洪 + 距离羽化 → 干净 alpha
+③ 规格校验    透明边缘、包围盒、主色、尺寸档
+④ 分层拆分    围巾/帽子挂点层单独出图
+⑤ 网格生成    按 alpha 轮廓自适应网格（57×85）
+⑥ 打包发布    清单 + 哈希 + 原子切换
+</code></pre>
+<p><strong>关键实测结论</strong>：图像服务<strong>不输出真实透明通道</strong>——所谓「透明背景」是把棋盘格画进 RGB。因此第②步是必经工序，不能用「生成时就透明」替代。</p>
+<p>抠图实现：对四边连通的近白区域泛洪（只清除外部，保留角色内部高光），再对 alpha 做小半径均值羽化。实测输出 644×962、透明 29.8%、半透明边缘 4.8%，边缘干净无白边。</p>
+<h3 id="64">6.4 资产规格</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>资产</th>
+<th>尺寸</th>
+<th>格式</th>
+<th>体积预算</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>宠物立绘</td>
+<td>1024² → 输出 644×962</td>
+<td>PNG RGBA</td>
+<td>≤ 900 KB</td>
+</tr>
+<tr>
+<td>表情层（闭眼等）</td>
+<td>同尺寸局部</td>
+<td>PNG RGBA</td>
+<td>≤ 120 KB</td>
+</tr>
+<tr>
+<td>装扮层</td>
+<td>挂点模板</td>
+<td>PNG RGBA</td>
+<td>≤ 80 KB/件</td>
+</tr>
+<tr>
+<td>场景背景</td>
+<td>2048×1536</td>
+<td>WebP</td>
+<td>≤ 400 KB</td>
+</tr>
+<tr>
+<td>图标</td>
+<td>24/32/48</td>
+<td>SVG</td>
+<td>≤ 4 KB/个</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="65">6.5 质量门槛</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>检查</th>
+<th>阈值</th>
+<th>失败处置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>透明边缘白边</td>
+<td>边缘平均亮度差 &lt; 12</td>
+<td>重抠图</td>
+</tr>
+<tr>
+<td>主体占比</td>
+<td>包围盒高度占图 60–90%</td>
+<td>重新构图</td>
+</tr>
+<tr>
+<td>主色偏移</td>
+<td>与锚定色板 ΔE &lt; 15</td>
+<td>重生成</td>
+</tr>
+<tr>
+<td>挂点可定位</td>
+<td>围巾/帽子区域置信度 &gt; 0.8</td>
+<td>局部重生成</td>
+</tr>
+<tr>
+<td>重试上限</td>
+<td>单资产 3 次</td>
+<td>进 <code>failed_needs_decision</code>，不自动上线</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="66">6.6 音频资产</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>来源</th>
+<th>规格</th>
+<th>体积预算</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>词/句朗读</td>
+<td>官方音频优先，缺失用 TTS 合成</td>
+<td>22.05 kHz 单声道，响度 -16 LUFS</td>
+<td>≤ 40 KB/句</td>
+</tr>
+<tr>
+<td>操作反馈音</td>
+<td>合成或免费音源</td>
+<td>44.1 kHz，≤ 300 ms</td>
+<td>≤ 12 KB/个</td>
+</tr>
+<tr>
+<td>宠物短声</td>
+<td>合成音效</td>
+<td>≤ 800 ms</td>
+<td>≤ 20 KB/个</td>
+</tr>
+<tr>
+<td>背景氛围（可选）</td>
+<td>开源音源</td>
+<td>循环无缝，可静音</td>
+<td>≤ 300 KB</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>规则</strong>：所有音频默认可静音且不影响功能；题目音频优先于宠物声；录音前停止全部扬声器音源并等待短缓冲，避免回声污染评分。</p>
+<hr />
+<h2 id="7">7. 动效实现</h2>
+<h3 id="71">7.1 原理</h3>
+<p>单张立绘铺成细分网格（57×85 = 4,845 顶点，9,240 三角形），在顶点着色器里按区域权重施加位移：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>权重区</th>
+<th>判定</th>
+<th>承担动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>头部</td>
+<td>上半部平滑过渡</td>
+<td>转向、点头、倾斜</td>
+</tr>
+<tr>
+<td>耳朵</td>
+<td>头部两侧</td>
+<td>滞后跟随</td>
+</tr>
+<tr>
+<td>尾巴</td>
+<td>左下区域</td>
+<td>摇摆</td>
+</tr>
+<tr>
+<td>下半身</td>
+<td>底部</td>
+<td>呼吸起伏、弹跳</td>
+</tr>
+<tr>
+<td>眼部带</td>
+<td>中上部条带</td>
+<td>眨眼压缩</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>这是「不绑骨、不拆件」的关键</strong>：位移是 uv 空间函数，权重由坐标计算，无需人工标注关节。单一纹理不存在接缝问题。</p>
+<h3 id="72">7.2 实测数据</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>实测值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>网格</td>
+<td>57×85 顶点 / 9,240 三角形</td>
+</tr>
+<tr>
+<td>软件渲染（SwiftShader，无 GPU）</td>
+<td>34 fps @ 1176×932 CSS px，DPR 2</td>
+</tr>
+<tr>
+<td>预估真机（iPad GPU）</td>
+<td>60 fps，余量充足</td>
+</tr>
+<tr>
+<td>单帧 draw call</td>
+<td>1</td>
+</tr>
+<tr>
+<td>纹理显存</td>
+<td>约 2.4 MB（644×962 RGBA + mipmap）</td>
+</tr>
+<tr>
+<td>动画资产体积</td>
+<td>立绘 900 KB，无序列帧</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="73">7.3 状态机</h3>
+<pre><code>待机 idle ──指针进入──&gt; 注视 look ──指针离开──&gt; 待机
+   │                     │
+   ├──点击头部──&gt; 摸头 pat ──&gt; 待机
+   ├──喂食事件──&gt; 进食 feed ──&gt; 满足 content ──&gt; 待机
+   ├──夜间/事件──&gt; 入睡 sleep ──&gt; 惊醒 wake ──&gt; 待机
+   └──健康事件──&gt; 生病 sick ──&gt; 就诊 hospital ──&gt; 康复 recover ──&gt; 待机
+</code></pre>
+<p><strong>约束</strong>：状态切换由服务端权威快照 + 已提交事件驱动，动画回调不改业务状态。</p>
+<h3 id="74">7.4 动效规格表</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>动作</th>
+<th>时长</th>
+<th>曲线</th>
+<th>打断</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>待机呼吸</td>
+<td>3.2 s 循环</td>
+<td>正弦</td>
+<td>否</td>
+<td>幅度 1.2% 横向缩放</td>
+</tr>
+<tr>
+<td>随机眨眼</td>
+<td>170 ms</td>
+<td>三段</td>
+<td>是</td>
+<td>间隔 2.4–5.6 s 随机</td>
+</tr>
+<tr>
+<td>看向指针</td>
+<td>280 ms</td>
+<td>ease-out</td>
+<td>是</td>
+<td>头部偏移 ≤ 4.5%</td>
+</tr>
+<tr>
+<td>耳朵跟随</td>
+<td>460 ms</td>
+<td>滞后正弦</td>
+<td>是</td>
+<td>相位落后头部</td>
+</tr>
+<tr>
+<td>摸头反馈</td>
+<td>420 ms</td>
+<td>弹簧（阻尼 0.9）</td>
+<td>是</td>
+<td>上跳 + 歪头</td>
+</tr>
+<tr>
+<td>进食</td>
+<td>2.4 s</td>
+<td>关键帧循环</td>
+<td>可取消</td>
+<td>低头 + 循环咀嚼</td>
+</tr>
+<tr>
+<td>入睡过渡</td>
+<td>1.2 s</td>
+<td>ease-in-out</td>
+<td>是</td>
+<td>身体下沉 + 呼吸降频</td>
+</tr>
+<tr>
+<td>惊醒</td>
+<td>300 ms</td>
+<td>ease-out</td>
+<td>是</td>
+<td>快速回正 + 眨眼</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>统一约束</strong>：单动作位移不超过画面高度 6%；同时活动动作不超过 3 层；连续点击合并不叠加。</p>
+<h3 id="75">7.5 降级策略</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>条件</th>
+<th>表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L0 完整</td>
+<td>WebGL2 可用</td>
+<td>网格变形 + 全部动作</td>
+</tr>
+<tr>
+<td>L1 降级</td>
+<td>WebGL2 不可用，Canvas2D 可用</td>
+<td>分层位移/缩放，动作简化为 4 种</td>
+</tr>
+<tr>
+<td>L2 静态</td>
+<td>均不可用</td>
+<td>静态立绘 + 表情切换，功能不受限</td>
+</tr>
+<tr>
+<td>L3 减少动效</td>
+<td>系统 <code>prefers-reduced-motion</code></td>
+<td>仅保留状态切换，关闭循环动作</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>学习与喂食在任何层级都可完成</strong>——动效是增强，不是前置条件。</p>
+<hr />
+<h2 id="8">8. 设计系统</h2>
+<h3 id="81">8.1 令牌</h3>
+<pre><code class="language-css">/* 色彩 */
+--paper:#FFF8EC;  --paper-2:#FFFDF7;
+--ink:#453B32;    --ink-soft:#8A7B6C;
+--green:#245C49;  --green-l:#3E7A62;
+--mint:#B8DDC5;   --mint-2:#D9EEDF;
+--apricot:#F3B592;--gold:#E9BE62;
+--line:#E8DFCF;
+
+/* 圆角 */
+--r-s:10px; --r-m:16px; --r-l:26px; --r-xl:34px;
+
+/* 阴影（双层，避免单层发灰） */
+--sh-1:0 2px 6px rgba(96,75,50,.07), 0 8px 20px rgba(96,75,50,.06);
+--sh-2:0 4px 12px rgba(96,75,50,.09), 0 18px 40px rgba(96,75,50,.09);
+
+/* 动效 */
+--t-fast:140ms; --t-base:220ms; --t-slow:420ms;
+--ease:cubic-bezier(.32,.72,0,1);
+</code></pre>
+<p><strong>规则</strong>：所有颜色只从令牌取，禁止页面内硬编码色值。对比度不足时调整文字层级，不改变装饰色。</p>
+<h3 id="82">8.2 字号与间距</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>用途</th>
+<th>字号 / 行高</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页面主标题</td>
+<td>26–32 / 1.4</td>
+<td>儿童端偏大</td>
+</tr>
+<tr>
+<td>卡片标题</td>
+<td>15–17 / 1.5</td>
+<td>加粗 700</td>
+</tr>
+<tr>
+<td>正文</td>
+<td>16 / 1.7</td>
+<td>最小 15</td>
+</tr>
+<tr>
+<td>辅助说明</td>
+<td>12.5–13.5 / 1.6</td>
+<td><code>--ink-soft</code></td>
+</tr>
+<tr>
+<td>题目文本</td>
+<td>22–28 / 1.6</td>
+<td>单行不超 20 字符（低龄）</td>
+</tr>
+</tbody>
+</table></div>
+<p>间距阶梯：4 / 8 / 12 / 16 / 22 / 28 / 36。</p>
+<h3 id="83">8.3 组件规格</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>关键规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主按钮</td>
+<td>高 52，圆角 16，底部硬阴影 6px，按下位移 4px</td>
+</tr>
+<tr>
+<td>次按钮</td>
+<td>高 46，1.5px 描边，无阴影</td>
+</tr>
+<tr>
+<td>卡片</td>
+<td>圆角 26，内边距 20，1px 边框 + <code>--sh-1</code></td>
+</tr>
+<tr>
+<td>进度条</td>
+<td>高 9，圆角全，渐变填充，<code>--t-slow</code> 过渡</td>
+</tr>
+<tr>
+<td>题目卡</td>
+<td>最小 44 触控，选项间距 ≥ 12</td>
+</tr>
+<tr>
+<td>徽章</td>
+<td>圆角全，高 24，字号 12，语义色区分</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="84">8.4 触控与可读性</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>项</th>
+<th>规格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最小触控区</td>
+<td>48 × 48 CSS px（电视 56）</td>
+</tr>
+<tr>
+<td>选项间距</td>
+<td>≥ 12 px，避免误触相邻</td>
+</tr>
+<tr>
+<td>儿童端信息密度</td>
+<td>一屏一个主行动</td>
+</tr>
+<tr>
+<td>电视焦点</td>
+<td>描边 3px + 放大 1.06</td>
+</tr>
+<tr>
+<td>键盘可达</td>
+<td>所有拖拽提供点击替代</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="85">8.5 字体</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>字体</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>英文学习内容</td>
+<td><strong>Andika</strong>（SIL OFL）</td>
+<td>专为识字设计，单层 a / g，符合教材习惯</td>
+</tr>
+<tr>
+<td>中文正文</td>
+<td>思源黑体 / PingFang SC</td>
+<td>免费可自托管，字形清晰</td>
+</tr>
+<tr>
+<td>数字与代码</td>
+<td>ui-monospace</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>禁止</strong>：装饰性手写体用于题目文本；为「可爱」牺牲 b/d、I/l、a/g 辨识。</p>
+<h3 id="86">8.6 无障碍</h3>
+<ul>
+<li>正文对比度 ≥ 4.5:1，大字号 ≥ 3:1</li>
+<li>状态不依赖颜色单一编码，同时用图标或文字</li>
+<li>支持文字缩放 200% 不破版</li>
+<li><code>prefers-reduced-motion</code> 关闭循环动效</li>
+<li>音频内容提供文字替代；静音状态完整可用</li>
+</ul>
+<hr />
+<h2 id="9">9. 学习与验证</h2>
+<h3 id="91">9.1 训练 / 验证分离</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>可否帮助</th>
+<th>是否计入掌握</th>
+<th>目的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>训练 training</td>
+<td>可提示、可重试</td>
+<td>否</td>
+<td>建立正确经验</td>
+</tr>
+<tr>
+<td>验证 verification</td>
+<td>无提示、一次机会</td>
+<td>是</td>
+<td>产生独立证据</td>
+</tr>
+<tr>
+<td>诊断 diagnostic</td>
+<td>可跳过</td>
+<td>否</td>
+<td>定位薄弱点</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>硬规则</strong>：训练中暴露过的题，验证时以变式呈现（换提问方式/换语境/换干扰项），否则测的是记忆不是掌握。</p>
+<h3 id="92">9.2 判分契约</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>结果</th>
+<th>含义</th>
+<th>后续</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>independent_success</td>
+<td>无帮助且正确</td>
+<td>掌握标签前进</td>
+</tr>
+<tr>
+<td>helped_success</td>
+<td>有帮助后正确</td>
+<td>记入 practice，不进 stable</td>
+</tr>
+<tr>
+<td>failure</td>
+<td>错误</td>
+<td>进入 review_due，不删除历史成功</td>
+</tr>
+<tr>
+<td>unrecognized</td>
+<td>录音未识别/超时</td>
+<td>不计分，允许重录</td>
+</tr>
+</tbody>
+</table></div>
+<p>客户端只能提交响应形状，<strong>不存在客户端权威判分接口</strong>。</p>
+<h3 id="93">9.3 掌握标签</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>标签</th>
+<th>条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>unseen</td>
+<td>无接触</td>
+</tr>
+<tr>
+<td>introduced</td>
+<td>有接触无有效验证</td>
+</tr>
+<tr>
+<td>practicing</td>
+<td>有帮助或失败</td>
+</tr>
+<tr>
+<td>emerging</td>
+<td>一次独立成功</td>
+</tr>
+<tr>
+<td>stable</td>
+<td>≥ 2 个不同学习日 + ≥ 1 个有效变式的独立成功</td>
+</tr>
+</tbody>
+</table></div>
+<p>标签是产品观察口径，不声称统计概率。</p>
+<h3 id="94">9.4 发音评测三档</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>置信度</th>
+<th>处置</th>
+<th>给孩子看到</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>高</td>
+<td>自动判定</td>
+<td>通过 / 某个音再试一次</td>
+</tr>
+<tr>
+<td>中</td>
+<td>进家长复核队列</td>
+<td>「已录好，等家长听一下」</td>
+</tr>
+<tr>
+<td>低</td>
+<td>不作为证据</td>
+<td>「再读一次好吗」，不提示错误</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>原则</strong>：不确定时绝不下「读错了」的结论。儿童口音、环境噪声、麦克风差异都会导致误判，误判伤害远大于漏判。</p>
+<hr />
+<h2 id="10">10. 奖励与宠物</h2>
+<h3 id="101">10.1 稳定资格</h3>
+<p>奖励资格由 <code>(child, period_kind, period_key, stable_slot)</code> 决定，<strong>不含任务 ID、题目 ID、内容版本</strong>。</p>
+<p>效果：改计划、补做、换题、升级内容包，都不会重复发奖或丢奖。</p>
+<h3 id="102">10.2 事务</h3>
+<pre><code>BEGIN
+  锁定当日资格行（按稳定 ID 顺序，避免死锁）
+  → 校验幂等键
+  → 写入发放记录
+  → 增加库存（粮食/物品）
+  → 写 outbox 事件
+COMMIT
+</code></pre>
+<p>动画播放发生在提交<strong>之后</strong>，播放失败不回滚，重新进入页面可补播。</p>
+<h3 id="103">10.3 宠物状态</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>状态</th>
+<th>衰减</th>
+<th>影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>饱腹</td>
+<td>每学习日 -12</td>
+<td>过低进入饥饿</td>
+</tr>
+<tr>
+<td>清洁</td>
+<td>每学习日 -8</td>
+<td>过低生病概率上升</td>
+</tr>
+<tr>
+<td>开心</td>
+<td>每日 -6，互动 +10</td>
+<td>影响动作丰富度</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>不做死亡惩罚</strong>。长期不照顾进入「托管」而非惩罚，避免给孩子压力。</p>
+<hr />
+<h2 id="11_1">11. 部署与运维</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>项</th>
+<th>方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>形态</td>
+<td>单机 Docker Compose，amd64 / arm64 双镜像</td>
+</tr>
+<tr>
+<td>HTTPS</td>
+<td>必须，反向代理 + 本地可信证书</td>
+</tr>
+<tr>
+<td>数据</td>
+<td>PostgreSQL 卷 + 每日备份 + 保留 30 天</td>
+</tr>
+<tr>
+<td>媒体</td>
+<td>本机目录 + 内容摘要键，可替换 S3 适配器</td>
+</tr>
+<tr>
+<td>监控</td>
+<td>健康探针 + 结构化日志 + 任务积压告警</td>
+</tr>
+<tr>
+<td>初始化</td>
+<td>首启向导：管理员密码、孩子档案、教材导入</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>硬要求</strong>：iPad 录音需要 HTTPS，自签名证书必须在真机走通一次。</p>
+<h3 id="111">11.1 儿童数据与隐私</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>项</th>
+<th>策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最小化采集</td>
+<td>不入库真实姓名与学校；孩子以昵称 + 内部 ID 标识</td>
+</tr>
+<tr>
+<td>录音</td>
+<td>仅存本会话所需的作答片段；复核完成后按保留期删除</td>
+</tr>
+<tr>
+<td>外部模型</td>
+<td>不发送完整历史、真实身份、原始录音；家长显式开启才传</td>
+</tr>
+<tr>
+<td>家庭隔离</td>
+<td>全部表带 <code>family_id</code>，行级隔离，跨家庭查询在约束层禁止</td>
+</tr>
+<tr>
+<td>导出与删除</td>
+<td>家长可导出全部记录；删除走异步任务 + 保留期后物理清除</td>
+</tr>
+<tr>
+<td>审计</td>
+<td>家长与后台操作记审计日志，不记录题目答案明文到日志</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>原则</strong>：孩子的学习数据默认留在家中（NAS），不出家庭网络；只有家长主动开启的增强能力才出网，且可随时关闭。</p>
+<hr />
+<h2 id="12_1">12. 里程碑</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>内容</th>
+<th>出口标准</th>
+<th>参考工作量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0 技术验证</td>
+<td>素材链路样片、教材样本导入、<strong>导入格式 + MCP 骨架</strong>、HTTPS 录音预检</td>
+<td>两条生产链可检查、失败可停；agent 能跑通一次导入</td>
+<td>8–12 人日</td>
+</tr>
+<tr>
+<td>P1 最小闭环</td>
+<td>1 只狗全动作 + 家 + 一周教材 + 计划 + 3 类客观题 + <strong>题库管理界面</strong> + 奖励喂食</td>
+<td>iPad 完成真实一天，重启不丢；agent 批量导入 200 题可用</td>
+<td>18–26 人日</td>
+</tr>
+<tr>
+<td>P2 家庭首版</td>
+<td>多宠物、装扮、复习、医院、公园、请假、备份</td>
+<td>连续两周试用无阻断缺陷</td>
+<td>20–28 人日</td>
+</tr>
+<tr>
+<td>P3 多端增强</td>
+<td>电视壳、伴侣录音、ASR、AI 对白</td>
+<td>电视可独立操作，AI 关闭仍可用</td>
+<td>14–28 人日</td>
+</tr>
+<tr>
+<td>P4 内容运营</td>
+<td>新动物、新场景、主题活动</td>
+<td>更新不破坏旧记录</td>
+<td>持续</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>关键路径</strong>：素材链路 → 内容链路 → 计划编译 → 验证判分 → 奖励事务。任一处卡住，后续全部停摆，因此 P0 必须先做完再排 P1。</p>
+<p><strong>人力假设</strong>：1 名全栈 + 1 名后端可并行；素材与内容生产由脚本承担，不设动画师岗位。</p>
+<hr />
+<h2 id="13">13. 风险登记册</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>风险</th>
+<th>概率</th>
+<th>影响</th>
+<th>缓解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R1</td>
+<td>网格变形在低端设备掉帧</td>
+<td>中</td>
+<td>中</td>
+<td>降级 L1/L2；限制同时动作层数</td>
+</tr>
+<tr>
+<td>R2</td>
+<td>换装挂点在自动生成中错位</td>
+<td>中</td>
+<td>中</td>
+<td>挂点置信度门槛 + 局部重生成</td>
+</tr>
+<tr>
+<td>R3</td>
+<td>出题语义错误漏过质量门</td>
+<td>中</td>
+<td>高</td>
+<td>分级发布；P0 自动 + 抽检</td>
+</tr>
+<tr>
+<td>R4</td>
+<td>发音误判打击孩子信心</td>
+<td>高</td>
+<td>高</td>
+<td>三档置信；低置信不判错</td>
+</tr>
+<tr>
+<td>R5</td>
+<td>家长维护负担过重导致弃用</td>
+<td>高</td>
+<td>高</td>
+<td>一键确认已学；计划模板复用</td>
+</tr>
+<tr>
+<td>R6</td>
+<td>模型调用成本失控</td>
+<td>低</td>
+<td>中</td>
+<td>结果缓存；预算上限；失败不重生成整批</td>
+</tr>
+<tr>
+<td>R7</td>
+<td>教材版权范围超出自用</td>
+<td>中</td>
+<td>高</td>
+<td>仅限自购教材家庭内使用；不提供下载分发</td>
+</tr>
+<tr>
+<td>R8</td>
+<td>真机 WebGL 能力差异</td>
+<td>中</td>
+<td>中</td>
+<td>能力矩阵探测 + 自动降级</td>
+</tr>
+<tr>
+<td>R9</td>
+<td>外部 agent 产出的题目语义错误混入</td>
+<td>高</td>
+<td>高</td>
+<td>L1–L4 强制校验 + 抽检比例 + 已发布不可改</td>
+</tr>
+<tr>
+<td>R10</td>
+<td>MCP 写入权限被滥用</td>
+<td>低</td>
+<td>高</td>
+<td>仅回环监听 + 管理员 token + 写入限流</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="14">14. 验收清单</h2>
+<h3 id="_6">技术</h3>
+<ul>
+<li>[ ] 从空目录可重建一只可动宠物，全程无手工修图</li>
+<li>[ ] 抠图输出无白边，透明边缘占比在阈值内</li>
+<li>[ ] 待机 60 秒出现 ≥ 2 次自然动作</li>
+<li>[ ] 五种交互状态可切换且不卡顿</li>
+<li>[ ] WebGL 不可用时自动降级且功能完整</li>
+<li>[ ] 60fps（iPad）/ 30fps（低配）达标</li>
+</ul>
+<h3 id="_7">内容</h3>
+<ul>
+<li>[ ] 任意题目可回查到页、句、码点</li>
+<li>[ ] 公开 DTO 不含答案与解释</li>
+<li>[ ] 故意错误的候选题被质量门拒绝</li>
+<li>[ ] 换一个教材版本，已有记录不受影响</li>
+</ul>
+<h3 id="_8">题库与导入</h3>
+<ul>
+<li>[ ] agent 能用自然键完成一次完整导入，不出现悬空 UUID</li>
+<li>[ ] 重复导入同一 bundle 不产生重复题（幂等）</li>
+<li>[ ] 故意给错页码、错答案、重复干扰项，逐条被拒绝并给出行号与原因</li>
+<li>[ ] 已发布题目不可直接修改，只能撤回后重导</li>
+<li>[ ] 题库界面可按题型/状态/难度筛选并批量发布</li>
+</ul>
+<h3 id="_9">业务</h3>
+<ul>
+<li>[ ] 改计划不重置已发奖励（重放 50 次验证）</li>
+<li>[ ] 并发提交不重复发奖</li>
+<li>[ ] 独立/帮助/未识别三态可区分</li>
+<li>[ ] 备份恢复后状态一致</li>
+</ul>
+<h3 id="_10">体验</h3>
+<ul>
+<li>[ ] 孩子首次使用无需家长逐屏指导</li>
+<li>[ ] 一屏一个主行动，无信息过载</li>
+<li>[ ] 全程可静音完成</li>
+<li>[ ] 家长每天维护时间 ≤ 5 分钟</li>
+</ul>
+<hr />
+<h2 id="15">15. 待决策事项</h2>
+<h3 id="_11">已确定</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>项</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>宠物范围</td>
+<td>首版一只狗，12–16 个动作全部跑通后再扩</td>
+</tr>
+<tr>
+<td>题库生产</td>
+<td>外部 Agent 出题 + 导入，系统提供 MCP</td>
+</tr>
+<tr>
+<td>美术生产</td>
+<td>仅用图像生成；不引入视频生成与 Blender</td>
+</tr>
+<tr>
+<td>已学范围</td>
+<td>家长确认 + 可选扫码，不追求自动同步点读笔</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="_12">仍待确认</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>事项</th>
+<th>影响</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q1</td>
+<td>点读笔资源的具体形态（整包含码表 / 仅音频；按句切分 / 整页一条）</td>
+<td>切片自动化程度，工作量差一个量级</td>
+<td>先把手头资源列个清单</td>
+</tr>
+<tr>
+<td>Q2</td>
+<td>教材版本指纹能否锁定</td>
+<td>内容对齐的可靠性</td>
+<td>首次导入时抽样人工确认</td>
+</tr>
+<tr>
+<td>Q3</td>
+<td>每日可用时长</td>
+<td>计划编译参数</td>
+<td>建议 15–20 分钟</td>
+</tr>
+<tr>
+<td>Q4</td>
+<td>电视型号</td>
+<td>焦点与性能预算</td>
+<td>P3 前确认</td>
+</tr>
+<tr>
+<td>Q5</td>
+<td>是否引入真实生命模式</td>
+<td>伦理与产品调性</td>
+<td>首版关闭，保留扩展点</td>
+</tr>
+</tbody>
+</table></div></article><footer>伴学小岛 · 完整落地方案</footer></main></body></html>

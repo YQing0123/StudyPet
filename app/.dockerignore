@@ -1,0 +1,15 @@
+# Only application sources and public assets enter the image build context.
+**
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!vite.config.ts
+!server/
+!server/**
+!web/
+!web/**
+web/dist
+web/node_modules
+**/.env
+**/.env.*
+**/.DS_Store

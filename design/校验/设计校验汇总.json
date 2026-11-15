@@ -1,0 +1,506 @@
+{
+  "result": "pass",
+  "table_count": 70,
+  "operation_count": 113,
+  "schema_count": 94,
+  "feature_count": 133,
+  "main_chapters": 18,
+  "checks": 1097,
+  "errors": [],
+  "validation_levels": {
+    "database": "static relationship and lexical checks; not executed on PostgreSQL16",
+    "api": "references, parameters, JSON Schema and response payload checks; no implemented server",
+    "content": "positive/negative fixtures and cross-file projections; no LLM execution",
+    "architecture": "Archify validate/deliver/check/browser-check passed",
+    "word": "reopened structure and sample pages rendered and inspected"
+  },
+  "subreports": {
+    "database": {
+      "validation": "static_only",
+      "postgres_executed": false,
+      "postgres_parser_used": false,
+      "table_count": 70,
+      "mandatory_family_tables": 68,
+      "foreign_keys_checked": 248,
+      "question_types_contract_checked": 11,
+      "sql_statements_lexically_counted": 2337,
+      "trigger_functions": 33,
+      "errors": [],
+      "warnings": [],
+      "limits": [
+        "No PostgreSQL16 server/client found on PATH.",
+        "No installed PostgreSQL AST parser was available.",
+        "Static validation checks model references/types/unique target keys, trigger references, tenant keys and lexical balance; it cannot prove PostgreSQL execution, PL/pgSQL runtime or concurrency correctness."
+      ]
+    },
+    "content": {
+      "schema_draft": "2020-12",
+      "schemas_checked": 3,
+      "valid_examples": 16,
+      "candidate_types": 11,
+      "negative_checks": [
+        {
+          "name": "family_id_injection",
+          "rejected": true,
+          "reason": "schema::Additional properties are not allowed ('family_id' was unexpected)"
+        },
+        {
+          "name": "public_explanation_injection",
+          "rejected": true,
+          "reason": "schema:public_payload:Additional properties are not allowed ('explanation' was unexpected)"
+        },
+        {
+          "name": "p1_forbidden_type",
+          "rejected": true,
+          "reason": "schema:public_payload:'prompt_text' is a required property"
+        },
+        {
+          "name": "unknown_source",
+          "rejected": true,
+          "reason": "slot_mismatch:source_slice_ids"
+        },
+        {
+          "name": "unregistered_asset",
+          "rejected": true,
+          "reason": "unregistered_asset:b8ff4cdb-a102-5a5a-a7b2-f62291ad9519"
+        },
+        {
+          "name": "answer_option_not_found",
+          "rejected": true,
+          "reason": "answer_option_not_found"
+        },
+        {
+          "name": "quote_text_mismatch",
+          "rejected": true,
+          "reason": "quote_text_mismatch"
+        },
+        {
+          "name": "duplicate_option",
+          "rejected": true,
+          "reason": "duplicate_option_asset"
+        },
+        {
+          "name": "capability_mismatch",
+          "rejected": true,
+          "reason": "slot_mismatch:skill"
+        },
+        {
+          "name": "candidate_uuid_not_allocated",
+          "rejected": true,
+          "reason": "candidate_id_not_allocated"
+        },
+        {
+          "name": "p1_complete_retell_payload",
+          "rejected": true,
+          "reason": "p1_phase_forbids_retell"
+        },
+        {
+          "name": "self_context",
+          "rejected": true,
+          "reason": "self_context"
+        },
+        {
+          "name": "source_hash_mismatch",
+          "rejected": true,
+          "reason": "source_hash_mismatch"
+        },
+        {
+          "name": "invalid_audio_range",
+          "rejected": true,
+          "reason": "invalid_audio_range"
+        },
+        {
+          "name": "sequence_missing_token",
+          "rejected": true,
+          "reason": "sequence_token_multiset_mismatch"
+        },
+        {
+          "name": "matching_reused_right",
+          "rejected": true,
+          "reason": "matching_not_bijection"
+        }
+      ],
+      "public_projection_checks": 11,
+      "openapi_compatibility": {
+        "status": "pass",
+        "checked": 16,
+        "source_slices": 3,
+        "generation_requests": 2,
+        "public_questions": 11
+      },
+      "network_calls": 0,
+      "llm_calls": 0,
+      "result": "pass",
+      "limitations": [
+        "No production DB tenancy/state constraints are tested.",
+        "No semantic correctness, asset bytes, or child pronunciation quality is certified."
+      ]
+    },
+    "integration": {
+      "result": "pass",
+      "checks": [
+        {
+          "name": "question_types:content_vs_openapi",
+          "passed": true,
+          "detail": "missing_api=[]"
+        },
+        {
+          "name": "question_types:content_vs_catalog",
+          "passed": true,
+          "detail": "missing_db=[]; extra_db=[]"
+        },
+        {
+          "name": "question_types:catalog_vs_ddl",
+          "passed": true,
+          "detail": "catalog=['audio_to_picture', 'cloze_choice', 'cloze_text', 'matching', 'oral_reading', 'picture_to_word', 'reading_choice', 'retell', 'sentence_choice', 'word_order', 'word_to_picture']; ddl=['audio_to_picture', 'cloze_choice', 'cloze_text', 'matching', 'oral_reading', 'picture_to_word', 'reading_choice', 'retell', 'sentence_choice', 'word_order', 'word_to_picture']"
+        },
+        {
+          "name": "source_kinds:content",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "source_kinds:openapi",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "source_kinds:catalog",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "response_id_uuid:option_id",
+          "passed": true,
+          "detail": "{\"type\": \"string\", \"format\": \"uuid\"}"
+        },
+        {
+          "name": "response_id_uuid:gap_text.gap_id",
+          "passed": true,
+          "detail": "{\"type\": \"string\", \"format\": \"uuid\"}"
+        },
+        {
+          "name": "response_id_uuid:gap_choice.gap_id",
+          "passed": true,
+          "detail": "{\"type\": \"string\", \"format\": \"uuid\"}"
+        },
+        {
+          "name": "response_id_uuid:gap_choice.option_id",
+          "passed": true,
+          "detail": "{\"type\": \"string\", \"format\": \"uuid\"}"
+        },
+        {
+          "name": "response_id_uuid:left_id",
+          "passed": true,
+          "detail": "{\"type\": \"string\", \"format\": \"uuid\"}"
+        },
+        {
+          "name": "response_id_uuid:right_id",
+          "passed": true,
+          "detail": "{\"type\": \"string\", \"format\": \"uuid\"}"
+        },
+        {
+          "name": "response_id_uuid:token_ids.items",
+          "passed": true,
+          "detail": "{\"type\": \"string\", \"format\": \"uuid\"}"
+        },
+        {
+          "name": "response_id_uuid:media_asset_id",
+          "passed": true,
+          "detail": "{\"type\": \"string\", \"format\": \"uuid\"}"
+        },
+        {
+          "name": "database_uuid:question_options.id",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "database_uuid:question_answers.option_id",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "database_uuid:question_answers.match_option_id",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerResponse",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerRequest",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:PublicQuestion",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerResponse",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerRequest",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:PublicQuestion",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerResponse",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerRequest",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:PublicQuestion",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerResponse",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerRequest",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:PublicQuestion",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerResponse",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerRequest",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:PublicQuestion",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerResponse",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerRequest",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:PublicQuestion",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerResponse",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerRequest",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:PublicQuestion",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerResponse",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerRequest",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:PublicQuestion",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerResponse",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerRequest",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:PublicQuestion",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerResponse",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerRequest",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:PublicQuestion",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerResponse",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:AnswerRequest",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "openapi_valid:PublicQuestion",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "response_reject:fake_option",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "name": "response_reject:extra_correct",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "passed": 52,
+      "total": 52,
+      "inputs_sha256": {
+        "契约/openapi.json": "fe467e0589e14431a1b8fd63839b08f497043792cb06f80d89c0c09f53df5b54",
+        "数据库/catalog.json": "8606f196c0760918a558249e4fcb361669106dc3d0d9a8432fa6f9260859f75d",
+        "数据库/schema.sql": "818a786d72730e557b86e254dc865a9177b3ad72b8f16056b13ee7436a729793"
+      },
+      "network_calls": 0,
+      "llm_calls": 0,
+      "response_examples": [
+        {
+          "question_type": "audio_to_picture",
+          "response": {
+            "option_id": "7be96c3e-9ad5-5950-b086-33d5c45f5c11"
+          }
+        },
+        {
+          "question_type": "cloze_choice",
+          "response": {
+            "gaps": [
+              {
+                "gap_id": "55ea8482-8ab0-50f7-ad77-a87ccf7a2ddd",
+                "option_id": "a14c7b40-d694-5609-afd5-8831fbb2fe8b"
+              }
+            ]
+          }
+        },
+        {
+          "question_type": "cloze_text",
+          "response": {
+            "gaps": [
+              {
+                "gap_id": "d86e8bbf-fdcd-541a-abcb-3f481c2bbeb5",
+                "text": "bag"
+              }
+            ]
+          }
+        },
+        {
+          "question_type": "matching",
+          "response": {
+            "pairs": [
+              {
+                "left_id": "3e5cf329-9911-51b3-99b4-fc193585a470",
+                "right_id": "3821096e-4307-5c50-bf9b-cb0391845bd3"
+              },
+              {
+                "left_id": "d0b2893d-d0ea-533f-8283-efc3508e42b8",
+                "right_id": "3d24e787-75b3-5d3d-aebc-bec0ec29a9f6"
+              }
+            ]
+          }
+        },
+        {
+          "question_type": "oral_reading",
+          "response": {
+            "media_asset_id": "5327cfde-d7be-52e4-83e5-41f9f96df42d"
+          }
+        },
+        {
+          "question_type": "picture_to_word",
+          "response": {
+            "option_id": "8a815e67-9c16-535a-b313-f8285ff0018c"
+          }
+        },
+        {
+          "question_type": "reading_choice",
+          "response": {
+            "option_id": "492f2e78-3959-5427-b19d-1ad080134df6"
+          }
+        },
+        {
+          "question_type": "retell",
+          "response": {
+            "media_asset_id": "48bf283c-b9cb-578d-9a6a-335d9ca4b6e0"
+          }
+        },
+        {
+          "question_type": "sentence_choice",
+          "response": {
+            "option_id": "cc0a295d-74a5-581c-8fb1-4efb3633e9fd"
+          }
+        },
+        {
+          "question_type": "word_order",
+          "response": {
+            "token_ids": [
+              "74f8af8f-7681-5ff2-880d-6564e449924b",
+              "704d2706-475c-5518-95f2-c0326c00e167",
+              "f456ec6f-2084-5e4d-b3a6-9649a062a3ea",
+              "527f15c6-b4c2-59f0-a724-cef229ab3e6f"
+            ]
+          }
+        },
+        {
+          "question_type": "word_to_picture",
+          "response": {
+            "option_id": "847340f0-0e3d-5c17-a794-4c8569953995"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,378 @@
+{
+  "schema_version": "1.0.0",
+  "id": "4511d1b1-171f-5514-a522-fc7166e7e025",
+  "phase": "p1",
+  "content_version_id": "29e51114-a347-5b0b-8d00-4b9bf5390c1b",
+  "source_slice_ids": [
+    "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+    "7735e957-e92d-52bb-a6be-24d82bcf0d34"
+  ],
+  "context_slice_ids": [
+    "e8ea9157-202d-525e-961d-2a2c660797a6"
+  ],
+  "source_snapshots": [
+    {
+      "id": "e8ea9157-202d-525e-961d-2a2c660797a6",
+      "content_version_id": "29e51114-a347-5b0b-8d00-4b9bf5390c1b",
+      "node_id": "b4c77a37-8b35-540a-8dc9-e2b2d9bf002c",
+      "kind": "context",
+      "original_text": "This is my bag. It is blue.",
+      "normalized_text": "This is my bag. It is blue.",
+      "source_hash": "a830d1fbc7302e4decffe86a0d4c84a7ede8b4c4940b58545e8b9a33a20c8e16",
+      "context_slice_ids": [],
+      "media_asset_ids": [
+        "8d009441-5e2c-5d1b-aaaa-9c27cbdf7a67"
+      ],
+      "media_bindings": [
+        {
+          "media_type": "audio",
+          "asset_id": "8d009441-5e2c-5d1b-aaaa-9c27cbdf7a67",
+          "role": "reference_audio",
+          "ordinal": 0,
+          "start_ms": 0,
+          "end_ms": 3200,
+          "transcript": "This is my bag. It is blue."
+        }
+      ]
+    },
+    {
+      "id": "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+      "content_version_id": "29e51114-a347-5b0b-8d00-4b9bf5390c1b",
+      "node_id": "b4c77a37-8b35-540a-8dc9-e2b2d9bf002c",
+      "kind": "sentence",
+      "original_text": "This is my bag.",
+      "normalized_text": "This is my bag.",
+      "source_hash": "df63101fed847354bade017ce86eea4bf83d6b0b31c29d7700919423ae37b621",
+      "context_slice_ids": [
+        "e8ea9157-202d-525e-961d-2a2c660797a6"
+      ],
+      "media_asset_ids": [
+        "3f981930-8e18-511c-8274-007c324b23b5"
+      ],
+      "media_bindings": [
+        {
+          "media_type": "image",
+          "asset_id": "3f981930-8e18-511c-8274-007c324b23b5",
+          "role": "illustration",
+          "ordinal": 0,
+          "region": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "7735e957-e92d-52bb-a6be-24d82bcf0d34",
+      "content_version_id": "29e51114-a347-5b0b-8d00-4b9bf5390c1b",
+      "node_id": "b4c77a37-8b35-540a-8dc9-e2b2d9bf002c",
+      "kind": "sentence",
+      "original_text": "It is blue.",
+      "normalized_text": "It is blue.",
+      "source_hash": "1e1e5bb03780cf06b89b9a02d64f9eea16b194f658e15b94d4622554afbc6e95",
+      "context_slice_ids": [
+        "e8ea9157-202d-525e-961d-2a2c660797a6"
+      ],
+      "media_asset_ids": [],
+      "media_bindings": []
+    }
+  ],
+  "objectives": [
+    {
+      "id": "137b0846-b4c1-573d-884e-b140da8a8551",
+      "skill": "listening",
+      "modality": "audio",
+      "target_text": "bag",
+      "source_slice_ids": [
+        "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+      ]
+    },
+    {
+      "id": "0ff35935-05fc-51ee-abd4-be7fd583c172",
+      "skill": "word_recognition",
+      "modality": "text",
+      "target_text": "bag",
+      "source_slice_ids": [
+        "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+      ]
+    },
+    {
+      "id": "08f9d6a6-cc9d-5736-97f7-3813f49a5fb4",
+      "skill": "word_recognition",
+      "modality": "visual",
+      "target_text": "bag",
+      "source_slice_ids": [
+        "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+      ]
+    },
+    {
+      "id": "c79edcff-3568-53c3-8f9d-f0137c3f3efb",
+      "skill": "oral_reading",
+      "modality": "speech",
+      "target_text": "This is my bag.",
+      "source_slice_ids": [
+        "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+      ]
+    }
+  ],
+  "registered_assets": [
+    {
+      "id": "3f981930-8e18-511c-8274-007c324b23b5",
+      "media_type": "image",
+      "sha256": "ba616b27ac6fcecd29ff4744d3c3913487c09253e5036e1e197d62295de50940",
+      "mime_type": "image/png",
+      "semantic_tags": [
+        "bag"
+      ],
+      "verification_status": "verified"
+    },
+    {
+      "id": "3e57234b-2e44-587b-9d18-5ca25c9b931c",
+      "media_type": "image",
+      "sha256": "3f7920ba50f8fb8b9a7ed04713d289ac53cfa5b8bfe21f9cdd6ba3d0c28091e4",
+      "mime_type": "image/png",
+      "semantic_tags": [
+        "cat"
+      ],
+      "verification_status": "verified"
+    },
+    {
+      "id": "81f4ea90-591a-568c-9e7a-983b50d87e38",
+      "media_type": "image",
+      "sha256": "6225012e10723f3740294115d06412fe7eb44e4e54931c233ea929ec2f6b5f2b",
+      "mime_type": "image/png",
+      "semantic_tags": [
+        "dog"
+      ],
+      "verification_status": "verified"
+    },
+    {
+      "id": "60776e54-98bc-593e-9312-6712f7d445c5",
+      "media_type": "audio",
+      "sha256": "397271c2fdbd0531c0aa1d2e922dc6114773944681ded09a4ad0ec40948480d2",
+      "mime_type": "audio/wav",
+      "semantic_tags": [
+        "bag"
+      ],
+      "verification_status": "verified",
+      "transcript": "bag",
+      "duration_ms": 900
+    },
+    {
+      "id": "8d009441-5e2c-5d1b-aaaa-9c27cbdf7a67",
+      "media_type": "audio",
+      "sha256": "348b081bbc178d6f4322c7a98735c37424f1b879f5c2e0638f0916a2fe22534e",
+      "mime_type": "audio/wav",
+      "semantic_tags": [
+        "bag",
+        "blue",
+        "page"
+      ],
+      "verification_status": "verified",
+      "transcript": "This is my bag. It is blue.",
+      "duration_ms": 3200
+    }
+  ],
+  "allowed_vocabulary": [
+    {
+      "vocabulary_sense_id": "08fa57c1-51ce-56ba-9a94-322b42ea9ac3",
+      "form": "bag",
+      "role": "target"
+    },
+    {
+      "vocabulary_sense_id": "39a78b49-2c46-5416-83bc-44d66b8cbda3",
+      "form": "blue",
+      "role": "target"
+    },
+    {
+      "vocabulary_sense_id": "c71dd505-fb21-5d75-aff9-157c41c56344",
+      "form": "cat",
+      "role": "known_distractor"
+    },
+    {
+      "vocabulary_sense_id": "263ab0d2-5588-537c-97e4-dc10214aed33",
+      "form": "dog",
+      "role": "known_distractor"
+    },
+    {
+      "vocabulary_sense_id": "35818a58-4813-5bb6-b603-5712317ae34c",
+      "form": "red",
+      "role": "known_distractor"
+    },
+    {
+      "vocabulary_sense_id": "d8c5a715-ca4a-5979-977b-54bbad33cb6f",
+      "form": "green",
+      "role": "known_distractor"
+    }
+  ],
+  "learner_capabilities": {
+    "can_read_instructions": false,
+    "can_spell": false,
+    "supports_touch": true,
+    "supports_dpad": false,
+    "supports_recording": true
+  },
+  "candidate_slots": [
+    {
+      "id": "1ddacb38-21fb-5ca6-ab0f-61164e67e924",
+      "question_type": "audio_to_picture",
+      "component_ids": [
+        "7be96c3e-9ad5-5950-b086-33d5c45f5c11",
+        "da977947-b334-5979-a3be-b857be7b0088",
+        "60622c9c-02a4-54a9-81d5-69b17e2b7a54",
+        "08ffd02e-ebcc-51ff-a3c8-9eb6eab76d87",
+        "6a8811a8-34c6-566f-b0df-06a74a1839d5",
+        "bafbbc07-46a6-51df-955f-39113f44dbd5",
+        "cc83eb5d-d42a-5fd1-9044-381a50ce07fb",
+        "186b4928-91b5-55ad-b2a0-18724f5f5ebb",
+        "926a9efd-51ca-555e-9db8-a8703b6a0b5d",
+        "c6534c88-0cc8-5d2a-ba48-7452bb816145",
+        "c61b9a91-7dbd-50e7-bacd-8f61f9d269ba",
+        "1cd42789-ed87-5f20-9adf-77e3064299fc"
+      ],
+      "source_slice_ids": [
+        "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+      ],
+      "context_slice_ids": [
+        "e8ea9157-202d-525e-961d-2a2c660797a6"
+      ],
+      "objective_ids": [
+        "137b0846-b4c1-573d-884e-b140da8a8551"
+      ],
+      "skill": "listening",
+      "modality": "audio",
+      "difficulty": 1
+    },
+    {
+      "id": "b8ff4cdb-a102-5a5a-a7b2-f62291ad9519",
+      "question_type": "word_to_picture",
+      "component_ids": [
+        "847340f0-0e3d-5c17-a794-4c8569953995",
+        "6c416238-42f2-58b3-bd94-f278e731b7b9",
+        "1dc229c5-737f-54a6-ba59-37f86841664a",
+        "33f08038-ee82-519a-9761-7dabd3481cb1",
+        "e9833406-ae6a-5beb-a8ea-7fde84268ef5",
+        "1f24f0ea-07f2-5c31-97cb-fc6c5c66011b",
+        "20d8b880-933f-5871-b4d7-131b9df0e48a",
+        "32067cdb-4ced-5edb-bca2-051989203fa9",
+        "1c3e7bdd-a5c9-5269-ac59-a2107c013322",
+        "13e474d3-0b26-588d-9afe-8a1f58d3d7da",
+        "3038bea5-66f4-5b84-8f7f-36e3ec157cea",
+        "847081a1-8ab3-5612-b14c-8fb0ff8bea43"
+      ],
+      "source_slice_ids": [
+        "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+      ],
+      "context_slice_ids": [
+        "e8ea9157-202d-525e-961d-2a2c660797a6"
+      ],
+      "objective_ids": [
+        "0ff35935-05fc-51ee-abd4-be7fd583c172"
+      ],
+      "skill": "word_recognition",
+      "modality": "text",
+      "difficulty": 1
+    },
+    {
+      "id": "4b720796-521f-578a-89e5-763d83b8d26d",
+      "question_type": "picture_to_word",
+      "component_ids": [
+        "8a815e67-9c16-535a-b313-f8285ff0018c",
+        "3e7a9410-6822-58ad-9e5e-3796a1eb5bef",
+        "7896bb82-e0a9-5649-9039-58eff82d28bc",
+        "84d522a2-e763-5be0-955e-080f319b2b1d",
+        "2b856d70-15f5-56a7-bd3b-3cdc7929902c",
+        "0ab10c78-9840-578b-9fb2-72195cd49b76",
+        "f89986ff-9443-5d4a-b687-a971af422676",
+        "c991fb93-16d1-56a5-b775-587474e4e48c",
+        "f0caf1b7-17e2-5ef7-ba4e-3b00b4813b8b",
+        "cf70fa95-c435-5acf-a12d-7edb8776a78e",
+        "54bcfbc3-9502-5ddc-9d11-87a822590186",
+        "f7541ab5-90b8-5f20-83fc-f70fec5714fd"
+      ],
+      "source_slice_ids": [
+        "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+      ],
+      "context_slice_ids": [
+        "e8ea9157-202d-525e-961d-2a2c660797a6"
+      ],
+      "objective_ids": [
+        "08f9d6a6-cc9d-5736-97f7-3813f49a5fb4"
+      ],
+      "skill": "word_recognition",
+      "modality": "visual",
+      "difficulty": 1
+    },
+    {
+      "id": "5327cfde-d7be-52e4-83e5-41f9f96df42d",
+      "question_type": "oral_reading",
+      "component_ids": [
+        "13745043-3267-58d5-b539-5198127a1c84",
+        "f22a4f92-3241-570c-ab0d-c33474edba6d",
+        "b23b467d-2d25-5f09-9d99-c5f765443859",
+        "69ce784e-d59d-50f1-b730-4db90a9e58ef",
+        "6ab45dce-5f6a-5018-8166-e95a834fe880",
+        "f6fbf5e1-6865-5581-8316-9e5d4648b3ff",
+        "06110255-cc8e-5cd7-8470-be0b09f43c29",
+        "3acb32de-fd19-5aa7-b258-469f3bfd74df",
+        "890a61a4-9a4a-5860-ac33-2dcd59b8f637",
+        "6d892a23-1d80-5edc-bd9f-813b6cc4349f",
+        "212a0aaa-9e15-533a-a012-1a24b34d836f",
+        "065f41c2-d592-5973-9d98-adfb1dfd7326"
+      ],
+      "source_slice_ids": [
+        "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8"
+      ],
+      "context_slice_ids": [
+        "e8ea9157-202d-525e-961d-2a2c660797a6"
+      ],
+      "objective_ids": [
+        "c79edcff-3568-53c3-8f9d-f0137c3f3efb"
+      ],
+      "skill": "oral_reading",
+      "modality": "speech",
+      "difficulty": 1
+    }
+  ],
+  "template_version": "english-foundation-1.0.0",
+  "prompt_version": "source-grounded-1.0.0",
+  "quality_policy_id": "b3abc6ba-20f2-500f-b4e2-9b25e5a7e225",
+  "generation_policy": {
+    "provider_mode": "local",
+    "allow_paraphrase": false,
+    "max_output_tokens": 8192,
+    "timeout_seconds": 90,
+    "target_question_seconds": 30
+  },
+  "request": {
+    "scope": {
+      "content_version_id": "29e51114-a347-5b0b-8d00-4b9bf5390c1b",
+      "source_slice_ids": [
+        "000f50cd-86eb-57ff-a7d3-fbdd6298e5f8",
+        "7735e957-e92d-52bb-a6be-24d82bcf0d34"
+      ],
+      "context_slice_ids": [
+        "e8ea9157-202d-525e-961d-2a2c660797a6"
+      ],
+      "objective_ids": [
+        "137b0846-b4c1-573d-884e-b140da8a8551",
+        "0ff35935-05fc-51ee-abd4-be7fd583c172",
+        "08f9d6a6-cc9d-5736-97f7-3813f49a5fb4",
+        "c79edcff-3568-53c3-8f9d-f0137c3f3efb"
+      ]
+    },
+    "question_types": [
+      "audio_to_picture",
+      "word_to_picture",
+      "picture_to_word",
+      "oral_reading"
+    ],
+    "count_per_objective": 1,
+    "difficulty_band": 1,
+    "template_version": "english-foundation-1.0.0",
+    "budget_limit_microunits": "5000000",
+    "expected_content_revision": 1
+  }
+}
