@@ -1,0 +1,70 @@
+[
+  {
+    "scene": "study",
+    "day": "pets/scene/study.jpg",
+    "night": "pets/room/study-night.webp",
+    "model": "gpt-image-2.6-sunburst",
+    "quality": "high",
+    "size": [
+      2048,
+      1152
+    ],
+    "originalSha256": "d633722fc81ac690bf111418781a543a514954f5ee433c334134d75ccab137c3",
+    "productionSha256": "abca88956b5145768ace9658842cfa95f7e76749f8e53ecf7d8db698242a6a58",
+    "originalResponse": "PNG returned despite output_format=webp; bytes preserved in study-night-original.png",
+    "productionEncoding": "WebP quality 92; no geometry or creative edits",
+    "bytes": 477666,
+    "prompt": "Use case: lighting-weather edit.\nAsset type: paired nighttime background for a child-friendly 2D virtual pet room.\nEdit the supplied image itself, preserving its exact composition, perspective, framing, geometry, object placement and watercolor painterly texture. This is the NIGHT version of the SAME room, not a redesign.\nChange only time of day and lighting: replace daytime sky and strong golden sunbeams with a calm blue-violet moonlit night, subtle small stars only in visible sky, pale silver-blue light through windows and restrained warm indoor ambient fill so furniture/pets added later remain readable. Make it visibly nighttime but cozy, safe, soft and not dark or frightening. Keep detailed walls/floor clearly visible; no black crushed shadows and no blanket opaque blue tint.\nThe arched window at left must keep every mullion and the exact coastline and distant lighthouse. Turn the blue daytime sky into indigo night with a small softly luminous moon in the upper open sky. Keep the desk at right, green chair, shelves, paper pendant lamps, potted plants, curtains and every object exactly where it is. Existing desk lamp and paper lanterns glow gently warm amber.\nAll room boundaries, floor seams, window frames and every existing object must line up with the source. Preserve the room's open floor and existing material colors under night lighting. Never add furniture, animals, characters, text, logos, watermarks, borders or new architectural features. Output one full-bleed 16:9 background.\n"
+  },
+  {
+    "scene": "sunroom",
+    "day": "pets/room/sunroom.webp",
+    "night": "pets/room/sunroom-night.webp",
+    "model": "gpt-image-2.6-sunburst",
+    "quality": "high",
+    "size": [
+      2048,
+      1152
+    ],
+    "originalSha256": "42946b15b050ba68d90ac47ca6b0cfc3bd2d5449febb84ac26606a16b26f0d8e",
+    "productionSha256": "444e40d0f5063305dc212b40ddc0f5db88cbe392b7a5a70c2d1f2f647ac79590",
+    "originalResponse": "PNG returned despite output_format=webp; bytes preserved in sunroom-night-original.png",
+    "productionEncoding": "WebP quality 92; no geometry or creative edits",
+    "bytes": 249248,
+    "prompt": "Use case: lighting-weather edit.\nAsset type: paired nighttime background for a child-friendly 2D virtual pet room.\nEdit the supplied image itself, preserving its exact composition, perspective, framing, geometry, object placement and watercolor painterly texture. This is the NIGHT version of the SAME room, not a redesign.\nChange only time of day and lighting: replace daytime sky and strong golden sunbeams with a calm blue-violet moonlit night, subtle small stars only in visible sky, pale silver-blue light through windows and restrained warm indoor ambient fill so furniture/pets added later remain readable. Make it visibly nighttime but cozy, safe, soft and not dark or frightening. Keep detailed walls/floor clearly visible; no black crushed shadows and no blanket opaque blue tint.\nKeep all three arched windows, cream columns, every glass divider, all hanging ivy and the garden gazebo and tree positions. Turn the visible sky in the central arch to indigo night, with a small moon in open sky. Garden foliage is softly lit blue-green by moonlight. The empty terracotta tiled foreground must remain entirely empty and exactly aligned. No new visible lamp or furniture.\nAll room boundaries, floor seams, window frames and every existing object must line up with the source. Preserve the room's open floor and existing material colors under night lighting. Never add furniture, animals, characters, text, logos, watermarks, borders or new architectural features. Output one full-bleed 16:9 background.\n"
+  },
+  {
+    "scene": "seaside",
+    "day": "pets/room/seaside.webp",
+    "night": "pets/room/seaside-night.webp",
+    "model": "gpt-image-2.6-sunburst",
+    "quality": "high",
+    "size": [
+      2048,
+      1152
+    ],
+    "originalSha256": "f6f03238339ab079cb0ff68f188d1fdfbe296dc01c7069f7fb66adc90c415d87",
+    "productionSha256": "b7b037cf4cdaf4c672e44bc672cbf3c88aa292f3a9a1f3ae3c08674c4b215102",
+    "originalResponse": "PNG returned despite output_format=webp; bytes preserved in seaside-night-original.png",
+    "productionEncoding": "WebP quality 92; no geometry or creative edits",
+    "bytes": 263620,
+    "prompt": "Use case: lighting-weather edit.\nAsset type: paired nighttime background for a child-friendly 2D virtual pet room.\nEdit the supplied image itself, preserving its exact composition, perspective, framing, geometry, object placement and watercolor painterly texture. This is the NIGHT version of the SAME room, not a redesign.\nChange only time of day and lighting: replace daytime sky and strong golden sunbeams with a calm blue-violet moonlit night, subtle small stars only in visible sky, pale silver-blue light through windows and restrained warm indoor ambient fill so furniture/pets added later remain readable. Make it visibly nighttime but cozy, safe, soft and not dark or frightening. Keep detailed walls/floor clearly visible; no black crushed shadows and no blanket opaque blue tint.\nKeep the central rectangular ocean-view window, blue open shutters, left narrow side window, wooden wall planks, floorboards, plants, distant headland and ocean horizon at precisely the same positions. Night sky and small moon outside the central window; a gentle silver reflection on the same sea. Keep the entire empty floor free of objects. No new visible lamp or furniture.\nAll room boundaries, floor seams, window frames and every existing object must line up with the source. Preserve the room's open floor and existing material colors under night lighting. Never add furniture, animals, characters, text, logos, watermarks, borders or new architectural features. Output one full-bleed 16:9 background.\n"
+  },
+  {
+    "scene": "woodland",
+    "day": "pets/room/woodland.webp",
+    "night": "pets/room/woodland-night.webp",
+    "model": "gpt-image-2.6-sunburst",
+    "quality": "high",
+    "size": [
+      2048,
+      1152
+    ],
+    "originalSha256": "b3c3afa63240e33ba2bf1b1a8f426646afc6f710c72fb3e044a3cb8d95f2dc98",
+    "productionSha256": "31e70513b2cdccadd25c9cf748de771e9f9921d8f7da18eb099cebb453f6b15b",
+    "originalResponse": "PNG returned despite output_format=webp; bytes preserved in woodland-night-original.png",
+    "productionEncoding": "WebP quality 92; no geometry or creative edits",
+    "bytes": 243056,
+    "prompt": "Use case: lighting-weather edit.\nAsset type: paired nighttime background for a child-friendly 2D virtual pet room.\nEdit the supplied image itself, preserving its exact composition, perspective, framing, geometry, object placement and watercolor painterly texture. This is the NIGHT version of the SAME room, not a redesign.\nChange only time of day and lighting: replace daytime sky and strong golden sunbeams with a calm blue-violet moonlit night, subtle small stars only in visible sky, pale silver-blue light through windows and restrained warm indoor ambient fill so furniture/pets added later remain readable. Make it visibly nighttime but cozy, safe, soft and not dark or frightening. Keep detailed walls/floor clearly visible; no black crushed shadows and no blanket opaque blue tint.\nKeep the exact chalet roof beams, triangular upper window, all vertical window mullions, side windows, forest tree trunks and the completely empty wooden floor. Make the forest tranquil at night, deep muted blue green, a small glimpse of moonlight through the existing canopy and a small crescent in the upper glazing if naturally visible, without moving or removing trees. No new visible lamp or furniture.\nAll room boundaries, floor seams, window frames and every existing object must line up with the source. Preserve the room's open floor and existing material colors under night lighting. Never add furniture, animals, characters, text, logos, watermarks, borders or new architectural features. Output one full-bleed 16:9 background.\n"
+  }
+]

@@ -1,11 +1,11 @@
-const scene = (key, name, icon, cost, desc, asset) => ({ key, name, icon, cost, desc, asset, kind: 'scene', effect: {} });
+const scene = (key, name, icon, cost, desc, asset, nightAsset) => ({ key, name, icon, cost, desc, asset, nightAsset, kind: 'scene', effect: {} });
 const furniture = (key, name, icon, cost, style, sprite, width) => ({ key, name, icon, cost, desc: `${style} · 永久收藏，可自由摆放与旋转`, style, sprite, width, asset: 'pets/room/furniture-atlas.webp', kind: 'furniture', effect: {} });
 export const DEFAULT_ROOM_SCENE = 'scene_study';
 export const ROOM_CATALOG = [
-  scene('scene_study', '最初的小书房', '📚', 0, '熟悉的水彩书房，初始拥有', 'pets/scene/study.jpg'),
-  scene('scene_sunroom', '阳光花房', '🌿', 120, '让花草和阳光住进小岛', 'pets/room/sunroom.webp'),
-  scene('scene_seaside', '海风小屋', '🐚', 160, '窗外是海，屋里是自己的收藏', 'pets/room/seaside.webp'),
-  scene('scene_woodland', '林间木屋', '🌲', 200, '在安静的森林里布置一个家', 'pets/room/woodland.webp'),
+  scene('scene_study', '最初的小书房', '📚', 0, '熟悉的水彩书房，初始拥有', 'pets/scene/study.jpg', 'pets/room/study-night.webp'),
+  scene('scene_sunroom', '阳光花房', '🌿', 120, '让花草和阳光住进小岛', 'pets/room/sunroom.webp', 'pets/room/sunroom-night.webp'),
+  scene('scene_seaside', '海风小屋', '🐚', 160, '窗外是海，屋里是自己的收藏', 'pets/room/seaside.webp', 'pets/room/seaside-night.webp'),
+  scene('scene_woodland', '林间木屋', '🌲', 200, '在安静的森林里布置一个家', 'pets/room/woodland.webp', 'pets/room/woodland-night.webp'),
   furniture('f_monstera', '龟背竹盆栽', '🪴', 65, '自然原木', 0, 15),
   furniture('f_flower', '小花陶盆', '🌷', 45, '暖杏田园', 1, 12),
   furniture('f_lamp', '奶油落地灯', '💡', 95, '奶油简约', 2, 17),

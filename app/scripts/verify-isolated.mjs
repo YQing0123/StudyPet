@@ -29,6 +29,8 @@ try {
  await run('scripts/verify-continuation.mjs');
  await run('scripts/verify-materials.mjs');
  await run('scripts/verify-pet-scenarios.mjs');
+ await run('scripts/verify-room-lighting.mjs');
+ await run('scripts/verify-pet-scene-assets.mjs');
  await run('scripts/verify-pet-play.mjs');
  await run('scripts/verify-pet-scenarios-api.mjs');
   await run('scripts/verify-pet-sleep.mjs');

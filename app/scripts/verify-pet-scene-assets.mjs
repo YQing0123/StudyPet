@@ -16,5 +16,14 @@ for(const name of ['shower','bath','bug','fly']) {
  if(existsSync(original)) assert.deepEqual(bytes,readFileSync(original));
  result.push({name,frames:frames.length,durationMs:duration,width:gif.lsd.width,height:gif.lsd.height,sha256:createHash('sha256').update(bytes).digest('hex')});
 }
-for(const item of ROOM_CATALOG)assert.ok(existsSync(`web/public/${item.asset}`),item.asset);
+for(const item of ROOM_CATALOG) {
+ assert.ok(existsSync(`web/public/${item.asset}`),item.asset);
+ if(item.kind==='scene') {
+  assert.ok(item.nightAsset && item.nightAsset!==item.asset,`${item.key} requires a separate night scene`);
+  assert.ok(existsSync(`web/public/${item.nightAsset}`),item.nightAsset);
+  const night=readFileSync(`web/public/${item.nightAsset}`);
+  assert.equal(night.subarray(0,4).toString(),'RIFF',item.nightAsset);
+  assert.equal(night.subarray(8,12).toString(),'WEBP',item.nightAsset);
+ }
+}
 console.log(JSON.stringify({nativeGif:result,scenes:ROOM_CATALOG.filter(x=>x.kind==='scene').length,furniture:ROOM_CATALOG.filter(x=>x.kind==='furniture').length},null,2));

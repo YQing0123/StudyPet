@@ -1,5 +1,5 @@
 import RoomDecor from './RoomDecor';
-import { ROOM_MAP } from '../shared/roomCatalog.mjs';
+import RoomBackdrop, { useRoomPhase } from './RoomBackdrop';
 import { PET_SCENARIOS, scenarioForItem } from '../shared/petScenarios.mjs';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PetStage, { type PetStageHandle } from '../mvp/PetStage';
@@ -105,6 +105,7 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
 
   useEffect(() => { load(); }, [load]);
   const { active: sleepingWindow, getActive: currentSleep } = usePetSleep(data?.sleep, data?.pet?.id, petRef, !data?.travel?.activeTrip, () => { void load(true); }, toast);
+  const roomPhase = useRoomPhase(data?.sleep?.serverNow);
 
   useEffect(() => {
     if (sleepingWindow && ceremony) { setCeremony(null); ceremonyRef.current = false; }
@@ -453,8 +454,6 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
   const stage = data?.pet?.stageInfo;
   const travelling = !!data?.travel?.activeTrip;
   const openTask = (t: TaskV2) => { setSelected(t); setSheet('task'); };
-  const hour = new Date().getHours();
-  const tone = hour < 7 ? 'dawn' : hour >= 19 ? 'dusk' : 'day';
 
   const pending = useMemo(() => tasks.filter((t) => t.status === 'submitted'), [tasks]);
   const pendingPoints = pending.reduce((sum, task) => sum + (task.awardedPoints ?? task.basePoints), 0);
@@ -495,11 +494,11 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
           {travelling && data.travel.activeTrip
             ? <TravelScene trip={data.travel.activeTrip} pet={data.pet} onReturn={() => returnFromTravel(data.travel.activeTrip!.id)} onArrived={() => { void load(true); }} busy={busy} />
             : <>
-          <div className={`scene tone-${tone} ${ceremony ? 'is-growing' : ''}`} onPointerDown={e => {
+          <div className={`scene tone-${roomPhase} ${ceremony ? 'is-growing' : ''}`} onPointerDown={e => {
             if ((e.target as HTMLElement).closest('button, .room-tools, .pet-mover, .scene-topline') || ceremony) return;
             const rect = e.currentTarget.getBoundingClientRect(); petRef.current?.engine()?.wanderTo((e.clientX - rect.left) / rect.width * 100);
           }}>
-            <div className="scene-bg" style={{ backgroundImage: `url("${ROOM_MAP[data.room.sceneKey]?.asset || 'pets/scene/study.jpg'}")` }} /><div className="scene-vignette" /><div className="scene-glow" />
+            <RoomBackdrop sceneKey={data.room.sceneKey} phase={roomPhase} />
             <div className="scene-topline" inert={!!ceremony}>
             <div className="pet-chip">
               <img src={petAvatar(data.pet.breed, data.pet.stage)} alt="" />

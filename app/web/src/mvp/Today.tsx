@@ -5,6 +5,7 @@ import Confetti, { CONFETTI_DURATION } from './Confetti';
 import Adopt from './Adopt';
 import { BagSheet, MenuSheet, ShopSheet, TaskSheet } from './Sheets';
 import type { InvItem, ShopItem, Task, TodayData } from './types';
+import RoomBackdrop, { useRoomPhase } from '../v2/RoomBackdrop';
 
 const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
 
@@ -28,6 +29,7 @@ function timeGreeting() {
 const KIND_ICON: Record<string, string> = { food: '🍚', toy: '🧶', clean: '🫧', deco: '🎀' };
 
 export default function Today() {
+  const sceneTone = useRoomPhase();
   const [data, setData] = useState<TodayData | null>(null);
   const [loadError, setLoadError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -271,8 +273,6 @@ export default function Today() {
     );
   }
 
-  const hour = new Date().getHours();
-  const sceneTone = hour < 7 ? 'dawn' : hour >= 19 ? 'dusk' : 'day';
 
   return (
     <div className="island">
@@ -301,9 +301,7 @@ export default function Today() {
       <main className="grid">
         <section className="left">
           <div className={`scene tone-${sceneTone}`}>
-            <div className="scene-bg" />
-            <div className="scene-vignette" />
-            <div className="scene-glow" />
+            <RoomBackdrop phase={sceneTone} />
 
             <div className="pet-chip">
               <img src={`pets/avatars/${data.pet.breed}.png`} alt="" />
