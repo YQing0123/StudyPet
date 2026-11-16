@@ -10,14 +10,16 @@
     "build": "node node_modules/vite/bin/vite.js build",
     "preview": "node server/index.mjs --static",
     "test": "node scripts/verify-isolated.mjs",
+    "admin:account": "node scripts/admin-account.mjs",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit -p web/tsconfig.json",
     "assets:copy": "node scripts/copy-pet-assets.mjs",
     "assets:compatible": "node scripts/build-compatible-pet-videos.mjs"
   },
   "dependencies": {
+    "gifuct-js": "^2.1.2",
+    "pdfjs-dist": "^4.10.38",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "pdfjs-dist": "^4.10.38"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",

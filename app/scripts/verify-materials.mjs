@@ -20,13 +20,13 @@ try {
   D.buy(id, { key: 'brush', qty: 2 });
   check('购买按数量扣款并入包', () => { assert.equal(qty(id, 'brush'), 2); assert.equal(state(id).wallet.balance, before - 64); });
   for (const n of [0, -1, .5, 10, Infinity, 'invalid']) check(`拒绝非法兑换数量 ${n}`, () => assert.throws(() => D.buy(id, { key: 'brush', qty: n })));
-  q.run('UPDATE pet_life SET clean=20,mood=40 WHERE child_id=?', id);
+  q.run('UPDATE pet_life SET clean=50,mood=40 WHERE child_id=?', id);
   let used = D.useMaterial(id, { key: 'brush' });
-  check('梳子只扣一件并增加真实清洁状态', () => { assert.equal(qty(id, 'brush'), 1); assert.equal(used.pet.stats.clean, 38); assert.equal(used.used.key, 'brush'); });
+  check('梳子只扣一件并增加真实清洁状态', () => { assert.equal(qty(id, 'brush'), 1); assert.equal(used.pet.stats.clean, 68); assert.equal(used.used.key, 'brush'); });
   D.useMaterial(id, { key: 'brush' });
   check('耗尽后拒绝再次使用，库存不为负', () => { assert.throws(() => D.useMaterial(id, { key: 'brush' })); assert.equal(qty(id, 'brush'), 0); });
   D.buy(id, { key: 'bath' }); used = D.useMaterial(id, { key: 'bath' });
-  check('沐浴用品恢复清洁并返回物品身份', () => { assert.equal(used.pet.stats.clean, 92); assert.equal(used.used.key, 'bath'); assert.equal(qty(id, 'bath'), 0); });
+  check('沐浴用品恢复清洁并返回物品身份', () => { assert.equal(used.pet.stats.clean, 100); assert.equal(used.used.key, 'bath'); assert.equal(qty(id, 'bath'), 0); });
   D.buy(id, { key: 'bow' }); before = state(id).wallet.balance;
   check('永久装扮禁止重复购买和批量购买且不扣款', () => { assert.throws(() => D.buy(id, { key: 'bow' })); assert.throws(() => D.buy(id, { key: 'crown', qty: 2 })); assert.equal(state(id).wallet.balance, before); });
   q.run('UPDATE pet_life SET mood=20 WHERE child_id=?', id);
@@ -42,7 +42,8 @@ try {
   used = D.useMaterial(id, { key: 'bow' });
   check('重新戴上不消耗、不重领心情', () => { assert.equal(used.pet.stats.mood, mood); assert.equal(qty(id, 'bow'), 1); });
   check('没有的物品不能使用或取下', () => { assert.throws(() => D.useMaterial(id, { key: 'invalid' })); assert.throws(() => D.useMaterial(id, { key: 'brush', equipped: false })); });
-  const old = 'legacy-material'; create(old); D.adopt(old, { breed: 'dog_corgi_toon', name: '豆包' });
+  const old = 'legacy-material'; create(old); D.adopt(old, { breed: 'capybara_toon', name: '豆包' });
+  q.run("UPDATE pet_life SET breed='dog_corgi',species='dog' WHERE child_id=?", old);
   q.run('UPDATE pet_life SET outfit=? WHERE child_id=?', JSON.stringify({ neck: 'bow' }), old);
   q.run('INSERT INTO point_ledger VALUES(?,?,?,?,?,?,?)', 'old-crown', old, D.toDateKey(), -260, '兑换材料：迷你小皇冠 ×1', 'legacy-crown', new Date().toISOString());
   check('旧版已消耗装扮从穿戴和购买记录找回', () => { assert.equal(qty(old, 'bow'), 1); assert.equal(qty(old, 'crown'), 1); });
@@ -57,7 +58,7 @@ try {
   q.run('UPDATE material_wardrobe SET first_worn_at=NULL WHERE child_id=? AND item_key=?', old, 'bow');
   used = D.useMaterial(old, { key: 'bow' });
   check('旧版重复库存与已穿戴并存时不补发首次奖励', () => { assert.equal(used.pet.stats.mood, 86); assert.equal(qty(old, 'bow'), 1); });
-  const rollback = 'material-rollback'; create(rollback); D.adopt(rollback, { breed: 'dog_corgi_toon', name: '验收' }); V.giftPoints(rollback, { amount: 1000 });
+  const rollback = 'material-rollback'; create(rollback); D.adopt(rollback, { breed: 'capybara_toon', name: '验收' }); V.giftPoints(rollback, { amount: 1000 });
   const rollbackBalance = state(rollback).wallet.balance;
   db.exec("CREATE TRIGGER fail_material_purchase BEFORE INSERT ON material_inv WHEN NEW.child_id='material-rollback' BEGIN SELECT RAISE(ABORT,'injected purchase'); END");
   check('购买入包失败时整笔回滚扣款和永久所有权', () => { assert.throws(() => D.buy(rollback, { key: 'crown' }), /injected/); assert.equal(state(rollback).wallet.balance, rollbackBalance); assert.equal(qty(rollback, 'crown'), 0); });

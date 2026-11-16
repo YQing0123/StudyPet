@@ -1,0 +1,50 @@
+# Local-only Apple Silicon test environment. Keep separate from NAS compose.yaml.
+name: banxue-island-local
+services:
+  app:
+    image: banxue-island:local-test
+    platform: linux/arm64
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        RELEASE_ID: local-test-2026.11.16
+    restart: unless-stopped
+    init: true
+    user: "1000:1000"
+    ports:
+      - "127.0.0.1:7788:7717"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "7717"
+      TZ: Asia/Shanghai
+      BANXUE_DATA_DIR: /data
+      BANXUE_PUBLIC_ORIGIN: ""
+      BANXUE_ALLOW_HTTP: "1"
+    volumes:
+      - local-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    cpus: 0.5
+    mem_limit: 384m
+    pids_limit: 64
+    healthcheck:
+      interval: 2m
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "2"
+
+volumes:
+  local-data:

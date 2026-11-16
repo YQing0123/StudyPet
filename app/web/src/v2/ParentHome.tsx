@@ -5,6 +5,8 @@ import DailyNotesPanel from './DailyNotesPanel';
 import ReviewTaskSheet from './ReviewTaskSheet';
 import PushSettings from './PushSettings';
 import PetDataPanel from './PetDataPanel';
+import PetSleepSettings from './PetSleepSettings';
+import { TravelCollection } from './Travel';
 import type { CalendarDay, ParentState, RewardV2, RuleV2, TaskV2 } from './types';
 
 const WEEK_CN = ['一', '二', '三', '四', '五', '六', '日'];
@@ -12,7 +14,7 @@ const SUBJECTS = ['语文', '数学', '英语', '阅读', '运动', '其他'];
 const ICONS = ['📖', '📐', '🔤', '✏️', '🎨', '🎹', '🏃', '🧹', '🧠', '🌱', '🧪', '🗣️'];
 const KIND = [{ k: 'experience', n: '体验' }, { k: 'item', n: '物品' }, { k: 'privilege', n: '特权' }];
 
-type Tab = 'approve' | 'plan' | 'calendar' | 'rewards' | 'settings' | 'notes';
+type Tab = 'approve' | 'plan' | 'calendar' | 'rewards' | 'settings' | 'notes' | 'travel';
 
 export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }: { onStudent: () => void; toast: (m: string, tone?: string) => void; reviewId?: string; onReviewClose?: () => void }) {
   const [data, setData] = useState<ParentState | null>(null);
@@ -106,6 +108,7 @@ export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }
           ['calendar', '日历', 0],
           ['rewards', '奖励', data.redemptions.filter((r) => r.status === 'pending').length],
           ['notes', '小纸条', 0],
+          ['travel', '旅行收藏', 0],
           ['settings', '设置', 0],
         ].map(([k, n, badge]) => (
           <button key={k as string} className={tab === k ? 'is-on' : ''} onClick={() => setTab(k as Tab)}>
@@ -115,6 +118,22 @@ export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }
       </nav>
 
       <main className="parent-main">
+        {tab === 'travel' && data.travel && <section className="parent-section">
+          <div className="parent-summary-row">
+            <SummaryCard label="已收集" value={`${data.travel.collection.length}/${data.travel.catalog.length}`} tone="green" note="明信片与当地收藏" />
+            <SummaryCard label="稀有收藏" value={data.travel.collection.filter(item => item.type === 'rare').reduce((sum, item) => sum + (item.qty || 1), 0)} tone="gold" note="已收入背包的稀有件数" />
+            <SummaryCard label="稀有保底进度" value={data.travel.rarePity.tripsUntilGuaranteed === 1 ? '下次必得' : `${data.travel.rarePity.completedWithoutRare}/${data.travel.rarePity.guaranteeEvery}`} tone="amber" note="连续完整旅行未得稀有" />
+            <SummaryCard label="距稀有必得" value={`${data.travel.rarePity.tripsUntilGuaranteed} 次`} tone="gold" note="不同旅行时长均计一次" />
+          </div>
+          <div className="parent-card">
+            <div className="parent-card-head"><div><h2>旅行收藏</h2><p>看看小伙伴带回了哪些城市的问候，已查收的收藏会在这里留下记录。</p></div></div>
+            <TravelCollection travel={data.travel} pet={{ name: data.pet?.name || '小伙伴' }} initialOwnedOnly />
+          </div>
+          <div className="parent-card">
+            <div className="parent-card-head"><div><h2>收藏概率与保底</h2><p>以下进度和规则仅在家长端显示，学生端保留发现收藏的惊喜。</p></div></div>
+            <p className="parent-travel-rules">完整旅行每站有 20% 机会带回美食、伴手礼或徽章；每次完整旅行另有 10% 机会获得一件稀有。连续四次完整旅行未得到稀有，第五次必得；获得后重新累计。1、2、3、5 小时均计一次，提前回家不增加也不清空次数。</p>
+          </div>
+        </section>}
         {tab === 'notes' && <DailyNotesPanel notes={data.dailyNotes || []} onChange={dailyNotes => setData(prev => prev ? { ...prev, dailyNotes } : prev)} toast={toast} />}
         {tab === 'approve' && (
           <section className="parent-section">
@@ -546,6 +565,7 @@ function SettingsTab({ data, toast, onReload }: {
     <div className="parent-card">
       <div className="parent-card-head"><div><h2>家庭与账号</h2><p>在顶部「家庭管理」添加孩子、邀请家长、开通学生账号和修改自己的密码。家庭中的家长共同管理，以下配置和记录属于当前选择的孩子。</p></div></div>
     </div>
+    <PetSleepSettings key={data.childId} value={data.settings.petSleep} onReload={onReload} toast={toast} />
     <PushSettings channels={data.settings.notifyChannels} eventSettings={data.settings.notifyEvents} summaryTime={data.settings.notifySummaryTime} publicUrl={data.settings.notifyPublicUrl} onReload={onReload} toast={toast} />
     <PetDataPanel pet={data.pet} onReload={onReload} toast={toast} />
   </section>;

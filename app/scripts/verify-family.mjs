@@ -6,6 +6,7 @@ import {tmpdir} from 'node:os';
 import {join,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {DatabaseSync} from 'node:sqlite';
+import {testActivationCode} from './fixtures/activation.mjs';
 const root=join(dirname(fileURLToPath(import.meta.url)),'..'),dir=mkdtempSync(join(tmpdir(),'banxue-family-'));
 const port='17729',base=`http://127.0.0.1:${port}`;
 let server,checks=0;
@@ -22,7 +23,7 @@ class Client {
  use(s){this.scope={'x-family-id':s.family.id,'x-child-id':s.activeChildId};return s;}
 }
 const password='Test-Only-2026!',dad=new Client(),mom=new Client(),outsider=new Client(),student=new Client(),anon=new Client();
-const register=(login,name)=>({login,password,name,familyName:name+'的家',childName:name+'孩子'});
+const register=(login,name)=>({activationCode:testActivationCode(dir),login,password,name,familyName:name+'的家',childName:name+'孩子'});
 try{
  await start();
  await anon.call('/api/v2/student',undefined,401);await anon.call('/api/v2/parent',undefined,401);ok(true,'业务接口必须登录');
@@ -90,7 +91,7 @@ try{
   const legacyDb=new DatabaseSync(join(legacyDir,'banxue.db'));
   legacyDb.prepare('INSERT INTO child(id,name,avatar,grade,created_at) VALUES(?,?,?,?,?)').run('legacy-kid','原孩子','🌱',3,new Date().toISOString());
   const send=async body=>{const r=await fetch('http://127.0.0.1:17730/api/auth/register',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});return [r.status,await r.json()];};
-  const form={...register('legacy-dad','原家长'),claimLegacy:true,legacyPin:'9999'};
+  const form={...register('legacy-dad','原家长'),activationCode:testActivationCode(legacyDir),claimLegacy:true,legacyPin:'9999'};
   ok((await send(form))[0]===400,'关联原记录须验证原家长密码');
   const [status,claimed]=await send({...form,legacyPin:'1234'});
   ok(status===200&&claimed.activeChildId==='legacy-kid'&&claimed.children[0].name==='原孩子','首次注册保留原孩子 ID 和记录');

@@ -29,7 +29,7 @@ function readSnapshot(row) {
  const invalid=()=>{throw Error('备份数据不完整或格式不支持，无法恢复；当前宠物未修改');};
  if(!object(snapshot)||snapshot.version!==1||!timestamp(row.created_at)||!Array.isArray(snapshot.cooldowns))invalid();
  if(snapshot.pet===null){if(snapshot.cooldowns.length)invalid();return snapshot;}
- const pet=snapshot.pet,breed=object(pet)&&DAILY.breedList().find(b=>b.id===pet.breed);
+ const pet=snapshot.pet,breed=object(pet)&&DAILY.breedList({includeUnavailable:true}).find(b=>b.id===pet.breed);
  if(!breed||pet.species!==breed.species)invalid();
  for(const field of ['pet_id','name','gender','personality'])if(typeof pet[field]!=='string'||!pet[field].trim())invalid();
  if(!Number.isInteger(pet.stage)||pet.stage<1||pet.stage>6)invalid();

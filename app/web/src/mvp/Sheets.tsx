@@ -3,10 +3,10 @@ import type { InvItem, Pet, ShopItem, TodayData } from './types';
 
 /* ---------------- 通用弹层 ---------------- */
 export function Sheet({
-  open, onClose, title, sub, children, wide = false, footer,
+  open, onClose, title, sub, children, wide = false, footer, headerAction,
 }: {
   open: boolean; onClose: () => void; title: string; sub?: string;
-  children: React.ReactNode; wide?: boolean; footer?: React.ReactNode;
+  children: React.ReactNode; wide?: boolean; footer?: React.ReactNode; headerAction?: React.ReactNode;
 }) {
   const sheetRef = useRef<HTMLDivElement | null>(null);
   const closeRef = useRef(onClose);
@@ -38,6 +38,7 @@ export function Sheet({
             <h3>{title}</h3>
             {sub && <p>{sub}</p>}
           </div>
+          {headerAction}
           <button className="icon-btn" onClick={onClose} aria-label="关闭">✕</button>
         </div>
         <div className="sheet-body">{children}</div>

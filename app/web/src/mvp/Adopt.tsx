@@ -72,7 +72,7 @@ export default function Adopt({ onDone, onToast, adoptFn, embedded, onParent }: 
         <div className="adopt-body">
           <div className="breed-grid">
             <div className="filter-row breed-filters" aria-label="宠物种类">
-              {[['all', '全部'], ['capybara', '卡皮巴拉'], ['alpaca', '羊驼'], ['cat', '猫'], ['dog', '狗'], ['bird', '鸟'], ['turtle', '龟']].map(([key, label]) =>
+              {[['all', '全部'], ['capybara', '卡皮巴拉'], ['alpaca', '羊驼'], ['cat', '猫'], ['dog', '狗'], ['bird', '鸟'], ['turtle', '龟']].filter(([key]) => key === 'all' || BREEDS.some(b => b.speciesKey === key)).map(([key, label]) =>
                 <button key={key} className={`chip ${speciesFilter === key ? 'is-on' : ''}`} onClick={() => setSpeciesFilter(key)}>{label}</button>)}
             </div>
             {BREEDS.filter(b => speciesFilter === 'all' || b.speciesKey === speciesFilter).map((b) => (

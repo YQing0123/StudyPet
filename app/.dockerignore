@@ -6,6 +6,8 @@
 !vite.config.ts
 !server/
 !server/**
+!scripts/
+!scripts/admin-account.mjs
 !web/
 !web/**
 web/dist

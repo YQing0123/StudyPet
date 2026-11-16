@@ -1,4 +1,5 @@
 /** MVP 业务闭环验收：直接打 API，不依赖浏览器。先运行 node scripts/dev.mjs 或 server/index.mjs。 */
+import {testActivationCode} from './fixtures/activation.mjs';
 const BASE = process.env.BASE;
 if (!BASE) throw new Error('请运行 npm test，自动使用隔离数据库；直接验收必须显式指定 BASE。');
 
@@ -25,7 +26,7 @@ async function api(path, method = 'GET', body) {
 
 console.log(`MVP 验收：${BASE}\n`);
 
-await api('/api/auth/register', 'POST', { login: 'mvp-suite-'+Date.now(), password: 'Suite-Only-2026!', name:'验收家长', familyName:'MVP隔离家庭',childName:'验收孩子' });
+await api('/api/auth/register', 'POST', { activationCode:testActivationCode(),login: 'mvp-suite-'+Date.now(), password: 'Suite-Only-2026!', name:'验收家长', familyName:'MVP隔离家庭',childName:'验收孩子' });
 let d = await api('/api/today');
 ok(d.isNew === true && d.pet === null, '新家庭初始处于未领养状态');
 
@@ -33,7 +34,7 @@ d = await api('/api/pet/adopt', 'POST', { breed: 'cat_orange', name: '小橘' })
 ok(d.pet?.name === '小橘' && d.pet?.stage === 1, '领养橘猫并进入幼年');
 ok(d.tasks.length === 3, '领养时放入 3 个示例任务');
 ok(d.wallet.balance === 0, '初始星贝为 0');
-ok(d.inventory.length === 0, '初始背包为空');
+ok(d.inventory.length === 1 && d.inventory[0].key === 'scene_study', '初始拥有小书房，消耗品背包为空');
 
 let task = d.tasks[0];
 d = await api(`/api/tasks/${task.id}`, 'PATCH', { done: true });

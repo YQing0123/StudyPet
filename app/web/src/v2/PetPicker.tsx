@@ -17,7 +17,7 @@ export default function PetPicker({ open, onClose, pet, busy, onChoose }: {
   useEffect(() => {
     if (open) {
       const preview = new URLSearchParams(location.search).get('petPreview');
-      setSelected(PET_BREEDS.some(b => b.id === preview) ? preview! : pet.breed);
+      setSelected(PET_BREEDS.some(b => b.id === preview) ? preview! : PET_BREEDS.some(b => b.id === pet.breed) ? pet.breed : PET_BREEDS[0].id);
       setFilter('all');
       setAge(pet.stage);
     }
@@ -43,7 +43,7 @@ export default function PetPicker({ open, onClose, pet, busy, onChoose }: {
       <div className="pet-picker-layout">
         <div className="pet-picker-options">
           <div className="filter-row" aria-label="宠物种类">
-            {([['all', '全部'], ['capybara', '卡皮巴拉'], ['alpaca', '羊驼'], ['cat', '猫'], ['dog', '狗'], ['bird', '鸟'], ['turtle', '龟']] as const).map(([key, label]) =>
+            {([['all', '全部'], ['capybara', '卡皮巴拉'], ['alpaca', '羊驼'], ['cat', '猫'], ['dog', '狗'], ['bird', '鸟'], ['turtle', '龟']] as const).filter(([key]) => key === 'all' || PET_BREEDS.some(b => b.speciesKey === key)).map(([key, label]) =>
               <button key={key} className={`chip ${filter === key ? 'is-on' : ''}`} onClick={() => setFilter(key)}>{label}</button>)}
           </div>
           <div className="pet-picker-grid">

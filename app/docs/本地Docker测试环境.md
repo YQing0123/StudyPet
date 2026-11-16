@@ -1,0 +1,87 @@
+# 本地 Docker 测试环境
+
+2026-11-16 配置，适用于当前 Apple Silicon Mac 的 Colima。与 NAS 的 `compose.yaml`、正式域名及数据完全独立。
+
+## 访问与测试账号
+
+- 家庭入口：<http://127.0.0.1:7788/>
+- 平台管理员：<http://127.0.0.1:7788/admin>
+- 本地凭据：`app/.env.local-test`，权限 `0600`，已由 Git 忽略。包含管理员 `local-admin`、家长 `local-parent`、学生 `local-student` 的随机独立密码，以及一个未兑换开通码、一个未兑换续期码。
+- 已创建「本地测试家庭」和「测试宝贝」，当前宠物为卡皮巴拉「小岛伙伴」。家庭有效期为开通后 30 天；本次初始化至 2026-12-16。准确时间保存在凭据文件中，也可从管理员端及家长端家庭管理查看。
+- 备用开通码/续期码均提供 30 天使用期，兑换期限为签发后 30 天。管理员可以继续签发不同期限的邀请码或调整家庭期限。
+- 仅使用人工生成的测试数据，没有导入 NAS 或旧本机数据库。外部通知渠道未配置。
+
+## 本轮旅行测试状态（2026-11-16）
+
+已重新构建并启动最新镜像，学生 `local-student` 对应「测试宝贝」。本轮将宠物与钱包设置为：
+
+| 项目 | 测试初始值 |
+| --- | --- |
+| 成长阶段 | 少年·初阶，等级 3 |
+| 清洁度 | 60，可测试脏污表现与免费淋浴 |
+| 星贝余额 | 10,000 |
+| 旅行 | 已解锁，24 个目的地、168 项收藏；没有进行中的行程 |
+
+清洁度仍会正常随时间衰减，星贝随兑换与任务结算变化。调整前已在本地数据卷内备份数据库：`/data/backups/before-travel-test-2026-11-16T11-48-53-698Z.db`。
+
+已验证容器健康、学生账号登录、少年阶段与钱包读回。旅行素材包含 24 个清晰城市背景、地球、四种在架宠物的原图参考背包 GIF 与减少动态首帧，以及明信片/藏品图集。若浏览器还停留在旧页面，刷新后再开始测试。
+
+本轮改版开放橘猫、卡通柯基、卡皮巴拉、羊驼，其余品种暂时下架并兼容历史记录。返程先展示收获，点击“立即查收”才入背包、收藏和钱包。稀有收藏有金色标签，五次完整旅行内至少获得一次；学生界面不展示概率和保底次数，家长端“旅行收藏”可查看进度。重新构建保留原有测试数据，不会再次覆盖钱包或宠物数值。
+
+## 最小化运行配置
+
+| 项目 | 设置 |
+| --- | --- |
+| Docker context | `colima`，通过脚本固定，避免误操作远程 Docker |
+| Compose 项目 | `banxue-island-local` |
+| 容器 | `banxue-island-local-app-1`，只有一个应用服务 |
+| 镜像 | `banxue-island:local-test`，原生 `linux/arm64` |
+| 服务模式 | Node.js 同源托管已构建页面与 API，无 Vite 开发服务 |
+| 访问范围 | 仅 `127.0.0.1:7788` |
+| CPU / 内存上限 | 0.5 核 / 384MiB；这是本项目容器上限，不含 Colima 虚拟机与其他容器 |
+| 数据 | 独立命名卷 `banxue-island-local_local-data`，挂载到 `/data` |
+| 容器保护 | 非 root、只读根文件系统、移除全部 capabilities、禁提权 |
+| 临时目录 | 32MiB tmpfs |
+| 健康检查 / 日志 | 每 2 分钟检查；日志最多约 10MiB |
+
+HTTP 例外仅在 `compose.local.yaml` 中显式启用，配合本机端口绑定使用；NAS 配置不变。
+
+## 日常操作
+
+以下命令在 `app` 目录运行。脚本固定本机 Docker context、项目名、Compose 文件，并跳过自动加载 `.env`，防止读取 NAS 环境设置。
+
+```bash
+# 启动；已有镜像时不会启动额外编译或开发服务
+sh scripts/local-docker.sh up -d --no-build --wait
+
+# 修改代码后，重新构建并部署到本地测试环境
+sh scripts/local-docker.sh up -d --build --wait
+
+# 查看状态、最近日志、即时资源占用
+sh scripts/local-docker.sh ps
+sh scripts/local-docker.sh logs --tail 100 app
+docker --context colima stats --no-stream banxue-island-local-app-1
+
+# 不测试时停止应用，保留测试数据
+sh scripts/local-docker.sh stop
+
+# 重新启动
+sh scripts/local-docker.sh start --wait
+
+# 移除本项目容器和网络，仍保留数据卷
+sh scripts/local-docker.sh down
+```
+
+普通重启、重新构建和 `down` 均保留测试数据。`down -v` 会删除测试数据卷，日常操作无需使用。
+
+如需手动创建管理员或重设管理员密码，使用容器内 CLI；密码通过不回显交互输入：
+
+```bash
+sh scripts/local-docker.sh exec app node scripts/admin-account.mjs local-admin
+```
+
+该命令重设密码后会撤销原管理会话；原凭据文件中的密码不会自动更新。
+
+## 本机服务清理范围
+
+已停止本项目在 Docker 外运行的 Vite `5199`、API `7717`、静态预览 `7788`，以及 Vite 的 esbuild 子进程。旧本机数据库保留。其他项目的服务、现有 SAG 容器及 Colima 必需进程保留；没有修改 NAS。

@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
+import {testActivationCode} from './fixtures/activation.mjs';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dir = mkdtempSync(join(tmpdir(), 'banxue-progression-'));
 process.env.BANXUE_DATA_DIR = dir;
@@ -13,7 +14,7 @@ const D = await import('../server/daily.mjs'), V = await import('../server/v2.mj
 const B = await import('../server/pet-backups.mjs'), P = await import('../server/pet-progression.mjs');
 let checks = 0, server;
 const check = (condition, label) => { assert.ok(condition, label); checks++; console.log('✓ ' + label); };
-const makeChild = id => { q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)', id, id, new Date().toISOString()); D.adopt(id, { breed: 'dog_corgi_toon' }); return D.getPetRow(id); };
+const makeChild = id => { q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)', id, id, new Date().toISOString()); D.adopt(id, { breed: 'capybara_toon' }); return D.getPetRow(id); };
 try {
  const clock = Date.parse('2026-11-14T00:00:00Z');
  let combinations = 0;
@@ -68,6 +69,7 @@ try {
  assert.throws(()=>D.interact('quota',{action:'hug'}),/回味/);
  q.run('UPDATE pet_life SET energy=0 WHERE pet_id=?',quotaPet.pet_id);assert.throws(()=>D.interact('quota',{action:'play'}),/太累/);
  check(q.get('SELECT COUNT(*) n FROM pet_growth_ledger WHERE child_id=?','quota').n===count,'失败动作不记成长');
+ q.run('UPDATE pet_life SET energy=90 WHERE pet_id=?',quotaPet.pet_id);
  for(const key of ['fish','feather','brush']){q.run('INSERT INTO material_inv VALUES(?,?,5)','quota',key);for(let i=0;i<3;i++)D.useMaterial('quota',{key});}
  assert.equal(D.getToday('quota').pet.growth,12);
  for(let i=0;i<5;i++)tx(()=>D.awardTaskGrowth('quota',{id:`today-${i}`,date:P.chinaDate()}));
@@ -75,8 +77,8 @@ try {
  check(D.getToday('quota').pet.growth===24&&P.dailyGrowth('quota').remaining===0,'材料分类限额、前3项任务各4点，历史与重复任务不加速，每天合计24');
  check(P.dailyGrowth('quota',Date.now()+86400000).remaining===24,'隔天额度重置');
  const backup=B.backupPet('quota',quotaPet.pet_id).id;
- B.migratePet('quota','bird_parakeet',quotaPet.pet_id);assert.equal(D.getToday('quota').pet.progression.level,1);
- B.restartPet('quota',quotaPet.pet_id);D.adopt('quota',{breed:'turtle_grass'});const newPet=D.getPetRow('quota');
+ B.migratePet('quota','alpaca_toon',quotaPet.pet_id);assert.equal(D.getToday('quota').pet.progression.level,1);
+ B.restartPet('quota',quotaPet.pet_id);D.adopt('quota',{breed:'cat_orange'});const newPet=D.getPetRow('quota');
  assert.equal(D.interact('quota',{action:'pet'}).growthGained,0);B.restorePet('quota',backup,newPet.pet_id);
  check(P.dailyGrowth('quota').remaining===0,'换品种、重养与恢复备份不能刷新当日额度');
  const saved=JSON.parse(q.get('SELECT snapshot FROM pet_backup WHERE id=?',backup).snapshot);
@@ -99,12 +101,12 @@ try {
  V.reviewTask('tasks',reviewed.id,{approve:false});V.submitTask('tasks',reviewed.id);V.reviewTask('tasks',reviewed.id,{approve:true});
  assert.equal(D.getToday('tasks').pet.growth,8);assert.throws(()=>V.reviewTask('tasks',reviewed.id,{approve:true}));
  check(D.getToday('tasks').pet.growth===8,'自动通过及时奖励；退回不奖励，重审通过仅一次，与星贝多少无关');
- const port='17729',base=`http://127.0.0.1:${port}`;
+ const port=process.env.PROGRESSION_TEST_PORT || '17729',base=`http://127.0.0.1:${port}`;
  server=spawn(process.execPath,['server/index.mjs'],{cwd:root,env:{...process.env,PORT:port,BANXUE_DATA_DIR:dir},stdio:['ignore','ignore','pipe']});
  let serverError='';server.stderr.on('data',d=>{serverError+=d;});let ready=false;
  for(let i=0;i<80;i++){try{ready=(await fetch(base+'/api/health')).ok;}catch{}if(ready)break;await new Promise(r=>setTimeout(r,100));}assert.ok(ready,serverError);
  let cookie='';const api=async(path,body)=>{const r=await fetch(base+path,{method:body==null?'GET':'POST',headers:{'content-type':'application/json',cookie},body:body==null?undefined:JSON.stringify(body)});const c=r.headers.get('set-cookie');if(c)cookie=c.split(';')[0];return {status:r.status,data:await r.json()};};
- const registration=await api('/api/auth/register',{login:'progression-api',password:'Suite-Only-2026!',name:'验收',familyName:'隔离',childName:'孩子',claimLegacy:true,legacyPin:"1234"});assert.equal(registration.status,200,JSON.stringify(registration.data));
+ const registration=await api('/api/auth/register',{activationCode:testActivationCode(dir),login:'progression-api',password:'Suite-Only-2026!',name:'验收',familyName:'隔离',childName:'孩子',claimLegacy:true,legacyPin:"1234"});assert.equal(registration.status,200,JSON.stringify(registration.data));
  const claimed=(await api('/api/v2/student')).data.pet;if(claimed)assert.equal((await api('/api/v2/pet/restart',{expectedPetId:claimed.id})).status,200);
  const adopted=await api('/api/v2/adopt',{breed:'capybara_toon',name:'卡卡'});assert.equal(adopted.status,200);const httpPet=adopted.data.pet;
  q.run('UPDATE pet_life SET natural_anchor_at=? WHERE pet_id=?',new Date(Date.now()-200*86400000).toISOString(),httpPet.id);

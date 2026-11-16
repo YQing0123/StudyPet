@@ -9,6 +9,14 @@
  */
 import { q, now, uid, tx } from './db.mjs';
 import { ensureProgression, progressionFor, dailyGrowth, grantGrowth, levelEvents, chinaDate, CURVE_VERSION } from './pet-progression.mjs';
+import { sleepState, sleepHoursBetween, disturbSleep } from './pet-sleep.mjs';
+import { changePetState, PET_STATS } from './pet-state.mjs';
+import { PET_SCENARIOS, dirtLevel } from '../web/src/shared/petScenarios.mjs';
+import { ROOM_CATALOG, isRoomItem } from '../web/src/shared/roomCatalog.mjs';
+import { roomState, roomInventory, ownsRoomItem, acquireRoomItem, useRoomItem } from './pet-room.mjs';
+import { applyPetScenario, scenarioAvailability } from './pet-scenarios.mjs';
+import { isAvailablePetBreed } from '../web/src/shared/availablePetBreeds.mjs';
+import { playSession, recordPlay } from './pet-play.mjs';
 
 export const STAGE_NAMES = ['蛋', '幼年', '少年', '青年', '成年', '中年', '老年'];
 export const STAGE_SCALE = [0.5, 0.62, 0.80, 0.92, 1.0, 1.0, 0.94];
@@ -17,7 +25,7 @@ export const STAGE_RATE = [1, 1.12, 1.12, 1, 1, 1, 0.85];
 export const SHOP = [
   {
     key: 'kibble', name: '香脆小饼干', icon: '🍪', kind: 'food', cost: 22,
-    desc: '日常口粮，先垫垫肚子', effect: { hunger: 24, growth: 1 },
+    desc: '日常口粮，吃饱也会更开心', effect: { hunger: 24, mood: 4, growth: 1 },
   },
   {
     key: 'fish', name: '小鱼干', icon: '🐟', kind: 'food', cost: 44,
@@ -25,23 +33,23 @@ export const SHOP = [
   },
   {
     key: 'milk', name: '温热羊奶', icon: '🥛', kind: 'food', cost: 30,
-    desc: '喝完精神满满', effect: { hunger: 20, energy: 14, growth: 1 },
+    desc: '喝完精神满满，心情也暖暖的', effect: { hunger: 20, energy: 14, mood: 4, growth: 1 },
   },
   {
     key: 'ball', name: '毛线球', icon: '🧶', kind: 'toy', cost: 40,
-    desc: '滚来滚去玩一下午', effect: { mood: 16, energy: -4, growth: 1 },
+    desc: '滚一会儿毛线球，开心后也要休息', effect: { mood: 16, energy: -4, clean: -2, growth: 1 },
   },
   {
     key: 'feather', name: '羽毛逗趣棒', icon: '🪶', kind: 'toy', cost: 70,
-    desc: '扑上去！根本停不下来', effect: { mood: 24, energy: -6, growth: 2 },
+    desc: '扑上去！玩过以后要擦擦毛、歇歇脚', effect: { mood: 24, energy: -6, clean: -3, growth: 2 },
   },
   {
     key: 'brush', name: '软毛小梳子', icon: '🪮', kind: 'clean', cost: 32,
     desc: '梳梳毛，蓬松又清爽', effect: { clean: 18, mood: 4, growth: 1 },
   },
   {
-    key: 'bath', name: '泡泡香香浴', icon: '🫧', kind: 'clean', cost: 62,
-    desc: '香喷喷的一身泡泡', effect: { clean: 36, mood: 8, growth: 1 },
+    key: 'bath', name: '泡泡香香浴', icon: '🛀', kind: 'clean', cost: 62,
+    desc: '认真泡个澡，清洁补满；低于50时需要它', effect: { cleanTo: PET_SCENARIOS.bath.set.clean, ...PET_SCENARIOS.bath.delta, growth: 1 },
   },
   {
     key: 'bow', name: '草莓蝴蝶结', icon: '🎀', kind: 'deco', cost: 110,
@@ -51,6 +59,7 @@ export const SHOP = [
     key: 'crown', name: '迷你小皇冠', icon: '👑', kind: 'deco', cost: 260,
     desc: '戴在头顶，可反复穿戴；首次戴上心情 +16', effect: { mood: 16, outfit: 'crown' },
   },
+  ...ROOM_CATALOG,
 ];
 
 export const SHOP_MAP = Object.fromEntries(SHOP.map((x) => [x.key, x]));
@@ -175,6 +184,7 @@ function serializePet(row) {
     nextChest: 50 - (Math.round(row.growth) % 50 || 0),
     outfit,
     sound: SOUND_SPECIES[row.species] || 'cat',
+    playSession: playSession(row.child_id),
   };
 }
 
@@ -184,7 +194,8 @@ function applyDecay(row) {
   const hours = clamp((Date.now() - last) / 3600000, 0, MAX_DECAY_HOURS);
   if (hours <= 0.0005) return false;
   row.hunger = clamp(row.hunger - DECAY_PER_HOUR.hunger * hours, 0, 100);
-  row.energy = clamp(row.energy - DECAY_PER_HOUR.energy * hours, 0, 100);
+  const sleepingHours = sleepHoursBetween(row.child_id, Date.now() - hours * 3600000, Date.now());
+  row.energy = clamp(row.energy - DECAY_PER_HOUR.energy * (hours - sleepingHours) + 8 * sleepingHours, 0, 100);
   row.mood = clamp(row.mood - DECAY_PER_HOUR.mood * hours, 0, 100);
   row.clean = clamp(row.clean - DECAY_PER_HOUR.clean * hours, 0, 100);
   // 需求过低会拖累心情：饿、脏、累都会让它没那么开心
@@ -196,16 +207,18 @@ function applyDecay(row) {
 }
 
 export function getPetRow(childId) {
+  return tx(() => {
   const row = ensureProgression(q.get('SELECT * FROM pet_life WHERE child_id = ? ORDER BY created_at LIMIT 1', childId));
   if (!row) return null;
   const changed = applyDecay(row);
   if (changed) {
+    changePetState(childId, row.pet_id, { set: Object.fromEntries(PET_STATS.map(key => [key, row[key]])), reason: 'passive-settlement' });
     q.run(
-      'UPDATE pet_life SET hunger=?, energy=?, mood=?, clean=?, stage=?, last_tick=? WHERE pet_id=?',
-      row.hunger, row.energy, row.mood, row.clean, row.stage, row.last_tick, row.pet_id,
+      'UPDATE pet_life SET stage=?, last_tick=? WHERE pet_id=?', row.stage, row.last_tick, row.pet_id,
     );
   }
   return row;
+  });
 }
 
 /* ---------------- 钱包 ---------------- */
@@ -319,10 +332,13 @@ export function getToday(childId, date = toDateKey()) {
     tasks,
     progress,
     wallet,
-    inventory: inventoryOf(childId),
+    inventory: [...inventoryOf(childId), ...roomInventory(childId)],
+    room: roomState(childId),
+    hygiene: hygieneState(childId, pet),
     shop: shopFor(childId),
     recent: recentLedger(childId),
     cooldowns,
+    sleep: sleepState(childId),
     stageNames: STAGE_NAMES,
     dailyBonus: DAILY_BONUS,
   };
@@ -331,13 +347,15 @@ export function getToday(childId, date = toDateKey()) {
 /* ---------------- 领养 ---------------- */
 export function changeBreed(childId, breed) {
   if (typeof breed !== 'string' || !Object.hasOwn(BREEDS, breed)) throw new Error('还没有这种小伙伴');
+  if (!isAvailablePetBreed(breed)) throw new Error('这位小伙伴正在完善动作，暂时不能切换');
   const pet = getPetRow(childId);
   if (!pet) throw new Error('请先领养小伙伴');
   q.run('UPDATE pet_life SET breed=?, species=? WHERE pet_id=?', breed, BREEDS[breed].species, pet.pet_id);
 }
 
 export function adopt(childId, { breed = 'cat_orange', name, gender = 'female' } = {}) {
-  if (!BREEDS[breed]) throw new Error('还没有这种小伙伴');
+  if (typeof breed !== 'string' || !Object.hasOwn(BREEDS, breed)) throw new Error('还没有这种小伙伴');
+  if (!isAvailablePetBreed(breed)) throw new Error('这位小伙伴正在完善动作，暂时不能领养');
   const exists = getPetRow(childId);
   if (exists) throw new Error('已经领养过小伙伴啦');
   const info = breedInfo(breed);
@@ -429,8 +447,7 @@ export function toggleTask(childId, id, done) {
       awardTaskGrowth(childId, row, 'legacytask');
       const pet = getPetRow(childId);
       if (pet) {
-        q.run('UPDATE pet_life SET mood=?, last_tick=? WHERE pet_id=?',
-          clamp(pet.mood + 3, 0, 100), new Date().toISOString(), pet.pet_id);
+        changePetState(childId, pet.pet_id, { delta: { mood: 3 }, reason: 'task-approved', eventKey: `legacytask:${id}:mood` });
       }
     } else {
       const balance = q.get('SELECT COALESCE(SUM(delta),0) AS n FROM point_ledger WHERE child_id=?', childId)?.n ?? 0;
@@ -462,14 +479,15 @@ function syncDayBonus(childId, date) {
 
 /* ---------------- 商店 / 背包 ---------------- */
 export function buy(childId, { key, qty = 1 } = {}) {
-  const item = SHOP_MAP[key];
+  const item = Object.hasOwn(SHOP_MAP, key) ? SHOP_MAP[key] : null;
   if (!item) throw new Error('商店里没有这件材料');
   const n = Number(qty);
   if (!Number.isInteger(n) || n < 1 || n > 9) throw new Error('每次可兑换 1 到 9 件材料');
-  if (item.kind === 'deco' && n !== 1) throw new Error('装扮只需兑换一件，就可以反复穿戴');
+  if ((item.kind === 'deco' || isRoomItem(item)) && n !== 1) throw new Error('装扮只需兑换一件，就可以反复穿戴');
   const cost = priceOf(childId, key) * n;
   tx(() => {
     migrateWardrobe(childId);
+    if (isRoomItem(item) && ownsRoomItem(childId, key)) throw new Error('已经永久拥有啦，去背包使用吧');
     if (item.kind === 'deco' && q.get('SELECT 1 FROM material_wardrobe WHERE child_id=? AND item_key=?', childId, key)) throw new Error('这件装扮已经拥有啦，去背包穿戴吧');
     const balance = q.get('SELECT COALESCE(SUM(delta),0) AS n FROM point_ledger WHERE child_id=?', childId)?.n ?? 0;
     if (balance < cost) throw new Error(`还差 ${cost - balance} 星贝`);
@@ -477,6 +495,7 @@ export function buy(childId, { key, qty = 1 } = {}) {
       `INSERT INTO point_ledger(id, child_id, date, delta, reason, dedupe_key, created_at)
        VALUES(?,?,?,?,?,?,?)`,
       uid(), childId, toDateKey(), -cost, `兑换材料：${item.name} ×${n}`, `buy:${uid()}`, new Date().toISOString());
+    if (isRoomItem(item)) { acquireRoomItem(childId, key); return; }
     q.run(
       `INSERT INTO material_inv(child_id, item_key, qty) VALUES(?,?,?)
        ON CONFLICT(child_id, item_key) DO UPDATE SET qty=qty+excluded.qty`,
@@ -487,13 +506,22 @@ export function buy(childId, { key, qty = 1 } = {}) {
 }
 
 export function useMaterial(childId, { key, equipped = true } = {}) {
-  const item = SHOP_MAP[key];
+  const item = Object.hasOwn(SHOP_MAP, key) ? SHOP_MAP[key] : null;
   if (!item) throw new Error('背包里没有这件材料');
   if (typeof equipped !== 'boolean') throw new Error('穿戴状态无效');
+  if (isRoomItem(item)) {
+    const room = useRoomItem(childId, key, equipped);
+    return { ...getToday(childId), room, used: item, msg: `${item.name} · ${item.kind === 'scene' ? '场景已切换' : equipped ? '已放进房间，长按可移动' : '已收回背包'}` };
+  }
   if (item.kind !== 'deco' && !equipped) throw new Error('只有装扮可以取下');
   migrateWardrobe(childId);
   const pet = getPetRow(childId);
   if (!pet) throw new Error('先领养一个小伙伴吧');
+  const sleepInteraction = disturbSleep(childId, pet);
+  if (sleepInteraction) return { ...getToday(childId), sleepInteraction, msg: sleepInteraction.message };
+
+  if (item.kind === 'clean' && key !== 'bath' && round1(pet.clean) < 50) throw new Error('清洁度低于50，需要用🛀泡泡浴认真洗澡，梳毛还不够哦');
+  if (item.kind === 'toy' && pet.energy < 10) throw new Error('它太累啦，先让它睡一会儿');
 
   if (item.kind === 'deco') {
     let result;
@@ -508,8 +536,9 @@ export function useMaterial(childId, { key, equipped = true } = {}) {
       if (equipped) outfit[key] = '1'; else delete outfit[key];
       const bonus = equipped && !owned.first_worn_at ? Number(item.effect.mood) || 0 : 0;
       if (bonus) q.run('UPDATE material_wardrobe SET first_worn_at=? WHERE child_id=? AND item_key=?', new Date().toISOString(), childId, key);
-      q.run('UPDATE pet_life SET outfit=?, mood=?, care_count=care_count+?, last_tick=? WHERE pet_id=?', JSON.stringify(outfit), clamp(pet.mood + bonus, 0, 100), Number(changed), new Date().toISOString(), pet.pet_id);
-      result = { ...getToday(childId), used: item, equipped, changed, growthGained: 0, loot: [], msg: `${item.name} · ${equipped ? changed ? '戴好啦' : '已经戴好啦' : '已取下'}${bonus ? ` · 心情 +${bonus}` : ''} · 装扮会一直留在背包` };
+      const stateChange = changePetState(childId, pet.pet_id, { delta: { mood: bonus }, reason: `outfit:${key}` });
+      q.run('UPDATE pet_life SET outfit=?, care_count=care_count+?, last_tick=? WHERE pet_id=?', JSON.stringify(outfit), Number(changed), new Date().toISOString(), pet.pet_id);
+      result = { ...getToday(childId), used: item, equipped, changed, stateDelta: stateChange.delta, growthGained: 0, loot: [], msg: `${item.name} · ${equipped ? changed ? '戴好啦' : '已经戴好啦' : '已取下'}${bonus ? ` · 心情 +${round1(stateChange.delta.mood)}` : ''} · 装扮会一直留在背包` };
     });
     return result;
   }
@@ -518,15 +547,12 @@ export function useMaterial(childId, { key, equipped = true } = {}) {
   if (!row || row.qty <= 0) throw new Error('这件材料已经用完啦');
 
   const beforeGrowth = Math.round(pet.growth);
-  const eff = item.effect || {};
-  const next = {
-    hunger: clamp(pet.hunger + (eff.hunger || 0), 0, 100),
-    energy: clamp(pet.energy + (eff.energy || 0), 0, 100),
-    mood: clamp(pet.mood + (eff.mood || 0), 0, 100),
-    clean: clamp(pet.clean + (eff.clean || 0), 0, 100),
-  };
+  const eff = { ...item.effect };
+  // Every meal cheers the pet up; a satisfying meal has a small additional benefit.
+  if (item.kind === 'food' && pet.hunger < 80 && pet.hunger + (eff.hunger || 0) >= 80) eff.mood = (eff.mood || 0) + 2;
   const loot = [];
   let gained = 0;
+  let stateDelta = {};
   let outfit = {};
   try { outfit = JSON.parse(pet.outfit || '{}'); } catch {}
   if (eff.outfit) outfit = { [eff.outfit]: '1' };
@@ -535,28 +561,27 @@ export function useMaterial(childId, { key, equipped = true } = {}) {
     gained = grantGrowth(childId, pet, item.kind, eff.growth || 0, `material:${uid()}`);
     const consumed = q.run('UPDATE material_inv SET qty=qty-1 WHERE child_id=? AND item_key=? AND qty>0', childId, key);
     if (!consumed.changes) throw new Error('这件材料已经用完啦');
-    q.run(
-      `UPDATE pet_life SET hunger=?, energy=?, mood=?, clean=?, outfit=?, care_count=care_count+1, last_tick=?
-       WHERE pet_id=?`,
-      next.hunger, next.energy, next.mood, next.clean, JSON.stringify(outfit),
-      new Date().toISOString(), pet.pet_id);
+    const scenario = PET_SCENARIOS[key];
+    const delta = Object.fromEntries(PET_STATS.filter(k => typeof eff[k] === 'number').map(k => [k, eff[k]]));
+    stateDelta = changePetState(childId, pet.pet_id, { delta: item.kind === 'toy' ? recordPlay(childId, 'toy', delta) : delta, set: scenario?.set || {}, reason: `material:${key}` }).delta;
+    q.run('UPDATE pet_life SET outfit=?, care_count=care_count+1, last_tick=? WHERE pet_id=?', JSON.stringify(outfit), new Date().toISOString(), pet.pet_id);
     q.run('DELETE FROM material_inv WHERE child_id=? AND item_key=? AND qty<=0', childId, key);
     loot.push(...dropChestIfAny(childId, pet.pet_id, beforeGrowth, beforeGrowth + gained, pet.stage));
   });
 
-  const msg = effectMessage(item, { ...eff, growth: gained }) + (eff.growth && !gained ? ' · 它很开心，今天这类成长助力已收集完' : '');
-  return { ...getToday(childId), msg, loot, used: item, growthGained: gained };
+  const msg = effectMessage(item, { ...eff, ...stateDelta, growth: gained, ...(eff.cleanTo ? { clean: 0 } : {}) }) + (eff.growth && !gained ? ' · 它很开心，今天这类成长助力已收集完' : '');
+  return { ...getToday(childId), msg, loot, used: item, growthGained: gained, stateDelta };
 }
 
 function effectMessage(item, eff) {
   const parts = [];
-  if (eff.hunger) parts.push(`饱食 +${eff.hunger}`);
-  if (eff.energy) parts.push(`精力 ${eff.energy > 0 ? '+' : ''}${eff.energy}`);
-  if (eff.mood) parts.push(`心情 +${eff.mood}`);
-  if (eff.clean) parts.push(`清洁 +${eff.clean}`);
-  if (eff.growth) parts.push(`成长 +${eff.growth}`);
+  for (const [key, label] of Object.entries({ hunger: '饱食', energy: '精力', mood: '心情', clean: '清洁', growth: '成长' })) {
+    const value = round1(Number(eff[key]) || 0);
+    if (value) parts.push(`${label} ${value > 0 ? '+' : ''}${value}`);
+  }
+  if (eff.cleanTo) parts.push(`清洁补满至 ${eff.cleanTo}`);
   if (eff.outfit) parts.push('换上新装扮');
-  return `${item.name} · ${parts.join(' · ')}`;
+  return `${item.name} · ${parts.length ? parts.join(' · ') : '状态保持得很好'}`;
 }
 
 function dropChestIfAny(childId, petId, before, after, stage) {
@@ -564,7 +589,7 @@ function dropChestIfAny(childId, petId, before, after, stage) {
   if (owed <= 0) return [];
   migrateWardrobe(childId);
   const owned = new Set(q.all('SELECT item_key FROM material_wardrobe WHERE child_id=?', childId).map(r => r.item_key));
-  const pool = SHOP.filter((x) => x.kind !== 'deco' || (stage >= 4 && x.key === 'bow' && !owned.has(x.key)));
+  const pool = SHOP.filter((x) => !isRoomItem(x) && (x.kind !== 'deco' || (stage >= 4 && x.key === 'bow' && !owned.has(x.key))));
   const loot = [];
   for (let i = 0; i < owed; i++) {
     const claim = q.run('INSERT OR IGNORE INTO pet_chest_claim VALUES(?,?)', petId, Math.floor(before / 50) + i + 1);
@@ -593,15 +618,12 @@ export function awardTaskGrowth(childId, task, prefix = 'v2task') {
 
 /* ---------------- 免费互动 ---------------- */
 export function interact(childId, { action } = {}) {
-  const map = {
-    pet: { mood: 6, clean: 2, growth: 1, label: '摸摸' },
-    play: { mood: 11, energy: -5, growth: 1, label: '陪玩' },
-    hug: { mood: 8, growth: 1, label: '抱抱' },
-  };
-  const act = map[action];
+  const act = ['pet','play','hug'].includes(action) ? PET_SCENARIOS[action] : null;
   if (!act) throw new Error('不认识这个动作');
   const pet = getPetRow(childId);
   if (!pet) throw new Error('先领养一个小伙伴吧');
+  const sleepInteraction = disturbSleep(childId, pet);
+  if (sleepInteraction) return { ...getToday(childId), sleepInteraction, msg: sleepInteraction.message };
   if (action === 'play' && pet.energy < 10) throw new Error('它太累啦，先让它睡一会儿');
   const s = cooldownLeft(pet, action);
   if (s > 0) {
@@ -610,18 +632,15 @@ export function interact(childId, { action } = {}) {
   const before = Math.round(pet.growth);
   let gained = 0;
   let loot = [];
+  let stateDelta = {};
   tx(() => {
     markCare(pet, action);
     gained = grantGrowth(childId, pet, action, act.growth, `care:${uid()}`);
-    q.run(
-      `UPDATE pet_life SET mood=?, clean=?, energy=?, care_count=care_count+1,
-        last_care_at=?, last_care_kind=?, last_tick=? WHERE pet_id=?`,
-      clamp(pet.mood + act.mood, 0, 100), clamp(pet.clean + (act.clean || 0), 0, 100),
-      clamp(pet.energy + (act.energy || 0), 0, 100),
-      new Date().toISOString(), action, new Date().toISOString(), pet.pet_id);
+    stateDelta = changePetState(childId, pet.pet_id, { delta: recordPlay(childId, action, act.delta), reason: `scenario:${action}` }).delta;
+    q.run('UPDATE pet_life SET care_count=care_count+1,last_care_at=?,last_care_kind=?,last_tick=? WHERE pet_id=?', new Date().toISOString(), action, new Date().toISOString(), pet.pet_id);
     loot = dropChestIfAny(childId, pet.pet_id, before, before + gained, pet.stage);
   });
-  return { ...getToday(childId), msg: `${act.label} · 心情 +${act.mood}${gained ? ` · 成长 +${gained}` : ' · 它很开心，今天这类成长助力已收集完'}`, growthGained: gained, loot };
+  return { ...getToday(childId), msg: effectMessage({ name: act.label }, { ...stateDelta, growth: gained }) + (gained ? '' : ' · 它很开心，今天这类成长助力已收集完'), growthGained: gained, stateDelta, loot };
 }
 
 export function rename(childId, name) {
@@ -641,6 +660,26 @@ export function resetPet(childId) {
   return getToday(childId);
 }
 
-export function breedList() {
-  return Object.entries(BREEDS).map(([id, b]) => ({ id, ...b }));
+export function breedList({ includeUnavailable = false } = {}) {
+  return Object.entries(BREEDS).filter(([id]) => includeUnavailable || isAvailablePetBreed(id)).map(([id, b]) => ({ id, ...b }));
+}
+
+export function hygieneState(childId, pet, now = Date.now()) {
+  const available = scenarioAvailability(childId, pet, 'shower', now);
+  return { dirtLevel: dirtLevel(pet?.clean ?? 100), showerUsed: available.used, showerAvailable: available.allowed,
+    showerIncrease: PET_SCENARIOS.shower.delta.clean, showerCap: PET_SCENARIOS.shower.caps.clean, showerMinClean: PET_SCENARIOS.shower.conditions.find(c => c.stat === 'clean' && c.min != null).min, date: chinaDate(now) };
+}
+export function shower(childId) { return runPetScenario(childId, 'shower'); }
+export function runPetScenario(childId, scenarioKey) {
+  const scenario = Object.hasOwn(PET_SCENARIOS, scenarioKey) ? PET_SCENARIOS[scenarioKey] : null;
+  if (!scenario?.publicInteraction) throw new Error('这个场景暂时不能直接互动');
+  return tx(() => {
+    const pet = getPetRow(childId);
+    if (!pet) throw new Error('先领养一个小伙伴吧');
+    const sleepInteraction = disturbSleep(childId, pet);
+    if (sleepInteraction) return { ...getToday(childId), sleepInteraction, msg: sleepInteraction.message };
+    const result = applyPetScenario(childId, pet, scenarioKey);
+    q.run('UPDATE pet_life SET care_count=care_count+1 WHERE pet_id=?', pet.pet_id);
+    return { ...getToday(childId), scenario: scenarioKey, stateDelta: result.delta, msg: effectMessage({ name: scenario.label || scenarioKey }, result.delta) + (scenario.oncePerDay ? ' · 今天用过啦' : '') };
+  });
 }

@@ -18,6 +18,7 @@ services:
       TZ: Asia/Shanghai
       BANXUE_DATA_DIR: /data
       BANXUE_PUBLIC_ORIGIN: ${BANXUE_PUBLIC_ORIGIN:-}
+      BANXUE_ALLOW_HTTP: ${BANXUE_ALLOW_HTTP:-0}
     volumes:
       - type: bind
         source: ${BANXUE_DATA_PATH:-./data}
@@ -33,6 +34,7 @@ services:
       - no-new-privileges:true
     cpus: 1.5
     mem_limit: 768m
+    pids_limit: 128
     stop_grace_period: 30s
     logging:
       driver: json-file

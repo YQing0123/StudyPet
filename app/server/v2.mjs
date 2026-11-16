@@ -7,6 +7,11 @@ import * as DAILY from './daily.mjs';
 import * as NOTIFY from './notifications.mjs';
 import * as CARDS from './notification-cards.mjs';
 import * as PET_BACKUPS from './pet-backups.mjs';
+import * as TRAVEL from './travel.mjs';
+import { childIsActive } from './subscriptions.mjs';
+import { changePetState } from './pet-state.mjs';
+import { applyPetScenario } from './pet-scenarios.mjs';
+import { sleepSchedule, saveSleepSchedule, disturbSleep } from './pet-sleep.mjs';
 
 db.exec(`
 CREATE TABLE IF NOT EXISTS plan_rule (
@@ -245,6 +250,7 @@ function syncUnsubmittedTasks(childId, ruleId) {
 
 /* ---------------- 任务生成 ---------------- */
 export function ensureTasks(childId, date, knownRules) {
+  if (!childIsActive(childId)) return;
   const wd = weekdayOf(date);
   const rules = knownRules || q.all('SELECT * FROM plan_rule WHERE child_id=? AND active=1', childId);
   const ts = new Date().toISOString();
@@ -329,7 +335,7 @@ function awardTask(childId, task, overridePoints) {
   if (!has) DAILY.awardTaskGrowth(childId, task);
   // 重试不会重复发分或重复增加心情。
   const pet = DAILY.getPetRow(childId);
-  if (pet && !has) q.run('UPDATE pet_life SET mood=? WHERE pet_id=?', clamp(pet.mood + 2, 0, 100), pet.pet_id);
+  if (pet && !has) changePetState(childId, pet.pet_id, { delta: { mood: 2 }, reason: 'task-approved', eventKey: `v2task:${task.id}:mood` });
   return points;
   });
 }
@@ -412,18 +418,26 @@ export function reviewTask(childId, id, body = {}) {
 export function restPet(childId) {
   const pet = DAILY.getPetRow(childId);
   if (!pet) throw new Error('先领养一个小伙伴吧');
+  const sleepInteraction = disturbSleep(childId, pet);
+  if (sleepInteraction) return { ...getStudentState(childId), sleepInteraction };
   const left = DAILY.cooldownLeft(pet, 'rest', 30 * 60 * 1000);
   if (left > 0) {
     throw new Error(`刚睡过啦，${Math.ceil(left / 60)} 分钟后再睡`);
   }
+  let stateDelta;
   tx(() => {
   DAILY.markCare(pet, 'rest');
-  q.run(
-    `UPDATE pet_life SET energy=?, mood=?, last_care_at=?, last_care_kind=?, last_tick=? WHERE pet_id=?`,
-    Math.min(100, pet.energy + 14), Math.min(100, pet.mood + 2),
-    new Date().toISOString(), 'rest', new Date().toISOString(), pet.pet_id);
+  stateDelta = applyPetScenario(childId, pet, 'rest').delta;
+  q.run('UPDATE pet_life SET last_care_at=?, last_care_kind=?, last_tick=? WHERE pet_id=?', new Date().toISOString(), 'rest', new Date().toISOString(), pet.pet_id);
   });
-  return getStudentState(childId, todayKey());
+  return { ...getStudentState(childId, todayKey()), stateDelta, msg: `小憩了一会儿，精力 +${Math.round(stateDelta.energy * 10) / 10}` };
+}
+
+export function touchSleepingPet(childId) {
+  const pet = DAILY.getPetRow(childId);
+  if (!pet) throw Error('先领养一个小伙伴吧');
+  const sleepInteraction = disturbSleep(childId, pet);
+  return { ...getStudentState(childId), ...(sleepInteraction ? { sleepInteraction } : {}) };
 }
 
 export function approveAll(childId) {
@@ -582,6 +596,7 @@ export function deleteDailyNote(childId, id) {
 
 export function getStudentState(childId, date = todayKey()) {
   ensureTasks(childId, date);
+  const travel = TRAVEL.travelState(childId);
   const base = DAILY.getToday(childId, date);
   const tasks = tasksOf(childId, date);
   const rules = listRules(childId).filter((r) => r.active);
@@ -598,15 +613,31 @@ export function getStudentState(childId, date = todayKey()) {
     rules,
     shop: base.shop,
     inventory: base.inventory,
+    room: base.room,
+    hygiene: base.hygiene,
     rewards,
     pendingApprovals,
     dailyNotes: listDailyNotes(childId, date),
     redemptions,
     recent: base.recent,
     cooldowns: base.cooldowns,
+    sleep: base.sleep,
     notifyEnabled: NOTIFY.notificationsEnabled(childId),
     parentPinDefault: !getSetting(childId, 'parent_pin'),
+    travel,
   };
+}
+
+export function startTravel(childId, body = {}) {
+  return TRAVEL.startTrip(childId, body);
+}
+
+export function returnTravel(childId, tripId) {
+  return TRAVEL.returnTrip(childId, tripId);
+}
+
+export function claimTravel(childId, tripId) {
+  return TRAVEL.claimTrip(childId, tripId);
 }
 
 export function getParentState(childId, date = todayKey(), month) {
@@ -661,6 +692,7 @@ export function getParentState(childId, date = todayKey(), month) {
     today: todayKey(),
     month: m,
     pet: base.pet,
+    travel: TRAVEL.travelState(childId),
     wallet: base.wallet,
     childId,
     dailyNotes: listDailyNotes(childId),
@@ -675,6 +707,7 @@ export function getParentState(childId, date = todayKey(), month) {
     redemptions: listRedemptions(childId),
     materialPrices: q.all('SELECT item_key, cost FROM material_price WHERE child_id=?', childId),
     settings: {
+      petSleep: sleepSchedule(childId),
       notifyEnabled: NOTIFY.notificationsEnabled(childId),
       notifyChannels: NOTIFY.notificationChannels(childId),
       notifyEvents: NOTIFY.notificationEvents(childId),
@@ -687,6 +720,11 @@ export function getParentState(childId, date = todayKey(), month) {
 }
 
 export function setParentSettings(childId, body = {}) {
+  if (body.petSleep !== undefined) {
+    // Settle elapsed needs under the previous schedule before applying new times.
+    DAILY.getPetRow(childId);
+    saveSleepSchedule(childId, body.petSleep);
+  }
   if(body.notifyEvents!==undefined||body.notifySummaryTime!==undefined)NOTIFY.saveNotificationPreferences(childId,{events:body.notifyEvents,time:body.notifySummaryTime});
   if (body.notifyPublicUrl !== undefined) CARDS.savePublicUrl(childId,body.notifyPublicUrl);
   if (body.pin != null) {

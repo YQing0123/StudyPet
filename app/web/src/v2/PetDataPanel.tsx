@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Sheet } from '../mvp/Sheets';
-import { PET_BREEDS } from '../mvp/petBreeds';
+import { ALL_PET_BREEDS } from '../mvp/petBreeds';
 import type { Pet } from '../mvp/types';
 import { v2 } from './api';
 import PetPicker from './PetPicker';
 import type { PetBackup } from './types';
 
 const REASONS = { manual: '手动备份', before_switch: '切换品种前', before_restart: '重新养宠前', before_restore: '恢复备份前' };
-const breedInfo = (breed: string) => PET_BREEDS.find(b => b.id === breed);
+const breedInfo = (breed: string) => ALL_PET_BREEDS.find(b => b.id === breed);
 const at = (value: string) => new Date(value).toLocaleString('zh-CN', { hour12: false });
 
 export default function PetDataPanel({ pet, onReload, toast }: { pet: Pet | null; onReload: () => Promise<void>; toast: (m: string, tone?: string) => void }) {

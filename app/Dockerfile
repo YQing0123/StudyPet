@@ -25,8 +25,10 @@ ENV NODE_ENV=production \
 WORKDIR /app
 COPY --from=build --chown=node:node /app/node_modules ./node_modules
 COPY --from=build --chown=node:node /app/web/dist ./web/dist
+COPY --from=build --chown=node:node /app/web/src/shared ./web/src/shared
 COPY --chown=node:node package.json ./
 COPY --chown=node:node server ./server
+COPY --chown=node:node scripts/admin-account.mjs ./scripts/admin-account.mjs
 RUN chmod -R a+rX /app/server && chmod a+r /app/package.json \
     && mkdir /data && chown node:node /data
 USER node

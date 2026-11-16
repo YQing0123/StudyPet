@@ -13,7 +13,7 @@ function check(name, fn) { fn(); passed++; console.log(`✓ ${name}`); }
 try {
  const child='continuation-test';
  q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)',child,'验收',new Date().toISOString());
- D.adopt(child,{breed:'dog_corgi',name:'豆包'});
+ D.adopt(child,{breed:'capybara_toon',name:'豆包'});
  const day=D.toDateKey();
  let rule=V.saveRule(child,{title:'原计划',weekdays:[1,2,3,4,5,6,7],basePoints:11})[0];
  let task=V.getStudentState(child).tasks[0];

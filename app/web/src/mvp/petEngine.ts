@@ -1,3 +1,5 @@
+import { PET_SCENARIOS, scenarioForItem, dirtLevel, dirtState, EFFECT_ASSETS, type PetScenario } from '../shared/petScenarios.mjs';
+import { mountVisual } from './sceneVisuals';
 /**
  * 宠物舞台引擎
  * ------------------------------------------------------------
@@ -103,6 +105,7 @@ export async function preloadPetAge(breed: string, age: number) {
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 
 export type PetAction = 'pet' | 'feed' | 'play' | 'hug' | 'greet' | 'happy' | 'sleep' | 'wake' | 'stretch';
+export type PetSpeechPriority = 'reminder' | 'interaction' | 'sleep';
 
 interface PetState {
   breed: string;
@@ -123,8 +126,13 @@ export class PetEngine {
   private timers = new Set<number>();
   private pendingAction: PetAction | null = null;
   private pendingMaterial: Pick<ShopItem, 'key' | 'kind'> | null = null;
+  private careAction: 'pet' | 'feed' | 'play' | 'hug' | null = null;
+  private careFallbackAnimation: Animation | null = null;
   private attachments: AttachmentTracks | null = null;
   private cleanTimer = 0;
+  private cleanVisualStop: (() => void) | null = null;
+  private dirtVisualStops: (() => void)[] = [];
+  private dirtSeverity = -1;
   private cleanFinishTimer = 0;
   private pointerHandler = (e: PointerEvent) => this.onPointer(e);
   private keyboardHandler = (e: KeyboardEvent) => {
@@ -137,6 +145,10 @@ export class PetEngine {
     this.timers.add(timer);
     return timer;
   }
+  private cancelTimer(timer: number) {
+    window.clearTimeout(timer);
+    this.timers.delete(timer);
+  }
   private freezeMovement() {
     const width = this.root.clientWidth;
     if (width) this.position = clamp(parseFloat(getComputedStyle(this.mover).left) / width * 100, 15, 85);
@@ -144,11 +156,13 @@ export class PetEngine {
     this.mover.style.left = `${this.position}%`;
   }
   private interrupt() {
-    clearTimeout(this.stateTimer); clearTimeout(this.walkTimer); clearTimeout(this.idleTimer);
+    this.cancelTimer(this.stateTimer); this.cancelTimer(this.walkTimer); this.cancelTimer(this.idleTimer);
+    this.clearCare();
     this.freezeMovement(); this.stopVideo(); this.showZzz(false);
     this.sleeping = false;
     this.root.classList.remove('is-happy');
-    clearTimeout(this.cleanTimer); clearTimeout(this.cleanFinishTimer);
+    this.cancelTimer(this.cleanTimer); this.cancelTimer(this.cleanFinishTimer);
+    this.cleanVisualStop?.(); this.cleanVisualStop = null;
     this.root.querySelector('.pet-cleaning')?.remove();
     delete this.root.dataset.cleaning;
   }
@@ -175,12 +189,14 @@ export class PetEngine {
   private videoFrameCallback = 0;
   private lastUploadedTime = -1;
   private visibilityHandler = () => {
-    if (document.hidden) { this.stopVideoLoop(); this.video.pause(); }
+    this.root.classList.toggle('is-page-hidden', document.hidden);
+    if (document.hidden) { this.stopVideoLoop(); this.video.pause(); this.cancelTimer(this.idleTimer); }
     else if (this.videoPlaying && !this.destroyed) {
       this.startVideoLoop();
       const id = this.playbackId;
       this.video.play().catch(() => { if (id === this.playbackId) this.videoFailed(); });
     }
+    else if (!this.destroyed && this.state === 'IDLE') this.scheduleIdle();
   };
   private revealed = false;
   private curAction: string | null = null;
@@ -204,6 +220,8 @@ export class PetEngine {
   private flipSign = 1;
   private movementRange: [number, number] = [18, 82];
   private sleeping = false;
+  private scheduledSleep = false;
+  private sleepReaction: Animation | null = null;
   private displayScale = 1;
   private onPetClick?: () => void;
   private onResize = () => this.applyScale();
@@ -246,6 +264,7 @@ export class PetEngine {
           <div class="pet-bubble" data-empty="1" role="status" aria-live="polite"></div>
           <div class="pet-shadow"></div>
           <div class="pet-flip" data-flip="1">
+            <div class="pet-sleep-body">
             <div class="pet-frames">
               <img class="pet-frame a is-on" alt="" draggable="false" />
               <img class="pet-frame b" alt="" draggable="false" />
@@ -258,9 +277,9 @@ export class PetEngine {
               <img class="pet-accessory accessory-crown" src="pets/items/crown.svg" alt="" draggable="false" hidden />
               <img class="pet-accessory accessory-bow" src="pets/items/bow.svg" alt="" draggable="false" hidden />
             </div>
+            </div>
             <div class="pet-zzz" aria-hidden="true"><i>z</i><i>z</i><i>z</i></div>
           </div>
-          <div class="pet-growth-mark" aria-label="进阶成长星章">✦</div>
         </div>
       </div>`;
     this.mover = this.root.querySelector('.pet-mover')!;
@@ -359,7 +378,7 @@ export class PetEngine {
     gl.clearColor(0, 0, 0, 0);
     gl.viewport(0, 0, 512, 512);
     this.canvas.addEventListener('webglcontextlost', (e) => {
-      e.preventDefault(); this.gl = null; this.fallbackToFrame(this.curAction || undefined);
+      e.preventDefault(); this.gl = null; if (!this.destroyed) this.fallbackToFrame(this.curAction || undefined);
     });
     this.canvas.addEventListener('webglcontextrestored', () => { if (!this.destroyed) this.initGL(); });
   }
@@ -472,7 +491,8 @@ export class PetEngine {
     const info = this.appearance();
     const comp = this.comp();
     const zoom = (STAGE_SCALE[clamp(this.pet.stage, 1, 6)] ?? 1) * PET_ZOOM * this.scaleForViewport();
-    const video = this.videoPlaying && this.revealed && !this.frameLayerOn;
+    // A completed sleep clip remains visible as a frozen canvas; keep its final attachment anchors.
+    const video = this.revealed && !this.frameLayerOn && this.videoWrap.dataset.on === '1';
     const entry = video ? info.videos[this.curAction || ''] : info.frames.find(f => f.key === this.activeFrame) || info.frames[0];
     if (!entry) return;
     const act = (comp.act as Record<string, number>)[this.curAction || ''] || (comp.care as Record<string, number>)[this.curAction || ''] || 1;
@@ -510,7 +530,7 @@ export class PetEngine {
       this.applyBreed();
       this.showFrame('sit', false);
       this.showFrames(true);
-      if (!breedChanged && wasSleeping) this.doSleep();
+      if (this.scheduledSleep || (!breedChanged && wasSleeping)) this.doSleep();
       else this.scheduleIdle();
     } else {
       this.applyScale();
@@ -684,6 +704,16 @@ export class PetEngine {
     if (this.destroyed || !this.video.ended) return;
     const action = this.curAction;
     if (!action) return;
+    // A care interaction lasts for its shared scenario duration. Keep moving
+    // through the clip and its release/reverse clip instead of freezing a final
+    // pose or returning to idle after the first short video.
+    if (this.careAction) {
+      const base = this.careAction === 'pet' ? 'petted' : this.careAction === 'feed' ? 'eat' : this.careAction;
+      const next = action === 'petted' && this.videoFor('petted-out') ? 'petted-out'
+        : action === 'eat' && this.videoFor('eatrev') ? 'eatrev' : base;
+      if (!this.playVideo(next)) this.showCareFallback(base);
+      return;
+    }
     if (action === 'walk-start' && this.state === 'WANDER') {
       this.startWalking(); return;
     }
@@ -709,12 +739,16 @@ export class PetEngine {
       this.video.pause();
       this.videoPlaying = false;
       this.stopVideoLoop();
+      this.positionOutfit();
       return;
     }
     this.finishAction();
   }
 
   private finishAction() {
+    this.cancelTimer(this.stateTimer);
+    this.clearCare();
+    if (this.scheduledSleep) { this.doSleep(); return; }
     this.stopVideo();
     this.state = 'IDLE';
     this.sleeping = false;
@@ -734,12 +768,13 @@ export class PetEngine {
     this.applyScale();
     const map: Record<string, string> = { eat: 'sit', petted: 'sit', play: 'roll', hug: 'jump', walk: 'walk', sleep: 'sleep', wake: 'sit' };
     this.showFrame(map[action || ''] || 'sit', true);
+    if (this.careAction) { this.showCareFallback(action); return; }
     if (this.state === 'SLEEP') { this.showZzz(true); return; }
     if (this.state === 'WANDER') {
       if (action === 'walk-start') this.startWalking();
       if (action !== 'walk-stop') return;
     }
-    clearTimeout(this.stateTimer);
+    this.cancelTimer(this.stateTimer);
     this.stateTimer = this.later(() => this.finishAction(), 1600);
   }
 
@@ -750,6 +785,7 @@ export class PetEngine {
 
   /* ---------------- 状态机 ---------------- */
   private boot() {
+    if (this.scheduledSleep) { this.doSleep(); return; }
     this.showFrame('sit', false);
     this.showFrames(true);
     this.state = 'IDLE';
@@ -759,9 +795,42 @@ export class PetEngine {
 
   getState() { return this.state; }
 
+  setScheduledSleep(sleeping: boolean) {
+    if (this.scheduledSleep === sleeping) return;
+    this.scheduledSleep = sleeping;
+    this.root.dataset.scheduledSleep = String(sleeping);
+    this.sleepReaction?.cancel(); this.sleepReaction = null;
+    delete this.root.dataset.sleepMotion;
+    if (!this.manifest) return;
+    this.interrupt();
+    this.showFrames(true);
+    if (sleeping) this.doSleep(); else this.doWake();
+  }
+
+  reactInSleep(variation = 0) {
+    if (!this.scheduledSleep || !this.manifest || this.destroyed) return;
+    this.sleepReaction?.cancel();
+    const variants = [
+      ['none', 'translateX(-8px) rotate(-22deg) scale(.94, .96)', 'translateX(7px) rotate(12deg)', 'none'],
+      ['none', 'translateY(5px) rotate(5deg) scale(.92, .86)', 'translateY(3px) rotate(-3deg) scale(.95, .92)', 'none'],
+      ['none', 'translateY(-5px) rotate(-5deg) scale(1.07, 1.05)', 'translateY(2px) scale(.98, .97)', 'none'],
+      ['none', 'translateX(10px) rotate(15deg) scale(.96)', 'translateX(-5px) rotate(-7deg)', 'none'],
+    ];
+    const index = Math.abs(variation) % variants.length;
+    this.root.dataset.sleepMotion = ['turn', 'curl', 'dream-stretch', 'resettle'][index];
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const body = this.root.querySelector<HTMLElement>('.pet-sleep-body');
+    if (!body) return;
+    this.sleepReaction = body.animate(variants[index].map(transform => ({ transform })), {
+      duration: 1800, easing: 'cubic-bezier(.25, 1, .5, 1)',
+    });
+  }
+
   play(action: PetAction) {
     if (this.destroyed) return;
+    if (this.scheduledSleep) return;
     if (this.state === 'CLEANING') return;
+    if (this.careAction && ['greet', 'happy', 'stretch'].includes(action)) return;
     if (!this.manifest) { this.pendingAction = action; return; }
     this.interrupt();
     this.showFrames(true);
@@ -779,69 +848,128 @@ export class PetEngine {
   }
 
   useMaterial(item: Pick<ShopItem, 'key' | 'kind'>) {
-    if (this.destroyed) return;
+    if (this.destroyed || this.scheduledSleep) return;
     if (!this.manifest) { this.pendingMaterial = item; return; }
-    if (item.kind !== 'clean') {
-      this.interrupt();
-      if (item.kind === 'deco') { this.finishAction(); return; }
-      this.play(item.kind === 'food' ? 'feed' : 'play');
-      return;
+    this.runScenarioDefinition(scenarioForItem(item));
+  }
+
+  runScenario(key: string) {
+    const scenario = PET_SCENARIOS[key];
+    if (!this.manifest) { this.pendingMaterial = { key, kind: 'clean' }; return; }
+    if (scenario) this.runScenarioDefinition(scenario);
+  }
+
+  private runScenarioDefinition(scenario: PetScenario) {
+    if (this.destroyed || this.scheduledSleep || !this.manifest) return;
+    if (scenario.action !== 'clean') {
+      if (scenario.action === 'outfit') return;
+      this.play(scenario.action as PetAction); return;
     }
     this.interrupt();
     this.state = 'CLEANING'; this.root.dataset.state = 'CLEANING';
     this.root.dataset.cleaning = 'washing';
     this.showFrame('sit', false); this.showFrames(true);
     const layer = document.createElement('div');
-    layer.className = 'pet-cleaning'; layer.setAttribute('aria-hidden', 'true');
-    const tool = document.createElement('img');
-    tool.className = 'clean-tool'; tool.alt = ''; tool.draggable = false;
-    tool.src = `${PET_BASE}items/${item.key === 'brush' ? 'brush' : 'bath'}.svg`;
-    layer.append(tool);
+    layer.className = `pet-cleaning effect-${scenario.effect}`; layer.setAttribute('aria-hidden', 'true');
+    if (scenario.effect === 'brush') {
+      const tool = document.createElement('img'); tool.className = 'clean-tool'; tool.alt = ''; tool.draggable = false;
+      tool.src = `${PET_BASE}items/brush.svg`; layer.append(tool);
+    } else {
+      const visual = document.createElement('canvas'); visual.className = 'clean-gif'; layer.append(visual);
+      const fallback = document.createElement('span'); fallback.className = 'clean-visual-fallback'; fallback.textContent = scenario.effect === 'bath' ? '🛀' : '🚿'; layer.append(fallback);
+      this.cleanVisualStop = mountVisual(visual, EFFECT_ASSETS[scenario.effect || ''] || `${PET_BASE}effects/${scenario.effect}.gif`);
+    }
     for (let i = 0; i < 9; i++) {
-      const bubble = document.createElement('i'); bubble.className = 'clean-bubble';
-      bubble.style.setProperty('--i', String(i)); bubble.style.setProperty('--row', String(i % 3)); layer.append(bubble);
       const star = document.createElement('span'); star.className = 'clean-sparkle'; star.textContent = '✦';
       star.style.setProperty('--i', String(i)); star.style.setProperty('--row', String(i % 3)); layer.append(star);
     }
     this.flip.append(layer);
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) this.frameA.style.animation = this.frameB.style.animation = 'none';
     this.cleanTimer = this.later(() => {
+      this.cleanVisualStop?.(); this.cleanVisualStop = null;
       this.root.dataset.cleaning = 'sparkling';
-      this.say('Buling buling，干干净净啦！', 2500);
-    }, reduced ? 250 : 2000);
+      this.say(scenario.finish || 'Buling buling，清爽多啦！', 3000);
+    }, reduced ? 250 : scenario.duration || 2000);
     this.cleanFinishTimer = this.later(() => {
+      this.cleanVisualStop?.(); this.cleanVisualStop = null;
       layer.remove(); delete this.root.dataset.cleaning;
       this.finishAction();
-    }, reduced ? 1000 : 3000);
+    }, reduced ? 1000 : (scenario.duration || 2000) + 1000);
+  }
+
+  setCleanliness(clean: number) {
+    const severity = dirtLevel(clean);
+    if (this.dirtSeverity === severity) return;
+    this.dirtSeverity = severity;
+    this.dirtVisualStops.forEach(stop => stop()); this.dirtVisualStops = [];
+    this.root.querySelector('.pet-dirt')?.remove();
+    this.root.dataset.dirtLevel = String(severity);
+    if (!severity || !this.flip) return;
+    const layer = document.createElement('div'); layer.className = 'pet-dirt'; layer.setAttribute('aria-hidden', 'true');
+    const band = dirtState(clean), flyCount = band.flies;
+    const flyPositions = [[9, 17], [66, 46]];
+    for (let i = 0; i < flyCount + band.bugs; i++) {
+      const bug = i >= flyCount, src = EFFECT_ASSETS[bug ? 'bug' : 'fly'];
+      const c = document.createElement(src ? 'canvas' : 'span'); c.className = bug ? 'dirt-bug' : src ? 'dirt-fly' : 'dirt-fly dirt-fly-fallback';
+      if (!src) { c.textContent = '🪰'; c.style.animationDelay = `${i * -.7}s`; }
+      const [x, y] = bug ? [20 + (i - flyCount) * 42, 74] : flyPositions[i % flyPositions.length];
+      c.style.left = `${x}%`;
+      c.style.top = `${y}%`; layer.append(c);
+      if (src) this.dirtVisualStops.push(mountVisual(c as HTMLCanvasElement, src));
+    }
+    this.flip.append(layer);
   }
 
   private doPetted() {
-    this.state = 'PETTED';
-    this.root.dataset.state = 'PETTED';
-    if (!this.playVideo('petted')) {
-      this.showFrame('sit', true);
-      this.stateTimer = this.later(() => this.finishAction(), 1400);
-    }
+    this.beginCare('pet', 'PETTED', 'petted');
   }
 
   private doEat() {
-    this.state = 'EATING';
-    this.root.dataset.state = 'EATING';
     this.playSfx('hello');
-    if (!this.playVideo('eat')) {
-      this.showFrame('sit', true);
-      this.stateTimer = this.later(() => this.finishAction(), 2200);
-    }
+    this.beginCare('feed', 'EATING', 'eat');
   }
 
   private doCare(state: 'PLAY' | 'HUG', action: string) {
+    this.playSfx('happy');
+    this.beginCare(action as 'play' | 'hug', state, action);
+  }
+
+  private beginCare(action: 'pet' | 'feed' | 'play' | 'hug', state: StateName, video: string) {
     this.state = state;
     this.root.dataset.state = state;
-    this.playSfx('happy');
-    if (!this.playVideo(action)) {
-      this.showFrame(state === 'PLAY' ? 'roll' : 'jump', true);
-      this.stateTimer = this.later(() => this.finishAction(), 1800);
-    }
+    this.careAction = action;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) this.frameA.style.animation = this.frameB.style.animation = 'none';
+    const scenario = PET_SCENARIOS[action === 'feed' ? 'food' : action];
+    const fallbackDuration = { pet: 6000, feed: 7000, play: 9000, hug: 8000 }[action];
+    this.stateTimer = this.later(() => this.finishAction(), reduced ? 1000 : scenario?.duration || fallbackDuration);
+    if (reduced || !this.playVideo(video)) this.showCareFallback(video);
+  }
+
+  private showCareFallback(action?: string) {
+    this.showFrames(true);
+    this.showFrame(action === 'play' ? 'roll' : action === 'hug' ? 'jump' : 'sit', true);
+    this.careFallbackAnimation?.cancel();
+    this.careFallbackAnimation = null;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const body = this.root.querySelector<HTMLElement>('.pet-sleep-body');
+    if (!body) return;
+    // Missing video still gets a gentle repeating reaction, including outfit,
+    // for the whole interaction. The stage/position itself remains untouched.
+    this.careFallbackAnimation = body.animate([
+      { transform: 'translateY(0) rotate(0deg)' },
+      { transform: `translateY(${action === 'play' ? -5 : -2}px) rotate(${action === 'hug' ? -2 : 1}deg)` },
+      { transform: 'translateY(0) rotate(0deg)' },
+    ], { duration: action === 'play' ? 900 : 1400, iterations: Infinity, easing: 'ease-in-out' });
+  }
+
+  private clearCare() {
+    this.careAction = null;
+    this.careFallbackAnimation?.cancel();
+    this.careFallbackAnimation = null;
+    this.frameA.style.removeProperty('animation');
+    this.frameB.style.removeProperty('animation');
   }
 
   private doGreet() {
@@ -879,7 +1007,8 @@ export class PetEngine {
     this.root.dataset.state = 'SLEEP';
     this.sleeping = true;
     this.showZzz(true);
-    if (!this.playVideo('sleep')) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !this.playVideo('sleep')) {
+      this.showFrames(true);
       this.showFrame('sleep', true);
     }
   }
@@ -889,7 +1018,8 @@ export class PetEngine {
     this.root.dataset.state = 'WAKING';
     this.sleeping = false;
     this.showZzz(false);
-    if (!this.playVideo('wake')) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !this.playVideo('wake')) {
+      this.showFrames(true);
       this.showFrame('sit', true);
       this.stateTimer = this.later(() => this.finishAction(), 1200);
     }
@@ -920,6 +1050,7 @@ export class PetEngine {
 
   /* ---------------- 走动 ---------------- */
   wanderTo(targetPercent: number) {
+    if (this.scheduledSleep) return;
     if (!this.manifest || this.destroyed || this.state === 'CLEANING' || this.state === 'EATING' || this.state === 'PETTED' || this.state === 'HUG' || this.state === 'PLAY') return;
     this.interrupt();
     const target = clamp(targetPercent, ...this.safeMovementRange());
@@ -968,8 +1099,8 @@ export class PetEngine {
 
   /* ---------------- 自主行为 ---------------- */
   private scheduleIdle(min = 32000, max = 56000) {
-    clearTimeout(this.idleTimer as any);
-    if (this.destroyed) return;
+    this.cancelTimer(this.idleTimer);
+    if (this.destroyed || document.hidden) return;
     const wait = min + Math.random() * (max - min);
     this.idleTimer = this.later(() => {
       if (this.state !== 'IDLE') return;
@@ -985,7 +1116,7 @@ export class PetEngine {
 
   /* ---------------- 声音 / 气泡 ---------------- */
   private playSfx(kind: 'hello' | 'happy' | 'sleep') {
-    if (this.muted || !this.manifest) return;
+    if (this.muted || !this.manifest || document.hidden) return;
     const map = SOUND_MAP[this.pet.sound] || SOUND_MAP.cat;
     const pool = map[kind];
     const name = pool[Math.floor(Math.random() * pool.length)];
@@ -1000,7 +1131,8 @@ export class PetEngine {
     } catch {}
   }
 
-  say(text: string, ms = 3200, priority: 'reminder' | 'interaction' = 'interaction') {
+  say(text: string, ms = 3200, priority: PetSpeechPriority = 'interaction') {
+    if (this.scheduledSleep && priority !== 'sleep') return;
     if (priority === 'reminder' && Date.now() < this.interactionUntil) return;
     if (priority === 'interaction') this.interactionUntil = Date.now() + ms;
     const el = this.root.querySelector('.pet-bubble') as HTMLElement;
@@ -1011,7 +1143,7 @@ export class PetEngine {
     // 气泡随宠物移动，文字不镜像，并限制在场景内。
     clearInterval(this.bubbleFollow);
     const follow = () => {
-      if (this.destroyed) return;
+      if (this.destroyed || document.hidden) return;
       const scene = this.root.getBoundingClientRect();
       const pet = this.mover.getBoundingClientRect();
       const half = el.offsetWidth / 2;
@@ -1025,7 +1157,7 @@ export class PetEngine {
       el.style.setProperty('--bubble-tail', `${clamp(half - shift, 16, el.offsetWidth - 16)}px`);
     };
     follow(); this.bubbleFollow = window.setInterval(follow, 120);
-    clearTimeout(this.sayTimer as any);
+    this.cancelTimer(this.sayTimer);
     this.sayTimer = this.later(() => {
       el.dataset.on = '0';
       clearInterval(this.bubbleFollow);
@@ -1040,6 +1172,7 @@ export class PetEngine {
   }
 
   focusForGrowth() {
+    if (this.scheduledSleep) return;
     this.interrupt();
     this.position = 50;
     this.mover.style.left = '50%';
@@ -1049,6 +1182,9 @@ export class PetEngine {
 
   destroy() {
     this.destroyed = true;
+    this.clearCare();
+    this.cleanVisualStop?.(); this.dirtVisualStops.forEach(stop => stop());
+    this.sleepReaction?.cancel();
     for (const sound of this.activeSounds) sound.pause();
     this.activeSounds.clear();
     clearTimeout(this.idleTimer as any);
@@ -1065,6 +1201,8 @@ export class PetEngine {
     window.removeEventListener('resize', this.onResize);
     document.removeEventListener('visibilitychange', this.visibilityHandler);
     this.stopVideo();
+    this.gl?.getExtension('WEBGL_lose_context')?.loseContext();
+    this.gl = null;
     this.root.innerHTML = '';
   }
 }

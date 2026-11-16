@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api } from './api';
 import PetStage, { type PetStageHandle } from './PetStage';
+import Confetti, { CONFETTI_DURATION } from './Confetti';
 import Adopt from './Adopt';
 import { BagSheet, MenuSheet, ShopSheet, TaskSheet } from './Sheets';
 import type { InvItem, ShopItem, Task, TodayData } from './types';
@@ -36,6 +37,11 @@ export default function Today() {
   const [toasts, setToasts] = useState<{ id: number; text: string; tone?: string }[]>([]);
   const [floaters, setFloaters] = useState<{ id: number; text: string }[]>([]);
   const [confetti, setConfetti] = useState(0);
+  useEffect(() => {
+    if (!confetti) return;
+    const timer = window.setTimeout(() => setConfetti(0), CONFETTI_DURATION);
+    return () => window.clearTimeout(timer);
+  }, [confetti]);
   const [newTaskId, setNewTaskId] = useState<string | null>(null);
   const petRef = useRef<PetStageHandle | null>(null);
   const prevStage = useRef<number | null>(null);
@@ -316,18 +322,7 @@ export default function Today() {
               <span key={f.id} className="floater">★ {f.text}</span>
             ))}
 
-            {confetti > 0 && (
-              <div className="confetti" key={confetti}>
-                {Array.from({ length: 28 }).map((_, i) => (
-                  <i key={i} style={{
-                    ['--x' as any]: `${Math.random() * 100}%`,
-                    ['--c' as any]: ['#F2B36B', '#E88C7D', '#8FC3A6', '#E7C566', '#B9D8F0'][i % 5],
-                    ['--d' as any]: `${0.9 + Math.random() * 0.9}s`,
-                    ['--r' as any]: `${Math.random() * 360}deg`,
-                  }} />
-                ))}
-              </div>
-            )}
+            {confetti > 0 && <Confetti key={confetti} />}
 
             <div className="care-dock">
               <button onClick={feed} className="care-btn">

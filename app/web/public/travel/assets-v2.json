@@ -1,0 +1,306 @@
+{
+  "generator": "Image 2.6 API via image2/image-gen-cli",
+  "pets": {
+    "cat_black": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "5796e7fd96ed30bcf7a4d0086ebb71e9bbac181d61afcf83d135d646b1ba795d"
+    },
+    "alpaca_toon": {
+      "width": 439,
+      "height": 390,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "reference": "/pets/breeds/alpaca_toon/frames/frame-sit.png",
+      "sha256": "778557fc4e585c830aa133912b27e4ec91c0b6195f1ac4f35c80b46946c44671",
+      "model": "gpt-image-2.6",
+      "quality": "medium",
+      "identityReference": true
+    },
+    "bird_pigeon": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "66a3759565555bac46378e9ca850bcec3327e3ddf3081d73a62ac81599b58a55"
+    },
+    "dog_corgi_toon": {
+      "width": 441,
+      "height": 392,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "reference": "/pets/breeds/dog_corgi_toon/frames/frame-sit.png",
+      "sha256": "42bb557da4e8b9a3fa7dc6df3fc8708bdcb64ed9b7f8f1f85cdf0a6046109d6c",
+      "model": "gpt-image-2.6",
+      "quality": "medium",
+      "identityReference": true
+    },
+    "turtle_redear": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "d7b15d80f949d885aae58436ba5140a7f1f4826b1a9ac8bbc115515f95ead3d3"
+    },
+    "cat_ragdoll": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "96e69d831e984ee3853d1514743a8e038cebd916c881e23bd482158c36b20a4b"
+    },
+    "turtle_map": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "228375719fd7eba4c4e6ea2ed7fcb92cb852657f7c6c02c7190bb43c111d26d2"
+    },
+    "turtle_grass": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "b235837a84026dd357f65746af6aa4d6d407c4a0ace2966379963b611cb6fe93"
+    },
+    "dog_dairy": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "c62375afe5702d0abe25762a689c4f0b716d480714cdb9595df128835d07ca68"
+    },
+    "turtle_flower": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "ad04d75eeebfc042892c56dc85c38f91c3529d7b67ee6811ec4f35e3ad8888de"
+    },
+    "bird_peachface": {
+      "width": 404,
+      "height": 432,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "7a224413ac91568662d0998c072d397e0dff246502668eec8fede1f584693f44"
+    },
+    "bird_cockatiel": {
+      "width": 417,
+      "height": 416,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "2a9f6a401eb36dbebbd149cdf2397ea55c08b3b1e1677d7e0fbe903947ef68d3"
+    },
+    "cat_blue": {
+      "width": 442,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "871e61f2eb294f5160a49a3eb060fdafea8449a2b4f9e4c499a25d24483dcaa7"
+    },
+    "dog_golden": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "dfbb191f1fc27ea3a34c83f6d6949566e9e91bdf32322ad7a32307ee34a9d1a6"
+    },
+    "dog_german": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "c265fe830550b8e907bde5e6379ea6ff52c805db73b52ee4f66ee249fd917602"
+    },
+    "cat_orange": {
+      "width": 437,
+      "height": 390,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "reference": "/pets/breeds/cat_orange/frames/frame-sit.png",
+      "sha256": "c3382cdbc46e0c258a5f881eb0e6255b314f31aeace4b431a3b73c090defca89",
+      "model": "gpt-image-2.6",
+      "quality": "medium",
+      "identityReference": true
+    },
+    "dog_corgi": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "f4325c05a08c968f9bd07fdbe4935fc33d5ae3d8d1bf44cc77c9d45e13c8654c"
+    },
+    "bird_parakeet": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "sha256": "9a74acd3c89a410df1e87c84f2dea4058e97b3bc588554c5601a52e596012033"
+    },
+    "capybara_toon": {
+      "width": 443,
+      "height": 394,
+      "frames": 9,
+      "durationMs": 1800,
+      "native": true,
+      "reference": "/pets/breeds/capybara_toon/frames/frame-sit.png",
+      "sha256": "d418cde3a39a4fb6b4f06467774eec6e738983f01162cc519945c2036c9e2578",
+      "model": "gpt-image-2.6",
+      "quality": "medium",
+      "identityReference": true
+    }
+  },
+  "scenes": {
+    "chengdu": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "51f49fe20b4ba5781c497baba176bf50588bee7448bed657db4cccd1173b8dce"
+    },
+    "shanghai": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "0682db0f3f4c37744192b297fc48f9b8d078efe54725220f374ee0c08c25d62d"
+    },
+    "xishuangbanna": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "f748768daea9cd2ddccdf491eebd4fa041cc7fe67396b5e057f45ab368e4e264"
+    },
+    "urumqi": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "5a49e91f6425ee66fc1e8dde449dee54a3c814b0d2cf97c4f1a98e006532f67d"
+    },
+    "nanjing": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "f3ed68701ca5e769ba061ac3de7b5950ae29ce9d4330cf09107725cd88905646"
+    },
+    "beijing": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "911433d068340b99eb0e617a0944ff61ab439ca07fb08b48030cae44b774d39d"
+    },
+    "dali": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "6110e93e4d941c8141356be7d4839949986d684524893fd3511ed113548a541d"
+    },
+    "guangzhou": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "a41bee36c85a511c9f5aaeb5bca0879c54cd5fe555c19601a84d30769c0829ff"
+    },
+    "chongqing": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "41bbf09f615dfb384680ef8ec49a3486781a5f0cad2b1a8a276889e51cf84c88"
+    },
+    "yili": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "d7d3c44336b2728a069a3f4f06732ceeb1d347818fca9c2e6935f65ae34143d2"
+    },
+    "harbin": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "51fb8b76ee0df0b51efcd6796b7904562b2295b2061e423fd0806879a34a026f"
+    },
+    "earth": {
+      "width": 2048,
+      "height": 2048,
+      "originalSha256": "56f3bd77d6ad2489251d4aed0b2f49f96931e45cd236f3d7e65af9febc89ee86"
+    },
+    "wuhan": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "5b6675403007c34185fb1c35fce779330faafd8f796546be09ea06ccd1b91499"
+    },
+    "changsha": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "ffdf013f059d31d238847eeb30287f139be7220b822e8bb9836fe87616574b5a"
+    },
+    "lijiang": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "fe7d18b2d6156be1a5b7c6ccd5b3407a86fcb70ea671233fa275b60cda79df41"
+    },
+    "sanya": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "2a58eef832eab90399156a823f16a8c044f1c8ba188750d097176f4cf45cc440"
+    },
+    "hangzhou": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "224397e1685bafadc476c997b9fc3726755bc547a055e16a9068f44bc41f488c"
+    },
+    "suzhou": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "597a55e94fd1842ec1fb6692f6bab2c9f68606d91659e1301b92365509f9a621"
+    },
+    "dunhuang": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "ec2d0de1857fd92e13066358bb7141964ea0da66999844aa4cd1650972292178"
+    },
+    "kashgar": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "2fd409ca510f7c8283a9058a41559d59e78d29450a69cee9c1e1c4fd54796f3e"
+    },
+    "xiamen": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "ba261729897b9f942e5269cbd4f4bce8fad6fc28760154e304b612ba09ef2cc1"
+    },
+    "turpan": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "2438982c0661d976429670dcd1a2a2b47461b1b13d2db2271e8d50d06b780081"
+    },
+    "qingdao": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "be831e79fa36d610011c00e4d414db2fd894acb2473620a7754e462f7b409135"
+    },
+    "xian": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "d019021a3de2cf57f1a878374741bedf0e4b54e01e89b4dea4293224ca691ae1"
+    },
+    "nanchang": {
+      "width": 2048,
+      "height": 1152,
+      "originalSha256": "6bbe66731a7ab36f1805571d93b1836a7fb3656816a91c7c3c35e4e9b3bef4a7"
+    }
+  },
+  "availableBreeds": [
+    "cat_orange",
+    "dog_corgi_toon",
+    "capybara_toon",
+    "alpaca_toon"
+  ]
+}

@@ -6,6 +6,7 @@ import {tmpdir} from 'node:os';
 import {join,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {DatabaseSync} from 'node:sqlite';
+import {testActivationCode} from './fixtures/activation.mjs';
 const root=join(dirname(fileURLToPath(import.meta.url)),'..'),dir=mkdtempSync(join(tmpdir(),'banxue-notes-')),base='http://127.0.0.1:17731';
 let server,checks=0;
 function ok(v,label){assert.ok(v,label);checks++;console.log('✓ '+label);}
@@ -13,7 +14,7 @@ async function start(){server=spawn(process.execPath,['server/index.mjs'],{cwd:r
 async function stop(){if(!server||server.exitCode!==null||server.signalCode)return;const done=new Promise(r=>server.once('exit',r));server.kill();await done;server=null;}
 class Client{cookie='';scope={};async call(path,body,expect=200,method=body===undefined?'GET':'POST'){const r=await fetch(base+path,{method,headers:{'content-type':'application/json',cookie:this.cookie,...this.scope},body:body===undefined?undefined:JSON.stringify(body)});if(r.headers.has('set-cookie'))this.cookie=r.headers.get('set-cookie').split(';')[0];const data=await r.json();assert.equal(r.status,expect,path+': '+JSON.stringify(data));return data;}use(s){this.scope={'x-family-id':s.family.id,'x-child-id':s.activeChildId};return s;}}
 const dad=new Client(),mom=new Client(),other=new Client(),kid=new Client(),anon=new Client(),password='Notes-Only-2026!';
-const form=(login,name)=>({login,password,name,familyName:name+'家',childName:'小米'});
+const form=(login,name)=>({activationCode:testActivationCode(dir),login,password,name,familyName:name+'家',childName:'小米'});
 try{
  await start();await anon.call('/api/v2/notes',{text:'未登录'},401);ok(true,'写入必须登录');
  const a=dad.use(await dad.call('/api/auth/register',form('notes-dad','小米爸爸')));

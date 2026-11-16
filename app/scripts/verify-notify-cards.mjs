@@ -10,9 +10,9 @@ let checks=0;const ok=(v,label)=>{assert.ok(v,label);checks++;console.log('✓ '
 const originalFetch=globalThis.fetch;globalThis.fetch=async()=>{throw Error('隔离验收禁止真实外发');};
 const child='card-kid',photo='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aM1sAAAAASUVORK5CYII=';
 try{
- q.run('INSERT INTO family VALUES(?,?,?)','card-family','验收家庭',new Date().toISOString());
+ q.run('INSERT INTO family(id,name,created_at) VALUES(?,?,?)','card-family','验收家庭',new Date().toISOString());
  q.run('INSERT INTO child(id,name,created_at,family_id) VALUES(?,?,?,?)',child,'验收孩子',new Date().toISOString(),'card-family');
- V.adoptWithStarter(child,{breed:'dog_corgi_toon',name:'豆包'});
+ V.adoptWithStarter(child,{breed:'capybara_toon',name:'豆包'});
  const task=V.getStudentState(child).tasks.find(t=>t.reviewRequired);
  V.submitTask(child,task.id,{note:'我检查过了。\n![伪造图片](https://evil.test/x) @all',photo});
  const raw=q.get('SELECT * FROM v2_task WHERE id=?',task.id);

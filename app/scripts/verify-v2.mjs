@@ -1,4 +1,5 @@
 /** v2 验收：周计划、提交、审核、积分、奖励、价格、日历。先启动 server。 */
+import {testActivationCode} from './fixtures/activation.mjs';
 const BASE = process.env.BASE;
 if (!BASE) throw new Error('请运行 npm test，自动使用隔离数据库；直接验收必须显式指定 BASE。');
 let cookie = '';
@@ -19,7 +20,7 @@ const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(
 const weekday = () => { const w = new Date().getDay(); return w === 0 ? 7 : w; };
 
 console.log(`v2 验收：${BASE}\n`);
-await api('/api/auth/register', 'POST', { login: 'v2-suite-'+Date.now(), password: 'Suite-Only-2026!', name:'验收家长', familyName:'V2隔离家庭',childName:'验收孩子' });
+await api('/api/auth/register', 'POST', { activationCode:testActivationCode(),login: 'v2-suite-'+Date.now(), password: 'Suite-Only-2026!', name:'验收家长', familyName:'V2隔离家庭',childName:'验收孩子' });
 let s = await api('/api/v2/student');
 ok(s.pet === null, '新家庭初始无宠物');
 

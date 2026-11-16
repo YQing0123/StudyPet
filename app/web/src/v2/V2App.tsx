@@ -7,6 +7,7 @@ import ChildSwitcher from './ChildSwitcher';
 import {readReviewLink,clearReviewLink,type ReviewLink} from './ReviewLink';
 import {Sheet} from '../mvp/Sheets';
 import {accounts,setAccountScope,type FamilySession} from './accounts';
+import {chinaDateTime} from './SubscriptionInfo';
 import './accounts.css';
 type Toast = { id: number; text: string; tone?: string };
 export default function V2App(){
@@ -18,6 +19,17 @@ export default function V2App(){
  const apply=useCallback((s:FamilySession)=>{setAccountScope(s);setSession(s);},[]);
  const load=useCallback(async()=>{try{const s=await accounts.session();apply(s);setBootError('');if(s.parentUnlocked&&s.role==='parent')setMode('parent');}catch(e:any){setBootError(e.message);}},[apply]);
  useEffect(()=>{load();},[load]);
+ useEffect(()=>{
+  if(!session?.authenticated)return;
+  const refresh=()=>{void accounts.session().then(apply).catch(()=>{});};
+  const refreshVisible=()=>{if(!document.hidden)refresh();};
+  const timer=window.setInterval(refreshVisible,60000);
+  const s=session.family?.subscription;
+  const remaining=s?.expiresAt===null?null:s?Math.max(0,s.expiresAt!-s.serverTime):null;
+  const expiryTimer=remaining!==null&&remaining>0?window.setTimeout(refresh,Math.min(remaining+50,2147483647)):null;
+  window.addEventListener('focus',refreshVisible);window.addEventListener('island-subscription-expired',refresh);document.addEventListener('visibilitychange',refreshVisible);
+  return()=>{window.clearInterval(timer);if(expiryTimer!==null)window.clearTimeout(expiryTimer);window.removeEventListener('focus',refreshVisible);window.removeEventListener('island-subscription-expired',refresh);document.removeEventListener('visibilitychange',refreshVisible);};
+ },[session,apply]);
  useEffect(()=>{const expired=()=>{apply({authenticated:false});setMode('student');};const locked=()=>{setMode('student');setUnlockOpen(true);};window.addEventListener('island-session-expired',expired);window.addEventListener('island-parent-expired',locked);return()=>{window.removeEventListener('island-session-expired',expired);window.removeEventListener('island-parent-expired',locked);};},[apply]);
  const toast=useCallback((text:string,tone?:string)=>{const id=++idRef.current;setToasts(t=>[...t,{id,text,tone}]);window.setTimeout(()=>setToasts(t=>t.filter(x=>x.id!==id)),4500);},[]);
  const run=async(fn:()=>Promise<void>)=>{if(busyRef.current)return;busyRef.current=true;setBusy(true);setError('');try{await fn();}catch(e:any){setError(e.message);toast(e.message,'warn');}finally{busyRef.current=false;setBusy(false);}};
@@ -40,9 +52,11 @@ export default function V2App(){
  if(!session){if(bootError)return <div className="island-error"><div className="error-card"><h2>暂时连不上小岛</h2><p>{bootError}</p><button className="btn primary" onClick={load}>再试一次</button></div></div>;return <div className="island-loading"><div className="loading-orb"/><p>正在打开小岛…</p></div>;}
  if(!session.authenticated)return <AccountEntry initial={session} onDone={s=>{apply(s);setMode(s.role==='parent'?'parent':'student');if(new URLSearchParams(location.search).has('invite'))if(!reviewLink)history.replaceState(null,'',location.pathname);}}/>;
  const child=session.children?.find(c=>c.id===session.activeChildId);
+ const subscription=session.family?.subscription;
  return <div className="account-shell">{reviewLink&&linkError&&<div className="notify-link-banner" role="status"><span>{linkError}</span><button className="btn ghost sm" onClick={closeReview}>关闭审核链接</button></div>}<header className="family-context"><div className="family-context-identity"><span>🏡</span>{(session.families?.length||0)>1?<select aria-label="当前家庭" value={session.family?.id} disabled={busy||!session.parentUnlocked} onChange={e=>select(e.target.value)}>{session.families?.map(f=><option key={f.id} value={f.id}>{f.name}</option>)}</select>:<strong>{session.family?.name}</strong>}</div>
  <div className="family-context-child"><label htmlFor="active-child">正在陪伴</label><ChildSwitcher children={session.children||[]} disabled={busy||!session.parentUnlocked||session.role==='student'} value={session.activeChildId||''} onChange={id=>select(session.family!.id,id)}/></div>
  <div className="family-context-actions"><span>{session.user?.name}{session.role==='student'?' · 学生':''}</span>{session.role==='parent'&&session.parentUnlocked&&<button className={mode==='family'?'is-on':''} onClick={()=>{run(async()=>{apply(await accounts.family());setMode('family');});}}>家庭管理</button>}<button onClick={logout} disabled={busy}>退出</button></div></header>
+ {subscription&&session.role==='parent'&&session.parentUnlocked&&mode!=='student'&&<aside className={`subscription-banner ${subscription.status}`} role={subscription.readOnly?'alert':'status'}><span>{subscription.readOnly?'家庭使用期限已到，当前为只读模式。':subscription.status==='expiring'?`家庭即将到期，剩余 ${subscription.daysRemaining} 天。`:'家庭使用期限：'}{subscription.expiresAt===null?'不限期':`有效至 ${chinaDateTime(subscription.expiresAt)}（北京时间）`}{subscription.readOnly&&' 打卡、奖励和宠物操作已暂停，请家长续期。'}</span>{session.role==='parent'&&session.parentUnlocked&&<button onClick={()=>void run(async()=>{apply(await accounts.family());setMode('family');})}>{subscription.expiresAt===null?'查看详情':'查看与续期'}</button>}</aside>}
  {error&&!unlockOpen&&<p className="context-error" role="alert">{error}</p>}
  <div className="account-content" key={`${session.family?.id}:${session.activeChildId}:${session.user?.id}`}>
  {mode==='family'&&session.parentUnlocked?<FamilyPanel session={session} onChange={apply} onBack={()=>setMode('parent')} onLogout={logout}/>:mode==='parent'&&session.parentUnlocked?<ParentHome onStudent={student} toast={toast} reviewId={reviewReady?reviewLink?.task:undefined} onReviewClose={closeReview}/>:child?<StudentHome onParent={enterParent} toast={toast}/>:<div className="island-error"><h2>为家庭添加第一个孩子</h2><button className="btn primary" onClick={()=>setMode('family')}>添加孩子</button></div>}

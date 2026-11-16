@@ -1,4 +1,13 @@
 import type { InvItem, Pet, ShopItem, Wallet } from '../mvp/types';
+import type { SleepSchedule, SleepWindow } from '../shared/petSleep.mjs';
+export interface PetSleepState {
+  schedule: SleepSchedule; timezone: 'Asia/Shanghai'; serverNow: number;
+  active: SleepWindow | null; nextTransitionAt: number | null;
+}
+export interface SleepInteraction {
+  count: number; warning: boolean; penalty: number; totalPenalty: number;
+  ignored: boolean; motion: number; message: string;
+}
 
 export type TaskStatus = 'open' | 'submitted' | 'approved' | 'rejected';
 export type Timing = 'early' | 'ontime' | 'late' | null;
@@ -94,7 +103,15 @@ export interface DailyNote {
   updatedAt: string;
 }
 
+export interface RoomPlacement { key: string; x: number; y: number; rotation: number; scale: number; layer: 'back' | 'front'; }
+export interface RoomState { sceneKey: string; revision: number; placements: RoomPlacement[]; owned: string[]; }
+export interface HygieneState { dirtLevel: number; showerUsed: boolean; showerAvailable: boolean; showerIncrease: number; showerCap: number; showerMinClean: number; date: string; }
 export interface StudentState {
+  msg?: string; stateDelta?: Record<string, number>;
+  room: RoomState;
+  hygiene: HygieneState;
+  sleep: PetSleepState;
+  sleepInteraction?: SleepInteraction;
   dailyNotes: DailyNote[];
   date: string;
   today: string;
@@ -112,6 +129,80 @@ export interface StudentState {
   cooldowns: Record<string, number>;
   notifyEnabled: boolean;
   parentPinDefault: boolean;
+  travel: TravelState;
+}
+
+export type TravelCollectibleType = 'postcard' | 'food' | 'souvenir' | 'badge' | 'rare';
+export interface TravelCollectible {
+  key: string;
+  cityId: string;
+  cityName: string;
+  type: TravelCollectibleType;
+  name: string;
+  icon: string;
+  description: string;
+  note?: string;
+  spriteIndex: number;
+  artVariant?: number;
+  qty?: number;
+  firstTripId?: string;
+  firstAt?: string;
+  lastAt?: string;
+}
+export interface TravelCity {
+  id: string;
+  name: string;
+  region: string;
+  landmark: string;
+  longitude: number;
+  latitude: number;
+  note: string;
+  spriteIndex: number;
+  collectibles: string[];
+}
+export interface TravelDrop {
+  key: string;
+  qty: number;
+}
+export interface TravelOutcome {
+  early: boolean;
+  progress: number;
+  destinations: string[];
+  collectionDrops: TravelDrop[];
+  foodDrops: TravelDrop[];
+  materialDrops: TravelDrop[];
+  coins: number;
+  dropRates: Record<string, number>;
+  rareReward?: { baseChance: number; guaranteed: boolean; received: boolean };
+}
+export interface TravelTrip {
+  id: string;
+  cityId: string;
+  cityName: string;
+  itinerary: Pick<TravelCity, 'id' | 'name' | 'region' | 'landmark' | 'note' | 'spriteIndex'>[];
+  durationHours: number;
+  startedAt: string;
+  returnsAt: string;
+  returnedAt: string | null;
+  claimedAt: string | null;
+  awaitingClaim: boolean;
+  active: boolean;
+  earlyReturn: boolean;
+  progress: number;
+  remainingMs: number;
+  outcome: TravelOutcome | null;
+}
+export interface TravelState {
+  rarePity: { baseChance: number; guaranteeEvery: number; completedWithoutRare: number; tripsUntilGuaranteed: number };
+  unlocked: boolean;
+  unlockLevel: number;
+  activeTrip: TravelTrip | null;
+  pendingTrip: TravelTrip | null;
+  lastTrip: TravelTrip | null;
+  history: TravelTrip[];
+  cities: TravelCity[];
+  catalog: TravelCollectible[];
+  collection: TravelCollectible[];
 }
 
 export interface CalendarDay {
@@ -128,6 +219,7 @@ export interface CalendarDay {
 }
 
 export interface ParentState {
+  travel: TravelState;
   dailyNotes: DailyNote[];
   date: string;
   today: string;
@@ -145,7 +237,7 @@ export interface ParentState {
   rewards: RewardV2[];
   redemptions: RedemptionV2[];
   materialPrices: { item_key: string; cost: number }[];
-  settings: { notifyEnabled: boolean; notifyChannels: NotifyChannel[]; notifyEvents: NotifyEvents; notifySummaryTime: string; notifyPublicUrl: string; pinSet: boolean };
+  settings: { petSleep: SleepSchedule; notifyEnabled: boolean; notifyChannels: NotifyChannel[]; notifyEvents: NotifyEvents; notifySummaryTime: string; notifyPublicUrl: string; pinSet: boolean };
   shop: ShopItem[];
 }
 

@@ -15,10 +15,11 @@ export interface ShopItem {
   key: string;
   name: string;
   icon: string;
-  kind: 'food' | 'toy' | 'clean' | 'deco';
+  kind: 'food' | 'toy' | 'clean' | 'deco' | 'scene' | 'furniture';
   cost: number;
   desc: string;
   effect: Record<string, number | string>;
+  asset?: string; sprite?: number; width?: number; style?: string;
 }
 
 export interface InvItem extends ShopItem {
@@ -52,6 +53,7 @@ export interface Pet {
   adoptionAnniversary: string;
   adoptedAt: string;
   stats: { hunger: number; energy: number; mood: number; clean: number };
+  playSession?: { activeSeconds: number; energyMultiplier: number; restRecommended: boolean };
   growth: number;
   careCount: number;
   chestsOpened: number;

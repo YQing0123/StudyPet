@@ -1,22 +1,11 @@
 /** Family-scoped identities and durable, revocable sessions. No default credentials. */
-import { randomBytes, scrypt as scryptCallback, timingSafeEqual, createHash } from 'node:crypto';
-import { promisify } from 'node:util';
+import { randomBytes } from 'node:crypto';
 import { q, db, tx, uid, now } from './db.mjs';
 import * as V from './v2.mjs';
-const scrypt = promisify(scryptCallback);
+import { digest, fail, loginName, hashPassword, verifyPassword, needsPasswordUpgrade, DUMMY_PASSWORD } from './credentials.mjs';
+import { entitlement, requireActive, inspectCode, activateFamily, renewFamily } from './subscriptions.mjs';
 const TTL = 14 * 24 * 60 * 60 * 1000;
-const digest = value => createHash('sha256').update(value).digest('hex');
-const fail = (message, status = 400) => { const e = new Error(message); e.status = status; throw e; };
 const text = (value, label, max = 40) => { const s = String(value ?? '').trim(); if (!s || s.length > max) fail(`${label}需填写 1–${max} 个字符`); return s; };
-const loginName = value => { const s = String(value ?? '').trim().toLowerCase(); if (!/^[a-z0-9][a-z0-9_.@-]{2,79}$/.test(s)) fail('账号需为 3–80 位字母、数字或 . _ @ -'); return s; };
-const validPassword = value => { if (typeof value !== 'string' || value.length < 8 || value.length > 128) fail('密码需为 8–128 个字符'); return value; };
-async function hashPassword(value) { const salt = randomBytes(16).toString('hex'); const hash = await scrypt(validPassword(value), salt, 64); return `scrypt:${salt}:${hash.toString('hex')}`; }
-async function verifyPassword(value, encoded) {
- const [,salt,hash] = String(encoded || '').split(':');
- if (!salt || !hash || typeof value !== 'string' || value.length > 128) return false;
- const actual = await scrypt(value, salt, 64), expected = Buffer.from(hash, 'hex');
- return actual.length === expected.length && timingSafeEqual(actual, expected);
-}
 
 db.exec(`
 CREATE TABLE IF NOT EXISTS family(id TEXT PRIMARY KEY, name TEXT NOT NULL, created_at TEXT NOT NULL);
@@ -64,8 +53,9 @@ export function context(req) {
 }
 export function requireParent(c) { if (c.role !== 'parent' || !c.parent_unlocked) fail('请使用家长账号解锁后操作',403); }
 export function snapshot(c) {
- if (!c) return { authenticated:false, legacyAvailable:legacyAvailable() };
+ if (!c) return { authenticated:false, legacyAvailable:legacyAvailable(), activationRequired:true };
  const families = q.all('SELECT f.id,f.name,m.role,m.relation FROM family f JOIN family_member m ON m.family_id=f.id WHERE m.account_id=? ORDER BY f.created_at',c.account_id);
+ for (const f of families) f.subscription = entitlement(f.id);
  const family = families.find(f=>f.id===c.family_id);
  const children = q.all('SELECT id,name,grade,avatar FROM child WHERE family_id=? ORDER BY created_at,id',c.family_id)
   .filter(x => c.role === 'parent' || x.id === c.child_id);
@@ -84,6 +74,7 @@ export function throttle(key, max = 12) {
 export function clearAttempts(key) { q.run('DELETE FROM auth_attempt WHERE key=?',key); }
 
 export async function register(body,res,secure) {
+ inspectCode(body.activationCode, 'create');
  const login=loginName(body.login), name=text(body.name,'你的称呼',20), passwordHash=await hashPassword(body.password);
  const familyName=text(body.familyName || `${name}的家`,'家庭名称',40);
  const claim = !!body.claimLegacy;
@@ -100,7 +91,8 @@ export async function register(body,res,secure) {
   if (!claim && legacyAvailable()) fail('请先关联本机已有记录，再创建其他家庭');
   accountId=uid();familyId=uid();
   q.run('INSERT INTO user_account VALUES(?,?,?,?,?)',accountId,login,name,passwordHash,now());
-  q.run('INSERT INTO family VALUES(?,?,?)',familyId,familyName,now());
+  q.run('INSERT INTO family(id,name,created_at) VALUES(?,?,?)',familyId,familyName,now());
+  activateFamily(familyId,accountId,body.activationCode);
   q.run('INSERT INTO family_member VALUES(?,?,?,?,NULL)',familyId,accountId,'parent',text(body.relation || '家长','家庭身份',10));
   if (claim) { q.run('UPDATE child SET family_id=? WHERE family_id IS NULL',familyId);childId=q.get('SELECT id FROM child WHERE family_id=? ORDER BY created_at LIMIT 1',familyId).id; }
   else childId=addChildRow(familyId,{name:body.childName,grade:body.grade});
@@ -110,13 +102,17 @@ export async function register(body,res,secure) {
 export async function login(body,res,secure) {
  const login=loginName(body.login), a=q.get('SELECT * FROM user_account WHERE login=?',login);
  // Run the same expensive hash for unknown identities too.
- const dummy='scrypt:00000000000000000000000000000000:'+ '0'.repeat(128);
- const ok=await verifyPassword(body.password,a?.password_hash || dummy);
+ const ok=await verifyPassword(body.password,a?.password_hash || DUMMY_PASSWORD);
  if (!a || !ok) fail('账号或密码不正确',401);
+ const upgraded=needsPasswordUpgrade(a.password_hash)?await hashPassword(body.password):null;
+ return tx(()=>{
+ if(q.get('SELECT password_hash FROM user_account WHERE id=?',a.id)?.password_hash!==a.password_hash)fail('账号凭据已更新，请重新登录',401);
+ if(upgraded)q.run('UPDATE user_account SET password_hash=? WHERE id=?',upgraded,a.id);
  const m=q.get('SELECT * FROM family_member WHERE account_id=? ORDER BY family_id LIMIT 1',a.id);
  if (!m) fail('账号尚未关联家庭',403);
  const childId=m.role==='student'?m.child_id:q.get('SELECT id FROM child WHERE family_id=? ORDER BY created_at,id LIMIT 1',m.family_id)?.id || null;
  return snapshot(createSession(a.id,m.family_id,childId,m.role==='parent',res,secure));
+ });
 }
 export function logout(req,res) {
  const s=readSession(req);if(s)q.run('DELETE FROM login_session WHERE token_hash=?',s.token_hash);
@@ -128,7 +124,11 @@ export async function unlock(c,body) {
  if(c.role!=='parent')fail('学生账号没有家长权限',403);
  const a=q.get('SELECT password_hash FROM user_account WHERE id=?',c.account_id);
  if(!await verifyPassword(body.password,a.password_hash))fail('家长账号密码不正确',401);
+ return tx(()=>{
+ if(q.get('SELECT password_hash FROM user_account WHERE id=?',c.account_id)?.password_hash!==a.password_hash)fail('账号凭据已更新，请重新登录',401);
+ if(!q.get('SELECT 1 FROM login_session WHERE token_hash=? AND expires_at>?',c.token_hash,Date.now()))fail('会话已失效，请重新登录',401);
  q.run('UPDATE login_session SET parent_unlocked=1 WHERE token_hash=?',c.token_hash);return snapshot({...c,parent_unlocked:1});
+ });
 }
 export function selectContext(c,body) {
  requireParent(c);
@@ -139,10 +139,10 @@ export function selectContext(c,body) {
  q.run('UPDATE login_session SET family_id=?,child_id=? WHERE token_hash=?',familyId,childId,c.token_hash);
  return snapshot({...c,...m,family_id:familyId,child_id:childId});
 }
-export function addChild(c,body) { requireParent(c);const id=tx(()=>addChildRow(c.family_id,body));audit({...c,child_id:id},'child.create');return snapshot(c); }
-export function renameChild(c,id,body) {requireParent(c);if(!q.get('SELECT id FROM child WHERE id=? AND family_id=?',id,c.family_id))fail('无权修改这个孩子',403);const grade=Number(body.grade ?? 2);if(!Number.isInteger(grade)||grade<0||grade>12)fail('年级需为 0–12');q.run('UPDATE child SET name=?,grade=? WHERE id=?',text(body.name,'孩子名字',20),grade,id);audit({...c,child_id:id},'child.update');return snapshot(c);}
+export function addChild(c,body) { requireParent(c);requireActive(c.family_id);const id=tx(()=>addChildRow(c.family_id,body));audit({...c,child_id:id},'child.create');return snapshot(c); }
+export function renameChild(c,id,body) {requireParent(c);requireActive(c.family_id);if(!q.get('SELECT id FROM child WHERE id=? AND family_id=?',id,c.family_id))fail('无权修改这个孩子',403);const grade=Number(body.grade ?? 2);if(!Number.isInteger(grade)||grade<0||grade>12)fail('年级需为 0–12');q.run('UPDATE child SET name=?,grade=? WHERE id=?',text(body.name,'孩子名字',20),grade,id);audit({...c,child_id:id},'child.update');return snapshot(c);}
 export function createInvite(c) {
- requireParent(c); const code=randomBytes(18).toString('base64url');const id=uid(),expires=Date.now()+48*3600000;
+ requireParent(c); requireActive(c.family_id);const code=randomBytes(18).toString('base64url');const id=uid(),expires=Date.now()+48*3600000;
  q.run('INSERT INTO family_invite VALUES(?,?,?,?,?,NULL,NULL,?)',id,c.family_id,digest(code),c.account_id,expires,now());audit(c,'invite.create');
  return {id,code,expiresAt:expires};
 }
@@ -156,6 +156,7 @@ export async function join(body,res,secure,c) {
   const invite=q.get('SELECT * FROM family_invite WHERE code_hash=? AND used_by IS NULL AND revoked_at IS NULL AND expires_at>?',digest(String(body.code || '').trim()),Date.now());
   if(!invite)fail('邀请码无效、已使用或已过期');
   familyId=invite.family_id;
+  requireActive(familyId);
   if(accountId && q.get('SELECT 1 FROM family_member WHERE account_id=? AND family_id=?',accountId,familyId))fail('你已经在这个家庭中');
   if(!accountId){if(q.get('SELECT id FROM user_account WHERE login=?',login))fail('账号已存在，请先登录再加入家庭');accountId=uid();q.run('INSERT INTO user_account VALUES(?,?,?,?,?)',accountId,login,name,passwordHash,now());}
   q.run('INSERT INTO family_member VALUES(?,?,?,?,NULL)',familyId,accountId,'parent',text(body.relation || '家长','家庭身份',10));
@@ -169,14 +170,14 @@ export async function studentAccount(c,id,body) {
  requireParent(c); if(!q.get('SELECT id FROM child WHERE id=? AND family_id=?',id,c.family_id))fail('无权管理这个孩子',403);
  const hash=await hashPassword(body.password), existing=q.get('SELECT * FROM family_member WHERE child_id=?',id);
  if(existing){tx(()=>{q.run('UPDATE user_account SET password_hash=? WHERE id=?',hash,existing.account_id);q.run('DELETE FROM login_session WHERE account_id=?',existing.account_id);});}
- else {const login=loginName(body.login);if(q.get('SELECT id FROM user_account WHERE login=?',login))fail('这个账号已被使用');tx(()=>{const aid=uid();q.run('INSERT INTO user_account VALUES(?,?,?,?,?)',aid,login,q.get('SELECT name FROM child WHERE id=?',id).name,hash,now());q.run('INSERT INTO family_member VALUES(?,?,?,?,?)',c.family_id,aid,'student','孩子',id);});}
+ else {requireActive(c.family_id);const login=loginName(body.login);if(q.get('SELECT id FROM user_account WHERE login=?',login))fail('这个账号已被使用');tx(()=>{const aid=uid();q.run('INSERT INTO user_account VALUES(?,?,?,?,?)',aid,login,q.get('SELECT name FROM child WHERE id=?',id).name,hash,now());q.run('INSERT INTO family_member VALUES(?,?,?,?,?)',c.family_id,aid,'student','孩子',id);});}
  audit({...c,child_id:id},existing?'student.password.reset':'student.account.create');return snapshot(c);
 }
 export async function changePassword(c,body) {
  const a=q.get('SELECT password_hash FROM user_account WHERE id=?',c.account_id);
  if(!await verifyPassword(body.currentPassword,a.password_hash))fail('原密码不正确',401);
  const hash=await hashPassword(body.password);
- tx(()=>{q.run('UPDATE user_account SET password_hash=? WHERE id=?',hash,c.account_id);q.run('DELETE FROM login_session WHERE account_id=? AND token_hash<>?',c.account_id,c.token_hash);});
+ tx(()=>{if(q.run('UPDATE user_account SET password_hash=? WHERE id=? AND password_hash=?',hash,c.account_id,a.password_hash).changes!==1)fail('密码已被更新，请重新验证',401);q.run('DELETE FROM login_session WHERE account_id=? AND token_hash<>?',c.account_id,c.token_hash);});
  return {ok:true};
 }
 export function removeParent(c,id) {
@@ -184,3 +185,4 @@ export function removeParent(c,id) {
  if(id===c.account_id)fail('请由另一位家长移除你的家庭权限');
  tx(()=>{const m=q.get("SELECT * FROM family_member WHERE account_id=? AND family_id=? AND role='parent'",id,c.family_id);if(!m)fail('没有这位家长');q.run('DELETE FROM family_member WHERE account_id=? AND family_id=?',id,c.family_id);q.run('DELETE FROM login_session WHERE account_id=? AND family_id=?',id,c.family_id);});audit(c,'parent.remove');return snapshot(c);
 }
+export function renew(c, body) { requireParent(c); renewFamily(c, body.code); audit(c, 'subscription.renew'); return snapshot(c); }

@@ -1,6 +1,6 @@
 import {scopeHeaders} from './accounts';
 import type { GrowthMemory } from '../mvp/types';
-import type { DailyNote, ParentState, RewardV2, RuleV2, StudentState, TaskV2, NotifyProvider, NotifyResult, NotifyLog, PetBackup, RecordPage } from './types';
+import type { RoomState, RoomPlacement, DailyNote, ParentState, RewardV2, RuleV2, StudentState, TaskV2, NotifyProvider, NotifyResult, NotifyLog, PetBackup, RecordPage, TravelState } from './types';
 
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
   let res: Response;
@@ -14,6 +14,7 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
   let body: any = null;
   try { body = text ? JSON.parse(text) : null; } catch { body = { error: text }; }
   if (!res.ok) {
+    if (res.status === 402) window.dispatchEvent(new Event('island-subscription-expired'));
     if (res.status === 401) window.dispatchEvent(new Event('island-session-expired'));
     if (res.status === 403) window.dispatchEvent(new Event('island-parent-expired'));
     throw new Error(body?.error || `请求失败（${res.status}）`);
@@ -58,14 +59,21 @@ export const v2 = {
   adopt(payload: { breed: string; name: string }) { return post<StudentState>('/api/v2/adopt', payload); },
   changeBreed(breed: string, expectedPetId: string) { return post<StudentState>('/api/v2/pet/breed', { breed, expectedPetId }); },
   restPet() { return post<StudentState>('/api/v2/pet/rest'); },
+  disturbSleep() { return post<StudentState>('/api/v2/pet/sleep-touch'); },
   levelUp(expectedPetId: string, expectedLevel: number, requestId: string) { return post<StudentState & { levelupEvent: GrowthMemory }>('/api/v2/pet/level-up', { expectedPetId, expectedLevel, requestId }); },
   seenLevel(id: string) { return post(`/api/v2/pet/level-up/${encodeURIComponent(id)}/seen`); },
   testNotify(provider?: NotifyProvider) { return post<NotifyResult>('/api/v2/notify/test', { provider }); },
   notifyLogs(status = '', before = '') { return req<RecordPage<NotifyLog>>(`/api/v2/notify/logs?${new URLSearchParams({ status, before })}`); },
   petBackups(before = '') { return req<RecordPage<PetBackup>>(`/api/v2/pet/backups?${new URLSearchParams({ before })}`); },
+  startTravel(cityId: string | null, durationHours: number) { return post<TravelState>('/api/v2/travel/start', { cityId, durationHours }); },
+  returnTravel(tripId: string) { return post<TravelState>(`/api/v2/travel/${encodeURIComponent(tripId)}/return`); },
+  claimTravel(tripId: string) { return post<TravelState>(`/api/v2/travel/${encodeURIComponent(tripId)}/claim`); },
   backupPet(expectedPetId: string | null) { return post<{ id: string }>('/api/v2/pet/backups', { expectedPetId }); },
   restartPet(expectedPetId: string) { return post('/api/v2/pet/restart', { expectedPetId }); },
   restorePet(id: string, expectedPetId: string | null) { return post(`/api/v2/pet/backups/${encodeURIComponent(id)}/restore`, { expectedPetId }); },
+  saveRoom(body: { sceneKey?: string; placements?: RoomPlacement[]; revision: number }) { return post<RoomState>('/api/v2/room', body); },
+  playScenario(scenario: string) { return post<any>('/api/v2/pet/scenario', { scenario }); },
+  shower() { return post<any>('/api/v2/pet/scenario', { scenario: 'shower' }); },
   interact(action: 'pet' | 'play' | 'hug') { return post<any>('/api/pet/interact', { action }); },
   useItem(key: string, equipped = true) { return post<any>('/api/pet/use', { key, equipped }); },
   buyMaterial(key: string) { return post<any>('/api/shop/buy', { key, qty: 1 }); },

@@ -1,0 +1,46 @@
+/** HTTP authorization, child scoping and sleep-time material/learning behavior. */
+import assert from 'node:assert/strict';
+import { testActivationCode } from './fixtures/activation.mjs';
+const base = process.env.BASE;
+if (!base) throw Error('请运行 npm test，使用隔离服务验收睡眠接口');
+let cookie = '', scope = {}, checks = 0;
+const check = (label, condition) => { assert.ok(condition, label); checks++; console.log('✓ ' + label); };
+async function api(path, body, expected = 200, extra = {}) {
+  const r = await fetch(base + path, { method: body === undefined ? 'GET' : 'POST', headers: { 'content-type': 'application/json', cookie, ...scope, ...extra }, body: body === undefined ? undefined : JSON.stringify(body) });
+  if (r.headers.has('set-cookie')) cookie = r.headers.get('set-cookie').split(';')[0];
+  const data = await r.json(); assert.equal(r.status, expected, `${path}: ${JSON.stringify(data)}`); return data;
+}
+await api('/api/v2/pet/sleep-touch', {}, 401);
+check('睡眠互动接口要求登录', true);
+const session = await api('/api/auth/register', { activationCode: testActivationCode(), login: 'sleep-api-' + Date.now(), password: 'Sleep-Suite-2026!', name: '验收家长', familyName: '睡眠验收家庭', childName: '睡眠验收孩子' });
+scope = { 'x-family-id': session.family.id, 'x-child-id': session.activeChildId };
+await api('/api/v2/adopt', { breed: 'cat_orange', name: '困困' });
+await api('/api/v2/points/gift', { amount: 500 });
+await api('/api/shop/buy', { key: 'brush' });
+const schedule = { nightEnabled: true, nightStart: '23:59', nightEnd: '23:58', napEnabled: true, napStart: '23:58', napEnd: '23:59' };
+await api('/api/v2/settings', { petSleep: { ...schedule, napStart: 'invalid' } }, 400);
+check('作息接口拒绝非法时间且保留旧设置', !(await api('/api/v2/student')).sleep.schedule.nightEnabled);
+const children = await api('/api/family/children', { name: '另一个孩子', grade: 3 });
+const other = children.children.find(c => c.id !== session.activeChildId).id;
+await api('/api/v2/settings', { petSleep: schedule });
+const before = await api('/api/v2/student');
+check('HTTP 状态返回当前睡眠区间和服务器时间', !!before.sleep.active && before.sleep.serverNow > 0);
+const otherState = await api('/api/v2/student', undefined, 200, { 'x-child-id': other });
+check('同家庭不同孩子的作息彼此隔离', !otherState.sleep.active && !otherState.sleep.schedule.nightEnabled);
+const touched = await api('/api/v2/pet/sleep-touch', {});
+check('首次点击只梦话，不扣状态', touched.sleepInteraction?.count === 1 && touched.sleepInteraction.penalty === 0);
+const care = await api('/api/pet/use', { key: 'brush' });
+check('睡眠期间使用清洁用品不扣库存、不增加成长', !!care.sleepInteraction && care.inventory.find(i => i.key === 'brush')?.qty === 1 && care.pet.growth === before.pet.growth);
+check('快速点击跨接口共用防抖和提醒记录', care.sleepInteraction.count === 1 && care.sleepInteraction.ignored);
+const rest = await api('/api/v2/pet/rest', {});
+check('手动小憩接口不能绕过定时睡眠领取奖励', !!rest.sleepInteraction && rest.pet.stats.energy - before.pet.stats.energy < .1);
+const awakeTouch = await api('/api/v2/pet/sleep-touch', {}, 400, { 'x-child-id': other });
+check('未领养的孩子不能打扰其他宠物', !!awakeTouch.error);
+const ruleList = await api('/api/v2/rules', { title: '睡着也可提交的任务', weekdays: [1,2,3,4,5,6,7], reviewRequired: false, basePoints: 8 });
+const task = (await api('/api/v2/student')).tasks.find(t => t.ruleId === ruleList.find(r => r.title === '睡着也可提交的任务').id);
+await api('/api/auth/lock', {});
+await api('/api/v2/settings', { petSleep: schedule }, 403);
+check('学生视图不能修改家长作息设置', true);
+const submitted = await api(`/api/v2/tasks/${task.id}/submit`, { note: '睡眠不影响学习流程' });
+check('宠物睡眠期间学习任务仍能正常提交和到账', submitted.status === 'approved');
+console.log(`${checks} sleep API checks passed`);

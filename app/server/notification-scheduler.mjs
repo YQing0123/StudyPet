@@ -2,6 +2,7 @@
 import { q, db, tx } from './db.mjs';
 import * as NOTIFY from './notifications.mjs';
 import { taskSummary } from './v2.mjs';
+import { childIsActive } from './subscriptions.mjs';
 
 db.exec(`CREATE TABLE IF NOT EXISTS notify_summary_run (
  child_id TEXT NOT NULL, date TEXT NOT NULL, status TEXT NOT NULL,
@@ -18,7 +19,7 @@ export async function runDueSummaries({at=Date.now(),fetchImpl=fetch}={}) {
  const children=q.all("SELECT c.id FROM child c JOIN family_setting s ON s.child_id=c.id AND s.key='notify_event_daily_summary' AND s.value='1'");
  for(const child of children){
   try {
-   if(clock.time<NOTIFY.summaryTime(child.id)||!NOTIFY.notificationsEnabled(child.id))continue;
+   if(!childIsActive(child.id,at)||clock.time<NOTIFY.summaryTime(child.id)||!NOTIFY.notificationsEnabled(child.id))continue;
    const claim=tx(()=>{
     const inserted=q.run("INSERT OR IGNORE INTO notify_summary_run(child_id,date,status,created_at) VALUES(?,?,'sending',?)",child.id,clock.date,new Date(at).toISOString());
     return inserted.changes?taskSummary(child.id,clock.date):null;

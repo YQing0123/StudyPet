@@ -1,3 +1,6 @@
+import RoomDecor from './RoomDecor';
+import { ROOM_MAP } from '../shared/roomCatalog.mjs';
+import { PET_SCENARIOS, scenarioForItem } from '../shared/petScenarios.mjs';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import PetStage, { type PetStageHandle } from '../mvp/PetStage';
 import Adopt from '../mvp/Adopt';
@@ -13,7 +16,11 @@ import { petAvatar } from '../mvp/petGrowth';
 import type { Pet, GrowthMemory } from '../mvp/types';
 import { preloadPetAge } from '../mvp/petEngine';
 import GrowthCelebration from './GrowthCelebration';
+import Confetti, { CONFETTI_DURATION } from '../mvp/Confetti';
 import { atLevel, growthHint } from './petProgress';
+import { TravelScene, TravelSheet, TravelRewardsSheet } from './Travel';
+import { usePetSleep } from './usePetSleep';
+import './care-revision.css';
 
 const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
 const dateLabel = (key: string) => {
@@ -29,17 +36,29 @@ const greet = () => {
   return '晚上好，收个尾吧';
 };
 
+const careDuration = (key: string, fallback = 6000) => window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1000 : PET_SCENARIOS[key]?.duration || fallback;
+const waitForCare = (milliseconds: number) => new Promise<void>(resolve => window.setTimeout(resolve, milliseconds));
+const NEED_LIMITS = { hunger: 30, energy: 25, mood: 35, clean: 65 };
+const needBand = (value: number, limit: number) => value < limit ? value < Math.min(18, limit / 2) ? 2 : 1 : 0;
+
 export default function StudentHome({ onParent, toast }: { onParent: () => void; toast: (msg: string, tone?: string) => void }) {
   const [data, setData] = useState<StudentState | null>(null);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
-  const [sheet, setSheet] = useState<null | 'task' | 'shop' | 'bag' | 'rewards' | 'status' | 'menu' | 'plan' | 'pets'>(() => new URLSearchParams(location.search).has('petPreview') ? 'pets' : null);
+  const [sheet, setSheet] = useState<null | 'task' | 'shop' | 'bag' | 'rewards' | 'status' | 'menu' | 'plan' | 'pets' | 'travel'>(() => new URLSearchParams(location.search).has('petPreview') ? 'pets' : null);
   const [selected, setSelected] = useState<TaskV2 | null>(null);
   const [bagTab, setBagTab] = useState('all');
   const [feedingFromShop, setFeedingFromShop] = useState(false);
+  const [travelRewardsOpen, setTravelRewardsOpen] = useState(false);
+  const shownTravelRewards = useRef<string | null>(null);
   const [muted, setMuted] = useState(() => localStorage.getItem('island_muted') === '1');
   const [floaters, setFloaters] = useState<{ id: number; text: string }[]>([]);
   const [confetti, setConfetti] = useState(0);
+  useEffect(() => {
+    if (!confetti) return;
+    const timer = window.setTimeout(() => setConfetti(0), CONFETTI_DURATION);
+    return () => window.clearTimeout(timer);
+  }, [confetti]);
   const [ceremony, setCeremony] = useState<{ event: GrowthMemory; from: Pet; to: Pet; revealed: boolean } | null>(null);
   const readyNotified = useRef(new Set<string>());
   const upgradeRequest = useRef<{ key: string; id: string } | null>(null);
@@ -51,9 +70,7 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
   const prevApproved = useRef<number | null>(null);
   const loadingRef = useRef(false);
   const busyRef = useRef(false);
-  const lastNeed = useRef(0);
-  const statsRef = useRef<any>(null);
-  statsRef.current = data?.pet?.stats || null;
+  const activeTripRef = useRef<string | null>(null);
 
   const load = useCallback(async (quiet = false) => {
     if (loadingRef.current || busyRef.current || ceremonyRef.current) return;
@@ -64,6 +81,14 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
       setData(d);
       setError('');
       setSelected((prev) => (prev ? d.tasks.find((t) => t.id === prev.id) || prev : prev));
+      const tripEnded = !!activeTripRef.current && !d.travel.activeTrip && d.travel.lastTrip?.id === activeTripRef.current;
+      activeTripRef.current = d.travel.activeTrip?.id || null;
+      if (d.travel.pendingTrip && shownTravelRewards.current !== d.travel.pendingTrip.id) {
+        shownTravelRewards.current = d.travel.pendingTrip.id;
+        setSheet(null);
+        setTravelRewardsOpen(true);
+      }
+      if (tripEnded) toast('旅行回家啦，打开行囊查收明信片吧', 'gold');
       if (prevApproved.current != null && d.progress.approved > prevApproved.current) {
         petRef.current?.play('greet');
         petRef.current?.say(lines.approved(), 4200);
@@ -79,6 +104,11 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
   }, [toast]);
 
   useEffect(() => { load(); }, [load]);
+  const { active: sleepingWindow, getActive: currentSleep } = usePetSleep(data?.sleep, data?.pet?.id, petRef, !data?.travel?.activeTrip, () => { void load(true); }, toast);
+
+  useEffect(() => {
+    if (sleepingWindow && ceremony) { setCeremony(null); ceremonyRef.current = false; }
+  }, [sleepingWindow?.id, ceremony]);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -99,31 +129,62 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
   }, [data?.pet?.id, data?.pet?.progression.level, data?.pet?.progression.ready, ceremony]);
 
   useEffect(() => {
-    const timer = window.setInterval(() => setData((prev) => prev ? {
-      ...prev, cooldowns: Object.fromEntries(Object.entries(prev.cooldowns).map(([key, value]) => [key, Math.max(0, value - 1)])),
-    } : prev), 1000);
-    return () => window.clearInterval(timer);
-  }, []);
+    if (!data || !Object.values(data.cooldowns).some(value => value > 0)) return;
+    const initial = data.cooldowns, started = performance.now();
+    let timer = 0;
+    const update = () => {
+      window.clearTimeout(timer);
+      if (document.hidden) return;
+      const elapsed = Math.floor((performance.now() - started) / 1000);
+      if (elapsed > 0) setData(prev => !prev || prev.cooldowns !== initial ? prev : {
+        ...prev, cooldowns: Object.fromEntries(Object.entries(initial).map(([key, value]) => [key, Math.max(0, value - elapsed)])),
+      });
+      else timer = window.setTimeout(update, 1000);
+    };
+    timer = window.setTimeout(update, 1000);
+    document.addEventListener('visibilitychange', update);
+    return () => { window.clearTimeout(timer); document.removeEventListener('visibilitychange', update); };
+  }, [data?.cooldowns]);
 
-  // 宠物有需求时会主动、礼貌地表达；不刷屏，约 50 秒最多一次
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      if (document.visibilityState !== 'visible') return;
-      const s = statsRef.current;
-      if (!s) return;
-      const now = Date.now();
-      if (now - lastNeed.current < 50000) return;
-      let line = '';
-      if (s.hunger < 30) line = lines.needHungry();
-      else if (s.energy < 18) line = lines.needTired();
-      else if (s.mood < 30) line = lines.needLonely();
-      else if (s.clean < 30) line = lines.needDirty();
-      else if (s.mood < 65 && s.energy > 35) line = lines.needPlay();
-      else if (Math.random() < 0.25) line = lines.social();
-      if (line) { petRef.current?.say(line, 5200, 'reminder'); lastNeed.current = now; }
-    }, 18000);
-    return () => window.clearInterval(timer);
+  // Needs wait until the island is idle. Throttles survive refreshes and are
+  // scoped to this pet, so opening another child's island never suppresses it.
+  const reminderContext = useRef({ data, busy, sheet, sleepingWindow, ceremony: !!ceremony, travelRewardsOpen });
+  reminderContext.current = { data, busy, sheet, sleepingWindow, ceremony: !!ceremony, travelRewardsOpen };
+  const remindNeeds = useCallback(() => {
+    const ctx = reminderContext.current;
+    const pet = ctx.data?.pet;
+    const engine = petRef.current?.engine();
+    if (!pet || !engine || document.visibilityState !== 'visible' || ctx.busy || ctx.sheet || ctx.sleepingWindow || ctx.ceremony || ctx.travelRewardsOpen || ctx.data?.travel.activeTrip) return;
+    if (!['IDLE', 'WANDER', 'SLEEPY'].includes(engine.getState())) return;
+    const now = Date.now(), key = `island-care-reminders:${pet.id}`;
+    let history: Record<string, number> = {};
+    try {
+      const saved = JSON.parse(localStorage.getItem(key) || '{}');
+      if (saved && typeof saved === 'object' && !Array.isArray(saved)) history = saved;
+    } catch { /* Private browsing can disable storage. */ }
+    if (now - Number(history.any || 0) < 60000) return;
+    const stats = pet.stats;
+    const choices = (Object.keys(NEED_LIMITS) as (keyof typeof NEED_LIMITS)[])
+      .filter(stat => stats[stat] < NEED_LIMITS[stat] && now - Number(history[stat] || 0) >= 5 * 60000)
+      .sort((a, b) => stats[a] / NEED_LIMITS[a] - stats[b] / NEED_LIMITS[b]);
+    const stat = choices[0];
+    const text = stat === 'hunger' ? '小主人，我的肚子有点空啦，去背包给我一点食物好吗？吃饱了心情也会变好。'
+      : stat === 'energy' ? '玩了一会儿，我有点累啦。让我小憩一下，你也去完成一个小计划吧，睡醒再一起玩。'
+      : stat === 'clean' ? stats.clean < 50 ? '小主人，我身上脏脏的，需要背包里的泡泡浴认真洗个澡啦。' : ctx.data?.hygiene.showerAvailable ? '小主人，我想洗个澡啦。背包里今天还有一次免费淋浴，冲一冲会更清爽。' : '小主人，我身上有点脏啦。可以去背包用梳子整理一下，或者泡个香香浴吗？'
+      : stat === 'mood' ? '小主人，我有一点点想你啦。摸摸头或抱一抱，就会开心起来；完成计划后再来陪我也可以。'
+      : pet.playSession?.restRecommended && now - Number(history.play || 0) >= 10 * 60000 ? '已经一起玩了一会儿啦，继续玩会越来越累。让我休息一下，你也去完成一个小计划吧。' : '';
+    if (!text) return;
+    engine.say(text, 8500, 'reminder');
+    try { localStorage.setItem(key, JSON.stringify({ ...history, any: now, [stat || 'play']: now })); } catch { /* Reminders still work without persistence. */ }
   }, []);
+  const needsSignature = data?.pet ? Object.entries(NEED_LIMITS).map(([key, limit]) => needBand(data.pet!.stats[key as keyof Pet['stats']], limit)).join(':') : '';
+  useEffect(() => {
+    const first = window.setTimeout(remindNeeds, 2200);
+    const timer = window.setInterval(remindNeeds, 20000);
+    const focus = () => { if (document.visibilityState === 'visible') remindNeeds(); };
+    document.addEventListener('visibilitychange', focus);
+    return () => { window.clearTimeout(first); window.clearInterval(timer); document.removeEventListener('visibilitychange', focus); };
+  }, [remindNeeds, data?.pet?.id, needsSignature, busy, sheet, sleepingWindow?.id, !!data?.travel.activeTrip, travelRewardsOpen, data?.pet?.playSession?.restRecommended]);
 
   const run = async <T,>(fn: () => Promise<T>, ok: (r: T) => void | Promise<void>) => {
     if (busyRef.current || ceremonyRef.current) return;
@@ -139,17 +200,39 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
     setData(d);
   };
 
+  const handleSleepResult = (next: StudentState) => {
+    const reaction = next.sleepInteraction;
+    if (!reaction) return false;
+    setData(prev => prev ? { ...prev, pet: next.pet, wallet: next.wallet, inventory: next.inventory, shop: next.shop,
+      cooldowns: next.cooldowns, recent: next.recent, sleep: next.sleep, room: next.room, hygiene: next.hygiene } : prev);
+    if (reaction.penalty > 0) toast(`一直被叫醒有点不开心 · 心情 -${reaction.penalty}`, 'warn');
+    // A sleep-touch response can arrive after the wake boundary. Keep its authoritative
+    // stats, but never let a late reaction put an already awake engine back to sleep.
+    if (!next.sleep.active || !currentSleep()) return true;
+    petRef.current?.engine()?.setScheduledSleep(true);
+    if (!reaction.ignored) petRef.current?.engine()?.reactInSleep(reaction.motion);
+    petRef.current?.say(reaction.message, reaction.warning ? 8500 : 6200, 'sleep');
+    return true;
+  };
+  const touchSleep = () => run(() => v2.disturbSleep(), next => {
+    if (!handleSleepResult(next)) setData(next);
+  });
+
   const care = (action: 'pet' | 'play' | 'hug') => run(
     () => v2.interact(action),
     async (r) => {
+      if (handleSleepResult(r)) return;
       await refreshAfterCare();
       toast(r.msg);
       petRef.current?.play(action === 'pet' ? 'pet' : action === 'play' ? 'play' : 'hug');
-      petRef.current?.say(action === 'pet' ? lines.pet() : action === 'play' ? lines.play() : lines.hug(), 3600);
+      petRef.current?.say(action === 'pet' ? lines.pet() : action === 'play' ? lines.play() : lines.hug(), careDuration(action));
+      await waitForCare(careDuration(action));
     },
   );
 
   const petClick = () => {
+    if (busyRef.current || ceremonyRef.current) return;
+    if (currentSleep()) { touchSleep(); return; }
     const st = petRef.current?.engine()?.getState();
     if (st === 'CLEANING') return;
     if (st === 'SLEEP' || st === 'WAKING') {
@@ -157,31 +240,36 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
       petRef.current?.say(lines.wake(), 2800);
       return;
     }
-    petRef.current?.play('pet');
     if ((data?.cooldowns.pet || 0) > 0) return;
     run(() => v2.interact('pet'), async (r) => {
+      if (handleSleepResult(r)) return;
       await refreshAfterCare();
       toast(r.msg);
-      petRef.current?.say(lines.pet(), 3600);
+      petRef.current?.play('pet');
+      petRef.current?.say(lines.pet(), careDuration('pet'));
+      await waitForCare(careDuration('pet'));
     });
   };
 
   const toggleSleep = () => {
+    if (currentSleep()) { touchSleep(); return; }
     const st = petRef.current?.engine()?.getState();
     if (st === 'SLEEP' || st === 'WAKING') {
       petRef.current?.play('wake');
       petRef.current?.say(lines.wake(), 2600);
     } else {
       run(() => v2.restPet(), (next) => {
+        if (handleSleepResult(next)) return;
         setData(next);
         petRef.current?.play('sleep');
         petRef.current?.say(lines.sleep(), 2600);
-        toast('小憩了一会儿，精力 +14');
+        toast(next.msg || '小憩了一会儿，恢复了一些精力');
       });
     }
   };
 
   const feed = () => {
+    if (currentSleep()) { touchSleep(); return; }
     const foods = data?.inventory.filter((x) => x.kind === 'food') || [];
     if (!foods.length) {
       toast('还没有食物，先去材料铺换一点');
@@ -196,21 +284,32 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
   const useItem = (key: string, equipped = true) => run(
     () => v2.useItem(key, equipped),
     async (r) => {
+      if (handleSleepResult(r)) { setSheet(null); return; }
       const item = data?.inventory.find((x) => x.key === key);
+      const materialScenario = item ? scenarioForItem(item) : null;
       // 使用接口已返回最新宠物、背包和钱包，避免已扣材料后刷新失败被误报为使用失败。
-      setData(prev => prev ? { ...prev, pet: r.pet, wallet: r.wallet, inventory: r.inventory, shop: r.shop, cooldowns: r.cooldowns, recent: r.recent } : prev);
+      setData(prev => prev ? { ...prev, pet: r.pet, wallet: r.wallet, inventory: r.inventory, shop: r.shop, cooldowns: r.cooldowns, recent: r.recent, sleep: r.sleep, room: r.room, hygiene: r.hygiene } : prev);
       setSheet(null);
-      if (item) petRef.current?.useMaterial(item);
-      petRef.current?.say(item?.kind === 'food' ? lines.feed() : item?.kind === 'toy' ? lines.play() : item?.kind === 'clean' ? '洗刷刷，马上就清清爽爽啦！' : equipped ? '新装扮戴好啦，好喜欢！' : '先收好，下次再戴！', 3600);
+      if (item && !['scene','furniture'].includes(item.kind)) petRef.current?.useMaterial(item);
+      petRef.current?.say(item?.kind === 'food' ? lines.feed() : item?.kind === 'toy' ? lines.play() : item?.kind === 'clean' ? PET_SCENARIOS[item.key]?.line || '洗刷刷，马上就清清爽爽啦！' : item?.kind === 'scene' ? '我们的新家好漂亮呀！' : item?.kind === 'furniture' ? equipped ? '又添了一件新家具，好喜欢我们的家！' : '先收好，换个位置再摆吧。' : equipped ? '新装扮戴好啦，好喜欢！' : '先收好，下次再戴！', window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1000 : materialScenario?.duration || 3600);
       toast(r.msg || '用掉了一件材料');
-      if (item?.kind === 'clean') await new Promise(resolve => window.setTimeout(resolve, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1000 : 3000));
+      if (item && ['food', 'toy', 'clean'].includes(item.kind)) {
+        await waitForCare(window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1000 : (materialScenario?.duration || 6000) + (item.kind === 'clean' ? 1000 : 0));
+      }
     },
   );
+
+  const shower = () => run(() => v2.shower(), async r => {
+    if (handleSleepResult(r)) { setSheet(null); return; }
+    setData(prev => prev ? { ...prev, pet: r.pet, hygiene: r.hygiene, room: r.room, sleep: r.sleep } : prev);
+    setSheet(null); petRef.current?.scenario('shower'); petRef.current?.say(PET_SCENARIOS.shower.line || '', careDuration('shower')); toast(r.msg);
+    await waitForCare(window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1000 : (PET_SCENARIOS.shower.duration || 7000) + 1000);
+  });
 
   const buy = (key: string) => run(
     () => v2.buyMaterial(key),
     async (r) => {
-      setData(prev => prev ? { ...prev, pet: r.pet, wallet: r.wallet, inventory: r.inventory, shop: r.shop, cooldowns: r.cooldowns, recent: r.recent } : prev);
+      setData(prev => prev ? { ...prev, pet: r.pet, wallet: r.wallet, inventory: r.inventory, shop: r.shop, cooldowns: r.cooldowns, recent: r.recent, room: r.room, hygiene: r.hygiene } : prev);
       const item = data?.shop.find((x) => x.key === key);
       if (feedingFromShop && item?.kind === 'food') {
         setBagTab('food'); setFeedingFromShop(false); setSheet('bag');
@@ -249,6 +348,39 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
     },
   );
 
+  const startTravel = (cityId: string, durationHours: number) => run(
+    () => v2.startTravel(cityId, durationHours),
+    (travel) => {
+      setData(prev => prev ? { ...prev, travel } : prev);
+      activeTripRef.current = travel.activeTrip?.id || null;
+      setSheet(null);
+      toast(`出发去${travel.activeTrip?.cityName}啦`, 'gold');
+    },
+  );
+
+  const returnFromTravel = (tripId: string) => run(
+    () => v2.returnTravel(tripId),
+    async (travel) => {
+      const next = await v2.student();
+      setData({ ...next, travel });
+      activeTripRef.current = null;
+      shownTravelRewards.current = travel.pendingTrip?.id || null;
+      setSheet(null);
+      setTravelRewardsOpen(true);
+    },
+  );
+
+  const claimTravel = (tripId: string) => run(
+    () => v2.claimTravel(tripId),
+    async () => {
+      const next = await v2.student();
+      setData(next);
+      setTravelRewardsOpen(false);
+      setConfetti(Date.now());
+      toast('查收成功，明信片和物品已收入背包，星贝已到账', 'gold');
+    },
+  );
+
   const rename = (name: string) => run(
     () => v2.rename(name),
     async () => { await refreshAfterCare(); toast('名字改好啦'); },
@@ -262,6 +394,7 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
 
 
   const upgrade = () => {
+    if (currentSleep()) { toast('小伙伴正在睡觉，睡醒再一起长大吧'); return; }
     const pet = data?.pet;
     if (!pet?.progression.ready) return;
     const key = `${pet.id}:${pet.progression.level}`;
@@ -272,6 +405,7 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
       return v2.levelUp(pet.id, pet.progression.level, requestId);
     }, next => {
       if (!next.pet) return;
+      if (currentSleep()) { setData(next); toast('成长时刻已保存，睡醒后再一起看吧'); return; }
       ceremonyRef.current = true;
       setCeremony({ event: next.levelupEvent, from: pet, to: next.pet, revealed: false });
       setData(next);
@@ -280,12 +414,14 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
   };
 
   const replayGrowth = async (event: GrowthMemory) => {
+    if (currentSleep()) return;
     const pet = data?.pet;
     if (!pet || ceremonyRef.current || busyRef.current) return;
     setSheet(null);
     busyRef.current = true; setBusy(true);
     try {
       await preloadPetAge(pet.breed, Math.ceil(event.toLevel / 2));
+      if (currentSleep()) return;
       ceremonyRef.current = true;
       setCeremony({ event, from: atLevel(pet, event.fromLevel), to: atLevel(pet, event.toLevel), revealed: false });
       petRef.current?.engine()?.focusForGrowth();
@@ -315,6 +451,7 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
   const unseenMemory = data?.pet?.growthMemories?.find(e => !e.seen);
   const stagePet = ceremony ? (ceremony.revealed ? ceremony.to : ceremony.from) : data?.pet;
   const stage = data?.pet?.stageInfo;
+  const travelling = !!data?.travel?.activeTrip;
   const openTask = (t: TaskV2) => { setSelected(t); setSheet('task'); };
   const hour = new Date().getHours();
   const tone = hour < 7 ? 'dawn' : hour >= 19 ? 'dusk' : 'day';
@@ -336,26 +473,33 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
       <header className="v2-top" inert={!!ceremony}>
         <div className="brand">
           <span className="brand-mark">🏝️</span>
-          <div><h1>伴学小岛</h1><p>{greet()}，{data.pet.name}在等你</p></div>
+            <div><h1>伴学小岛</h1><p>{travelling ? `${data.pet.name}正在${data.travel.activeTrip?.cityName}旅行` : sleepingWindow ? `${data.pet.name}正在${sleepingWindow.kind === 'nap' ? '午休' : '睡觉'}，醒来再一起玩` : `${greet()}，${data.pet.name}在等你`}</p></div>
         </div>
         <div className="island-entrances">
           <button onClick={() => setSheet('rewards')}><span>🎁</span>心愿奖励</button>
-          <button onClick={() => setSheet('shop')}><span>🏪</span>材料铺</button>
+          <button onClick={() => data.travel.pendingTrip ? setTravelRewardsOpen(true) : setSheet('travel')}><span>🧭</span>{travelling ? '旅行中' : data.travel.pendingTrip ? '查收行囊' : '旅行'}</button>
+          <button onClick={() => setSheet('shop')} disabled={travelling}><span>🏪</span>材料铺</button>
         </div>
         <div className="v2-top-right">
           <span className="date-chip">{dateLabel(data.today)}</span>
           <span className={`streak-chip ${data.wallet.streak > 1 ? 'is-hot' : ''}`}>
             <i>{data.wallet.streak > 0 ? '🔥' : '🌱'}</i>{data.wallet.streak > 0 ? `连续 ${data.wallet.streak} 天` : '今天开始'}
           </span>
-          <button className="star-pill" onClick={() => setSheet('shop')}><span>★</span>{data.wallet.balance}<em>星贝</em></button>
+          <button className="star-pill" onClick={() => setSheet('shop')} disabled={travelling}><span>★</span>{data.wallet.balance}<em>星贝</em></button>
           <button className="parent-btn" onClick={onParent}><span>👨‍👩‍👧</span>家长</button>
         </div>
       </header>
 
       <main className="v2-main" ref={mainRef}>
-        <section className="v2-scene-col">
-          <div className={`scene tone-${tone} ${ceremony ? 'is-growing' : ''}`}>
-            <div className="scene-bg" /><div className="scene-vignette" /><div className="scene-glow" />
+        <section className={`v2-scene-col${travelling ? ' is-travelling' : ''}`}>
+          {travelling && data.travel.activeTrip
+            ? <TravelScene trip={data.travel.activeTrip} pet={data.pet} onReturn={() => returnFromTravel(data.travel.activeTrip!.id)} onArrived={() => { void load(true); }} busy={busy} />
+            : <>
+          <div className={`scene tone-${tone} ${ceremony ? 'is-growing' : ''}`} onPointerDown={e => {
+            if ((e.target as HTMLElement).closest('button, .room-tools, .pet-mover, .scene-topline') || ceremony) return;
+            const rect = e.currentTarget.getBoundingClientRect(); petRef.current?.engine()?.wanderTo((e.clientX - rect.left) / rect.width * 100);
+          }}>
+            <div className="scene-bg" style={{ backgroundImage: `url("${ROOM_MAP[data.room.sceneKey]?.asset || 'pets/scene/study.jpg'}")` }} /><div className="scene-vignette" /><div className="scene-glow" />
             <div className="scene-topline" inert={!!ceremony}>
             <div className="pet-chip">
               <img src={petAvatar(data.pet.breed, data.pet.stage)} alt="" />
@@ -382,11 +526,14 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
           </div>
             </div>
             {(growth?.ready || unseenMemory) && <div className="scene-growth-actions" inert={!!ceremony}>
-              {growth?.ready && <button className="growth-upgrade-btn" disabled={busy} onClick={upgrade}>{busy ? '正在准备成长时刻…' : `✦ ${growth.nextLevel! % 2 ? '长大到' : '进入'}${growth.nextName}`}</button>}
-              {unseenMemory && <button className="growth-replay-link" disabled={busy} title="有一段成长回忆还没看，点这里补看" onClick={() => replayGrowth(unseenMemory)}>补看成长时刻</button>}
+              {growth?.ready && <button className="growth-upgrade-btn" disabled={busy || !!sleepingWindow} onClick={upgrade}>{sleepingWindow ? '睡醒后再一起长大' : busy ? '正在准备成长时刻…' : `✦ ${growth.nextLevel! % 2 ? '长大到' : '进入'}${growth.nextName}`}</button>}
+              {unseenMemory && <button className="growth-replay-link" disabled={busy || !!sleepingWindow} title="有一段成长回忆还没看，点这里补看" onClick={() => replayGrowth(unseenMemory)}>补看成长时刻</button>}
             </div>}
-            <div className="scene-hint">点地面让它走过去 · 点它摸摸头</div>
-            <PetStage ref={petRef} pet={stagePet || data.pet} muted={muted} onPetClick={petClick} />
+            <div className={`scene-hint ${sleepingWindow ? 'sleep-hint' : ''}`} role="status">{sleepingWindow ? `☾ ${sleepingWindow.kind === 'night' ? '夜间睡眠' : '午休中'} · 北京时间 ${new Date(sleepingWindow.endsAt).toLocaleTimeString('zh-CN', { timeZone: 'Asia/Shanghai', hour: '2-digit', minute: '2-digit', hour12: false })} 醒来，轻轻等一等` : '点地面让它走过去 · 点它摸摸头'}</div>
+            <RoomDecor room={data.room} disabled={busy || !!ceremony} onError={message => toast(message, 'warn')} onSave={async placements => {
+              const room = await v2.saveRoom({ placements, revision: data.room.revision }); setData(prev => prev ? { ...prev, room } : prev);
+            }} />
+            <PetStage ref={petRef} pet={stagePet || data.pet} muted={muted} onPetClick={petClick} scheduledSleep={sleepingWindow?.kind} />
             {floaters.map((f) => <span key={f.id} className="floater">★ {f.text}</span>)}
             {confetti > 0 && <Confetti key={confetti} />}
             {ceremony && <GrowthCelebration key={ceremony.event.id} event={ceremony.event} petName={data.pet.name} muted={muted}
@@ -398,14 +545,15 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
                 });
               }} onFinish={finishGrowth} />}
             <div className="care-dock" inert={!!ceremony}>
-              <button onClick={feed} className="care-btn"><span>🍚</span><b>喂食</b></button>
-              <button onClick={() => care('play')} className="care-btn" disabled={busy || (data.cooldowns.play || 0) > 0}><span>🧶</span><b>{data.cooldowns.play ? `${data.cooldowns.play}s` : '陪玩'}</b></button>
-              <button onClick={() => care('pet')} className="care-btn" disabled={busy || (data.cooldowns.pet || 0) > 0}><span>🫶</span><b>{data.cooldowns.pet ? `${data.cooldowns.pet}s` : '摸摸'}</b></button>
-              <button onClick={() => care('hug')} className="care-btn" disabled={busy || (data.cooldowns.hug || 0) > 0}><span>🤗</span><b>{data.cooldowns.hug ? `${data.cooldowns.hug}s` : '抱抱'}</b></button>
-              <button onClick={toggleSleep} className="care-btn" disabled={busy} title={data.cooldowns.rest ? `恢复精力还需 ${Math.ceil(data.cooldowns.rest / 60)} 分钟` : '小憩恢复精力'}><span>🌙</span><b>小憩</b></button>
+              <button onClick={feed} className="care-btn" disabled={busy || !!sleepingWindow} title={sleepingWindow ? '睡醒后再喂食' : undefined}><span>🍚</span><b>喂食</b></button>
+              <button onClick={() => care('play')} className="care-btn" disabled={busy || !!sleepingWindow || (data.cooldowns.play || 0) > 0}><span>🧶</span><b>{data.cooldowns.play ? `${data.cooldowns.play}s` : '陪玩'}</b></button>
+              <button onClick={() => care('pet')} className="care-btn" disabled={busy || !!sleepingWindow || (data.cooldowns.pet || 0) > 0}><span>🫶</span><b>{data.cooldowns.pet ? `${data.cooldowns.pet}s` : '摸摸'}</b></button>
+              <button onClick={() => care('hug')} className="care-btn" disabled={busy || !!sleepingWindow || (data.cooldowns.hug || 0) > 0}><span>🤗</span><b>{data.cooldowns.hug ? `${data.cooldowns.hug}s` : '抱抱'}</b></button>
+              <button onClick={() => { setBagTab('clean'); setSheet('bag'); }} className="care-btn" disabled={busy || !!sleepingWindow}><span>🚿</span><b>洗澡</b></button>
+              <button onClick={toggleSleep} className="care-btn" disabled={busy} title={sleepingWindow ? '正在按作息睡觉，醒来再玩吧' : data.cooldowns.rest ? `恢复精力还需 ${Math.ceil(data.cooldowns.rest / 60)} 分钟` : '小憩恢复精力'}><span>🌙</span><b>{sleepingWindow ? '睡梦中' : '小憩'}</b></button>
             </div>
           </div>
-
+            </>}
 
         </section>
 
@@ -463,29 +611,43 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
       <nav className="v2-dock" inert={!!ceremony}>
         <button className="is-on" onClick={() => { setSheet(null); mainRef.current?.scrollTo({ top: 0, behavior: 'smooth' }); }}><span>🏝️</span>小岛</button>
         <button onClick={() => setSheet('plan')}><span>🗓️</span>计划</button>
-        <button onClick={() => setSheet('shop')}><span>🏪</span>材料</button>
+          <button onClick={() => setSheet('shop')} disabled={travelling}><span>🏪</span>材料</button>
         <button onClick={() => setSheet('rewards')}><span>🎁</span>心愿</button>
-        <button onClick={() => setSheet('bag')}><span>🧺</span>背包</button>
+          <button onClick={() => setSheet('bag')} disabled={travelling}><span>🧺</span>背包</button>
       </nav>
 
       <TaskDetail open={sheet === 'task'} task={selected} onClose={() => setSheet(null)} onSubmit={submit} busy={busy} />
-      <MaterialShop open={sheet === 'shop'} onClose={() => { setSheet(null); setFeedingFromShop(false); }} data={data} onBuy={buy} busy={busy} feeding={feedingFromShop} />
-      <BagPanel open={sheet === 'bag'} onClose={() => setSheet(null)} data={data} onUse={useItem} busy={busy} tab={bagTab} setTab={setBagTab} />
+      <MaterialShop open={sheet === 'shop'} onClose={() => { setSheet(null); setFeedingFromShop(false); }} onBag={() => { setBagTab(feedingFromShop ? 'food' : 'all'); setFeedingFromShop(false); setSheet('bag'); }} data={data} onBuy={buy} busy={busy} feeding={feedingFromShop} />
+      <BagPanel open={sheet === 'bag'} onClose={() => setSheet(null)} data={data} onUse={useItem} onShower={shower} busy={busy} tab={bagTab} setTab={setBagTab} />
       <RewardShop open={sheet === 'rewards'} onClose={() => setSheet(null)} data={data} onRedeem={redeem} busy={busy} />
       <StatSheet open={sheet === 'status'} onClose={() => setSheet(null)} pet={data.pet} />
       <StudentMenu open={sheet === 'menu'} onClose={() => setSheet(null)} data={data} muted={muted}
         onToggleMute={() => setMuted((m) => !m)} onRename={rename}
         onReplay={replayGrowth} onStat={() => setSheet('status')} onParent={() => { setSheet(null); onParent(); }} onPets={() => setSheet('pets')} />
       {data.pet && <PetPicker open={sheet === 'pets'} onClose={() => setSheet(null)} pet={data.pet} busy={busy} onChoose={changeBreed} />}
-      <PlanOverview open={sheet === 'plan'} onClose={() => setSheet(null)} data={data} />
+      <PlanOverview open={sheet === 'plan'} onClose={() => setSheet(null)} data={data} onTask={task => { setSelected(task); setSheet('task'); }} />
+      <TravelSheet open={sheet === 'travel'} onClose={() => setSheet(null)} travel={data.travel} pet={data.pet} busy={busy} onStart={startTravel} onViewRewards={() => { setSheet(null); setTravelRewardsOpen(true); }} />
+      <TravelRewardsSheet open={travelRewardsOpen} onClose={() => setTravelRewardsOpen(false)} trip={data.travel.pendingTrip} travel={data.travel} pet={data.pet} busy={busy} onClaim={claimTravel} />
     </div>
   );
 }
 
-function PlanOverview({ open, onClose, data }: { open: boolean; onClose: () => void; data: StudentState }) {
+function PlanOverview({ open, onClose, data, onTask }: { open: boolean; onClose: () => void; data: StudentState; onTask: (task: TaskV2) => void }) {
   const week = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+  const todayTasks = data.tasks.filter(task => task.date === data.today);
+  const nowHM = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Shanghai', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date());
+  const taskAction = (task: TaskV2) => task.status === 'approved' ? '查看完成' : task.status === 'submitted' ? '查看审核' : task.status === 'rejected' ? '重新完成' : task.windowStart && nowHM < task.windowStart ? '提前去完成' : '去完成';
   return (
-    <Sheet open={open} onClose={onClose} title="本周固定计划" sub="家长安排好的节奏，每天按自己的时间完成">
+    <Sheet open={open} onClose={onClose} title="我的学习计划" sub="今天的任务可以直接去完成，也可以看看这一周的安排">
+      <section className="plan-today-section" aria-label="今日学习任务">
+        <h4>今天的任务 <span>{data.progress.approved} / {todayTasks.length} 已完成</span></h4>
+        {todayTasks.length ? <div className="plan-overview-list">{todayTasks.map(task => <div className="plan-overview-row plan-today-row" key={task.id}>
+          <span className="po-icon" aria-hidden="true">{task.icon}</span>
+          <div className="po-main"><b>{task.title}</b><p>{task.subject} · {task.minutes} 分钟 · {task.timeLabel}</p><span className={`plan-task-state is-${task.status}`}>{task.status === 'open' && task.windowStart && nowHM < task.windowStart ? '尚未到计划时段，可以提前完成' : taskStatusText(task)}</span></div>
+          <button type="button" className={`btn ${task.status === 'open' || task.status === 'rejected' ? 'primary' : 'ghost'} sm plan-task-action`} onClick={() => onTask(task)} aria-label={`${taskAction(task)}：${task.title}`}>{taskAction(task)}</button>
+        </div>)}</div> : <p className="plan-no-tasks">今天没有待安排的任务，先按自己的节奏学习吧。</p>}
+      </section>
+      <h4 className="plan-week-heading">本周固定安排</h4>
       {data.rules.length === 0 ? (
         <div className="bag-empty"><div className="bag-empty-art">🗓️</div><h4>这周还没有固定计划</h4><p>去家长端安排一下每天想做的事。</p></div>
       ) : (
@@ -498,7 +660,7 @@ function PlanOverview({ open, onClose, data }: { open: boolean; onClose: () => v
                 <p>{r.subject} · {r.minutes} 分钟 · {r.timeLabel}</p>
                 <div className="po-days">{week.map((w, i) => <i key={w} className={r.weekdays.includes(i + 1) ? 'on' : ''}>{w.slice(1)}</i>)}</div>
               </div>
-              <div className="po-points">★ {r.basePoints}<em>{r.reviewRequired ? '需审核' : '免审核'}</em></div>
+              <div className="po-points">★ {r.basePoints}<em>{todayTasks.some(task => task.ruleId === r.id) ? '今日已安排' : '今日未安排'}</em></div>
             </div>
           ))}
         </div>
@@ -527,21 +689,6 @@ function ProgressRing({ percent, approved, total }: { percent: number; approved:
         <circle cx="36" cy="36" r={r} className="ring-fg" strokeDasharray={`${(percent / 100) * c} ${c}`} transform="rotate(-90 36 36)" />
       </svg>
       <div className="ring-label"><b>{total ? percent : 0}<i>%</i></b><span>{approved}/{total}</span></div>
-    </div>
-  );
-}
-
-function Confetti() {
-  return (
-    <div className="confetti">
-      {Array.from({ length: 26 }).map((_, i) => (
-        <i key={i} style={{
-          ['--x' as any]: `${Math.random() * 100}%`,
-          ['--c' as any]: ['#F2B36B', '#E88C7D', '#8FC3A6', '#E7C566', '#B9D8F0'][i % 5],
-          ['--d' as any]: `${0.9 + Math.random() * 0.9}s`,
-          ['--r' as any]: `${Math.random() * 360}deg`,
-        }} />
-      ))}
     </div>
   );
 }

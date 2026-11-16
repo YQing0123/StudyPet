@@ -1,0 +1,46 @@
+/* Furniture and pet share the scene coordinate space, not the movement rig. */
+.room-decor { position: absolute; inset: 0; pointer-events: none; z-index: auto; }
+.room-furniture { position: absolute; aspect-ratio: 1; padding: 0; background: transparent; border: 1px solid transparent; pointer-events: auto; touch-action: none; transform-origin: 50% 85%; filter: drop-shadow(0 5px 3px oklch(.3 .02 70 / .2)); border-radius: 1rem; }
+.room-furniture:focus-visible, .room-furniture.is-selected { outline: 2px dashed var(--green); outline-offset: 4px; }
+.room-furniture.is-selected { z-index: 6 !important; background: oklch(.96 .03 130 / .12); }
+.room-sprite { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.room-thumbnail { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: .6rem; }
+.room-tools { position: absolute; z-index: 11; bottom: .75rem; left: .75rem; right: .75rem; max-width: 36rem; margin: auto; padding: .75rem; color: var(--ink); background: oklch(.97 .025 85); border: 1px solid var(--line); border-radius: 1rem; box-shadow: var(--shadow-l); pointer-events: auto; }
+.room-tools b { font-size: .875rem; }
+.room-tools > span { display: inline-block; margin-left: .5rem; font-size: .75rem; color: var(--ink-soft); }
+.room-tools > div { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem; }
+.room-tools button { min-height: 44px; padding: .4rem .6rem; border: 1px solid var(--line); border-radius: .6rem; font-size: .8rem; background: oklch(.94 .025 95); }
+.room-tools .primary { background: var(--green); color: oklch(.98 .015 90); }
+.room-furniture[disabled] { pointer-events: none; }
+.room-shop-art { width: 5rem; height: 5rem; flex-shrink: 0; }
+.room-collection-note, .hygiene-note { font-size: .875rem; color: var(--ink-soft); line-height: 1.6; }
+.hygiene-card { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; padding: .9rem 0 1.1rem; margin-bottom: .75rem; border-bottom: 1px solid var(--line); }
+.hygiene-card > div { flex: 1; min-width: 12rem; }
+.hygiene-card b { color: var(--green); }
+.hygiene-card p { margin: .25rem 0 0; font-size: .875rem; color: var(--ink-soft); }
+.hygiene-card button { min-height: 44px; }
+.room-progress { padding: .5rem 0 1rem; font-size: .875rem; color: var(--ink-soft); }
+@media (min-width: 768px) { .room-shop-art { width: 6rem; height: 6rem; } }
+.v2-student .scene .pet-stage { pointer-events: none; }
+.v2-student .scene .pet-mover { pointer-events: auto; }
+/* Let furniture receive presses through the unused transparent margins of the pet rig. */
+.v2-student .scene .pet-mover { pointer-events: none; }
+.v2-student .scene .pet-frames, .v2-student .scene .pet-video-wrap[data-on="1"], .v2-student .scene .pet-bubble { pointer-events: auto; }
+.v2-student .scene .pet-stage.is-video .pet-frames { pointer-events: none; }
+.shop-card.kind-scene, .shop-card.kind-furniture { grid-template-columns: 5rem minmax(0, 1fr); align-items: center; }
+.shop-card .room-shop-art { width: 100%; height: auto; aspect-ratio: 1; }
+.shop-card.kind-scene .shop-main h4, .shop-card.kind-furniture .shop-main h4 { flex-wrap: wrap; }
+.shop-card.kind-scene .shop-main p, .shop-card.kind-furniture .shop-main p { font-size: .8rem; line-height: 1.5; }
+.v2-student .sheet .filter-row .chip, .v2-student .sheet .buy-btn { min-height: 44px; }
+.v2-student .scene .care-dock { top: 145px; transform: none; gap: 0; }
+.v2-student .scene .care-btn { min-height: 44px; padding: 3px 4px; gap: 2px; }
+@media (min-width: 768px) {
+ .shop-card.kind-scene, .shop-card.kind-furniture { grid-template-columns: 6rem minmax(0, 1fr); }
+ .v2-student .scene .care-dock { top: 50%; transform: translateY(-42%); gap: 2px; }
+ .v2-student .scene .care-btn { min-height: 55px; padding: 7px 4px; gap: 5px; }
+}
+/* Keep speech above foreground furniture, while the pet body stays between room layers. */
+.v2-student .scene .pet-stage { z-index: auto; }
+.v2-student .scene .pet-flip { z-index: 3; }
+.v2-student .scene .pet-bubble { z-index: 7; }
+.v2-student .scene.is-growing .pet-stage { z-index: 14; }

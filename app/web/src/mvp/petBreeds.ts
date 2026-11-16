@@ -1,3 +1,5 @@
+import { isAvailablePetBreed } from '../shared/availablePetBreeds.mjs';
+
 export const SPECIES_META = {
   cat: { species: '猫', trait: '爱晒太阳，也爱趴在你书桌边', line: '喵～今天也一起加油吧' },
   dog: { species: '狗', trait: '最会给你捧场，也最爱出门撒欢', line: '汪！完成计划就陪你玩球' },
@@ -8,7 +10,7 @@ export const SPECIES_META = {
 };
 
 export const BREED_LIST: [string, string, keyof typeof SPECIES_META, string][] = [
-  ['cat_orange', '小橘猫', 'cat', '小橘'],
+  ['cat_orange', '卡通橘猫', 'cat', '小橘'],
   ['cat_ragdoll', '布偶猫', 'cat', '布偶'],
   ['cat_black', '黑猫', 'cat', '煤球'],
   ['cat_blue', '蓝猫', 'cat', '蓝蓝'],
@@ -29,10 +31,10 @@ export const BREED_LIST: [string, string, keyof typeof SPECIES_META, string][] =
   ['turtle_map', '地图龟', 'turtle', '地图'],
 ];
 
-export const PET_BREEDS = BREED_LIST.map(([id, name, species, defaultName]) => ({
+export const ALL_PET_BREEDS = BREED_LIST.map(([id, name, species, defaultName]) => ({
   id, name, defaultName, speciesKey: species, species: SPECIES_META[species].species,
   avatar: `pets/avatars/${id}.png`,
   trait: SPECIES_META[species].trait,
   line: SPECIES_META[species].line,
 }));
-
+export const PET_BREEDS = ALL_PET_BREEDS.filter(breed => isAvailablePetBreed(breed.id));

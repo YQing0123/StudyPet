@@ -1,7 +1,10 @@
+import { saveRoom } from './pet-room.mjs';
 import { createServer } from 'node:http';
 import { createReadStream } from 'node:fs';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import * as ACCOUNTS from './accounts.mjs';
+import * as ADMIN from './admin.mjs';
+import * as SUBSCRIPTIONS from './subscriptions.mjs';
 import { readFile, stat } from 'node:fs/promises';
 import { join, extname, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,6 +15,7 @@ import * as PET from './pet.mjs';
 import * as DAILY from './daily.mjs';
 import { confirmLevel, acknowledgeLevel } from './pet-progression.mjs';
 import * as V2 from './v2.mjs';
+import * as TRAVEL from './travel.mjs';
 import { notificationPhoto } from './notification-cards.mjs';
 import { startNotificationScheduler } from './notification-scheduler.mjs';
 import * as CONTENT from './content.mjs';
@@ -21,6 +25,14 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PORT = Number(process.env.PORT ?? 7717);
 const HOST = process.env.HOST || '127.0.0.1';
 const STATIC_MODE = process.argv.includes('--static');
+const PUBLIC_ORIGIN = (process.env.BANXUE_PUBLIC_ORIGIN || '').replace(/\/$/, '');
+if (PUBLIC_ORIGIN) {
+ const u = new URL(PUBLIC_ORIGIN);
+ if (u.origin !== PUBLIC_ORIGIN || u.protocol !== 'https:') throw Error('BANXUE_PUBLIC_ORIGIN 必须是无路径的 HTTPS Origin');
+}
+if (process.env.NODE_ENV === 'production' && !PUBLIC_ORIGIN && process.env.BANXUE_ALLOW_HTTP !== '1') {
+ throw Error('公网生产部署必须配置 BANXUE_PUBLIC_ORIGIN；仅隔离内网 HTTP 试用可设置 BANXUE_ALLOW_HTTP=1');
+}
 
 /* ---------------- 工具 ---------------- */
 const json = (res, code, obj) => {
@@ -32,28 +44,43 @@ const json = (res, code, obj) => {
   res.end(body);
 };
 const err = (res, code, message) => json(res, code, { error: message });
+function apiError(res,e) {
+  const sqlite=String(e.code||'').startsWith('ERR_SQLITE');
+  const constraint=sqlite && (Number(e.errcode)&255)===19;
+  const internal=e.status===500 || (sqlite && !constraint);
+  if(internal)console.error('API internal error:',e.code||e.name);
+  if(e.status===429)res.setHeader('retry-after','600');
+  if(!res.headersSent)err(res,constraint?400:internal?500:e.status||400,constraint?'请求内容或资源状态不正确':internal?'服务暂时不可用':e.message||'请求失败');else res.destroy();
+}
 
 async function readBody(req, limit = 200 * 1024 * 1024) {
   const chunks = [];
   let size = 0;
   for await (const c of req) {
     size += c.length;
-    if (size > limit) throw new Error('请求体过大');
+    if (size > limit) { const e = new Error('请求体过大'); e.status = 413; throw e; }
     chunks.push(c);
   }
   return Buffer.concat(chunks);
 }
 async function readJson(req) {
-  const buf = await readBody(req, 8 * 1024 * 1024);
+  const limit = /^\/api\/v2\/tasks\/[^/?]+\/submit(?:\?|$)/.test(req.url) ? 8 * 1024 * 1024 : 256 * 1024;
+  if (Number(req.headers['content-length']) > limit) { const e = new Error('请求体过大'); e.status = 413; throw e; }
+  const buf = await readBody(req, limit);
   if (!buf.length) return {};
-  return JSON.parse(buf.toString('utf8'));
+  let value;
+  try { value = JSON.parse(buf.toString('utf8')); } catch { throw Error('JSON 请求格式不正确'); }
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw Error('请求内容需为 JSON 对象');
+  const c = requestContext.getStore();
+  if (c) SUBSCRIPTIONS.requireActive(c.family_id);
+  return value;
 }
 
 const MIME = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8', '.json': 'application/json',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
-  '.webp': 'image/webp', '.svg': 'image/svg+xml', '.mp3': 'audio/mpeg',
+  '.webp': 'image/webp', '.gif': 'image/gif', '.svg': 'image/svg+xml', '.mp3': 'audio/mpeg',
   '.wav': 'audio/wav', '.m4a': 'audio/mp4', '.ogg': 'audio/ogg', '.webm': 'video/webm',
   '.mp4': 'video/mp4', '.woff2': 'font/woff2', '.pdf': 'application/pdf',
 };
@@ -381,35 +408,35 @@ const ROUTES = [
       const child = defaultChild();
       const date = new URL(req.url, 'http://x').searchParams.get('date') || DAILY.toDateKey();
       json(res, 200, V2.getStudentState(child.id, date));
-    } catch (e) { err(res, 400, e.message); }
+    } catch (e) { apiError(res, e); }
   }],
   ['GET', /^\/api\/v2\/parent$/, async (req, res) => {
     try {
       const child = defaultChild();
       const url = new URL(req.url, 'http://x');
       json(res, 200, V2.getParentState(child.id, url.searchParams.get('date') || DAILY.toDateKey(), url.searchParams.get('month')));
-    } catch (e) { err(res, 400, e.message); }
+    } catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/rules$/, async (req, res) => {
     try { json(res, 200, V2.saveRule(defaultChild().id, await readJson(req))); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['DELETE', /^\/api\/v2\/rules\/([^/]+)$/, async (req, res, m) => {
     try { json(res, 200, V2.deleteRule(defaultChild().id, m[1])); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['GET', /^\/api\/v2\/tasks\/([^/]+)$/, async (req,res,m) => { json(res,200,V2.reviewDetail(defaultChild().id,m[1])); }],
   ['POST', /^\/api\/v2\/tasks\/([^/]+)\/submit$/, async (req, res, m) => {
     try { json(res, 200, V2.submitTask(defaultChild().id, m[1], await readJson(req))); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/tasks\/([^/]+)\/review$/, async (req, res, m) => {
     try { json(res, 200, V2.reviewTask(defaultChild().id, m[1], await readJson(req))); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/adopt$/, async (req, res) => {
     try { json(res, 200, V2.adoptWithStarter(defaultChild().id, await readJson(req))); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/pet\/breed$/, async (req, res) => {
     try {
@@ -417,56 +444,84 @@ const ROUTES = [
       const body = await readJson(req);
       V2.migratePet(child.id, body.breed, body.expectedPetId);
       json(res, 200, V2.getStudentState(child.id));
-    } catch (e) { err(res, 400, e.message); }
+    } catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/reset$/, async (req, res) => {
     try { json(res, 200, V2.resetAll(defaultChild().id, (await readJson(req)).expectedPetId)); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/pet\/level-up$/, async (req, res) => {
     try { const child = defaultChild(); const event = confirmLevel(child.id, await readJson(req)); json(res, 200, { ...V2.getStudentState(child.id), levelupEvent: event }); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/pet\/level-up\/([^/]+)\/seen$/, async (req, res, m) => {
     acknowledgeLevel(defaultChild().id, m[1]); json(res, 200, { ok: true });
   }],
+  ['POST', /^\/api\/v2\/room$/, async (req, res) => {
+    try { json(res, 200, saveRoom(defaultChild().id, await readJson(req))); }
+    catch (e) { apiError(res, e); }
+  }],
+  ['POST', /^\/api\/v2\/pet\/scenario$/, async (req, res) => {
+    try { json(res, 200, DAILY.runPetScenario(defaultChild().id, (await readJson(req)).scenario)); }
+    catch (e) { apiError(res, e); }
+  }],
+  ['POST', /^\/api\/v2\/pet\/shower$/, async (req, res) => {
+    try { json(res, 200, DAILY.shower(defaultChild().id)); }
+    catch (e) { apiError(res, e); }
+  }],
   ['POST', /^\/api\/v2\/pet\/rest$/, async (req, res) => {
     try { json(res, 200, V2.restPet(defaultChild().id)); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
+  }],
+  ['POST', /^\/api\/v2\/pet\/sleep-touch$/, async (req, res) => {
+    try { json(res, 200, V2.touchSleepingPet(defaultChild().id)); }
+    catch (e) { apiError(res, e); }
+  }],
+  ['POST', /^\/api\/v2\/travel\/start$/, async (req, res) => {
+    try { json(res, 200, V2.startTravel(defaultChild().id, await readJson(req))); }
+    catch (e) { apiError(res, e); }
+  }],
+  ['POST', /^\/api\/v2\/travel\/([^/]+)\/return$/, async (req, res, m) => {
+    try { json(res, 200, V2.returnTravel(defaultChild().id, m[1])); }
+    catch (e) { apiError(res, e); }
+  }],
+  ['POST', /^\/api\/v2\/travel\/([^/]+)\/claim$/, async (req, res, m) => {
+    try { json(res, 200, V2.claimTravel(defaultChild().id, m[1])); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/review\/all$/, async (req, res) => {
     try { json(res, 200, V2.approveAll(defaultChild().id)); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/points\/gift$/, async (req, res) => {
     try { json(res, 200, V2.giftPoints(defaultChild().id, await readJson(req))); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/rewards$/, async (req, res) => {
     try { json(res, 200, V2.saveReward(defaultChild().id, await readJson(req))); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['DELETE', /^\/api\/v2\/rewards\/([^/]+)$/, async (req, res, m) => {
     try { json(res, 200, V2.deleteReward(defaultChild().id, m[1])); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/rewards\/([^/]+)\/redeem$/, async (req, res, m) => {
     try { json(res, 200, V2.redeemReward(defaultChild().id, m[1])); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/redemptions\/([^/]+)\/handle$/, async (req, res, m) => {
     try {
       const b = await readJson(req);
       json(res, 200, V2.handleRedemption(defaultChild().id, m[1], b.status || 'fulfilled'));
-    } catch (e) { err(res, 400, e.message); }
+    } catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/settings$/, async (req, res) => {
     try { json(res, 200, V2.setParentSettings(defaultChild().id, await readJson(req))); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/v2\/notify\/test$/, async (req, res) => {
     try { json(res, 200, await V2.notifyTest(defaultChild().id, (await readJson(req)).provider)); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['GET', /^\/api\/v2\/notify\/logs$/, async (req, res) => {
     const params = new URL(req.url, 'http://localhost').searchParams;
@@ -487,41 +542,41 @@ const ROUTES = [
   ['GET', /^\/api\/breeds$/, async (req, res) => json(res, 200, DAILY.breedList())],
   ['POST', /^\/api\/pet\/adopt$/, async (req, res) => {
     try { json(res, 200, DAILY.adopt(defaultChild().id, await readJson(req))); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/pet\/rename$/, async (req, res) => {
     try { const b = await readJson(req); json(res, 200, DAILY.rename(defaultChild().id, b.name)); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/pet\/reset$/, async (req, res) => {
     try { json(res, 200, V2.resetAll(defaultChild().id, (await readJson(req)).expectedPetId)); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/tasks$/, async (req, res) => {
     try { json(res, 200, DAILY.addTask(defaultChild().id, await readJson(req))); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['PATCH', /^\/api\/tasks\/([^/]+)$/, async (req, res, m) => {
     try {
       const b = await readJson(req);
       json(res, 200, DAILY.toggleTask(defaultChild().id, m[1], b.done !== false));
-    } catch (e) { err(res, 400, e.message); }
+    } catch (e) { apiError(res, e); }
   }],
   ['DELETE', /^\/api\/tasks\/([^/]+)$/, async (req, res, m) => {
     try { json(res, 200, DAILY.deleteTask(defaultChild().id, m[1])); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/shop\/buy$/, async (req, res) => {
     try { json(res, 200, DAILY.buy(defaultChild().id, await readJson(req))); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/pet\/use$/, async (req, res) => {
     try { json(res, 200, DAILY.useMaterial(defaultChild().id, await readJson(req))); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/pet\/interact$/, async (req, res) => {
     try { json(res, 200, DAILY.interact(defaultChild().id, await readJson(req))); }
-    catch (e) { err(res, 400, e.message); }
+    catch (e) { apiError(res, e); }
   }],
   ['POST', /^\/api\/session$/, async (req, res) => {
     const body = await readJson(req);
@@ -657,18 +712,28 @@ const ROUTES = [
   }],
 ];
 
-function allowedOrigin(req) {
+function allowedOrigin(req,path) {
+  const safe=['GET','HEAD'].includes(req.method);
+  // External review links and capability-scoped notification images remain readable.
+  if(safe && (!path.startsWith('/api/') || path.startsWith('/api/notify-images/')))return true;
   const origin=req.headers.origin;
-  if (!origin) return true;
-  const configured=process.env.BANXUE_PUBLIC_ORIGIN;
-  if (configured && origin===configured) return true;
+  if(!safe && req.headers['sec-fetch-site']==='cross-site')return false;
+  if (!origin) {
+   if (PUBLIC_ORIGIN && !['GET','HEAD','OPTIONS'].includes(req.method)) {
+    try { return new URL(req.headers.referer).origin === PUBLIC_ORIGIN; } catch { return false; }
+   }
+   return true;
+  }
+  if (PUBLIC_ORIGIN) return origin === PUBLIC_ORIGIN;
   try {
     const from=new URL(origin), host=new URL(`http://${req.headers.host}`);
-    return from.host===host.host || (['127.0.0.1','localhost'].includes(host.hostname) && ['127.0.0.1','localhost'].includes(from.hostname) && ['5199','7717','7788','17718','17719'].includes(from.port));
+    return (from.protocol==='http:' && from.host===host.host) || (from.protocol==='http:' && ['127.0.0.1','localhost'].includes(host.hostname) && ['127.0.0.1','localhost'].includes(from.hostname) && ['5199','7717','7788','17718','17719'].includes(from.port));
   } catch { return false; }
 }
 async function accountRoute(req,res,path) {
-  const c=ACCOUNTS.context(req), body=req.method==='GET'?{}:await readJson(req);
+  const c=ACCOUNTS.context(req);
+  ACCOUNTS.throttle(`account-api:${c.account_id}`,600);
+  const body=req.method==='GET'?{}:await readJson(req);
   const secure=!!req.socket.encrypted || process.env.BANXUE_PUBLIC_ORIGIN?.startsWith('https://');
   if(path==='/api/auth/logout' && req.method==='POST')return ACCOUNTS.logout(req,res);
   if(path==='/api/auth/context' && req.method==='POST')return ACCOUNTS.selectContext(c,body);
@@ -676,6 +741,7 @@ async function accountRoute(req,res,path) {
   if(path==='/api/auth/unlock' && req.method==='POST') { const key=`unlock:${c.account_id}`;ACCOUNTS.throttle(key);const r=await ACCOUNTS.unlock(c,body);ACCOUNTS.clearAttempts(key);return r; }
   if(path==='/api/auth/password' && req.method==='POST') {ACCOUNTS.throttle(`password:${c.account_id}`);return ACCOUNTS.changePassword(c,body);}
   if(path==='/api/family' && req.method==='GET')return ACCOUNTS.snapshot(c);
+  if(path==='/api/family/renew' && req.method==='POST') {ACCOUNTS.throttle(`renew:${c.account_id}`,15);return ACCOUNTS.renew(c,body);}
   if(path==='/api/family/children' && req.method==='POST')return ACCOUNTS.addChild(c,body);
   let m=/^\/api\/family\/children\/([^/]+)(\/account)?$/.exec(path);
   if(m && req.method==='POST')return m[2]?await ACCOUNTS.studentAccount(c,m[1],body):ACCOUNTS.renameChild(c,m[1],body);
@@ -684,17 +750,48 @@ async function accountRoute(req,res,path) {
   if(m && req.method==='DELETE')return ACCOUNTS.revokeInvite(c,m[1]);
   m=/^\/api\/family\/parents\/([^/]+)$/.exec(path);
   if(m && req.method==='DELETE')return ACCOUNTS.removeParent(c,m[1]);
-  if(path==='/api/family/join' && req.method==='POST')return ACCOUNTS.join(body,res,secure,c);
+  if(path==='/api/family/join' && req.method==='POST') {ACCOUNTS.throttle(`join:${c.account_id}`,15);return ACCOUNTS.join(body,res,secure,c);}
   const e=new Error('未找到账号接口');e.status=404;throw e;
+}
+async function adminRoute(req,res,path,url) {
+ const secure=!!req.socket.encrypted || !!PUBLIC_ORIGIN;
+ if(path==='/api/admin/session' && req.method==='GET')return ADMIN.adminSnapshot(ADMIN.readAdmin(req));
+ if(path==='/api/admin/login' && req.method==='POST') {
+  ACCOUNTS.throttle(`admin-ip:${req.socket.remoteAddress}`,40);
+  const body=await readJson(req),key=`admin-login:${String(body.login||'').trim().toLowerCase().slice(0,80)}`;
+  ACCOUNTS.throttle(key,8);const result=await ADMIN.login(body,res,secure);ACCOUNTS.clearAttempts(key);return result;
+ }
+ const a=ADMIN.requireAdmin(req);
+ ACCOUNTS.throttle(`admin-requests:${a.id}`,600);
+ if(path==='/api/admin/logout' && req.method==='POST')return ADMIN.logout(req,res);
+ if(path==='/api/admin/invites' && req.method==='GET')return SUBSCRIPTIONS.listActivationInvites(url.searchParams.get('before')||'');
+ if(path==='/api/admin/invites' && req.method==='POST') {
+  const result=SUBSCRIPTIONS.createActivationInvite(a.id,await readJson(req));ADMIN.audit(a.id,'invite.create',result.id);return result;
+ }
+ let m=/^\/api\/admin\/invites\/([^/]+)$/.exec(path);
+ if(m && req.method==='DELETE') {const r=SUBSCRIPTIONS.revokeActivationInvite(m[1]);ADMIN.audit(a.id,'invite.revoke',m[1]);return r;}
+ if(path==='/api/admin/families' && req.method==='GET')return SUBSCRIPTIONS.listFamilies(url.searchParams.get('before')||'',url.searchParams.get('q')||'');
+ m=/^\/api\/admin\/families\/([^/]+)\/subscription$/.exec(path);
+ if(m && req.method==='POST') {const r=SUBSCRIPTIONS.setFamilySubscription(a.id,m[1],await readJson(req));ADMIN.audit(a.id,'subscription.set',m[1]);return r;}
+ if(m && req.method==='GET') {SUBSCRIPTIONS.entitlement(m[1]);return q.all('SELECT action,detail,created_at AS createdAt FROM subscription_event WHERE family_id=? ORDER BY rowid DESC LIMIT 50',m[1]);}
+ const e=new Error('未找到管理员接口');e.status=404;throw e;
 }
 const server = createServer(async (req,res)=>{
  try {
+  res.setHeader('x-content-type-options','nosniff');
+  res.setHeader('x-frame-options','DENY');
+  res.setHeader('referrer-policy','no-referrer');
+  res.setHeader('permissions-policy','geolocation=(), microphone=(), camera=(self)');
+  if(PUBLIC_ORIGIN)res.setHeader('strict-transport-security','max-age=31536000');
+  if(STATIC_MODE)res.setHeader('content-security-policy',"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'");
+  if((req.url||'').length>4096)return err(res,414,'请求地址过长');
   const url=new URL(req.url,`http://${req.headers.host}`),path=decodeURIComponent(url.pathname);
-  if(!allowedOrigin(req))return err(res,403,'请求来源不受信任');
+  if(!allowedOrigin(req,path))return err(res,403,'请求来源不受信任');
   if(req.method==='OPTIONS') {res.writeHead(204,{'access-control-allow-methods':'GET, POST, PATCH, DELETE, OPTIONS','access-control-allow-headers':'content-type, x-family-id, x-child-id'});return res.end();}
   const unsafe=!['GET','HEAD'].includes(req.method);
-  if(unsafe && !(req.headers['content-type'] || '').startsWith('application/json'))return err(res,415,'请使用 JSON 请求');
+  if(unsafe && !/^application\/json(?:\s*;|$)/i.test(req.headers['content-type'] || ''))return err(res,415,'请使用 JSON 请求');
   if(path.startsWith('/api/'))res.setHeader('cache-control','no-store');
+  if(path.startsWith('/api/admin/'))return json(res,200,await adminRoute(req,res,path,url));
   if(path.startsWith('/api/notify-images/')) {
    if(!['GET','HEAD'].includes(req.method))return err(res,405,'仅支持读取图片');
    const photo=notificationPhoto(path.slice('/api/notify-images/'.length));
@@ -705,11 +802,13 @@ const server = createServer(async (req,res)=>{
   }
   if(path==='/api/auth/session' && req.method==='GET')return json(res,200,ACCOUNTS.snapshot(ACCOUNTS.readSession(req)));
   if(['/api/auth/login','/api/auth/register','/api/auth/join'].includes(path) && req.method==='POST') {
-   const body=await readJson(req),key=`${path}:${req.socket.remoteAddress}:${String(body.login||'').toLowerCase().slice(0,80)}`;
-   ACCOUNTS.throttle(key);ACCOUNTS.throttle(`auth-ip:${req.socket.remoteAddress}`,120);
+   ACCOUNTS.throttle(`auth-ip:${req.socket.remoteAddress}`,120);
+   const body=await readJson(req),key=`${path}:${req.socket.remoteAddress}:${String(body.login||'').trim().toLowerCase().slice(0,80)}`;
+   const identityKey=`auth-identity:${path}:${String(body.login||'').trim().toLowerCase().slice(0,80)}`;
+   ACCOUNTS.throttle(key);ACCOUNTS.throttle(identityKey,20);
    const secure=!!req.socket.encrypted || process.env.BANXUE_PUBLIC_ORIGIN?.startsWith('https://');
    const result=path.endsWith('/login')?await ACCOUNTS.login(body,res,secure):path.endsWith('/register')?await ACCOUNTS.register(body,res,secure):await ACCOUNTS.join(body,res,secure);
-   ACCOUNTS.clearAttempts(key);return json(res,200,result);
+   ACCOUNTS.clearAttempts(key);ACCOUNTS.clearAttempts(identityKey);return json(res,200,result);
   }
   if(path.startsWith('/api/auth/') || path.startsWith('/api/family'))return json(res,200,await accountRoute(req,res,path));
   // Retire unscoped prototype APIs. They are not used by the current product.
@@ -718,23 +817,34 @@ const server = createServer(async (req,res)=>{
    if(path==='/api/health')return json(res,200,{ok:true,time:now()});
    if(!/^\/api\/(?:v2(?:\/|$)|today$|breeds$|tasks(?:\/|$)|shop\/buy$|pet\/(?:adopt|rename|reset|use|interact)$)/.test(path))return err(res,410,'该旧接口已停用');
    const c=ACCOUNTS.context(req);
+   ACCOUNTS.throttle(`api:${c.account_id}`,1800);
    const parentOnly=(req.method==='GET'&&/^\/api\/v2\/tasks\/[^/]+$/.test(path)) || path==='/api/v2/parent' || /^\/api\/v2\/(?:rules|settings|points|review|redemptions|notify|notes|pet\/backups|pet\/restart)(?:\/|$)/.test(path) || (path.startsWith('/api/v2/rewards')&&!path.endsWith('/redeem')) || /^\/api\/v2\/tasks\/[^/]+\/review$/.test(path) || ['/api/v2/reset','/api/pet/reset'].includes(path) || path.startsWith('/api/tasks');
    if(parentOnly)ACCOUNTS.requireParent(c);
+   if(unsafe && path!=='/api/v2/auth/logout')SUBSCRIPTIONS.requireActive(c.family_id);
+   if(path==='/api/v2/notify/test' && unsafe)ACCOUNTS.throttle(`notify-test:${c.account_id}`,10);
    if(unsafe)res.once('finish',()=>{if(res.statusCode<400){try{ACCOUNTS.audit(c,`${req.method} ${path}`);}catch(e){console.error('Account audit failed:',e.message);}}});
    return await requestContext.run(c,async()=>{
+    const petActionPath=/^(?:\/api\/shop\/buy|\/api\/pet\/(?:adopt|rename|reset|use|interact)|\/api\/v2\/(?:adopt|reset|room|pet\/(?:breed|rest|shower|scenario|sleep-touch|level-up(?:\/[^/]+\/seen)?|backups(?:\/[^/]+\/restore)?|restart)))$/;
+    if(unsafe && c.child && petActionPath.test(path) && TRAVEL.isTravelling(c.child.id)) return err(res,409,'小伙伴还在旅行，回家后才能照顾它。');
     for(const [method,re,fn] of ROUTES){if(req.method!==method)continue;const m=re.exec(path);if(m)return await fn(req,res,m);}
     return err(res,404,'未找到接口');
    });
   }
   if(STATIC_MODE && ['GET','HEAD'].includes(req.method)) {
+   if(path.split('/').some(p=>p.startsWith('.')) || path.endsWith('.map'))return err(res,404,'未找到文件');
    const dist=join(ROOT,'web','dist');let file=join(dist,path==='/'?'index.html':path);
    if(!file.startsWith(dist+'/'))return err(res,404,'未找到页面');
    try{await stat(file);}catch{if(extname(path))return err(res,404,'未找到文件');file=join(dist,'index.html');}
    return serveFile(req,res,file);
   }
   err(res,404,'未找到页面');
- }catch(e){err(res,e.status||400,e.status===500?'服务暂时不可用':e.message||'请求失败');}
+ }catch(e){apiError(res,e);}
 });
+server.requestTimeout=30000;
+server.headersTimeout=10000;
+server.keepAliveTimeout=5000;
+server.maxHeadersCount=64;
+server.maxRequestsPerSocket=100;
 
 server.listen(PORT, HOST, () => {
   startNotificationScheduler();

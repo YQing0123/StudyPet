@@ -1,3 +1,5 @@
+import { TravelCollection } from './Travel';
+import { ItemArt } from './RoomDecor';
 import { useEffect, useRef, useState } from 'react';
 import { Sheet } from '../mvp/Sheets';
 import { v2 } from './api';
@@ -7,15 +9,15 @@ import { STAT_HELP } from './lines';
 import { GROWTH_LOOKS, hasGrowthLooks, petAvatar } from '../mvp/petGrowth';
 import { growthHint } from './petProgress';
 
-const KIND_LABEL: Record<string, string> = { food: '食物', toy: '玩具', clean: '清洁', deco: '装扮' };
-const EFFECT_LABEL: Record<string, string> = { hunger: '饱食', energy: '精力', mood: '心情', clean: '清洁', growth: '成长' };
+const KIND_LABEL: Record<string, string> = { food: '食物', toy: '玩具', clean: '清洁', deco: '装扮', scene: '场景', furniture: '家具' };
+const EFFECT_LABEL: Record<string, string> = { hunger: '饱食', energy: '精力', mood: '心情', clean: '清洁', growth: '成长', cleanTo: '清洁补满至' };
 
 function EffectChips({ effect }: { effect: Record<string, number | string> }) {
   const chips = Object.entries(effect || {})
     .filter(([k, v]) => k !== 'outfit' && Number(v) !== 0)
     .map(([k, v]) => (
       <span key={k} className={`eff ${Number(v) < 0 ? 'is-down' : ''}`}>
-        {EFFECT_LABEL[k] || k} {Number(v) > 0 ? '+' : ''}{v}
+        {EFFECT_LABEL[k] || k} {k === 'cleanTo' ? '' : Number(v) > 0 ? '+' : ''}{v}
       </span>
     ));
   if (effect?.outfit) chips.push(<span key="outfit" className="eff">永久装扮 · {effect.outfit === 'crown' ? '头部' : '颈部'}</span>);
@@ -153,35 +155,37 @@ async function compressImage(file: File): Promise<string> {
 }
 
 export function MaterialShop({
-  open, onClose, data, onBuy, busy, feeding = false,
+  open, onClose, data, onBuy, busy, feeding = false, onBag,
 }: {
-  open: boolean; onClose: () => void; data: StudentState; onBuy: (key: string) => void; busy: boolean; feeding?: boolean;
+  open: boolean; onClose: () => void; data: StudentState; onBuy: (key: string) => void; busy: boolean; feeding?: boolean; onBag: () => void;
 }) {
   const [filter, setFilter] = useState('all');
   useEffect(() => { if (open) setFilter(feeding ? 'food' : 'all'); }, [open, feeding]);
   const list = filter === 'all' ? data.shop : data.shop.filter((x) => x.kind === filter);
   return (
     <Sheet open={open} onClose={onClose} wide title="材料铺"
-      sub={feeding ? '先换一份食物，接着去背包喂给它' : '兑换后放进背包；装扮只需兑换一次，可反复穿戴'}
+      headerAction={<button type="button" className="shop-bag-entry" onClick={onBag}><span aria-hidden="true">🧺</span> 进入背包</button>}
+      sub={feeding ? '先换一份食物，接着去背包喂给它' : '装扮、场景和家具永久拥有，慢慢收集自己的小家'}
       footer={<div className="wallet-line"><span>我的星贝</span><b>★ {data.wallet.balance}</b><span className="muted">今日赚 {data.wallet.todayEarned}</span></div>}
     >
       <div className="filter-row">
-        {[['all', '全部'], ['food', '食物'], ['toy', '玩具'], ['clean', '清洁'], ['deco', '装扮']].map(([k, v]) => (
+        {[['all', '全部'], ['food', '食物'], ['toy', '玩具'], ['clean', '清洁'], ['deco', '装扮'], ['scene', '场景'], ['furniture', '家具']].map(([k, v]) => (
           <button key={k} className={`chip ${filter === k ? 'is-on' : ''}`} onClick={() => setFilter(k)}>{v}</button>
         ))}
       </div>
+      {(filter === 'scene' || filter === 'furniture') && <p className="room-progress">已收藏 {data.room.owned.length} / {data.shop.filter(x => x.kind === 'scene' || x.kind === 'furniture').length} 件场景与家具 · 兑换后到背包使用</p>}
       <div className="shop-grid">
         {list.map((item) => (
           <article key={item.key} className={`shop-card kind-${item.kind}`}>
-            <div className="shop-icon">{item.icon}</div>
+            <div className={item.asset ? "room-shop-art" : "shop-icon"}><ItemArt item={item} /></div>
             <div className="shop-main">
               <h4>{item.name}<span>{KIND_LABEL[item.kind]}</span></h4>
               <p>{item.desc}</p>
               <EffectChips effect={item.effect as any} />
             </div>
-            <button className="buy-btn" disabled={busy || data.wallet.balance < item.cost || (item.kind === 'deco' && data.inventory.some(x => x.key === item.key))} onClick={() => onBuy(item.key)}>
+            <button className="buy-btn" disabled={busy || data.wallet.balance < item.cost || (['deco', 'scene', 'furniture'].includes(item.kind) && data.inventory.some(x => x.key === item.key))} onClick={() => onBuy(item.key)}>
               <span>★ {item.cost}</span>
-              {item.kind === 'deco' && data.inventory.some(x => x.key === item.key) ? '已拥有' : data.wallet.balance < item.cost ? `还差 ${item.cost - data.wallet.balance}` : '兑换'}
+              {['deco', 'scene', 'furniture'].includes(item.kind) && data.inventory.some(x => x.key === item.key) ? '已拥有' : data.wallet.balance < item.cost ? `还差 ${item.cost - data.wallet.balance}` : '兑换'}
             </button>
           </article>
         ))}
@@ -191,44 +195,52 @@ export function MaterialShop({
 }
 
 export function BagPanel({
-  open, onClose, data, onUse, busy, tab, setTab,
+  open, onClose, data, onUse, onShower, busy, tab, setTab,
 }: {
   open: boolean; onClose: () => void; data: StudentState; onUse: (key: string, equipped?: boolean) => void; busy: boolean;
+  onShower: () => void;
   tab: string; setTab: (t: string) => void;
 }) {
   const items = data.inventory;
   const list = tab === 'all' ? items : items.filter((x) => x.kind === tab);
   return (
     <Sheet open={open} onClose={onClose} wide title="小背包"
-      sub="清洁用品每次消耗一件；装扮可反复穿戴、随时取下"
+      sub="物品在这里使用；场景与家具永久收藏，家具放好后长按可编辑"
       footer={<div className="wallet-line"><span>星贝余额</span><b>★ {data.wallet.balance}</b><span className="muted">背包 {items.reduce((s, x) => s + x.qty, 0)} 件</span></div>}
     >
       <div className="filter-row">
-        {[['all', '全部'], ['food', '食物'], ['toy', '玩具'], ['clean', '清洁'], ['deco', '装扮']].map(([k, v]) => (
+        {[['all', '全部'], ['food', '食物'], ['toy', '玩具'], ['clean', '清洁'], ['deco', '装扮'], ['scene', '场景'], ['furniture', '家具'], ['travel', '旅行收藏']].map(([k, v]) => (
           <button key={k} className={`chip ${tab === k ? 'is-on' : ''}`} onClick={() => setTab(k)}>
-            {v}{k !== 'all' && <em>{items.filter((x) => x.kind === k).reduce((s, x) => s + x.qty, 0)}</em>}
+            {v}{k !== 'all' && <em>{k === 'travel' ? data.travel.collection.length : items.filter((x) => x.kind === k).reduce((s, x) => s + x.qty, 0)}</em>}
           </button>
         ))}
       </div>
-      {list.length === 0 ? (
+      {(tab === 'all' || tab === 'clean') && data.pet && <div className="hygiene-card">
+        <div><b>🚿 每日免费简单淋浴</b><p>清洁 {data.pet.stats.clean.toFixed(1)} / 100 · 每天一次，增加{data.hygiene.showerIncrease}，最高{data.hygiene.showerCap}。<br />低于{data.hygiene.showerMinClean}需用🛀泡泡浴，洗后补满100。</p>
+          <p>{data.hygiene.showerUsed ? '今天的免费淋浴已使用，明天再来。' : data.pet.stats.clean < data.hygiene.showerMinClean ? '现在需要认真泡澡，简单冲洗还不够哦。' : data.pet.stats.clean >= data.hygiene.showerCap ? '现在已经很清爽啦。' : '今天还可以免费淋浴一次。'}</p></div>
+        <button className="btn tiny" disabled={busy || !data.hygiene.showerAvailable || !!data.sleep.active} onClick={onShower}>{data.sleep.active ? '睡醒再洗' : data.hygiene.showerUsed ? '今日已洗' : '免费淋浴'}</button>
+      </div>}
+      {(tab === 'scene' || tab === 'furniture') && <p className="room-collection-note">场景可随时切换。家具放进房间后，长按或按回车进入编辑，拖动摆放、旋转、调整前后层；点空白处保存。每件家具可摆放一次。</p>}
+      {tab === 'travel' && data.pet ? <TravelCollection travel={data.travel} pet={data.pet} initialOwnedOnly /> : list.length === 0 ? (
         <div className="bag-empty"><div className="bag-empty-art">🧺</div><h4>这里还是空的</h4><p>去材料铺换一点它喜欢的东西吧。</p></div>
       ) : (
         <div className="bag-grid">
           {list.map((item) => (
             <article key={item.key} className={`bag-card kind-${item.kind}`}>
-              <div className="bag-icon">{item.icon}<i>{item.kind === 'deco' ? '永久' : `×${item.qty}`}</i></div>
+              <div className="bag-icon"><ItemArt item={item} /><i>{['deco', 'scene', 'furniture'].includes(item.kind) ? '永久' : `×${item.qty}`}</i></div>
               <div className="bag-main"><h4>{item.name}<span>{KIND_LABEL[item.kind]}</span></h4><EffectChips effect={{ ...item.effect, growth: Math.min(Number(item.effect.growth) || 0, data.pet?.progression.daily.sources[item.kind] || 0) }} />
                 {item.kind === 'deco' && <small className="material-growth-note">{data.pet?.outfit[item.key] || Object.values(data.pet?.outfit || {}).includes(item.key) ? '已穿戴 · ' : ''}{item.key === 'crown' ? '戴在头顶' : '系在颈前'}，可与{item.key === 'crown' ? '蝴蝶结' : '皇冠'}一起穿戴{Number(item.effect.mood) > 0 ? `；首次戴上心情 +${item.effect.mood}` : ''}</small>}
-                {item.kind !== 'deco' && data.pet && <small className="material-growth-note">本次成长 +{Math.min(Number(item.effect.growth) || 0, data.pet.progression.daily.sources[item.kind] || 0)} · 今天此类还可获{data.pet.progression.daily.sources[item.kind] || 0}点
-                  {Object.entries(item.effect).filter(([k, v]) => ['hunger', 'energy', 'mood', 'clean'].includes(k) && Number(v) > 0).every(([k]) => data.pet!.stats[k as keyof Pet['stats']] >= 99.5) ? '；当前可恢复的状态已满，使用仍会消耗材料。' : ''}</small>}
+                {!['deco', 'scene', 'furniture'].includes(item.kind) && data.pet && <small className="material-growth-note">本次成长 +{Math.min(Number(item.effect.growth) || 0, data.pet.progression.daily.sources[item.kind] || 0)} · 今天此类还可获{data.pet.progression.daily.sources[item.kind] || 0}点
+                  {Object.entries(item.effect).filter(([k, v]) => ['hunger', 'energy', 'mood', 'clean', 'cleanTo'].includes(k) && Number(v) > 0).every(([k]) => data.pet!.stats[(k === 'cleanTo' ? 'clean' : k) as keyof Pet['stats']] >= 99.5) ? '；当前可恢复的状态已满，使用仍会消耗材料。' : ''}</small>}
               </div>
-              <button className="btn tiny" disabled={busy || !data.pet} onClick={() => onUse(item.key, item.kind !== 'deco' || !(data.pet?.outfit[item.key] || Object.values(data.pet?.outfit || {}).includes(item.key)))}>
-                {!data.pet ? '先领养' : item.kind === 'food' ? '喂给它' : item.kind === 'toy' ? '一起玩' : item.kind === 'clean' ? '用一下' : data.pet.outfit[item.key] || Object.values(data.pet.outfit).includes(item.key) ? '取下' : '戴上'}
+              <button className="btn tiny" disabled={busy || (!data.pet && !['scene','furniture'].includes(item.kind)) || (item.kind === 'clean' && (!!data.sleep.active || (item.key !== 'bath' && (data.pet?.stats.clean ?? 100) < data.hygiene.showerMinClean)))} onClick={() => onUse(item.key, item.kind === 'furniture' ? !data.room.placements.some(p => p.key === item.key) : item.kind !== 'deco' || !(data.pet?.outfit[item.key] || Object.values(data.pet?.outfit || {}).includes(item.key)))}>
+                {item.kind === 'scene' ? data.room.sceneKey === item.key ? '使用中' : '换场景' : item.kind === 'furniture' ? data.room.placements.some(p => p.key === item.key) ? '收回' : '放进房间' : !data.pet ? '先领养' : item.kind === 'food' ? '喂给它' : item.kind === 'toy' ? '一起玩' : item.kind === 'clean' ? data.sleep.active ? '睡醒再用' : item.key !== 'bath' && data.pet.stats.clean < data.hygiene.showerMinClean ? '需要泡泡浴' : item.key === 'bath' ? '泡个澡' : '梳梳毛' : data.pet.outfit[item.key] || Object.values(data.pet.outfit).includes(item.key) ? '取下' : '戴上'}
               </button>
             </article>
           ))}
         </div>
       )}
+      {tab === 'all' && data.travel.collection.length > 0 && <button className="travel-bag-link" onClick={() => setTab('travel')}><span>💌 旅行收藏</span><b>{data.travel.collection.length} 种纪念物 · 查看 →</b></button>}
     </Sheet>
   );
 }
