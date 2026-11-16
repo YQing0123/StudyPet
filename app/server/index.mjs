@@ -724,7 +724,16 @@ function allowedOrigin(req,path) {
    }
    return true;
   }
-  if (PUBLIC_ORIGIN) return origin === PUBLIC_ORIGIN;
+  if (PUBLIC_ORIGIN) {
+   if (origin === PUBLIC_ORIGIN) return true;
+   // Some NAS tunnels rewrite Origin to their upstream address. A browser's
+   // same-origin fetch metadata plus the exact public Referer still proves the
+   // page's origin; neither header can be supplied by cross-site page script.
+   if (origin !== 'null' && req.headers['sec-fetch-site'] === 'same-origin') {
+    try { return new URL(req.headers.referer).origin === PUBLIC_ORIGIN; } catch { return false; }
+   }
+   return false;
+  }
   try {
     const from=new URL(origin), host=new URL(`http://${req.headers.host}`);
     return (from.protocol==='http:' && from.host===host.host) || (from.protocol==='http:' && ['127.0.0.1','localhost'].includes(host.hostname) && ['127.0.0.1','localhost'].includes(from.hostname) && ['5199','7717','7788','17718','17719'].includes(from.port));
@@ -780,13 +789,14 @@ const server = createServer(async (req,res)=>{
  try {
   res.setHeader('x-content-type-options','nosniff');
   res.setHeader('x-frame-options','DENY');
-  res.setHeader('referrer-policy','no-referrer');
+  // Preserve the public page origin on same-origin requests through NAS tunnels.
+  res.setHeader('referrer-policy','same-origin');
   res.setHeader('permissions-policy','geolocation=(), microphone=(), camera=(self)');
   if(PUBLIC_ORIGIN)res.setHeader('strict-transport-security','max-age=31536000');
   if(STATIC_MODE)res.setHeader('content-security-policy',"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'");
   if((req.url||'').length>4096)return err(res,414,'请求地址过长');
   const url=new URL(req.url,`http://${req.headers.host}`),path=decodeURIComponent(url.pathname);
-  if(!allowedOrigin(req,path))return err(res,403,'请求来源不受信任');
+  if(!allowedOrigin(req,path))return err(res,403,PUBLIC_ORIGIN ? `请求来源不受信任，请通过 ${PUBLIC_ORIGIN} 打开小岛后重试` : '请求来源不受信任');
   if(req.method==='OPTIONS') {res.writeHead(204,{'access-control-allow-methods':'GET, POST, PATCH, DELETE, OPTIONS','access-control-allow-headers':'content-type, x-family-id, x-child-id'});return res.end();}
   const unsafe=!['GET','HEAD'].includes(req.method);
   if(unsafe && !/^application\/json(?:\s*;|$)/i.test(req.headers['content-type'] || ''))return err(res,415,'请使用 JSON 请求');

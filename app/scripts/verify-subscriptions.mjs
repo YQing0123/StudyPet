@@ -123,6 +123,16 @@ try{
  await anon.call('/api/auth/login',{},403,'POST',{origin:base});
  await anon.call('/api/auth/login',{},403,'POST',{origin:'',referer:'https://evil.example/'});
  await anon.call('/api/auth/login',{},403,'POST',{'sec-fetch-site':'cross-site'});ok(true,'公网模式只信任配置的 HTTPS 来源，拒绝 Host 回退和跨站请求');
+ await anon.call('/api/auth/login',{},400,'POST',{origin:'http://127.0.0.1:7788',referer:origin+'/','sec-fetch-site':'same-origin'});
+ ok(true,'NAS改写Origin后，仅精确公网Referer和浏览器same-origin元数据共同允许请求');
+ for(const headers of [
+  {origin:base,referer:origin+'/'},
+  {origin:base,referer:origin+'/','sec-fetch-site':'same-site'},
+  {origin:base,referer:'https://evil.example/','sec-fetch-site':'same-origin'},
+  {origin:'null',referer:origin+'/','sec-fetch-site':'same-origin'},
+  {origin:base,referer:origin+'/','sec-fetch-site':'cross-site'},
+ ]) await anon.call('/api/auth/login',{},403,'POST',headers);
+ ok(true,'单独Referer、同站不同源、恶意来源和不透明来源均不能绕过来源限制');
  const external=await fetch(base+'/api/notify-images/invalid',{headers:{origin:'https://external.example','sec-fetch-site':'cross-site'}});
  ok(external.status===404,'外部推送图片保留受随机令牌保护的读取入口，跨站来源不覆盖其失效检查');
  await anon.call('/api/auth/login',{},415,'POST',{'content-type':'application/json-bypass'});
