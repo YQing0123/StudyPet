@@ -7,7 +7,7 @@
 .family-context-child label {color:var(--ink-soft);max-width:20rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.family-context-actions {margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
 .family-context-actions button {min-height:38px;padding:6px 10px;border:0;background:transparent;color:var(--green);border-radius:9px;font:inherit;font-weight:700;cursor:pointer}
 .family-context-actions button:hover,.family-context-actions button.is-on {background:#e8eee1}
-.account-content {position:relative;flex:1;min-height:0;overflow:auto}.account-content>.v2-student{height:100%}.account-content>.parent-app{min-height:100%}
+.account-content {position:relative;flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;-webkit-overflow-scrolling:touch}.account-content>.v2-student{height:100%}.account-content>.parent-app{height:100%;min-height:0}
 .context-error {margin:0;padding:8px 20px;background:#fff0e2;color:#873b29}
 .account-entry {min-height:100dvh;display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,6vw,100px);align-items:center;max-width:1200px;margin:auto;padding:48px 40px;color:var(--ink)}
 .account-welcome {position:relative;align-self:center}.account-wordmark{font-size:18px;font-weight:800;color:var(--green)}

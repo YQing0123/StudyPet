@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS v2_task (
 );
 CREATE INDEX IF NOT EXISTS idx_v2_task_day ON v2_task(child_id, date, status);
 CREATE INDEX IF NOT EXISTS idx_v2_task_status ON v2_task(child_id, status);
+CREATE INDEX IF NOT EXISTS idx_v2_task_review ON v2_task(child_id, status, submitted_at);
 
 CREATE TABLE IF NOT EXISTS reward_item (
   id TEXT PRIMARY KEY,
@@ -90,6 +91,7 @@ CREATE TABLE IF NOT EXISTS redemption (
   created_at TEXT NOT NULL,
   handled_at TEXT
 );
+CREATE INDEX IF NOT EXISTS idx_redemption_child_status ON redemption(child_id, status, created_at DESC);
 
 CREATE TABLE IF NOT EXISTS daily_note (
   id TEXT PRIMARY KEY,
@@ -104,6 +106,7 @@ CREATE TABLE IF NOT EXISTS daily_note (
   UNIQUE(child_id, date, sender_id)
 );
 CREATE INDEX IF NOT EXISTS idx_note_day ON daily_note(child_id, date);
+CREATE INDEX IF NOT EXISTS idx_note_day_updated ON daily_note(child_id, date, updated_at DESC);
 
 CREATE TABLE IF NOT EXISTS family_setting (
   child_id TEXT NOT NULL,
@@ -271,7 +274,44 @@ export function ensureTasks(childId, date, knownRules) {
   }
 }
 
-function serializeTask(t) {
+function ensureTasksForRange(childId, start, end, rules) {
+  if (!childIsActive(childId) || start > end) return;
+  const existing = new Set(q.all(
+    'SELECT date,rule_id FROM v2_task WHERE child_id=? AND date>=? AND date<=?',
+    childId, start, end,
+  ).map(row => `${row.date}:${row.rule_id}`));
+  const ts = new Date().toISOString();
+  const active = rules.map(rule => ({
+    rule,
+    weekdays: parseWeekdays(rule.weekdays),
+    startDate: DAILY.toDateKey(rule.created_at),
+  }));
+  const inserts = [];
+  for (let date = start; date <= end; date = addDays(date, 1)) {
+    const wd = weekdayOf(date);
+    for (const { rule, weekdays, startDate } of active) {
+      if (existing.has(`${date}:${rule.id}`) || !weekdays.includes(wd) || date < startDate) continue;
+      inserts.push([
+        uid(), childId, rule.id, date, rule.title, rule.subject, rule.icon, rule.minutes, rule.start_time, rule.end_time,
+        rule.base_points, rule.early_bonus, rule.late_penalty, rule.review_required, rule.photo_required, ts,
+      ]);
+    }
+  }
+  if (!inserts.length) return;
+  tx(() => {
+    for (const args of inserts) {
+      q.run(
+        `INSERT OR IGNORE INTO v2_task(
+          id, child_id, rule_id, date, title, subject, icon, minutes, window_start, window_end,
+          base_points, early_bonus, late_penalty, review_required, photo_required, status, created_at)
+         VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'open',?)`,
+        ...args);
+    }
+  });
+}
+
+function serializeTask(t, { photoMode = 'inline' } = {}) {
+  const hasPhoto = !!t.photo;
   return {
     id: t.id,
     ruleId: t.rule_id,
@@ -293,7 +333,8 @@ function serializeTask(t) {
     timingLabel: t.timing === 'early' ? '提前完成' : t.timing === 'late' ? '超时完成' : t.timing === 'ontime' ? '按时完成' : '',
     awardedPoints: t.awarded_points,
     note: t.note,
-    photo: t.photo,
+    photo: photoMode === 'url' ? null : t.photo,
+    photoUrl: hasPhoto ? `/api/v2/tasks/${encodeURIComponent(t.id)}/photo` : null,
     rejectReason: t.reject_reason,
     submittedAt: t.submitted_at,
     approvedAt: t.approved_at,
@@ -308,9 +349,9 @@ function buildRulesText(t) {
   if (t.photo_required) parts.push('需拍照');
   return parts;
 }
-function tasksOf(childId, date) {
+function tasksOf(childId, date, options) {
   return q.all('SELECT * FROM v2_task WHERE child_id=? AND date=? ORDER BY status, created_at', childId, date)
-    .map(serializeTask);
+    .map(task => serializeTask(task, options));
 }
 function taskById(childId, id) {
   return q.get('SELECT * FROM v2_task WHERE id=? AND child_id=?', id, childId);
@@ -349,9 +390,11 @@ export function submitTask(childId, id, body = {}) {
   if (task.status === 'approved') throw new Error('这个任务已经通过啦');
   if (task.status === 'submitted') throw new Error('已经提交，等家长看一下');
   if (task.date > todayKey()) throw new Error('还没到这一天');
-  const photo = body.photo ? String(body.photo) : null;
+  const photoInput = body.photo ? String(body.photo) : null;
+  const currentPhotoUrl = `/api/v2/tasks/${encodeURIComponent(id)}/photo`;
+  const photo = photoInput === currentPhotoUrl ? task.photo : photoInput;
   if (task.photo_required && !photo) throw new Error('这个任务需要拍照上传');
-  if (photo && (!/^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+=*$/.test(photo) || photo.length > 6 * 1024 * 1024)) {
+  if (photo && photo !== task.photo && (!/^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+=*$/.test(photo) || photo.length > 6 * 1024 * 1024)) {
     throw new Error('请上传 4MB 以内的 JPG、PNG 或 WebP 照片');
   }
   const now = new Date();
@@ -381,7 +424,7 @@ export function submitTask(childId, id, body = {}) {
     const text = `【伴学小岛】${task.title} ${resubmitted?'已重新提交':'已提交'}，等待家长审核。预计 ${pts} 星贝。`;
     notice = {text,event:resubmitted?'resubmission':'submission',submission:taskById(childId,id)};
   }
-  return serializeTask(taskById(childId, id));
+  return serializeTask(taskById(childId, id), { photoMode: 'url' });
   });
   if (notice) NOTIFY.sendNotification(childId,notice.text,{event:notice.event,submission:notice.submission}).catch(() => {});
   return result;
@@ -389,7 +432,14 @@ export function submitTask(childId, id, body = {}) {
 
 export function reviewDetail(childId,id) {
  const task=taskById(childId,id);if(!task)throw Error('找不到当前孩子的这项任务，请确认登录的家庭和孩子');
- return serializeTask(task);
+ return serializeTask(task, { photoMode: 'url' });
+}
+
+export function taskPhoto(childId, id) {
+  const photo = q.get('SELECT photo FROM v2_task WHERE id=? AND child_id=?', id, childId)?.photo;
+  const match = /^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/]+=*)$/.exec(photo || '');
+  if (!match) return null;
+  return { type: match[1], bytes: Buffer.from(match[2], 'base64') };
 }
 
 export function reviewTask(childId, id, body = {}) {
@@ -404,12 +454,12 @@ export function reviewTask(childId, id, body = {}) {
       `UPDATE v2_task SET status='rejected', reject_reason=?, approved_at=NULL WHERE id=?`,
       String(body.reason || '再检查一下，重新提交吧').slice(0, 200), id);
     notice={text:`【伴学小岛】${task.title} 被退回：${String(body.reason||'再检查一下，重新提交吧').slice(0,200)}`,event:'rejected'};
-    return serializeTask(taskById(childId, id));
+    return serializeTask(taskById(childId, id), { photoMode: 'url' });
   }
   const override = body.points != null ? Number(body.points) : null;
   const points=awardTask(childId, task, override);
   notice={text:`【伴学小岛】${task.title} 审核通过，+${points} 星贝已到账。`,event:'approved'};
-  return serializeTask(taskById(childId, id));
+  return serializeTask(taskById(childId, id), { photoMode: 'url' });
  });
  if(notice)NOTIFY.sendNotification(childId,notice.text,{event:notice.event}).catch(()=>{});
  return result;
@@ -598,7 +648,7 @@ export function getStudentState(childId, date = todayKey()) {
   ensureTasks(childId, date);
   const travel = TRAVEL.travelState(childId);
   const base = DAILY.getToday(childId, date);
-  const tasks = tasksOf(childId, date);
+  const tasks = tasksOf(childId, date, { photoMode: 'url' });
   const rules = listRules(childId).filter((r) => r.active);
   const rewards = listRewards(childId).filter((r) => r.active);
   const redemptions = listRedemptions(childId).filter((r) => r.status === 'pending');
@@ -647,12 +697,11 @@ export function getParentState(childId, date = todayKey(), month) {
   const calendar = [];
   let weekSum = { total: 0, approved: 0, early: 0, pending: 0 };
   const activeRules = q.all('SELECT * FROM plan_rule WHERE child_id=? AND active=1', childId);
-  // Generate missing dates with one rule read, then aggregate lightweight rows.
+  // Backfill the displayed month in one read instead of querying once per day.
+  const monthStart = `${y}-${String(mo).padStart(2, '0')}-01`;
+  const monthEnd = `${y}-${String(mo).padStart(2, '0')}-${String(days).padStart(2, '0')}`;
+  ensureTasksForRange(childId, monthStart, monthEnd < todayKey() ? monthEnd : todayKey(), activeRules);
   const monthRows = new Map();
-  for(let d=1;d<=days;d++) {
-    const key=`${y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    if(key<=todayKey())ensureTasks(childId,key,activeRules);
-  }
   for(const row of q.all('SELECT date,status,timing FROM v2_task WHERE child_id=? AND date>=? AND date<=?',childId,m+'-01',m+'-31')) {
     if(!monthRows.has(row.date))monthRows.set(row.date,[]);monthRows.get(row.date).push(row);
   }
@@ -684,9 +733,9 @@ export function getParentState(childId, date = todayKey(), month) {
   }), { total: 0, approved: 0, early: 0, pending: 0 });
 
   const approvals = q.all(`SELECT * FROM v2_task WHERE child_id=? AND status='submitted' ORDER BY submitted_at`, childId)
-    .map(serializeTask);
-  const todayTasks = tasksOf(childId, date);
-  const base = DAILY.getToday(childId, date);
+    .map(task => serializeTask(task, { photoMode: 'url' }));
+  const todayTasks = tasksOf(childId, date, { photoMode: 'url' });
+  const base = DAILY.getTodayCore(childId, date);
   return {
     date,
     today: todayKey(),

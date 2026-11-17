@@ -6,9 +6,12 @@ import ReviewTaskSheet from './ReviewTaskSheet';
 import PushSettings from './PushSettings';
 import PetDataPanel from './PetDataPanel';
 import PetSleepSettings from './PetSleepSettings';
+import PlaytimeSettings from './PlaytimeSettings';
 import ChallengeSettings from './ChallengeSettings';
 import IslandIcon from './IslandIcon';
+import PenaltyPanel from './PenaltyPanel';
 import { TravelCollection } from './Travel';
+import { taskPhotoSrc } from './StudentSheets';
 import type { CalendarDay, ParentState, RewardV2, RuleV2, TaskV2 } from './types';
 
 const WEEK_CN = ['一', '二', '三', '四', '五', '六', '日'];
@@ -30,6 +33,8 @@ export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }
   const [dayTasks, setDayTasks] = useState<TaskV2[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>('');
   const calendarRequest = useRef(0), loadRequest = useRef(0);
+  const mainRef = useRef<HTMLElement | null>(null);
+  const previousTab = useRef<Tab>(tab);
   const [rejectId, setRejectId] = useState<string | null>(null);
   const [rejectReason, setRejectReason] = useState('');
 
@@ -46,6 +51,12 @@ export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }
   }, [month]);
 
   useEffect(() => { load(month); }, [load, month]);
+
+  useEffect(() => {
+    if (previousTab.current === tab) return;
+    previousTab.current = tab;
+    mainRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+  }, [tab]);
 
   const run = async <T,>(fn: () => Promise<T>, ok: (r: T) => void | Promise<void>) => {
     if (busyRef.current) return;
@@ -108,7 +119,7 @@ export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }
           ['approve', '待审核', data.approvals.length],
           ['plan', '周计划', data.rules.filter((r) => r.active).length],
           ['calendar', '日历', 0],
-          ['rewards', '奖励', data.redemptions.filter((r) => r.status === 'pending').length],
+          ['rewards', '奖励与惩罚', data.redemptions.filter((r) => r.status === 'pending').length],
           ['notes', '小纸条', 0],
           ['travel', '旅行收藏', 0],
           ['challenges', '学习挑战', 0],
@@ -120,7 +131,7 @@ export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }
         ))}
       </nav>
 
-      <main className="parent-main">
+      <main ref={mainRef} className="parent-main">
         {tab === 'challenges' && <ChallengeSettings />}
         {tab === 'travel' && data.travel && <section className="parent-section">
           <div className="parent-summary-row">
@@ -163,7 +174,7 @@ export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }
                         <div className="approve-title"><h3>{t.title}</h3><p>{t.subject} · {t.timeLabel} · {t.timingLabel || '已提交'}</p></div>
                         <div className="approve-points">★ {t.awardedPoints ?? t.basePoints}</div>
                       </div>
-                      {t.photo && <img className="approve-photo" src={t.photo} alt="学生上传的任务照片" />}
+                      {taskPhotoSrc(t) && <img className="approve-photo" src={taskPhotoSrc(t)} alt="学生上传的任务照片" loading="lazy" decoding="async" />}
                       {t.note && <p className="approve-note">“{t.note}”</p>}
                       <div className="approve-rules">{t.rulesText.map((r) => <span key={r}>{r}</span>)}</div>
                       {rejectId === t.id ? (
@@ -529,6 +540,8 @@ function RewardsTab({ data, toast, busy, onReload, onEdit, onAdd, run }: {
         </div>
       </div>
 
+      <PenaltyPanel onChanged={onReload} toast={toast} />
+
       <div className="parent-card">
         <div className="parent-card-head"><div><h2>心愿奖励</h2><p>除宠物材料外，上架 Switch 时间、零食、玩具等；学生用星贝兑换。</p></div><button className="btn primary sm" onClick={onAdd}>＋ 上架奖励</button></div>
         {data.rewards.length === 0 ? <div className="parent-empty small"><p>还没有上架奖励。</p></div> : (
@@ -565,12 +578,15 @@ function RewardsTab({ data, toast, busy, onReload, onEdit, onAdd, run }: {
 function SettingsTab({ data, toast, onReload }: {
   data: ParentState; toast: (m: string, tone?: string) => void; onReload: () => Promise<void>;
 }) {
-  const [section,setSection]=useState<'account'|'sleep'|'push'|'pet'>('sleep');
+  const [section,setSection]=useState<'account'|'sleep'|'playtime'|'push'|'pet'>('sleep');
   return <section className="parent-section">
-    <nav className="section-tabs" aria-label="家长设置分区">{([['account','家庭与账号'],['sleep','宠物作息'],['push','通知推送'],['pet','宠物数据']] as const).map(([key,label])=><button key={key} className={section===key?'is-on':''} aria-current={section===key?'page':undefined} onClick={()=>setSection(key)}>{label}</button>)}</nav>
-    {section==='account'&&<div className="parent-card"><div className="parent-card-head"><div><h2>家庭与账号</h2><p>在顶部「家庭管理」添加孩子、邀请家长、开通学生账号和修改自己的密码。家庭中的家长共同管理，以下配置和记录属于当前选择的孩子。</p></div></div></div>}
+    <nav className="section-tabs" aria-label="家长设置分区">{([['account','家庭与账号'],['sleep','宠物作息'],['playtime','游玩时间'],['push','通知推送'],['pet','宠物数据']] as const).map(([key,label])=><button key={key} className={section===key?'is-on':''} aria-current={section===key?'page':undefined} onClick={()=>setSection(key)}>{label}</button>)}</nav>
+    <div className="settings-stage">
+      {section==='account'&&<div className="parent-card"><div className="parent-card-head"><div><h2>家庭与账号</h2><p>在顶部「家庭管理」添加孩子、邀请家长、开通学生账号和修改自己的密码。家庭中的家长共同管理，以下配置和记录属于当前选择的孩子。</p></div></div></div>}
+      {section==='playtime'&&<PlaytimeSettings key={data.childId} toast={toast}/>}
     {section==='sleep'&&<PetSleepSettings key={data.childId} value={data.settings.petSleep} onReload={onReload} toast={toast} />}
-    {section==='push'&&<PushSettings channels={data.settings.notifyChannels} eventSettings={data.settings.notifyEvents} summaryTime={data.settings.notifySummaryTime} publicUrl={data.settings.notifyPublicUrl} onReload={onReload} toast={toast} />}
-    {section==='pet'&&<PetDataPanel pet={data.pet} onReload={onReload} toast={toast} />}
+      {section==='push'&&<PushSettings channels={data.settings.notifyChannels} eventSettings={data.settings.notifyEvents} summaryTime={data.settings.notifySummaryTime} publicUrl={data.settings.notifyPublicUrl} onReload={onReload} toast={toast} />}
+      {section==='pet'&&<PetDataPanel pet={data.pet} onReload={onReload} toast={toast} />}
+    </div>
   </section>;
 }

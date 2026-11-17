@@ -1,4 +1,4 @@
-.island-icon { display:inline-block; flex-shrink:0; width:2rem; height:2rem; background-image:url('/ui/island-icons-v1.png'); background-repeat:no-repeat; background-size:400% 400%; vertical-align:middle; mix-blend-mode:multiply; }
+.island-icon { display:inline-block; flex-shrink:0; width:2rem; height:2rem; background-image:url('/ui/island-icons-v2.png'); background-repeat:no-repeat; background-size:400% 400%; vertical-align:middle; }
 .v2-top .brand-mark.island-brand-mark,.parent-top .brand-mark.island-brand-mark { flex-shrink:0; padding:0; background:none; box-shadow:none; }
 .island-brand-mark .island-icon { width:3rem; height:3rem; }
 .v2-dock button .island-icon { width:1.75rem; height:1.75rem; }

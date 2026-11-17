@@ -2,6 +2,7 @@ import {useCallback,useEffect,useRef,useState} from 'react';
 import {Sheet} from '../mvp/Sheets';
 import {v2} from './api';
 import type {TaskV2} from './types';
+import {taskPhotoSrc} from './StudentSheets';
 const statusName={open:'尚未提交',submitted:'等待审核',approved:'已经通过',rejected:'已退回修改'};
 export default function ReviewTaskSheet({id,onClose,onChanged,toast}:{id:string;onClose:()=>void;onChanged:()=>Promise<void>;toast:(m:string,tone?:string)=>void}){
  const [task,setTask]=useState<TaskV2|null>(null),[error,setError]=useState(''),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[reject,setReject]=useState(false),[reason,setReason]=useState(''),[fresh,setFresh]=useState(false),[expanded,setExpanded]=useState(false);
@@ -22,7 +23,7 @@ export default function ReviewTaskSheet({id,onClose,onChanged,toast}:{id:string;
    <div className="approve-top"><span className="approve-icon">{task.icon}</span><div className="approve-title"><h3>{task.title}</h3><p>{task.subject} · {task.date} · {task.minutes} 分钟</p></div><span className="record-status">{statusName[task.status]}</span></div>
    <p className="notify-review-score">{task.status==='approved'?'已获得':'预计获得'} <b>{task.awardedPoints??task.basePoints}</b> 星贝<span>基础 {task.basePoints} · {task.timingLabel||'按任务规则计算'}</span></p>
    <p className="muted">孩子的一句话</p><p className="notify-review-note">{task.note||'这次没有填写留言。'}</p>
-   {task.photo&&<button type="button" className={`notify-review-photo${expanded?' expanded':''}`} aria-label={expanded?'收起作业照片':'展开完整作业照片'} aria-expanded={expanded} onClick={()=>setExpanded(v=>!v)}><img src={task.photo} alt="孩子提交的作业照片"/><span>{expanded?'点击收起照片':'点击展开照片'}</span></button>}
+   {taskPhotoSrc(task)&&<button type="button" className={`notify-review-photo${expanded?' expanded':''}`} aria-label={expanded?'收起作业照片':'展开完整作业照片'} aria-expanded={expanded} onClick={()=>setExpanded(v=>!v)}><img src={taskPhotoSrc(task)} alt="孩子提交的作业照片" loading="lazy" decoding="async"/><span>{expanded?'点击收起照片':'点击展开照片'}</span></button>}
    {task.submittedAt&&<p className="muted">提交于 {new Date(task.submittedAt).toLocaleString('zh-CN',{hour12:false})}</p>}
    {task.rejectReason&&<p className="settings-error">退回原因：{task.rejectReason}</p>}
    {task.status==='submitted'?<>{reject&&<label className="notify-reject-label">退回原因<textarea className="text-input" maxLength={200} disabled={busy} value={reason} onChange={e=>setReason(e.target.value)} placeholder="例如：第二题再检查一下，改好后重新提交。"/></label>}<div className="settings-actions">

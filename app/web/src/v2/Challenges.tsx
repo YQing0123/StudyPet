@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Sheet } from '../mvp/Sheets';
-import { challengeApi as api, levelName, subjectName, subjectLabel, type Lobby, type Round, type Subject, type WrongPage } from './challenge-api';
+import { challengeApi as api, levelName, challengeDescription, subjectName, subjectLabel, type Lobby, type Round, type Subject, type WrongPage } from './challenge-api';
 import './challenges.css';
 
 export default function Challenges({onClose,onChanged}:{onClose:()=>void;onChanged:()=>void}) {
@@ -26,7 +26,7 @@ export default function Challenges({onClose,onChanged}:{onClose:()=>void;onChang
       {error&&<p className="challenge-error" role="alert">{error}<button onClick={load}>重新连接</button></p>}
       {!data?<p role="status">正在准备挑战…</p>:<>
         <div className="challenge-quota"><span>今天还可挑战 <b>{data.usage.remainingRounds} / {data.policy.dailyRounds} 次</b></span><span>每轮最多 <b>{data.policy.roundMinutes} 分钟</b></span><span>今日累计 <b>★ {data.usage.earned}</b> · 得分无上限</span></div>
-        {data.active?<section className="challenge-resume"><h2>还有一轮挑战等着你</h2><p>{subjectName(data.active.subject)} · {levelName(data.active.difficulty)} · 已答 {data.active.index+(data.active.feedback?1:0)} / {data.active.total} 题</p><button className="btn primary" onClick={()=>setRound(data.active)}>继续这轮挑战</button><p>刷新或离开页面不会重新计时，也不会额外消耗次数。</p></section>:<>
+        {data.active?<section className="challenge-resume"><h2>还有一轮挑战等着你</h2><p>{challengeDescription(data.active)} · 已答 {data.active.index+(data.active.feedback?1:0)} / {data.active.total} 题</p><button className="btn primary" onClick={()=>setRound(data.active)}>继续这轮挑战</button><p>刷新或离开页面不会重新计时，也不会额外消耗次数。</p></section>:<>
         <div className="challenge-subjects" role="group" aria-label="选择学科">
           {(['poetry','math'] as Subject[]).map(s=><button key={s} aria-pressed={subject===s} className={subject===s?'selected':''} disabled={busy} onClick={()=>{setSubject(s);requestId.current=null;}}><span aria-hidden="true">{s==='poetry'?'诗':'×'}</span><div><h2>{subjectName(s)}</h2><p>{s==='poetry'?'接诗句 · 懂注释':'练口算 · 用好长度单位'}</p></div><i aria-hidden="true">{subject===s?'✓':'○'}</i></button>)}
         </div>
@@ -40,7 +40,7 @@ export default function Challenges({onClose,onChanged}:{onClose:()=>void;onChang
           {!data.usage.remainingRounds?<p>今天已经努力过啦，明天再来。</p>:data.available[subject][difficulty-1]<total?<p>范围内题目不足 {total} 道，请家长调整已学内容。</p>:null}
         </aside></section></>}
         {data.wrong.total>0&&<button className="challenge-wrong-link" onClick={()=>setWrong(true)}>错题本 · {data.wrong.pending} 道待巩固，{data.wrong.relapse} 道掌握后再错 <span>去看看 →</span></button>}
-        {!!data.recent.length&&<section className="challenge-history"><h2>最近的挑战</h2>{data.recent.slice(0,3).map(r=><button key={r.id} onClick={async()=>{try{setRound(await api.round(r.id));}catch(e:any){setError(e.message);}}}><span>{subjectName(r.subject)} · {levelName(r.difficulty)}</span><span>{r.correct} / {r.total} 题 · {r.status==='completed'?'已完成':r.status==='cashed_out'?'已领取':r.status==='failed'?'本轮结束':r.status==='active'?'进行中':r.status==='expired'?'已到时':'已结束'} <b>★ {r.reward}</b></span></button>)}</section>}
+        {!!data.recent.length&&<section className="challenge-history"><h2>最近的挑战</h2>{data.recent.slice(0,3).map(r=><button key={r.id} onClick={async()=>{try{setRound(await api.round(r.id));}catch(e:any){setError(e.message);}}}><span>{challengeDescription(r)}</span><span>{r.correct} / {r.total} 题 · {r.status==='completed'?'已完成':r.status==='cashed_out'?'已领取':r.status==='failed'?'本轮结束':r.status==='active'?'进行中':r.status==='expired'?'已到时':'已结束'} <b>★ {r.reward}</b></span></button>)}</section>}
       </>}
     </div>}
   </main>;
@@ -63,7 +63,7 @@ function AnswerRound({initial,onDone}:{initial:Round;onDone:()=>void}) {
   const next=()=>{if(round.status!=='active'){setResult(true);return;}void run(()=>api.next(round.id,round.index+1,round.canCashOut));};
   const cashout=()=>void run(()=>api.cashout(round.id),true);
   const feedback=round.feedback,q=round.question;
-  if(result)return <main className="challenge-page"><div className="challenge-result"><div className="challenge-result-icon" aria-hidden="true">{round.reward?'★':'✓'}</div><span className="eyebrow">{subjectName(round.subject)} · {levelName(round.difficulty)}</span><h1>{round.status==='cashed_out'?'得分已领取，收获星贝':round.reward?'挑战完成，收获星贝':'这一轮，学到新知识'}</h1><p>{round.status==='completed'?`答对 ${round.correct} / ${round.total} 题，正确率 ${Math.round(round.correct/round.total*100)}%`:`本轮已结束，答对 ${round.correct} 题`}</p><strong className="challenge-prize">+ {round.reward} 星贝</strong><p>{round.reward?'奖励已存入你的星贝账户。':round.mode==='double'?'本轮暂存已清零；已有的星贝不受影响。':round.status==='completed'?`答对 ${Math.ceil(round.total*.8)} 题起发奖，再巩固一下就更稳了。`:'中途结束或时间用完，本轮不发奖。'}</p><p>做错的题已经记在错题本里，下次挑战还会遇见。</p><button className="btn primary" onClick={onDone}>回到挑战首页</button><small>星贝余额 ★ {round.balance} · 休息一下，看看远处吧。</small></div></main>;
+  if(result)return <main className="challenge-page"><div className="challenge-result"><div className="challenge-result-icon" aria-hidden="true">{round.reward?'★':'✓'}</div><span className="eyebrow">{challengeDescription(round)}</span><h1>{round.status==='cashed_out'?'得分已领取，收获星贝':round.reward?'挑战完成，收获星贝':'这一轮，学到新知识'}</h1><p>{round.status==='completed'?`答对 ${round.correct} / ${round.total} 题，正确率 ${Math.round(round.correct/round.total*100)}%`:`本轮已结束，答对 ${round.correct} 题`}</p><strong className="challenge-prize">+ {round.reward} 星贝</strong><p>{round.reward?'奖励已存入你的星贝账户。':round.mode==='double'?'本轮暂存已清零；已有的星贝不受影响。':round.status==='completed'?`答对 ${Math.ceil(round.total*.8)} 题起发奖，再巩固一下就更稳了。`:'中途结束或时间用完，本轮不发奖。'}</p><p>做错的题已经记在错题本里，下次挑战还会遇见。</p><button className="btn primary" onClick={onDone}>回到挑战首页</button><small>星贝余额 ★ {round.balance} · 休息一下，看看远处吧。</small></div></main>;
   return <main className="challenge-page challenge-answer-page">
     <header className="challenge-header"><button className="challenge-back" onClick={()=>setExit(true)}>← 结束本轮</button><span className="challenge-brand">{subjectLabel(round.subject)} · {levelName(round.difficulty)}</span><span className="challenge-round-count">第 <b>{round.index+1}</b> / {round.total} 题</span></header>
     <div className="challenge-answer-wrap"><div className="challenge-answer-top"><div className="challenge-progress" aria-label={`已完成 ${round.index+(feedback?1:0)} 题`}>{Array.from({length:round.total},(_,i)=><i key={i} className={i<round.index||(i===round.index&&feedback)?'done':i===round.index?'current':''}/>)}</div><span className={`challenge-timer ${remaining<=3&&!feedback?'urgent':''}`} role="timer" aria-label={feedback?'本题已作答':`剩余 ${remaining} 秒`}>{feedback?'已作答':`◷ ${remaining} 秒`}</span></div>

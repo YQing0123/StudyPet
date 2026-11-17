@@ -34,6 +34,7 @@ export interface TaskV2 {
   awardedPoints: number | null;
   note: string | null;
   photo: string | null;
+  photoUrl?: string | null;
   rejectReason: string | null;
   submittedAt: string | null;
   approvedAt: string | null;
@@ -79,6 +80,17 @@ export interface RewardV2 {
   stock: number;
   note: string;
   active: boolean;
+}
+
+export interface PenaltyItem {
+  id: string; title: string; points: number; note: string; active: boolean;
+}
+export interface PointEntry {
+  id: string; date: string; delta: number; reason: string; createdAt: string;
+  kind: 'penalty' | 'income' | 'expense' | 'neutral';
+}
+export interface PointHistory extends RecordPage<PointEntry> {
+  summary: { balance: number; earned: number; spent: number };
 }
 
 export interface RedemptionV2 {

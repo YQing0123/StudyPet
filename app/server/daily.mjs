@@ -10,6 +10,7 @@
 import { q, now, uid, tx } from './db.mjs';
 import { ensureProgression, progressionFor, dailyGrowth, grantGrowth, levelEvents, chinaDate, CURVE_VERSION } from './pet-progression.mjs';
 import { sleepState, sleepHoursBetween, disturbSleep } from './pet-sleep.mjs';
+import { lockedIntervals } from './playtime.mjs';
 import { changePetState, PET_STATS } from './pet-state.mjs';
 import { PET_SCENARIOS, dirtLevel } from '../web/src/shared/petScenarios.mjs';
 import { ROOM_CATALOG, isRoomItem } from '../web/src/shared/roomCatalog.mjs';
@@ -101,7 +102,7 @@ const BREEDS = {
 const SOUND_SPECIES = { cat: 'cat', dog: 'dog', bird: 'bird', turtle: 'turtle', capybara: 'capybara', alpaca: 'alpaca' };
 
 const DAILY_BONUS = 15;
-const DECAY_PER_HOUR = { hunger: 2.8, energy: 2.2, mood: 1.8, clean: 1.3 };
+export const DECAY_PER_HOUR = { hunger: 4.2, energy: 3.3, mood: 2.7, clean: 1.95 };
 const MAX_DECAY_HOURS = 12;
 const COOLDOWN_MS = { pet: 6000, play: 12000, hug: 12000 };
 
@@ -193,15 +194,20 @@ function applyDecay(row) {
   const last = Date.parse(row.last_tick) || Date.now();
   const hours = clamp((Date.now() - last) / 3600000, 0, MAX_DECAY_HOURS);
   if (hours <= 0.0005) return false;
-  row.hunger = clamp(row.hunger - DECAY_PER_HOUR.hunger * hours, 0, 100);
-  const sleepingHours = sleepHoursBetween(row.child_id, Date.now() - hours * 3600000, Date.now());
-  row.energy = clamp(row.energy - DECAY_PER_HOUR.energy * (hours - sleepingHours) + 8 * sleepingHours, 0, 100);
-  row.mood = clamp(row.mood - DECAY_PER_HOUR.mood * hours, 0, 100);
-  row.clean = clamp(row.clean - DECAY_PER_HOUR.clean * hours, 0, 100);
+  const to = Date.now(), from = to - hours * 3600000;
+  const resting = lockedIntervals(row.child_id, from, to);
+  const lockedHours = resting.reduce((sum, [a,b]) => sum + (b-a) / 3600000, 0);
+  const lockedSleeping = resting.reduce((sum, [a,b]) => sum + sleepHoursBetween(row.child_id, a, b), 0);
+  const effectiveHours = hours - lockedHours * .5;
+  row.hunger = clamp(row.hunger - DECAY_PER_HOUR.hunger * effectiveHours, 0, 100);
+  const sleepingHours = sleepHoursBetween(row.child_id, from, to);
+  row.energy = clamp(row.energy - DECAY_PER_HOUR.energy * (hours - sleepingHours - (lockedHours - lockedSleeping) * .5) + 8 * sleepingHours, 0, 100);
+  row.mood = clamp(row.mood - DECAY_PER_HOUR.mood * effectiveHours, 0, 100);
+  row.clean = clamp(row.clean - DECAY_PER_HOUR.clean * effectiveHours, 0, 100);
   // 需求过低会拖累心情：饿、脏、累都会让它没那么开心
-  if (row.hunger < 25) row.mood = clamp(row.mood - 1.1 * hours, 0, 100);
-  if (row.clean < 25) row.mood = clamp(row.mood - 0.6 * hours, 0, 100);
-  if (row.energy < 15) row.mood = clamp(row.mood - 0.5 * hours, 0, 100);
+  if (row.hunger < 25) row.mood = clamp(row.mood - 1.1 * effectiveHours, 0, 100);
+  if (row.clean < 25) row.mood = clamp(row.mood - 0.6 * effectiveHours, 0, 100);
+  if (row.energy < 15) row.mood = clamp(row.mood - 0.5 * effectiveHours, 0, 100);
   row.last_tick = new Date().toISOString();
   return true;
 }
@@ -302,9 +308,25 @@ function recentLedger(childId, limit = 8) {
     childId, limit);
 }
 
+function coreOf(childId, date, pet) {
+  return {
+    date,
+    today: toDateKey(),
+    pet: serializePet(pet),
+    isNew: !pet,
+    wallet: walletOf(childId, date),
+    shop: shopFor(childId),
+  };
+}
+
+export function getTodayCore(childId, date = toDateKey()) {
+  return coreOf(childId, date, getPetRow(childId));
+}
+
 export function getToday(childId, date = toDateKey()) {
   migrateWardrobe(childId);
   const pet = getPetRow(childId);
+  const core = coreOf(childId, date, pet);
   const tasks = tasksOf(childId, date).map((t) => ({
     id: t.id,
     title: t.title,
@@ -315,7 +337,6 @@ export function getToday(childId, date = toDateKey()) {
     completedAt: t.completed_at,
     createdAt: t.created_at,
   }));
-  const wallet = walletOf(childId, date);
   const progress = taskProgress(tasks);
 
   let cooldowns = { pet: 0, play: 0, hug: 0 };
@@ -325,17 +346,12 @@ export function getToday(childId, date = toDateKey()) {
   }
 
   return {
-    date,
-    today: toDateKey(),
-    pet: serializePet(pet),
-    isNew: !pet,
+    ...core,
     tasks,
     progress,
-    wallet,
     inventory: [...inventoryOf(childId), ...roomInventory(childId)],
     room: roomState(childId),
     hygiene: hygieneState(childId, pet),
-    shop: shopFor(childId),
     recent: recentLedger(childId),
     cooldowns,
     sleep: sleepState(childId),
