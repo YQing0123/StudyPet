@@ -18,6 +18,7 @@ import { preloadPetAge } from '../mvp/petEngine';
 import GrowthCelebration from './GrowthCelebration';
 import Challenges from './Challenges';
 import IslandIcon from './IslandIcon';
+import PointHistorySheet from './PointHistory';
 import Confetti, { CONFETTI_DURATION } from '../mvp/Confetti';
 import { atLevel, growthHint } from './petProgress';
 import { TravelScene, TravelSheet, TravelRewardsSheet } from './Travel';
@@ -50,7 +51,7 @@ export default function StudentHome({ onParent, onLogout, parentName, accountBus
   const [data, setData] = useState<StudentState | null>(null);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
-  const [sheet, setSheet] = useState<null | 'task' | 'shop' | 'bag' | 'rewards' | 'status' | 'menu' | 'plan' | 'pets' | 'travel' | 'challenge'>(() => new URLSearchParams(location.search).has('petPreview') ? 'pets' : null);
+  const [sheet, setSheet] = useState<null | 'task' | 'shop' | 'bag' | 'rewards' | 'status' | 'menu' | 'plan' | 'pets' | 'travel' | 'challenge' | 'points'>(() => new URLSearchParams(location.search).has('petPreview') ? 'pets' : null);
   const challengeActive = useRef(false);
   challengeActive.current = sheet === 'challenge';
   const [selected, setSelected] = useState<TaskV2 | null>(null);
@@ -478,8 +479,8 @@ export default function StudentHome({ onParent, onLogout, parentName, accountBus
           {data?.pet && <><span className="date-chip">{dateLabel(data.today)}</span>
           <span className={`streak-chip ${data.wallet.streak > 1 ? 'is-hot' : ''}`}>
             <i>{data.wallet.streak > 0 ? '🔥' : '🌱'}</i>{data.wallet.streak > 0 ? `连续 ${data.wallet.streak} 天` : '今天开始'}
-          </span>
-          <button className="star-pill" onClick={() => setSheet('shop')} disabled={travelling} aria-label={`${data.wallet.balance} 星贝，打开材料铺`}><IslandIcon name="star"/>{data.wallet.balance}<em>星贝</em></button></>}
+          </span></>}
+          {data && <button className="star-pill" onClick={() => setSheet('points')} aria-label={`${data.wallet.balance} 星贝，查看积分明细`}><IslandIcon name="star"/>{data.wallet.balance}<em>星贝</em></button>}
           <button className="parent-btn" onClick={onParent} disabled={accountBusy} title={parentLabel}><IslandIcon name="parent"/><b>{parentLabel}</b></button>
           <button className="island-logout" onClick={onLogout} disabled={accountBusy} aria-label="退出" title="退出登录"><IslandIcon name="logout"/></button>
         </div>
@@ -489,7 +490,7 @@ export default function StudentHome({ onParent, onLogout, parentName, accountBus
   if (error && !data) return <div className="v2-student">{homeHeader}<div className="island-error student-home-fallback"><div className="error-card"><span>🌧️</span><h2>小岛暂时连不上</h2><p>{error}</p><button className="btn primary" onClick={() => load()}>再试一次</button></div></div></div>;
   if (!data) return <div className="v2-student">{homeHeader}<div className="island-loading student-home-fallback"><div className="loading-orb" /><p>正在划船去小岛…</p></div></div>;
   if (sheet === 'challenge') return <Challenges onClose={() => {setSheet(null);void load(true);}} onChanged={() => {void load(true);}} />;
-  if (!data.pet) return <div className="v2-student">{homeHeader}<div className="student-home-fallback"><Adopt embedded onParent={onParent} onDone={() => load()} onToast={toast} adoptFn={(p) => v2.adopt(p)} /></div></div>;
+  if (!data.pet) return <div className="v2-student">{homeHeader}<div className="student-home-fallback"><Adopt embedded onParent={onParent} onDone={() => load()} onToast={toast} adoptFn={(p) => v2.adopt(p)} /></div><PointHistorySheet open={sheet === 'points'} onClose={() => { setSheet(null); void load(true); }} /></div>;
 
   return (
     <div className="v2-student">
@@ -627,6 +628,7 @@ export default function StudentHome({ onParent, onLogout, parentName, accountBus
       <MaterialShop open={sheet === 'shop'} onClose={() => { setSheet(null); setFeedingFromShop(false); }} onBag={() => { setBagTab(feedingFromShop ? 'food' : 'all'); setFeedingFromShop(false); setSheet('bag'); }} data={data} onBuy={buy} busy={busy} feeding={feedingFromShop} />
       <BagPanel open={sheet === 'bag'} onClose={() => setSheet(null)} data={data} onUse={useItem} onShower={shower} busy={busy} tab={bagTab} setTab={setBagTab} />
       <RewardShop open={sheet === 'rewards'} onClose={() => setSheet(null)} data={data} onRedeem={redeem} busy={busy} />
+      <PointHistorySheet open={sheet === 'points'} onClose={() => { setSheet(null); void load(true); }} />
       <StatSheet open={sheet === 'status'} onClose={() => setSheet(null)} pet={data.pet} />
       <StudentMenu open={sheet === 'menu'} onClose={() => setSheet(null)} data={data} muted={muted}
         onToggleMute={() => setMuted((m) => !m)} onRename={rename}

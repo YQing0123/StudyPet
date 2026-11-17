@@ -15,6 +15,7 @@ import * as PET from './pet.mjs';
 import * as DAILY from './daily.mjs';
 import { confirmLevel, acknowledgeLevel } from './pet-progression.mjs';
 import * as V2 from './v2.mjs';
+import * as POINTS from './points.mjs';
 import * as TRAVEL from './travel.mjs';
 import * as CHALLENGES from './challenges.mjs';
 import { notificationPhoto } from './notification-cards.mjs';
@@ -504,6 +505,27 @@ const ROUTES = [
     try { json(res, 200, V2.approveAll(defaultChild().id)); }
     catch (e) { apiError(res, e); }
   }],
+  ['GET', /^\/api\/v2\/ledger$/, async (req, res) => {
+    try {
+      const params = new URL(req.url, 'http://localhost').searchParams;
+      json(res, 200, POINTS.pointHistory(defaultChild().id, { filter: params.get('filter') || 'all', before: params.get('before') || '', limit: params.has('limit') ? Number(params.get('limit')) : 30 }));
+    } catch (e) { apiError(res, e); }
+  }],
+  ['GET', /^\/api\/v2\/penalties$/, async (req, res) => {
+    json(res, 200, POINTS.listPenalties(defaultChild().id));
+  }],
+  ['POST', /^\/api\/v2\/penalties$/, async (req, res) => {
+    try { json(res, 200, POINTS.savePenalty(defaultChild().id, await readJson(req))); }
+    catch (e) { apiError(res, e); }
+  }],
+  ['DELETE', /^\/api\/v2\/penalties\/([^/]+)$/, async (req, res, m) => {
+    try { json(res, 200, POINTS.deletePenalty(defaultChild().id, m[1])); }
+    catch (e) { apiError(res, e); }
+  }],
+  ['POST', /^\/api\/v2\/penalties\/([^/]+)\/apply$/, async (req, res, m) => {
+    try { json(res, 200, POINTS.applyPenalty(defaultChild().id, m[1], await readJson(req))); }
+    catch (e) { apiError(res, e); }
+  }],
   ['POST', /^\/api\/v2\/points\/gift$/, async (req, res) => {
     try { json(res, 200, V2.giftPoints(defaultChild().id, await readJson(req))); }
     catch (e) { apiError(res, e); }
@@ -843,7 +865,7 @@ const server = createServer(async (req,res)=>{
    const c=ACCOUNTS.context(req);
    ACCOUNTS.throttle(`api:${c.account_id}`,1800);
    const parentOnly=(req.method==='GET'&&/^\/api\/v2\/tasks\/[^/]+$/.test(path)) || path==='/api/v2/parent' || /^\/api\/v2\/(?:rules|settings|points|review|redemptions|notify|notes|pet\/backups|pet\/restart)(?:\/|$)/.test(path) || (path.startsWith('/api/v2/rewards')&&!path.endsWith('/redeem')) || /^\/api\/v2\/tasks\/[^/]+\/review$/.test(path) || ['/api/v2/reset','/api/pet/reset'].includes(path) || path.startsWith('/api/tasks');
-   if(parentOnly || path==='/api/v2/challenges/settings')ACCOUNTS.requireParent(c);
+   if(parentOnly || path==='/api/v2/challenges/settings' || /^\/api\/v2\/penalties(?:\/|$)/.test(path))ACCOUNTS.requireParent(c);
    if(unsafe && path!=='/api/v2/auth/logout')SUBSCRIPTIONS.requireActive(c.family_id);
    if(path==='/api/v2/notify/test' && unsafe)ACCOUNTS.throttle(`notify-test:${c.account_id}`,10);
    if(unsafe)res.once('finish',()=>{if(res.statusCode<400){try{ACCOUNTS.audit(c,`${req.method} ${path}`);}catch(e){console.error('Account audit failed:',e.message);}}});

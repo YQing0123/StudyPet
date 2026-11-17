@@ -8,6 +8,7 @@ import PetDataPanel from './PetDataPanel';
 import PetSleepSettings from './PetSleepSettings';
 import ChallengeSettings from './ChallengeSettings';
 import IslandIcon from './IslandIcon';
+import PenaltyPanel from './PenaltyPanel';
 import { TravelCollection } from './Travel';
 import type { CalendarDay, ParentState, RewardV2, RuleV2, TaskV2 } from './types';
 
@@ -108,7 +109,7 @@ export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }
           ['approve', '待审核', data.approvals.length],
           ['plan', '周计划', data.rules.filter((r) => r.active).length],
           ['calendar', '日历', 0],
-          ['rewards', '奖励', data.redemptions.filter((r) => r.status === 'pending').length],
+          ['rewards', '奖励与惩罚', data.redemptions.filter((r) => r.status === 'pending').length],
           ['notes', '小纸条', 0],
           ['travel', '旅行收藏', 0],
           ['challenges', '学习挑战', 0],
@@ -528,6 +529,8 @@ function RewardsTab({ data, toast, busy, onReload, onEdit, onAdd, run }: {
           )}
         </div>
       </div>
+
+      <PenaltyPanel onChanged={onReload} toast={toast} />
 
       <div className="parent-card">
         <div className="parent-card-head"><div><h2>心愿奖励</h2><p>除宠物材料外，上架 Switch 时间、零食、玩具等；学生用星贝兑换。</p></div><button className="btn primary sm" onClick={onAdd}>＋ 上架奖励</button></div>

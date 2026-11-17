@@ -1,6 +1,6 @@
 import {scopeHeaders} from './accounts';
 import type { GrowthMemory } from '../mvp/types';
-import type { RoomState, RoomPlacement, DailyNote, ParentState, RewardV2, RuleV2, StudentState, TaskV2, NotifyProvider, NotifyResult, NotifyLog, PetBackup, RecordPage, TravelState } from './types';
+import type { RoomState, RoomPlacement, DailyNote, ParentState, RewardV2, RuleV2, StudentState, TaskV2, NotifyProvider, NotifyResult, NotifyLog, PetBackup, RecordPage, TravelState, PenaltyItem, PointHistory, PointEntry } from './types';
 
 export async function req<T>(path: string, init?: RequestInit): Promise<T> {
   let res: Response;
@@ -49,6 +49,11 @@ export const v2 = {
   },
   approveAll() { return post<ParentState>('/api/v2/review/all'); },
   gift(amount: number, reason: string) { return post<StudentState>('/api/v2/points/gift', { amount, reason }); },
+  pointHistory(filter = 'all', before = '') { return req<PointHistory>(`/api/v2/ledger?${new URLSearchParams({ filter, before })}`); },
+  penalties() { return req<PenaltyItem[]>('/api/v2/penalties'); },
+  savePenalty(body: Partial<PenaltyItem>) { return post<PenaltyItem[]>('/api/v2/penalties', body); },
+  deletePenalty(id: string) { return del<PenaltyItem[]>(`/api/v2/penalties/${encodeURIComponent(id)}`); },
+  applyPenalty(id: string, requestId: string) { return post<{ entry: PointEntry; repeated: boolean }>(`/api/v2/penalties/${encodeURIComponent(id)}/apply`, { requestId }); },
   saveReward(body: Partial<RewardV2>) { return post<RewardV2[]>('/api/v2/rewards', body); },
   deleteReward(id: string) { return del<RewardV2[]>(`/api/v2/rewards/${id}`); },
   redeem(id: string) { return post<StudentState>(`/api/v2/rewards/${id}/redeem`); },
