@@ -23,3 +23,6 @@ export const challengeApi = {
 export const subjectName = (s:Subject) => s==='poetry'?'古诗词挑战':'计算题挑战';
 export const subjectLabel = (s:Subject) => s==='poetry'?'古诗词':'数学计算';
 export const levelName = (n:number) => ['','普通','挑战','困难'][n];
+
+export const modeName = (mode: 'standard'|'double') => mode === 'double' ? '翻倍挑战' : '普通挑战';
+export const challengeDescription = (r: Pick<Round,'mode'|'subject'|'difficulty'>) => `玩法：${modeName(r.mode)} · 学科：${subjectLabel(r.subject)} · 难度：${levelName(r.difficulty)}`;

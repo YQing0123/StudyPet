@@ -24,6 +24,7 @@ import { atLevel, growthHint } from './petProgress';
 import { TravelScene, TravelSheet, TravelRewardsSheet } from './Travel';
 import { usePetSleep } from './usePetSleep';
 import './care-revision.css';
+import { PlaytimeCountdown, usePlaytime } from './PlaytimeGate';
 
 const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
 const dateLabel = (key: string) => {
@@ -49,6 +50,8 @@ export default function StudentHome({ onParent, onLogout, parentName, accountBus
   companion: ReactNode; toast: (msg: string, tone?: string) => void;
 }) {
   const [data, setData] = useState<StudentState | null>(null);
+  const playtime = usePlaytime();
+  useEffect(() => {if(data)playtime.publish(data);}, [data,playtime.publish]);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [sheet, setSheet] = useState<null | 'task' | 'shop' | 'bag' | 'rewards' | 'status' | 'menu' | 'plan' | 'pets' | 'travel' | 'challenge' | 'points'>(() => new URLSearchParams(location.search).has('petPreview') ? 'pets' : null);
@@ -476,6 +479,7 @@ export default function StudentHome({ onParent, onLogout, parentName, accountBus
         </div>
         <div className="island-companion">{companion}</div>
         <div className="v2-top-right">
+          <PlaytimeCountdown/>
           {data?.pet && <><span className="date-chip">{dateLabel(data.today)}</span>
           <span className={`streak-chip ${data.wallet.streak > 1 ? 'is-hot' : ''}`}>
             <i>{data.wallet.streak > 0 ? '🔥' : '🌱'}</i>{data.wallet.streak > 0 ? `连续 ${data.wallet.streak} 天` : '今天开始'}

@@ -25,6 +25,8 @@ try {
  if(!setup.ok)throw Error(await setup.text());
  await run('scripts/verify-v2.mjs');
  await run('scripts/verify-points.mjs');
+ await run('scripts/verify-playtime.mjs');
+ await run('scripts/verify-playtime-api.mjs');
  await run('scripts/verify-challenges.mjs');
  await run('scripts/verify-travel.mjs');
  await run('scripts/verify-mvp.mjs');

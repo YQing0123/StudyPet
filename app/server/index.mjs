@@ -16,6 +16,7 @@ import * as DAILY from './daily.mjs';
 import { confirmLevel, acknowledgeLevel } from './pet-progression.mjs';
 import * as V2 from './v2.mjs';
 import * as POINTS from './points.mjs';
+import * as PLAYTIME from './playtime.mjs';
 import * as TRAVEL from './travel.mjs';
 import * as CHALLENGES from './challenges.mjs';
 import { notificationPhoto } from './notification-cards.mjs';
@@ -505,6 +506,20 @@ const ROUTES = [
     try { json(res, 200, V2.approveAll(defaultChild().id)); }
     catch (e) { apiError(res, e); }
   }],
+  ['GET', /^\/api\/v2\/playtime$/, async (req, res) => json(res, 200, PLAYTIME.playtimeState(defaultChild().id))],
+  ['GET', /^\/api\/v2\/playtime\/settings$/, async (req, res) => json(res, 200, PLAYTIME.playtimeState(defaultChild().id))],
+  ['POST', /^\/api\/v2\/playtime\/settings$/, async (req, res) => {
+    // Settle old care rates and old time policy before changing a budget.
+    DAILY.getPetRow(defaultChild().id);
+    json(res, 200, await PLAYTIME.savePlaytimeSettings(defaultChild().id, await readJson(req)));
+  }],
+  ['POST', /^\/api\/v2\/playtime\/heartbeat$/, async (req, res) => {
+    json(res, 200, PLAYTIME.heartbeat(defaultChild().id, requestContext.getStore().token_hash, await readJson(req)));
+  }],
+  ['POST', /^\/api\/v2\/playtime\/unlock$/, async (req, res) => {
+    ACCOUNTS.throttle(`playtime-unlock:${requestContext.getStore().account_id}`, 20);
+    json(res, 200, await PLAYTIME.unlockPlaytime(defaultChild().id, await readJson(req)));
+  }],
   ['GET', /^\/api\/v2\/ledger$/, async (req, res) => {
     try {
       const params = new URL(req.url, 'http://localhost').searchParams;
@@ -865,11 +880,12 @@ const server = createServer(async (req,res)=>{
    const c=ACCOUNTS.context(req);
    ACCOUNTS.throttle(`api:${c.account_id}`,1800);
    const parentOnly=(req.method==='GET'&&/^\/api\/v2\/tasks\/[^/]+$/.test(path)) || path==='/api/v2/parent' || /^\/api\/v2\/(?:rules|settings|points|review|redemptions|notify|notes|pet\/backups|pet\/restart)(?:\/|$)/.test(path) || (path.startsWith('/api/v2/rewards')&&!path.endsWith('/redeem')) || /^\/api\/v2\/tasks\/[^/]+\/review$/.test(path) || ['/api/v2/reset','/api/pet/reset'].includes(path) || path.startsWith('/api/tasks');
-   if(parentOnly || path==='/api/v2/challenges/settings' || /^\/api\/v2\/penalties(?:\/|$)/.test(path))ACCOUNTS.requireParent(c);
+   if(parentOnly || path==='/api/v2/challenges/settings' || path==='/api/v2/playtime/settings' || /^\/api\/v2\/penalties(?:\/|$)/.test(path))ACCOUNTS.requireParent(c);
    if(unsafe && path!=='/api/v2/auth/logout')SUBSCRIPTIONS.requireActive(c.family_id);
    if(path==='/api/v2/notify/test' && unsafe)ACCOUNTS.throttle(`notify-test:${c.account_id}`,10);
    if(unsafe)res.once('finish',()=>{if(res.statusCode<400){try{ACCOUNTS.audit(c,`${req.method} ${path}`);}catch(e){console.error('Account audit failed:',e.message);}}});
    return await requestContext.run(c,async()=>{
+    if(unsafe && c.child && !c.parent_unlocked && !path.startsWith('/api/v2/playtime/'))PLAYTIME.requirePlaytime(c.child.id);
     const petActionPath=/^(?:\/api\/shop\/buy|\/api\/pet\/(?:adopt|rename|reset|use|interact)|\/api\/v2\/(?:adopt|reset|room|pet\/(?:breed|rest|shower|scenario|sleep-touch|level-up(?:\/[^/]+\/seen)?|backups(?:\/[^/]+\/restore)?|restart)))$/;
     if(unsafe && c.child && petActionPath.test(path) && TRAVEL.isTravelling(c.child.id)) return err(res,409,'小伙伴还在旅行，回家后才能照顾它。');
     for(const [method,re,fn] of ROUTES){if(req.method!==method)continue;const m=re.exec(path);if(m)return await fn(req,res,m);}

@@ -6,6 +6,7 @@ import ReviewTaskSheet from './ReviewTaskSheet';
 import PushSettings from './PushSettings';
 import PetDataPanel from './PetDataPanel';
 import PetSleepSettings from './PetSleepSettings';
+import PlaytimeSettings from './PlaytimeSettings';
 import ChallengeSettings from './ChallengeSettings';
 import IslandIcon from './IslandIcon';
 import PenaltyPanel from './PenaltyPanel';
@@ -568,10 +569,11 @@ function RewardsTab({ data, toast, busy, onReload, onEdit, onAdd, run }: {
 function SettingsTab({ data, toast, onReload }: {
   data: ParentState; toast: (m: string, tone?: string) => void; onReload: () => Promise<void>;
 }) {
-  const [section,setSection]=useState<'account'|'sleep'|'push'|'pet'>('sleep');
+  const [section,setSection]=useState<'account'|'sleep'|'playtime'|'push'|'pet'>('sleep');
   return <section className="parent-section">
-    <nav className="section-tabs" aria-label="家长设置分区">{([['account','家庭与账号'],['sleep','宠物作息'],['push','通知推送'],['pet','宠物数据']] as const).map(([key,label])=><button key={key} className={section===key?'is-on':''} aria-current={section===key?'page':undefined} onClick={()=>setSection(key)}>{label}</button>)}</nav>
+    <nav className="section-tabs" aria-label="家长设置分区">{([['account','家庭与账号'],['sleep','宠物作息'],['playtime','游玩时间'],['push','通知推送'],['pet','宠物数据']] as const).map(([key,label])=><button key={key} className={section===key?'is-on':''} aria-current={section===key?'page':undefined} onClick={()=>setSection(key)}>{label}</button>)}</nav>
     {section==='account'&&<div className="parent-card"><div className="parent-card-head"><div><h2>家庭与账号</h2><p>在顶部「家庭管理」添加孩子、邀请家长、开通学生账号和修改自己的密码。家庭中的家长共同管理，以下配置和记录属于当前选择的孩子。</p></div></div></div>}
+    {section==='playtime'&&<PlaytimeSettings key={data.childId} toast={toast}/>}
     {section==='sleep'&&<PetSleepSettings key={data.childId} value={data.settings.petSleep} onReload={onReload} toast={toast} />}
     {section==='push'&&<PushSettings channels={data.settings.notifyChannels} eventSettings={data.settings.notifyEvents} summaryTime={data.settings.notifySummaryTime} publicUrl={data.settings.notifyPublicUrl} onReload={onReload} toast={toast} />}
     {section==='pet'&&<PetDataPanel pet={data.pet} onReload={onReload} toast={toast} />}

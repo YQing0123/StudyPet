@@ -17,6 +17,7 @@ export async function req<T>(path: string, init?: RequestInit): Promise<T> {
     if (res.status === 402) window.dispatchEvent(new Event('island-subscription-expired'));
     if (res.status === 401) window.dispatchEvent(new Event('island-session-expired'));
     if (res.status === 403) window.dispatchEvent(new Event('island-parent-expired'));
+    if (res.status === 423) window.dispatchEvent(new Event('island-playtime-locked'));
     throw new Error(body?.error || `请求失败（${res.status}）`);
   }
   return body as T;

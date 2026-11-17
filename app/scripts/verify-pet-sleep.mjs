@@ -104,11 +104,11 @@ try {
   at('2026-11-18T20:00:00+08:00');
   q.run('UPDATE pet_life SET energy=20,hunger=80,mood=80,clean=80,last_tick=? WHERE child_id=?', new Date().toISOString(), id);
   at('2026-11-18T22:30:00+08:00');
-  check('精力区分清醒衰减与实际睡眠恢复', () => assert.ok(Math.abs(D.getPetRow(id).energy - (20 - 1.5 * 2.2 + 8)) < .001));
+  check('精力区分清醒衰减与实际睡眠恢复', () => assert.ok(Math.abs(D.getPetRow(id).energy - (20 - 1.5 * D.DECAY_PER_HOUR.energy + 8)) < .001));
   S.saveSleepSchedule('sleep-other', { ...schedule, nightEnabled: false, napEnabled: false });
   q.run('UPDATE pet_life SET energy=20,last_tick=? WHERE child_id=?', new Date(time - 3600000).toISOString(), 'sleep-other');
   V.setParentSettings('sleep-other', { petSleep: schedule });
-  check('新开启作息不追溯发放过去的睡眠恢复', () => assert.ok(Math.abs(D.getPetRow('sleep-other').energy - 17.8) < .001));
+  check('新开启作息不追溯发放过去的睡眠恢复', () => assert.ok(Math.abs(D.getPetRow('sleep-other').energy - (20 - D.DECAY_PER_HOUR.energy)) < .001));
   create('sleep-low-mood'); S.saveSleepSchedule('sleep-low-mood', schedule);
   q.run('UPDATE pet_life SET mood=.65 WHERE child_id=?', 'sleep-low-mood');
   V.touchSleepingPet('sleep-low-mood'); advance(2100); V.touchSleepingPet('sleep-low-mood');
