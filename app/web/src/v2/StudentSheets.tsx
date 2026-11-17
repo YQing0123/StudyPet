@@ -31,6 +31,10 @@ export function taskStatusText(t: TaskV2) {
   return '去完成';
 }
 
+export function taskPhotoSrc(task: Pick<TaskV2, 'photo' | 'photoUrl'>) {
+  return task.photoUrl || task.photo || '';
+}
+
 export function TaskDetail({
   open, task, onClose, onSubmit, busy,
 }: {
@@ -45,8 +49,8 @@ export function TaskDetail({
 
   useEffect(() => {
     setNote(task?.note || '');
-    setPhoto(task?.photo || null);
-  }, [task?.id, open, task?.note, task?.photo]);
+    setPhoto(task ? taskPhotoSrc(task) || null : null);
+  }, [task?.id, open, task?.note, task?.photo, task?.photoUrl]);
 
   if (!task) return null;
 

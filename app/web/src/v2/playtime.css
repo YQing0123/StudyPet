@@ -1,11 +1,11 @@
 /* Opaque panels prevent animated pets being sampled through backdrop blur. */
 .v2-student .scene .scene-topline .pet-chip,.v2-student .scene .v2-status,.v2-student .scene .care-dock,.v2-student .scene .scene-hint {background:#fffaf0;backdrop-filter:none;-webkit-backdrop-filter:none;border:1px solid #e4d9c2}
-.v2-student .scene.tone-night .scene-topline .pet-chip,.v2-student .scene.tone-night .v2-status,.v2-student .scene.tone-night .care-dock,.v2-student .scene.tone-night .scene-hint {background:#25352f;border-color:#55685a;color:#f7f2df}
+.v2-student .scene.tone-night .scene-topline .pet-chip,.v2-student .scene.tone-night .v2-status,.v2-student .scene.tone-night .care-dock,.v2-student .scene.tone-night .scene-hint {background:rgba(38,56,48,.68);border-color:rgba(147,172,154,.46);color:#f7f2df;box-shadow:0 8px 22px rgba(7,19,15,.14)}
 .v2-student .scene.tone-night .pet-chip b,.v2-student .scene.tone-night .stat-top b,.v2-student .scene.tone-night .stat-top em,.v2-student .scene.tone-night .care-btn b,.v2-student .scene.tone-night .growth-next,.v2-student .scene.tone-night .growth-summary b {color:#fff6dd}
 .v2-student .scene.tone-night .pet-chip span,.v2-student .scene.tone-night .growth-inline-hint,.v2-student .scene.tone-night .growth-summary,.v2-student .scene.tone-night .stat-help-btn,.v2-student .scene.tone-night .chip-edit {color:#dce7d4}
 .v2-student .scene.tone-night .care-btn:disabled {opacity:.7}
-.v2-student .scene.tone-night .care-btn:hover:not(:disabled),.v2-student .scene.tone-night .stat-help-btn:hover {background:#405547}
-.v2-student .scene.tone-night .stat-bar,.v2-student .scene.tone-night .growth-bar {background:#536052}
+.v2-student .scene.tone-night .care-btn:hover:not(:disabled),.v2-student .scene.tone-night .stat-help-btn:hover {background:rgba(66,88,74,.78)}
+.v2-student .scene.tone-night .stat-bar,.v2-student .scene.tone-night .growth-bar {background:rgba(148,170,152,.3)}
 .playtime-content {min-width:0}.playtime-content.is-covered {visibility:hidden}
 .playtime-countdown {display:inline-flex;align-items:center;gap:.4rem;padding:.55rem .7rem;color:#38533e;background:#e6eddd;border:1px solid #cbd8be;border-radius:999px;white-space:nowrap;font-size:var(--text-caption);font-variant-numeric:tabular-nums}.playtime-countdown b {font-weight:750}.playtime-countdown.is-low {background:#fae5cf;color:#7e3e24;border-color:#e8be95}.v2-top-right {flex-wrap:wrap}
 .island-screensaver {position:fixed;z-index:55;inset:0;overflow:auto;overscroll-behavior:contain;color:#fff8e9;background:linear-gradient(110deg,#102f34e8,#12382fca),url('/pets/room/woodland.webp') center/cover fixed}

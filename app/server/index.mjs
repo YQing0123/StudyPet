@@ -1,6 +1,9 @@
 import { saveRoom } from './pet-room.mjs';
 import { createServer } from 'node:http';
 import { createReadStream } from 'node:fs';
+import { createGzip, gzip } from 'node:zlib';
+import { createHash } from 'node:crypto';
+import { pipeline } from 'node:stream';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import * as ACCOUNTS from './accounts.mjs';
 import * as ADMIN from './admin.mjs';
@@ -39,11 +42,35 @@ if (process.env.NODE_ENV === 'production' && !PUBLIC_ORIGIN && process.env.BANXU
 
 /* ---------------- 工具 ---------------- */
 const json = (res, code, obj) => {
-  const body = JSON.stringify(obj);
-  res.writeHead(code, {
+  const body = Buffer.from(JSON.stringify(obj));
+  const headers = {
     'content-type': 'application/json; charset=utf-8',
-    'content-length': Buffer.byteLength(body),
-  });
+    'vary': 'Accept-Encoding',
+  };
+  if (code === 200) {
+    const etag = `"${createHash('sha1').update(body).digest('base64url')}"`;
+    headers.etag = etag;
+    if (res.req?.headers['if-none-match'] === etag) {
+      res.writeHead(304, headers);
+      return res.end();
+    }
+  }
+  if (body.length >= 1024 && /\bgzip\b/i.test(res.req?.headers['accept-encoding'] || '')) {
+    gzip(body, { level: 5 }, (error, compressed) => {
+      if (error) {
+        headers['content-length'] = body.length;
+        res.writeHead(code, headers);
+        return res.end(body);
+      }
+      headers['content-encoding'] = 'gzip';
+      headers['content-length'] = compressed.length;
+      res.writeHead(code, headers);
+      res.end(compressed);
+    });
+    return;
+  }
+  headers['content-length'] = body.length;
+  res.writeHead(code, headers);
   res.end(body);
 };
 const err = (res, code, message) => json(res, code, { error: message });
@@ -92,10 +119,12 @@ async function serveFile(req, res, filePath) {
   try {
     const info = await stat(filePath);
     if (!info.isFile()) return err(res,404,'未找到文件');
+    const ext = extname(filePath).toLowerCase();
     const etag = `W/"${info.size}-${Math.trunc(info.mtimeMs)}"`;
-    const headers = {'content-type':MIME[extname(filePath).toLowerCase()] || 'application/octet-stream',
-      'cache-control':['.html','.json'].includes(extname(filePath))?'no-cache':'public, max-age=300',
-      'etag':etag,'accept-ranges':'bytes','x-content-type-options':'nosniff'};
+    const immutableAsset = /[\\/]assets[\\/]/.test(filePath) && ['.js','.css','.woff2'].includes(ext);
+    const headers = {'content-type':MIME[ext] || 'application/octet-stream',
+      'cache-control':['.html','.json'].includes(ext) ? 'no-cache' : immutableAsset ? 'public, max-age=31536000, immutable' : 'public, max-age=300',
+      'etag':etag,'accept-ranges':'bytes','x-content-type-options':'nosniff','vary':'Accept-Encoding'};
     if(req.headers['if-none-match']===etag) {res.writeHead(304,headers);return res.end();}
     let start=0,end=info.size-1,status=200;
     const range=req.headers.range;
@@ -107,9 +136,18 @@ async function serveFile(req, res, filePath) {
       if(start>end || start>=info.size) {res.writeHead(416,{'content-range':`bytes */${info.size}`});return res.end();}
       status=206;headers['content-range']=`bytes ${start}-${end}/${info.size}`;
     }
-    headers['content-length']=Math.max(0,end-start+1);res.writeHead(status,headers);
+    const length=Math.max(0,end-start+1);
+    const compressible = /^(?:text\/|application\/(?:json|javascript|xml)|image\/svg\+xml)/i.test(headers['content-type']);
+    const useGzip=status===200 && req.method!=='HEAD' && length>=1024 && compressible &&
+      /\bgzip\b/i.test(req.headers['accept-encoding']||'');
+    if(!useGzip)headers['content-length']=length;
+    else headers['content-encoding']='gzip';
+    res.writeHead(status,headers);
     if(req.method==='HEAD' || !info.size)return res.end();
-    const stream=createReadStream(filePath,{start,end});stream.on('error',()=>res.destroy());res.on('close',()=>stream.destroy());stream.pipe(res);
+    const stream=createReadStream(filePath,{start,end});
+    stream.on('error',()=>res.destroy());res.on('close',()=>stream.destroy());
+    if(useGzip) pipeline(stream,createGzip({level:5}),res,error=>{if(error)res.destroy();});
+    else stream.pipe(res);
   } catch { if(!res.headersSent)err(res,404,'未找到文件');else res.destroy(); }
 }
 
@@ -439,6 +477,24 @@ const ROUTES = [
     catch (e) { apiError(res, e); }
   }],
   ['GET', /^\/api\/v2\/tasks\/([^/]+)$/, async (req,res,m) => { json(res,200,V2.reviewDetail(defaultChild().id,m[1])); }],
+  ['GET', /^\/api\/v2\/tasks\/([^/]+)\/photo$/, async (req,res,m) => {
+    const photo = V2.taskPhoto(defaultChild().id, m[1]);
+    if (!photo) return err(res, 404, '这项任务没有可查看的照片');
+    const etag = `"${createHash('sha1').update(photo.bytes).digest('base64url')}"`;
+    const headers = {
+      'content-type': photo.type,
+      'content-length': photo.bytes.length,
+      'cache-control': 'private, no-cache',
+      etag,
+      'x-content-type-options': 'nosniff',
+    };
+    if (req.headers['if-none-match'] === etag) {
+      res.writeHead(304, headers);
+      return res.end();
+    }
+    res.writeHead(200, headers);
+    res.end(req.method === 'HEAD' ? undefined : photo.bytes);
+  }],
   ['POST', /^\/api\/v2\/tasks\/([^/]+)\/submit$/, async (req, res, m) => {
     try { json(res, 200, V2.submitTask(defaultChild().id, m[1], await readJson(req))); }
     catch (e) { apiError(res, e); }

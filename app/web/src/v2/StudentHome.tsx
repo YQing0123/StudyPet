@@ -125,8 +125,17 @@ export default function StudentHome({ onParent, onLogout, parentName, accountBus
   useEffect(() => {
     const timer = window.setInterval(() => {
       if (document.visibilityState === 'visible') load(true);
-    }, 12000);
-    return () => window.clearInterval(timer);
+    }, 20000);
+    const refresh = () => {
+      if (document.visibilityState === 'visible') load(true);
+    };
+    window.addEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', refresh);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener('focus', refresh);
+      document.removeEventListener('visibilitychange', refresh);
+    };
   }, [load]);
 
   useEffect(() => { localStorage.setItem('island_muted', muted ? '1' : '0'); }, [muted]);

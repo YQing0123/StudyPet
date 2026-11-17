@@ -2,11 +2,33 @@ import {scopeHeaders} from './accounts';
 import type { GrowthMemory } from '../mvp/types';
 import type { RoomState, RoomPlacement, DailyNote, ParentState, RewardV2, RuleV2, StudentState, TaskV2, NotifyProvider, NotifyResult, NotifyLog, PetBackup, RecordPage, TravelState, PenaltyItem, PointHistory, PointEntry } from './types';
 
+const etagCache = new Map<string, { etag: string; body: unknown }>();
+const MAX_ETAG_CACHE = 48;
+
+function cacheResponse(key: string, etag: string, body: unknown) {
+  etagCache.delete(key);
+  etagCache.set(key, { etag, body });
+  if (etagCache.size > MAX_ETAG_CACHE) etagCache.delete(etagCache.keys().next().value!);
+}
+
 export async function req<T>(path: string, init?: RequestInit): Promise<T> {
+  const method = (init?.method || 'GET').toUpperCase();
+  const headers = scopeHeaders();
+  const key = `${path}\n${headers['x-family-id'] || ''}\n${headers['x-child-id'] || ''}`;
+  const cached = method === 'GET' ? etagCache.get(key) : undefined;
   let res: Response;
   let text: string;
   try {
-    res = await fetch(path, { ...init, headers: { 'content-type': 'application/json', ...scopeHeaders(), ...init?.headers } });
+    res = await fetch(path, {
+      ...init,
+      headers: {
+        'content-type': 'application/json',
+        ...headers,
+        ...(cached ? { 'if-none-match': cached.etag } : {}),
+        ...init?.headers,
+      },
+    });
+    if (res.status === 304 && cached) return cached.body as T;
     text = await res.text();
   } catch {
     throw new Error('暂时连不上小岛，请检查连接后再试。');
@@ -19,6 +41,12 @@ export async function req<T>(path: string, init?: RequestInit): Promise<T> {
     if (res.status === 403) window.dispatchEvent(new Event('island-parent-expired'));
     if (res.status === 423) window.dispatchEvent(new Event('island-playtime-locked'));
     throw new Error(body?.error || `请求失败（${res.status}）`);
+  }
+  if (method === 'GET') {
+    const etag = res.headers.get('etag');
+    if (etag) cacheResponse(key, etag, body);
+  } else {
+    etagCache.clear();
   }
   return body as T;
 }

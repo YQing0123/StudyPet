@@ -308,9 +308,25 @@ function recentLedger(childId, limit = 8) {
     childId, limit);
 }
 
+function coreOf(childId, date, pet) {
+  return {
+    date,
+    today: toDateKey(),
+    pet: serializePet(pet),
+    isNew: !pet,
+    wallet: walletOf(childId, date),
+    shop: shopFor(childId),
+  };
+}
+
+export function getTodayCore(childId, date = toDateKey()) {
+  return coreOf(childId, date, getPetRow(childId));
+}
+
 export function getToday(childId, date = toDateKey()) {
   migrateWardrobe(childId);
   const pet = getPetRow(childId);
+  const core = coreOf(childId, date, pet);
   const tasks = tasksOf(childId, date).map((t) => ({
     id: t.id,
     title: t.title,
@@ -321,7 +337,6 @@ export function getToday(childId, date = toDateKey()) {
     completedAt: t.completed_at,
     createdAt: t.created_at,
   }));
-  const wallet = walletOf(childId, date);
   const progress = taskProgress(tasks);
 
   let cooldowns = { pet: 0, play: 0, hug: 0 };
@@ -331,17 +346,12 @@ export function getToday(childId, date = toDateKey()) {
   }
 
   return {
-    date,
-    today: toDateKey(),
-    pet: serializePet(pet),
-    isNew: !pet,
+    ...core,
     tasks,
     progress,
-    wallet,
     inventory: [...inventoryOf(childId), ...roomInventory(childId)],
     room: roomState(childId),
     hygiene: hygieneState(childId, pet),
-    shop: shopFor(childId),
     recent: recentLedger(childId),
     cooldowns,
     sleep: sleepState(childId),

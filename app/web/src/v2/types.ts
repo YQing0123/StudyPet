@@ -34,6 +34,7 @@ export interface TaskV2 {
   awardedPoints: number | null;
   note: string | null;
   photo: string | null;
+  photoUrl?: string | null;
   rejectReason: string | null;
   submittedAt: string | null;
   approvedAt: string | null;

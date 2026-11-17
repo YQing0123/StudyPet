@@ -175,6 +175,8 @@
 @media (prefers-reduced-motion:reduce) { .challenge-page * { transition:none!important; scroll-behavior:auto!important; } }
 
 .challenge-settings>header { margin-bottom:12px; }
+.challenge-settings>form { min-height:clamp(480px,64dvh,760px); display:flex; flex-direction:column; }
+.challenge-settings>form>div:not(.challenge-settings-save) { flex:1; }
 .challenge-settings>form>div>.workspace-panel+.workspace-panel { margin-top:18px; }
 .challenge-settings .workspace-section-head h3 { font:700 18px/1.5 var(--sans); color:var(--green); }
 .challenge-settings h4 { font-size:16px; color:var(--green); margin:0 0 8px; }

@@ -55,9 +55,12 @@ try {
  const photoTask=V.getStudentState(child).tasks.find(t=>t.status==='open');
  check('照片任务拒绝漏传或无效图片，仍可重试',()=>{assert.throws(()=>V.submitTask(child,photoTask.id,{}));assert.throws(()=>V.submitTask(child,photoTask.id,{photo:'https://example.com/photo.jpg'}));assert.equal(V.getStudentState(child).tasks.find(t=>t.id===photoTask.id).status,'open');});
  V.submitTask(child,photoTask.id,{photo:'data:image/png;base64,iVBORw0KGgo='});
+ const submittedPhoto=V.getStudentState(child).tasks.find(t=>t.id===photoTask.id);
+ V.reviewTask(child,photoTask.id,{approve:false,reason:'请确认照片'});
+ check('退回后可用原照片地址重提且状态不含内嵌图片',()=>{const t=V.submitTask(child,photoTask.id,{photo:submittedPhoto.photoUrl});assert.equal(t.photo,null);assert.equal(t.photoUrl,submittedPhoto.photoUrl);});
  const pendingBalance=V.getStudentState(child).wallet.balance;
  V.approveAll(child);V.approveAll(child);
- check('批量审核可重试，照片记录和积分保留',()=>{const t=V.getStudentState(child).tasks.find(t=>t.id===photoTask.id);assert.equal(t.status,'approved');assert(t.photo);assert.equal(V.getStudentState(child).wallet.balance,pendingBalance+10);});
+ check('批量审核可重试，照片记录和积分保留',()=>{const t=V.getStudentState(child).tasks.find(t=>t.id===photoTask.id);assert.equal(t.status,'approved');assert(t.photoUrl);assert.equal(V.getStudentState(child).wallet.balance,pendingBalance+10);});
  // Fault injection verifies the ledger and status roll back together.
  V.saveRule(child,{title:'原子审核',weekdays:[1,2,3,4,5,6,7]});
  task=V.getStudentState(child).tasks.find(t=>t.status==='open');V.submitTask(child,task.id,{});

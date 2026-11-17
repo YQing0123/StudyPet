@@ -21,6 +21,16 @@ interface Props {
   scheduledSleep?: 'night' | 'nap';
 }
 
+const DESKTOP_SCENE_AREA = 700_000;
+
+function displayScaleForScene(stage: HTMLElement, sleeping: boolean) {
+  if (window.innerWidth < 680) return 1;
+  const rect = stage.closest<HTMLElement>('.scene')?.getBoundingClientRect();
+  if (!rect?.width || !rect.height) return 1;
+  const roomScale = Math.min(1.15, Math.max(1, Math.sqrt(rect.width * rect.height / DESKTOP_SCENE_AREA)));
+  return Math.min(1.5, roomScale * (sleeping ? 1.3 : 1));
+}
+
 const PetStage = forwardRef<PetStageHandle, Props>(function PetStage({ pet, muted, onPetClick, movementRange, displayScale = 1, scheduledSleep }, ref) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const engineRef = useRef<PetEngine | null>(null);
@@ -29,7 +39,11 @@ const PetStage = forwardRef<PetStageHandle, Props>(function PetStage({ pet, mute
 
   useEffect(() => {
     if (!hostRef.current || !pet) return;
-    const engine = new PetEngine(hostRef.current, { onPetClick: () => clickRef.current?.(), movementRange, displayScale });
+    const engine = new PetEngine(hostRef.current, {
+      onPetClick: () => clickRef.current?.(),
+      movementRange,
+      displayScale: displayScale * displayScaleForScene(hostRef.current, !!scheduledSleep),
+    });
     engineRef.current = engine;
     engine.setPet({
       breed: pet.breed,
@@ -45,6 +59,27 @@ const PetStage = forwardRef<PetStageHandle, Props>(function PetStage({ pet, mute
     // 只在换宠物（id 变化）时重建舞台
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pet?.id, displayScale]);
+
+  useEffect(() => {
+    const stage = hostRef.current;
+    if (!stage || !pet) return;
+    let frame = 0;
+    const update = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        engineRef.current?.setDisplayScale(displayScale * displayScaleForScene(stage, !!scheduledSleep));
+      });
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    const scene = stage.closest<HTMLElement>('.scene');
+    if (scene) observer.observe(scene);
+    else observer.observe(stage);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [pet?.id, displayScale, scheduledSleep]);
 
   useEffect(() => {
     if (!pet) return;

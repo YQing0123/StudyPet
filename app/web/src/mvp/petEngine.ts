@@ -59,6 +59,7 @@ const STAGE_RATE = [1, 1.12, 1.12, 1, 1, 1, 0.85];
 const PET_ZOOM = 0.7;
 const GLOBAL_SCALE = 3.1;
 const GLOBAL_SCALE_MOBILE = 2.35;
+const DISPLAY_SCALE_MAX = 1.5;
 const PET_BASE = 'pets/';
 
 const SOUND_MAP: Record<string, { hello: string[]; happy: string[]; sleep: string[] }> = {
@@ -129,6 +130,8 @@ export class PetEngine {
   private careAction: 'pet' | 'feed' | 'play' | 'hug' | null = null;
   private careFallbackAnimation: Animation | null = null;
   private attachments: AttachmentTracks | null = null;
+  private attachmentsRequested = false;
+  private outfitActive = false;
   private cleanTimer = 0;
   private cleanVisualStop: (() => void) | null = null;
   private dirtVisualStops: (() => void)[] = [];
@@ -229,16 +232,22 @@ export class PetEngine {
     return (window.innerWidth < 680 ? GLOBAL_SCALE_MOBILE : GLOBAL_SCALE) * this.displayScale;
   }
 
+  setDisplayScale(scale: number) {
+    const next = clamp(scale, .2, DISPLAY_SCALE_MAX);
+    if (Math.abs(next - this.displayScale) < .01) return;
+    this.displayScale = next;
+    this.applyScale();
+  }
+
   constructor(root: HTMLElement, opts: { onPetClick?: () => void; movementRange?: [number, number]; displayScale?: number } = {}) {
     this.root = root;
     this.onPetClick = opts.onPetClick;
-    this.displayScale = clamp(opts.displayScale ?? 1, .2, 1);
+    this.displayScale = clamp(opts.displayScale ?? 1, .2, DISPLAY_SCALE_MAX);
     this.movementRange = opts.movementRange ?? [18, 82];
     this.build();
     window.addEventListener('resize', this.onResize);
     document.addEventListener('visibilitychange', this.visibilityHandler);
     this.initGL();
-    loadAttachments().then(tracks => { if (!this.destroyed) { this.attachments = tracks; this.positionOutfit(); } }).catch(() => { /* Fall back to the measured still-frame head. */ });
     loadManifest().then((m) => {
       this.manifest = m;
       if (!this.destroyed) {
@@ -479,15 +488,29 @@ export class PetEngine {
     const has = (key: string) => !!outfit[key] || Object.values(outfit).includes(key);
     const crown = el.querySelector<HTMLImageElement>('.accessory-crown')!;
     const bow = el.querySelector<HTMLImageElement>('.accessory-bow')!;
+    const wearing = has('crown') || has('bow');
     crown.hidden = !has('crown'); bow.hidden = !has('bow');
-    el.dataset.on = has('crown') || has('bow') ? '1' : '0';
+    el.dataset.on = wearing ? '1' : '0';
+    this.outfitActive = wearing;
+    if (wearing) this.ensureAttachments();
     this.positionOutfit();
   }
 
+  private ensureAttachments() {
+    if (this.attachmentsRequested) return;
+    this.attachmentsRequested = true;
+    loadAttachments().then(tracks => {
+      if (!this.destroyed) {
+        this.attachments = tracks;
+        this.positionOutfit();
+      }
+    }).catch(() => { /* Fall back to the measured still-frame head. */ });
+  }
+
   private positionOutfit() {
-    if (!this.manifest) return;
+    if (!this.manifest || !this.outfitActive) return;
     const el = this.root.querySelector<HTMLElement>('.pet-outfit');
-    if (!el || el.dataset.on !== '1') return;
+    if (!el) return;
     const info = this.appearance();
     const comp = this.comp();
     const zoom = (STAGE_SCALE[clamp(this.pet.stage, 1, 6)] ?? 1) * PET_ZOOM * this.scaleForViewport();
