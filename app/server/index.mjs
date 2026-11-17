@@ -16,6 +16,7 @@ import * as DAILY from './daily.mjs';
 import { confirmLevel, acknowledgeLevel } from './pet-progression.mjs';
 import * as V2 from './v2.mjs';
 import * as TRAVEL from './travel.mjs';
+import * as CHALLENGES from './challenges.mjs';
 import { notificationPhoto } from './notification-cards.mjs';
 import { startNotificationScheduler } from './notification-scheduler.mjs';
 import * as CONTENT from './content.mjs';
@@ -385,6 +386,16 @@ async function handleMcp(req, res) {
 
 /* ---------------- 路由 ---------------- */
 const ROUTES = [
+  ['GET', /^\/api\/v2\/challenges$/, async (req,res)=>json(res,200,CHALLENGES.lobby(defaultChild().id))],
+  ['GET', /^\/api\/v2\/challenges\/settings$/, async (req,res)=>json(res,200,CHALLENGES.settings(defaultChild().id))],
+  ['POST', /^\/api\/v2\/challenges\/settings$/, async (req,res)=>json(res,200,CHALLENGES.savePolicy(defaultChild().id,await readJson(req)))],
+  ['GET', /^\/api\/v2\/challenges\/wrong$/, async (req,res)=>json(res,200,CHALLENGES.wrongBook(defaultChild().id,new URL(req.url,'http://x').searchParams))],
+  ['POST', /^\/api\/v2\/challenges\/rounds$/, async (req,res)=>json(res,200,CHALLENGES.start(defaultChild().id,await readJson(req)))],
+  ['GET', /^\/api\/v2\/challenges\/rounds\/([^/]+)$/, async (req,res,m)=>json(res,200,CHALLENGES.getRound(defaultChild().id,m[1]))],
+  ['POST', /^\/api\/v2\/challenges\/rounds\/([^/]+)\/next$/, async (req,res,m)=>json(res,200,CHALLENGES.next(defaultChild().id,m[1],await readJson(req)))],
+  ['POST', /^\/api\/v2\/challenges\/rounds\/([^/]+)\/answer$/, async (req,res,m)=>json(res,200,CHALLENGES.answer(defaultChild().id,m[1],await readJson(req)))],
+  ['POST', /^\/api\/v2\/challenges\/rounds\/([^/]+)\/abandon$/, async (req,res,m)=>json(res,200,CHALLENGES.abandon(defaultChild().id,m[1]))],
+  ['POST', /^\/api\/v2\/challenges\/rounds\/([^/]+)\/cashout$/, async (req,res,m)=>json(res,200,CHALLENGES.cashout(defaultChild().id,m[1]))],
   ['POST', /^\/api\/v2\/notes$/, async (req,res)=>json(res,200,V2.sendDailyNote(defaultChild().id,requestContext.getStore(),await readJson(req)))],
   ['DELETE', /^\/api\/v2\/notes\/([^/]+)$/, async (req,res,m)=>json(res,200,V2.deleteDailyNote(defaultChild().id,m[1]))],
   ['GET', /^\/api\/v2\/auth\/session$/, async (req,res)=>json(res,200,{ok:!!requestContext.getStore()?.parent_unlocked})],
@@ -772,6 +783,9 @@ async function adminRoute(req,res,path,url) {
  }
  const a=ADMIN.requireAdmin(req);
  ACCOUNTS.throttle(`admin-requests:${a.id}`,600);
+ if(path==='/api/admin/challenges/questions' && req.method==='GET')return CHALLENGES.adminQuestions(url.searchParams);
+ const challengeQuestion=/^\/api\/admin\/challenges\/questions\/([^/]+)$/.exec(path);
+ if(challengeQuestion && req.method==='POST') {const result=CHALLENGES.setQuestion(challengeQuestion[1],await readJson(req));ADMIN.audit(a.id,'challenge.question.set',challengeQuestion[1]);return result;}
  if(path==='/api/admin/logout' && req.method==='POST')return ADMIN.logout(req,res);
  if(path==='/api/admin/invites' && req.method==='GET')return SUBSCRIPTIONS.listActivationInvites(url.searchParams.get('before')||'');
  if(path==='/api/admin/invites' && req.method==='POST') {
@@ -829,7 +843,7 @@ const server = createServer(async (req,res)=>{
    const c=ACCOUNTS.context(req);
    ACCOUNTS.throttle(`api:${c.account_id}`,1800);
    const parentOnly=(req.method==='GET'&&/^\/api\/v2\/tasks\/[^/]+$/.test(path)) || path==='/api/v2/parent' || /^\/api\/v2\/(?:rules|settings|points|review|redemptions|notify|notes|pet\/backups|pet\/restart)(?:\/|$)/.test(path) || (path.startsWith('/api/v2/rewards')&&!path.endsWith('/redeem')) || /^\/api\/v2\/tasks\/[^/]+\/review$/.test(path) || ['/api/v2/reset','/api/pet/reset'].includes(path) || path.startsWith('/api/tasks');
-   if(parentOnly)ACCOUNTS.requireParent(c);
+   if(parentOnly || path==='/api/v2/challenges/settings')ACCOUNTS.requireParent(c);
    if(unsafe && path!=='/api/v2/auth/logout')SUBSCRIPTIONS.requireActive(c.family_id);
    if(path==='/api/v2/notify/test' && unsafe)ACCOUNTS.throttle(`notify-test:${c.account_id}`,10);
    if(unsafe)res.once('finish',()=>{if(res.statusCode<400){try{ACCOUNTS.audit(c,`${req.method} ${path}`);}catch(e){console.error('Account audit failed:',e.message);}}});

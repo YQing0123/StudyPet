@@ -1,0 +1,21 @@
+/* One control vocabulary across family, parent and platform workspaces. */
+:where(input,select,textarea) { font:inherit; color:var(--ink); }
+:where(input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]),select,textarea) {
+  min-width:0; max-width:100%; min-height:44px; padding:10px 12px;
+  border:1px solid var(--control-border); border-radius:var(--r-control);
+  background-color:var(--paper-2); color:var(--ink); font-size:16px; line-height:1.5;
+  transition:border-color .16s,box-shadow .16s; color-scheme:light;
+}
+:where(select) { appearance:none; padding-right:38px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236F6253' stroke-width='1.7'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E"); background-position:right 12px center; background-repeat:no-repeat; }
+:where(textarea) { resize:vertical; }
+:where(input,textarea)::placeholder { color:var(--muted); opacity:1; }
+:where(input,select,textarea):disabled { opacity:.65; cursor:not-allowed; }
+input[type=checkbox],input[type=radio] { appearance:none; flex:0 0 auto; display:inline-grid; place-content:center; width:20px; height:20px; min-height:20px; margin:0; padding:0; border:1.5px solid var(--control-border); border-radius:5px; background:var(--paper-2); accent-color:var(--green); cursor:pointer; vertical-align:middle; }
+input[type=checkbox]:checked,input[type=radio]:checked { border-color:var(--green); background-color:var(--green); }
+input[type=checkbox]:checked { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='white' stroke-width='2'%3E%3Cpath d='m4 9 3 3 7-7'/%3E%3C/svg%3E"); background-position:center; background-repeat:no-repeat; }
+input[type=radio] { border-radius:50%; }
+input[type=radio]:checked::after { content:''; width:8px; height:8px; border-radius:50%; background:white; }
+:where(button,a,input,select,textarea,summary,[tabindex]):focus-visible { outline:3px solid var(--focus-ring); outline-offset:3px; }
+:where(button,a) { touch-action:manipulation; }
+@media (forced-colors:active) { input[type=checkbox],input[type=radio] { appearance:auto; } }
+@media (prefers-reduced-motion:reduce) { :where(input,select,textarea) { transition:none; } }

@@ -24,6 +24,7 @@ try {
  const setup=await fetch(base+'/api/auth/register',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({activationCode:testActivationCode(dir),login:'suite-parent',password:'Suite-Only-2026!',name:'验收家长',familyName:'隔离验收家庭',childName:'验收孩子'})});
  if(!setup.ok)throw Error(await setup.text());
  await run('scripts/verify-v2.mjs');
+ await run('scripts/verify-challenges.mjs');
  await run('scripts/verify-travel.mjs');
  await run('scripts/verify-mvp.mjs');
  await run('scripts/verify-continuation.mjs');

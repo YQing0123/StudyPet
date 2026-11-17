@@ -1,6 +1,7 @@
 # Keep maintained source, runtime assets, design inputs and project documentation.
 /*
 !/.gitignore
+!/README.md
 !/AGENTS.md
 !/VERSION_CONTROL.md
 !/项目接续说明-*.md

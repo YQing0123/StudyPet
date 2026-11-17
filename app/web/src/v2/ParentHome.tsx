@@ -6,6 +6,8 @@ import ReviewTaskSheet from './ReviewTaskSheet';
 import PushSettings from './PushSettings';
 import PetDataPanel from './PetDataPanel';
 import PetSleepSettings from './PetSleepSettings';
+import ChallengeSettings from './ChallengeSettings';
+import IslandIcon from './IslandIcon';
 import { TravelCollection } from './Travel';
 import type { CalendarDay, ParentState, RewardV2, RuleV2, TaskV2 } from './types';
 
@@ -14,7 +16,7 @@ const SUBJECTS = ['语文', '数学', '英语', '阅读', '运动', '其他'];
 const ICONS = ['📖', '📐', '🔤', '✏️', '🎨', '🎹', '🏃', '🧹', '🧠', '🌱', '🧪', '🗣️'];
 const KIND = [{ k: 'experience', n: '体验' }, { k: 'item', n: '物品' }, { k: 'privilege', n: '特权' }];
 
-type Tab = 'approve' | 'plan' | 'calendar' | 'rewards' | 'settings' | 'notes' | 'travel';
+type Tab = 'approve' | 'plan' | 'calendar' | 'rewards' | 'settings' | 'notes' | 'travel' | 'challenges';
 
 export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }: { onStudent: () => void; toast: (m: string, tone?: string) => void; reviewId?: string; onReviewClose?: () => void }) {
   const [data, setData] = useState<ParentState | null>(null);
@@ -92,7 +94,7 @@ export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }
       {reviewId && <ReviewTaskSheet id={reviewId} onClose={()=>onReviewClose?.()} onChanged={load} toast={toast} />}
       <header className="parent-top">
         <div className="brand">
-          <span className="brand-mark parent-mark">🗂️</span>
+          <span className="brand-mark island-brand-mark"><IslandIcon name="island"/></span>
           <div><h1>伴学小岛 · 家长端</h1><p>安排节奏、看看进展，把奖励给到对的地方</p></div>
         </div>
         <div className="parent-top-right">
@@ -101,7 +103,7 @@ export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }
         </div>
       </header>
 
-      <nav className="parent-tabs">
+      <nav className="parent-tabs" aria-label="家长端导航">
         {[
           ['approve', '待审核', data.approvals.length],
           ['plan', '周计划', data.rules.filter((r) => r.active).length],
@@ -109,15 +111,17 @@ export default function ParentHome({ onStudent, toast, reviewId, onReviewClose }
           ['rewards', '奖励', data.redemptions.filter((r) => r.status === 'pending').length],
           ['notes', '小纸条', 0],
           ['travel', '旅行收藏', 0],
+          ['challenges', '学习挑战', 0],
           ['settings', '设置', 0],
         ].map(([k, n, badge]) => (
-          <button key={k as string} className={tab === k ? 'is-on' : ''} onClick={() => setTab(k as Tab)}>
+          <button key={k as string} className={tab === k ? 'is-on' : ''} aria-current={tab===k?'page':undefined} onClick={() => setTab(k as Tab)}>
             {n as string}{Number(badge) > 0 && <em>{badge}</em>}
           </button>
         ))}
       </nav>
 
       <main className="parent-main">
+        {tab === 'challenges' && <ChallengeSettings />}
         {tab === 'travel' && data.travel && <section className="parent-section">
           <div className="parent-summary-row">
             <SummaryCard label="已收集" value={`${data.travel.collection.length}/${data.travel.catalog.length}`} tone="green" note="明信片与当地收藏" />
@@ -561,12 +565,12 @@ function RewardsTab({ data, toast, busy, onReload, onEdit, onAdd, run }: {
 function SettingsTab({ data, toast, onReload }: {
   data: ParentState; toast: (m: string, tone?: string) => void; onReload: () => Promise<void>;
 }) {
+  const [section,setSection]=useState<'account'|'sleep'|'push'|'pet'>('sleep');
   return <section className="parent-section">
-    <div className="parent-card">
-      <div className="parent-card-head"><div><h2>家庭与账号</h2><p>在顶部「家庭管理」添加孩子、邀请家长、开通学生账号和修改自己的密码。家庭中的家长共同管理，以下配置和记录属于当前选择的孩子。</p></div></div>
-    </div>
-    <PetSleepSettings key={data.childId} value={data.settings.petSleep} onReload={onReload} toast={toast} />
-    <PushSettings channels={data.settings.notifyChannels} eventSettings={data.settings.notifyEvents} summaryTime={data.settings.notifySummaryTime} publicUrl={data.settings.notifyPublicUrl} onReload={onReload} toast={toast} />
-    <PetDataPanel pet={data.pet} onReload={onReload} toast={toast} />
+    <nav className="section-tabs" aria-label="家长设置分区">{([['account','家庭与账号'],['sleep','宠物作息'],['push','通知推送'],['pet','宠物数据']] as const).map(([key,label])=><button key={key} className={section===key?'is-on':''} aria-current={section===key?'page':undefined} onClick={()=>setSection(key)}>{label}</button>)}</nav>
+    {section==='account'&&<div className="parent-card"><div className="parent-card-head"><div><h2>家庭与账号</h2><p>在顶部「家庭管理」添加孩子、邀请家长、开通学生账号和修改自己的密码。家庭中的家长共同管理，以下配置和记录属于当前选择的孩子。</p></div></div></div>}
+    {section==='sleep'&&<PetSleepSettings key={data.childId} value={data.settings.petSleep} onReload={onReload} toast={toast} />}
+    {section==='push'&&<PushSettings channels={data.settings.notifyChannels} eventSettings={data.settings.notifyEvents} summaryTime={data.settings.notifySummaryTime} publicUrl={data.settings.notifyPublicUrl} onReload={onReload} toast={toast} />}
+    {section==='pet'&&<PetDataPanel pet={data.pet} onReload={onReload} toast={toast} />}
   </section>;
 }

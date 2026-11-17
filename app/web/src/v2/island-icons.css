@@ -1,0 +1,12 @@
+.island-icon { display:inline-block; flex-shrink:0; width:2rem; height:2rem; background-image:url('/ui/island-icons-v1.png'); background-repeat:no-repeat; background-size:400% 400%; vertical-align:middle; mix-blend-mode:multiply; }
+.v2-top .brand-mark.island-brand-mark,.parent-top .brand-mark.island-brand-mark { flex-shrink:0; padding:0; background:none; box-shadow:none; }
+.island-brand-mark .island-icon { width:3rem; height:3rem; }
+.v2-dock button .island-icon { width:1.75rem; height:1.75rem; }
+.v2-student .care-btn>.island-icon { width:1.875rem; height:1.875rem; }
+.v2-top .parent-btn>.island-icon { width:1.5rem; height:1.5rem; }
+.island-logout { display:inline-flex; align-items:center; justify-content:center; }
+.island-logout>.island-icon { width:1.75rem; height:1.75rem; }
+.v2-top .star-pill>.island-icon { width:1.375rem; height:1.375rem; align-self:center; }
+.account-wordmark { display:flex; align-items:center; gap:.5rem; }
+.account-wordmark>.island-icon { width:2.5rem; height:2.5rem; }
+@media(max-width:600px) { .island-brand-mark .island-icon { width:2.5rem; height:2.5rem; } }

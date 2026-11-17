@@ -1,7 +1,7 @@
 import RoomDecor from './RoomDecor';
 import RoomBackdrop, { useRoomPhase } from './RoomBackdrop';
 import { PET_SCENARIOS, scenarioForItem } from '../shared/petScenarios.mjs';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import PetStage, { type PetStageHandle } from '../mvp/PetStage';
 import Adopt from '../mvp/Adopt';
 import PetPicker from './PetPicker';
@@ -16,6 +16,8 @@ import { petAvatar } from '../mvp/petGrowth';
 import type { Pet, GrowthMemory } from '../mvp/types';
 import { preloadPetAge } from '../mvp/petEngine';
 import GrowthCelebration from './GrowthCelebration';
+import Challenges from './Challenges';
+import IslandIcon from './IslandIcon';
 import Confetti, { CONFETTI_DURATION } from '../mvp/Confetti';
 import { atLevel, growthHint } from './petProgress';
 import { TravelScene, TravelSheet, TravelRewardsSheet } from './Travel';
@@ -41,11 +43,16 @@ const waitForCare = (milliseconds: number) => new Promise<void>(resolve => windo
 const NEED_LIMITS = { hunger: 30, energy: 25, mood: 35, clean: 65 };
 const needBand = (value: number, limit: number) => value < limit ? value < Math.min(18, limit / 2) ? 2 : 1 : 0;
 
-export default function StudentHome({ onParent, toast }: { onParent: () => void; toast: (msg: string, tone?: string) => void }) {
+export default function StudentHome({ onParent, onLogout, parentName, accountBusy, companion, toast }: {
+  onParent: () => void; onLogout: () => void; parentName?: string; accountBusy: boolean;
+  companion: ReactNode; toast: (msg: string, tone?: string) => void;
+}) {
   const [data, setData] = useState<StudentState | null>(null);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
-  const [sheet, setSheet] = useState<null | 'task' | 'shop' | 'bag' | 'rewards' | 'status' | 'menu' | 'plan' | 'pets' | 'travel'>(() => new URLSearchParams(location.search).has('petPreview') ? 'pets' : null);
+  const [sheet, setSheet] = useState<null | 'task' | 'shop' | 'bag' | 'rewards' | 'status' | 'menu' | 'plan' | 'pets' | 'travel' | 'challenge'>(() => new URLSearchParams(location.search).has('petPreview') ? 'pets' : null);
+  const challengeActive = useRef(false);
+  challengeActive.current = sheet === 'challenge';
   const [selected, setSelected] = useState<TaskV2 | null>(null);
   const [bagTab, setBagTab] = useState('all');
   const [feedingFromShop, setFeedingFromShop] = useState(false);
@@ -83,7 +90,7 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
       setSelected((prev) => (prev ? d.tasks.find((t) => t.id === prev.id) || prev : prev));
       const tripEnded = !!activeTripRef.current && !d.travel.activeTrip && d.travel.lastTrip?.id === activeTripRef.current;
       activeTripRef.current = d.travel.activeTrip?.id || null;
-      if (d.travel.pendingTrip && shownTravelRewards.current !== d.travel.pendingTrip.id) {
+      if (!challengeActive.current && d.travel.pendingTrip && shownTravelRewards.current !== d.travel.pendingTrip.id) {
         shownTravelRewards.current = d.travel.pendingTrip.id;
         setSheet(null);
         setTravelRewardsOpen(true);
@@ -459,35 +466,34 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
   const pendingPoints = pending.reduce((sum, task) => sum + (task.awardedPoints ?? task.basePoints), 0);
   const todayEarned = tasks.reduce((sum, task) => sum + (task.status === 'approved' ? (task.awardedPoints ?? 0) : 0), 0);
 
-  if (error && !data) {
-    return (
-      <div className="island-error"><div className="error-card"><span>🌧️</span><h2>小岛暂时连不上</h2><p>{error}</p><button className="btn primary" onClick={() => load()}>再试一次</button></div></div>
-    );
-  }
-  if (!data) return <div className="island-loading"><div className="loading-orb" /><p>正在划船去小岛…</p></div>;
-  if (!data.pet) return <Adopt embedded onParent={onParent} onDone={() => load()} onToast={toast} adoptFn={(p) => v2.adopt(p)} />;
-
-  return (
-    <div className="v2-student">
+  const parentLabel = parentName ? `${parentName}（家长端）` : '家长端';
+  const homeHeader = (
       <header className="v2-top" inert={!!ceremony}>
         <div className="brand">
-          <span className="brand-mark">🏝️</span>
-            <div><h1>伴学小岛</h1><p>{travelling ? `${data.pet.name}正在${data.travel.activeTrip?.cityName}旅行` : sleepingWindow ? `${data.pet.name}正在${sleepingWindow.kind === 'nap' ? '午休' : '睡觉'}，醒来再一起玩` : `${greet()}，${data.pet.name}在等你`}</p></div>
+          <span className="brand-mark island-brand-mark"><IslandIcon name="island"/></span>
+            <div><h1>伴学小岛</h1><p>{data?.pet ? travelling ? `${data.pet.name}正在${data.travel.activeTrip?.cityName}旅行` : sleepingWindow ? `${data.pet.name}正在${sleepingWindow.kind === 'nap' ? '午休' : '睡觉'}，醒来再一起玩` : `${greet()}，${data.pet.name}在等你` : '和学习伙伴一起成长'}</p></div>
         </div>
-        <div className="island-entrances">
-          <button onClick={() => setSheet('rewards')}><span>🎁</span>心愿奖励</button>
-          <button onClick={() => data.travel.pendingTrip ? setTravelRewardsOpen(true) : setSheet('travel')}><span>🧭</span>{travelling ? '旅行中' : data.travel.pendingTrip ? '查收行囊' : '旅行'}</button>
-          <button onClick={() => setSheet('shop')} disabled={travelling}><span>🏪</span>材料铺</button>
-        </div>
+        <div className="island-companion">{companion}</div>
         <div className="v2-top-right">
-          <span className="date-chip">{dateLabel(data.today)}</span>
+          {data?.pet && <><span className="date-chip">{dateLabel(data.today)}</span>
           <span className={`streak-chip ${data.wallet.streak > 1 ? 'is-hot' : ''}`}>
             <i>{data.wallet.streak > 0 ? '🔥' : '🌱'}</i>{data.wallet.streak > 0 ? `连续 ${data.wallet.streak} 天` : '今天开始'}
           </span>
-          <button className="star-pill" onClick={() => setSheet('shop')} disabled={travelling}><span>★</span>{data.wallet.balance}<em>星贝</em></button>
-          <button className="parent-btn" onClick={onParent}><span>👨‍👩‍👧</span>家长</button>
+          <button className="star-pill" onClick={() => setSheet('shop')} disabled={travelling} aria-label={`${data.wallet.balance} 星贝，打开材料铺`}><IslandIcon name="star"/>{data.wallet.balance}<em>星贝</em></button></>}
+          <button className="parent-btn" onClick={onParent} disabled={accountBusy} title={parentLabel}><IslandIcon name="parent"/><b>{parentLabel}</b></button>
+          <button className="island-logout" onClick={onLogout} disabled={accountBusy} aria-label="退出" title="退出登录"><IslandIcon name="logout"/></button>
         </div>
       </header>
+  );
+
+  if (error && !data) return <div className="v2-student">{homeHeader}<div className="island-error student-home-fallback"><div className="error-card"><span>🌧️</span><h2>小岛暂时连不上</h2><p>{error}</p><button className="btn primary" onClick={() => load()}>再试一次</button></div></div></div>;
+  if (!data) return <div className="v2-student">{homeHeader}<div className="island-loading student-home-fallback"><div className="loading-orb" /><p>正在划船去小岛…</p></div></div>;
+  if (sheet === 'challenge') return <Challenges onClose={() => {setSheet(null);void load(true);}} onChanged={() => {void load(true);}} />;
+  if (!data.pet) return <div className="v2-student">{homeHeader}<div className="student-home-fallback"><Adopt embedded onParent={onParent} onDone={() => load()} onToast={toast} adoptFn={(p) => v2.adopt(p)} /></div></div>;
+
+  return (
+    <div className="v2-student">
+      {homeHeader}
 
       <main className="v2-main" ref={mainRef}>
         <section className={`v2-scene-col${travelling ? ' is-travelling' : ''}`}>
@@ -544,12 +550,12 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
                 });
               }} onFinish={finishGrowth} />}
             <div className="care-dock" inert={!!ceremony}>
-              <button onClick={feed} className="care-btn" disabled={busy || !!sleepingWindow} title={sleepingWindow ? '睡醒后再喂食' : undefined}><span>🍚</span><b>喂食</b></button>
-              <button onClick={() => care('play')} className="care-btn" disabled={busy || !!sleepingWindow || (data.cooldowns.play || 0) > 0}><span>🧶</span><b>{data.cooldowns.play ? `${data.cooldowns.play}s` : '陪玩'}</b></button>
-              <button onClick={() => care('pet')} className="care-btn" disabled={busy || !!sleepingWindow || (data.cooldowns.pet || 0) > 0}><span>🫶</span><b>{data.cooldowns.pet ? `${data.cooldowns.pet}s` : '摸摸'}</b></button>
-              <button onClick={() => care('hug')} className="care-btn" disabled={busy || !!sleepingWindow || (data.cooldowns.hug || 0) > 0}><span>🤗</span><b>{data.cooldowns.hug ? `${data.cooldowns.hug}s` : '抱抱'}</b></button>
-              <button onClick={() => { setBagTab('clean'); setSheet('bag'); }} className="care-btn" disabled={busy || !!sleepingWindow}><span>🚿</span><b>洗澡</b></button>
-              <button onClick={toggleSleep} className="care-btn" disabled={busy} title={sleepingWindow ? '正在按作息睡觉，醒来再玩吧' : data.cooldowns.rest ? `恢复精力还需 ${Math.ceil(data.cooldowns.rest / 60)} 分钟` : '小憩恢复精力'}><span>🌙</span><b>{sleepingWindow ? '睡梦中' : '小憩'}</b></button>
+              <button onClick={feed} className="care-btn" disabled={busy || !!sleepingWindow} title={sleepingWindow ? '睡醒后再喂食' : undefined}><IslandIcon name="food"/><b>喂食</b></button>
+              <button onClick={() => care('play')} className="care-btn" disabled={busy || !!sleepingWindow || (data.cooldowns.play || 0) > 0}><IslandIcon name="play"/><b>{data.cooldowns.play ? `${data.cooldowns.play}s` : '陪玩'}</b></button>
+              <button onClick={() => care('pet')} className="care-btn" disabled={busy || !!sleepingWindow || (data.cooldowns.pet || 0) > 0}><IslandIcon name="pet"/><b>{data.cooldowns.pet ? `${data.cooldowns.pet}s` : '摸摸'}</b></button>
+              <button onClick={() => care('hug')} className="care-btn" disabled={busy || !!sleepingWindow || (data.cooldowns.hug || 0) > 0}><IslandIcon name="hug"/><b>{data.cooldowns.hug ? `${data.cooldowns.hug}s` : '抱抱'}</b></button>
+              <button onClick={() => { setBagTab('clean'); setSheet('bag'); }} className="care-btn" disabled={busy || !!sleepingWindow}><IslandIcon name="shower"/><b>洗澡</b></button>
+              <button onClick={toggleSleep} className="care-btn" disabled={busy} title={sleepingWindow ? '正在按作息睡觉，醒来再玩吧' : data.cooldowns.rest ? `恢复精力还需 ${Math.ceil(data.cooldowns.rest / 60)} 分钟` : '小憩恢复精力'}><IslandIcon name="sleep"/><b>{sleepingWindow ? '睡梦中' : '小憩'}</b></button>
             </div>
           </div>
             </>}
@@ -607,12 +613,14 @@ export default function StudentHome({ onParent, toast }: { onParent: () => void;
         </aside>
       </main>
 
-      <nav className="v2-dock" inert={!!ceremony}>
-        <button className="is-on" onClick={() => { setSheet(null); mainRef.current?.scrollTo({ top: 0, behavior: 'smooth' }); }}><span>🏝️</span>小岛</button>
-        <button onClick={() => setSheet('plan')}><span>🗓️</span>计划</button>
-          <button onClick={() => setSheet('shop')} disabled={travelling}><span>🏪</span>材料</button>
-        <button onClick={() => setSheet('rewards')}><span>🎁</span>心愿</button>
-          <button onClick={() => setSheet('bag')} disabled={travelling}><span>🧺</span>背包</button>
+      <nav className="v2-dock" aria-label="小岛导航" inert={!!ceremony}>
+        <button onClick={() => setSheet('plan')}><IslandIcon name="plan"/>计划</button>
+        <button onClick={() => data.travel.pendingTrip ? setTravelRewardsOpen(true) : setSheet('travel')} aria-label={travelling ? '旅行，正在旅行中' : data.travel.pendingTrip ? '旅行，查收行囊' : '旅行'}><IslandIcon name="travel"/>{travelling ? '旅行中' : data.travel.pendingTrip ? '查收行囊' : '旅行'}</button>
+        <button onClick={() => setSheet('challenge')}><IslandIcon name="challenge"/>挑战</button>
+        <button className="is-on" aria-current="page" onClick={() => { setSheet(null); mainRef.current?.scrollTo({ top: 0, behavior: 'smooth' }); }}><IslandIcon name="island"/>小岛</button>
+        <button onClick={() => setSheet('shop')} disabled={travelling}><IslandIcon name="materials"/>材料</button>
+        <button onClick={() => setSheet('rewards')}><IslandIcon name="wish"/>心愿</button>
+        <button onClick={() => setSheet('bag')} disabled={travelling}><IslandIcon name="bag"/>背包</button>
       </nav>
 
       <TaskDetail open={sheet === 'task'} task={selected} onClose={() => setSheet(null)} onSubmit={submit} busy={busy} />

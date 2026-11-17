@@ -2,7 +2,7 @@ import {scopeHeaders} from './accounts';
 import type { GrowthMemory } from '../mvp/types';
 import type { RoomState, RoomPlacement, DailyNote, ParentState, RewardV2, RuleV2, StudentState, TaskV2, NotifyProvider, NotifyResult, NotifyLog, PetBackup, RecordPage, TravelState } from './types';
 
-async function req<T>(path: string, init?: RequestInit): Promise<T> {
+export async function req<T>(path: string, init?: RequestInit): Promise<T> {
   let res: Response;
   let text: string;
   try {
