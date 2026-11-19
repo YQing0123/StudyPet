@@ -12,7 +12,7 @@ const child='card-kid',photo='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEA
 try{
  q.run('INSERT INTO family(id,name,created_at) VALUES(?,?,?)','card-family','验收家庭',new Date().toISOString());
  q.run('INSERT INTO child(id,name,created_at,family_id) VALUES(?,?,?,?)',child,'验收孩子',new Date().toISOString(),'card-family');
- V.adoptWithStarter(child,{breed:'capybara_toon',name:'豆包'});
+ V.adoptWithStarter(child,{breed:'alpaca_toon',name:'豆包'});
  const task=V.getStudentState(child).tasks.find(t=>t.reviewRequired);
  V.submitTask(child,task.id,{note:'我检查过了。\n![伪造图片](https://evil.test/x) @all',photo});
  const raw=q.get('SELECT * FROM v2_task WHERE id=?',task.id);

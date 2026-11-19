@@ -11,7 +11,7 @@ const protectedTables=['v2_task','plan_rule','point_ledger','material_inv','dail
 const learning=()=>Object.fromEntries(protectedTables.map(table=>[table,q.all(`SELECT * FROM ${table} WHERE child_id=? ORDER BY rowid`,child)]));
 try{
  q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)',child,'验收孩子',new Date().toISOString());
- V.adoptWithStarter(child,{breed:'capybara_toon',name:'豆包'});q.run("UPDATE pet_life SET breed='dog_corgi',species='dog' WHERE child_id=?",child);V.giftPoints(child,{amount:150});D.buy(child,{key:'kibble'});D.interact(child,{action:'pet'});
+ V.adoptWithStarter(child,{breed:'alpaca_toon',name:'豆包'});q.run("UPDATE pet_life SET breed='dog_corgi',species='dog' WHERE child_id=?",child);V.giftPoints(child,{amount:150});D.buy(child,{key:'kibble'});D.interact(child,{action:'pet'});
  const pet=D.getPetRow(child),id=pet.pet_id;
  q.run('UPDATE pet_life SET growth=48,care_count=7,outfit=? WHERE child_id=?',JSON.stringify({neck:'bow'}),child);
  V.getStudentState(child);
@@ -20,14 +20,14 @@ try{
  const manual=P.backupPet(child,id).id;
  const saved=q.get('SELECT snapshot FROM pet_backup WHERE id=?',manual);
  const original=JSON.parse(saved.snapshot).pet;
- P.migratePet(child,'cat_orange',id);
+ P.migratePet(child,'alpaca_toon',id);
  let current=D.getPetRow(child);
- ok(current.pet_id===id&&current.breed==='cat_orange'&&current.growth===48&&current.name==='豆包'&&current.care_count===7,'切换品种保留同一宠物的名字、成长、照顾次数和ID');
+ ok(current.pet_id===id&&current.breed==='alpaca_toon'&&current.growth===48&&current.name==='豆包'&&current.care_count===7,'切换品种保留同一宠物的名字、成长、照顾次数和ID');
  assert.deepEqual(learning(),before);ok(true,'切换品种保留全部学习、钱包、材料、兑换记录');
  ok(P.listPetBackups(child).items.some(b=>b.reason==='before_switch'&&b.pet.breed==='dog_corgi'),'切换前自动备份原品种');
  P.restartPet(child,id);ok(!D.getPetRow(child),'重新养宠仅移除当前宠物，回到待领养');
  assert.deepEqual(learning(),before);ok(true,'重养不会清空任务、星贝、背包、计划和兑换记录');
- ok(P.listPetBackups(child).items.some(b=>b.reason==='before_restart'&&b.pet.breed==='cat_orange'),'重养前自动备份宠物');
+ ok(P.listPetBackups(child).items.some(b=>b.reason==='before_restart'&&b.pet.breed==='alpaca_toon'),'重养前自动备份宠物');
  const empty=P.backupPet(child,null).id;
  P.restorePet(child,manual,null);current=D.getPetRow(child);
  ok(current.pet_id===id&&current.breed===original.breed&&current.growth===48&&current.outfit===original.outfit,'可从待领养状态恢复原宠物、成长和装扮');

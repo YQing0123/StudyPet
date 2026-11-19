@@ -14,7 +14,7 @@ await api('/api/v2/pet/sleep-touch', {}, 401);
 check('睡眠互动接口要求登录', true);
 const session = await api('/api/auth/register', { activationCode: testActivationCode(), login: 'sleep-api-' + Date.now(), password: 'Sleep-Suite-2026!', name: '验收家长', familyName: '睡眠验收家庭', childName: '睡眠验收孩子' });
 scope = { 'x-family-id': session.family.id, 'x-child-id': session.activeChildId };
-await api('/api/v2/adopt', { breed: 'cat_orange', name: '困困' });
+await api('/api/v2/adopt', { breed: 'alpaca_toon', name: '困困' });
 await api('/api/v2/points/gift', { amount: 500 });
 await api('/api/shop/buy', { key: 'brush' });
 const schedule = { nightEnabled: true, nightStart: '23:59', nightEnd: '23:58', napEnabled: true, napStart: '23:58', napEnd: '23:59' };

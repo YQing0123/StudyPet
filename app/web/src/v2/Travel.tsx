@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Sheet } from '../mvp/Sheets';
 import type { Pet } from '../mvp/types';
+import { petAvatar } from '../mvp/petGrowth';
 import type { TravelCity, TravelCollectible, TravelCollectibleType, TravelState, TravelTrip } from './types';
 
 const TYPES: { key: TravelCollectibleType | 'all'; label: string }[] = [
@@ -78,8 +79,8 @@ export function TravelScene({
       </header>
       <div className="travel-journey" aria-hidden="true">
         <div className="travel-earth"><img src="/travel/scenes/earth.webp" alt="" /></div>
-        <img className="travel-traveler travel-pet-animated" src={'/travel/pets/' + pet.breed + '.gif'} alt="" />
-        <img className="travel-traveler travel-pet-still" src={'/travel/pets/' + pet.breed + '.webp'} alt="" />
+        <img className="travel-traveler travel-pet-animated" src={pet.breed === 'alpaca_toon' ? '/travel/pets/alpaca_toon.gif' : `/${petAvatar(pet.breed)}`} alt="" />
+        <img className="travel-traveler travel-pet-still" src={pet.breed === 'alpaca_toon' ? '/travel/pets/alpaca_toon.webp' : `/${petAvatar(pet.breed)}`} alt="" />
       </div>
       <div className="travel-route-line" aria-label={'旅行路线，共' + trip.itinerary.length + '个目的地'}>
         {trip.itinerary.map(stop => <div key={stop.id} className={stop.id === city?.id ? 'is-current' : ''}><i /><span>{stop.name}</span></div>)}

@@ -15,7 +15,7 @@ let checks = 0;
 try {
   assert.equal(P.LEVEL_DAYS.length, 12);
   const manifest = JSON.parse(readFileSync(join(root, 'web/public/pets/manifest.json')));
-  for (const breed of ['dog_corgi_toon', 'capybara_toon']) {
+  for (const breed of ['alpaca_toon', 'capybara_toon']) {
     const child = `growth-${breed}`;
     q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)', child, '成长检查', new Date().toISOString());
     D.adopt(child, { breed, name: '同一个伙伴' });
@@ -36,14 +36,14 @@ try {
       assert.equal(pet.stageInfo.nextInDays, 0);
       const base = manifest.breeds[breed];
       const look = base.growth?.[stage] || base;
-      if (stage > 1) assert.ok(base.growth[stage], 'Every dressed age has a complete own pack');
-      const needed = ['greet','walk','eat','eatrev','petted','petted-out','play','hug','sleep','wake'];
-      if (breed === 'capybara_toon' || stage > 1) needed.push('stretch');
+      const staticPet = breed === 'capybara_toon';
+      const needed = staticPet ? [] : ['greet','walk','eat','eatrev','petted','petted-out','play','hug','sleep','wake','stretch'];
+      assert.deepEqual(Object.keys(look.videos).sort(), [...needed].sort());
       for (const action of needed) {
         assert.equal(look.videos[action].mode, 'alpha');
         assert.ok(existsSync(join(root,'web/public/pets',look.videos[action].file)));
       }
-      for (const pose of ['sit','walk','sleep','stretch','roll','jump']) {
+      for (const pose of staticPet ? ['sit'] : ['sit','walk','sleep','stretch','roll','jump']) {
         const file = look.frames.find(f => f.key === pose);
         assert.ok(file && existsSync(join(root,'web/public/pets',file.file)));
       }

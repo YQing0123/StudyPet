@@ -13,7 +13,7 @@ async function api(path,body,status=200,extra={}) {
 await api('/api/v2/room',{revision:0,placements:[]},401);await api('/api/v2/pet/shower',{},401);check('家具保存和免费淋浴均要求登录',true);
 const session=await api('/api/auth/register',{activationCode:testActivationCode(),login:'scenario-api-'+Date.now(),password:'Scenario-Suite-2026!',name:'验收家长',familyName:'场景验收家庭',childName:'布置小能手'});
 scope={'x-family-id':session.family.id,'x-child-id':session.activeChildId};
-await api('/api/v2/adopt',{breed:'capybara_toon',name:'卡卡'});
+await api('/api/v2/adopt',{breed:'alpaca_toon',name:'卡卡'});
 for(let i=0;i<3;i++)await api('/api/v2/points/gift',{amount:500});
 let s=await api('/api/v2/student');check('状态返回房间、免费淋浴规则和完整收藏目录',!!s.room&&s.hygiene.showerCap===95&&s.shop.filter(x=>x.kind==='furniture').length===16);
 await api('/api/v2/pet/scenario',{scenario:'rest'},400);await api('/api/v2/pet/scenario',{scenario:'__proto__'},400);check('通用场景接口只运行显式开放的配置，不能绕过休息冷却',true);

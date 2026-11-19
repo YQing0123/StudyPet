@@ -1,6 +1,6 @@
 /** Published companions and legacy identities, using only a disposable database. */
 import assert from 'node:assert/strict';
-import { mkdtempSync, rmSync, readFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, readFileSync, readdirSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -19,12 +19,29 @@ try {
   const original = V.getStudentState('breed-test');
   assert.ok(original.tasks.length > 0, 'fixture includes learning plans');
   assert.ok(original.inventory.length > 0, 'fixture includes owned materials');
-  const manifest = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../web/public/pets/manifest.json')));
-  const breeds = Object.keys(manifest.breeds);
-  assert.equal(breeds.length, 19, 'all legacy rendering assets retained');
-  assert.deepEqual(AVAILABLE_PET_BREEDS, ['cat_orange','dog_corgi_toon','capybara_toon','alpaca_toon']);
-  assert.deepEqual(D.breedList().map(b => b.id), AVAILABLE_PET_BREEDS);
-  assert.equal(D.breedList({includeUnavailable:true}).length, 19);
+  const publicDir = join(dirname(fileURLToPath(import.meta.url)), '../web/public');
+  const manifest = JSON.parse(readFileSync(join(publicDir, 'pets/manifest.json')));
+  assert.deepEqual(Object.keys(manifest.breeds).sort(), [...AVAILABLE_PET_BREEDS].sort());
+  assert.deepEqual([...AVAILABLE_PET_BREEDS].sort(), ['alpaca_toon', 'capybara_toon']);
+  assert.deepEqual(D.breedList().map(b => b.id).sort(), [...AVAILABLE_PET_BREEDS].sort());
+  const media = new Set();
+  const collectMedia = value => {
+    if (typeof value === 'string' && /\.(svg|png|webm|mp4)$/.test(value)) media.add(value);
+    else if (value && typeof value === 'object') Object.values(value).forEach(collectMedia);
+  };
+  collectMedia(manifest.breeds);
+  for (const file of media) assert.ok(existsSync(join(publicDir, 'pets', file)), file);
+  for (const folder of ['breeds', 'avatars', 'videos', 'compatible']) {
+    const relativePaths = readdirSync(join(publicDir, 'pets', folder), { recursive: true, withFileTypes: true });
+    for (const file of relativePaths.filter(entry => entry.isFile())) {
+      const path = join(file.parentPath, file.name).slice(join(publicDir, 'pets').length + 1);
+      assert.ok(media.has(path), `Unexpected pet media in public build: ${path}`);
+    }
+  }
+  assert.deepEqual(readdirSync(join(publicDir, 'travel/pets')).sort(), ['alpaca_toon.gif', 'alpaca_toon.webp']);
+  assert.deepEqual(manifest.sounds, {});
+  const storedBreeds = D.breedList({includeUnavailable:true});
+  assert.equal(storedBreeds.length, 19);
   for (const breed of AVAILABLE_PET_BREEDS) {
     D.changeBreed('breed-test', breed);
     const state = V.getStudentState('breed-test');
@@ -41,9 +58,9 @@ try {
     assert.equal(adopted.pet.breed, breed);
     assert.equal(adopted.pet.species, manifest.breeds[breed].species);
   }
-  const unpublished = breeds.filter(b => !AVAILABLE_PET_BREEDS.includes(b));
-  assert.equal(unpublished.length, 15);
-  for (const breed of unpublished) {
+  const unpublished = storedBreeds.filter(b => !AVAILABLE_PET_BREEDS.includes(b.id));
+  assert.equal(unpublished.length, 17);
+  for (const { id: breed, species } of unpublished) {
     const before = D.getPetRow('breed-test');
     assert.throws(() => D.changeBreed('breed-test', breed), /完善动作/);
     assert.equal(D.getPetRow('breed-test').breed, before.breed);
@@ -52,12 +69,12 @@ try {
     assert.throws(() => D.adopt(child,{breed}), /完善动作/);
     assert.equal(D.getPetRow(child), null);
     // Model an existing companion from before unpublishing; reads must preserve it.
-    q.run('UPDATE pet_life SET breed=?,species=? WHERE child_id=?',breed,manifest.breeds[breed].species,'breed-test');
+    q.run('UPDATE pet_life SET breed=?,species=? WHERE child_id=?',breed,species,'breed-test');
     assert.equal(V.getStudentState('breed-test').pet.breed, breed);
   }
   for (const breed of ['unknown','__proto__',null]) {
     assert.throws(() => D.changeBreed('breed-test', breed));
     assert.throws(() => D.adopt('invalid-adopt', {breed}));
   }
-  console.log('4 published breeds support adoption/switching; 15 unpublished breeds are blocked for new choices, while all 19 legacy identities remain readable.');
+  console.log('2 published breeds; 17 unpublished choices blocked, with legacy records preserved.');
 } finally { db.close(); rmSync(dir, { recursive: true, force: true }); }

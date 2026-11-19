@@ -16,7 +16,7 @@ import { PET_SCENARIOS, dirtLevel } from '../web/src/shared/petScenarios.mjs';
 import { ROOM_CATALOG, isRoomItem } from '../web/src/shared/roomCatalog.mjs';
 import { roomState, roomInventory, ownsRoomItem, acquireRoomItem, useRoomItem } from './pet-room.mjs';
 import { applyPetScenario, scenarioAvailability } from './pet-scenarios.mjs';
-import { isAvailablePetBreed } from '../web/src/shared/availablePetBreeds.mjs';
+import { DEFAULT_PET_BREED, isAvailablePetBreed } from '../web/src/shared/availablePetBreeds.mjs';
 import { playSession, recordPlay } from './pet-play.mjs';
 
 export const STAGE_NAMES = ['蛋', '幼年', '少年', '青年', '成年', '中年', '老年'];
@@ -369,7 +369,7 @@ export function changeBreed(childId, breed) {
   q.run('UPDATE pet_life SET breed=?, species=? WHERE pet_id=?', breed, BREEDS[breed].species, pet.pet_id);
 }
 
-export function adopt(childId, { breed = 'cat_orange', name, gender = 'female' } = {}) {
+export function adopt(childId, { breed = DEFAULT_PET_BREED, name, gender = 'female' } = {}) {
   if (typeof breed !== 'string' || !Object.hasOwn(BREEDS, breed)) throw new Error('还没有这种小伙伴');
   if (!isAvailablePetBreed(breed)) throw new Error('这位小伙伴正在完善动作，暂时不能领养');
   const exists = getPetRow(childId);

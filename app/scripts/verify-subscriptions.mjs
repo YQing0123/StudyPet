@@ -83,7 +83,7 @@ try{
  await admin.call(`/api/admin/families/${s.family.id}/subscription`,{expiresAt:Date.now()+3*86400000,planName:'临近到期',note:'验证七天内提醒'});
  ok((await parent.call('/api/auth/session')).family.subscription.status==='expiring','到期前七天进入提醒状态');
  const pendingInvite=await parent.call('/api/family/invites',{});
- const state=await parent.call('/api/v2/adopt',{breed:'capybara_toon',name:'小岛伙伴'});const task=state.tasks[0];
+ const state=await parent.call('/api/v2/adopt',{breed:'alpaca_toon',name:'小岛伙伴'});const task=state.tasks[0];
  const delayedStatus=await new Promise((resolve,reject)=>{
   const request=httpRequest(base+'/api/v2/points/gift',{method:'POST',headers:{origin,'content-type':'application/json',cookie:parent.cookie,...parent.headers}},response=>{response.resume();response.once('end',()=>resolve(response.statusCode));});
   request.on('error',reject);request.write('{"amount":');

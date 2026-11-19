@@ -1,4 +1,5 @@
 import { isAvailablePetBreed } from '../shared/availablePetBreeds.mjs';
+import { petAvatar } from './petGrowth';
 
 export const SPECIES_META = {
   cat: { species: '猫', trait: '爱晒太阳，也爱趴在你书桌边', line: '喵～今天也一起加油吧' },
@@ -33,7 +34,7 @@ export const BREED_LIST: [string, string, keyof typeof SPECIES_META, string][] =
 
 export const ALL_PET_BREEDS = BREED_LIST.map(([id, name, species, defaultName]) => ({
   id, name, defaultName, speciesKey: species, species: SPECIES_META[species].species,
-  avatar: `pets/avatars/${id}.png`,
+  avatar: petAvatar(id),
   trait: SPECIES_META[species].trait,
   line: SPECIES_META[species].line,
 }));

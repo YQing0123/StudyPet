@@ -25,7 +25,7 @@ const inv = key => q.get('SELECT qty FROM material_inv WHERE child_id=? AND item
 try {
   for (const id of [child, other]) {
     q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)',id,'游玩测试',new Date().toISOString());
-    D.adopt(id,{breed:'capybara_toon'});
+    D.adopt(id,{breed:'alpaca_toon'});
     V.setParentSettings(id,{petSleep:{nightEnabled:false,nightStart:'21:30',nightEnd:'07:00',napEnabled:false,napStart:'13:00',napEnd:'14:00'}});
   }
   resetNeeds();

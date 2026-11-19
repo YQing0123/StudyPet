@@ -12,7 +12,6 @@
     "test": "node scripts/verify-isolated.mjs",
     "admin:account": "node scripts/admin-account.mjs",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit -p web/tsconfig.json",
-    "assets:copy": "node scripts/copy-pet-assets.mjs",
     "assets:compatible": "node scripts/build-compatible-pet-videos.mjs"
   },
   "dependencies": {

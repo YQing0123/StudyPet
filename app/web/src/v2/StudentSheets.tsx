@@ -368,7 +368,7 @@ export function StudentMenu({
       </div>}
       {data.pet && <div className="growth-memories"><h4>一起长大的回忆</h4>
         <p>每次点击长大，都会留下一段回忆。每个年龄的进阶还有一枚常驻星章。</p>
-        {!hasGrowthLooks(data.pet.breed) && <p>这位伙伴会变换体型并点亮星章。卡通柯基和卡皮巴拉还会换上各年龄的新衣。</p>}
+        {!hasGrowthLooks(data.pet.breed) && <p>这位伙伴会变换体型并点亮星章。</p>}
         {data.pet.growthMemories.length ? data.pet.growthMemories.map(event => <button key={event.id} className="growth-memory-row" onClick={() => onReplay(event)}><span>✦ {event.name}<small>{new Date(event.createdAt).toLocaleDateString('zh-CN')}</small></span><b>{event.seen ? '重播' : '补看'} →</b></button>) : <p>第一次长大的回忆，正在路上。</p>}
       </div>}
       <div className="menu-list">

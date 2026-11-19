@@ -15,7 +15,7 @@ const qty = (id, key) => state(id).inventory.find(x => x.key === key)?.qty || 0;
 const create = id => q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)', id, '材料验收', new Date().toISOString());
 try {
   const id = 'material-test'; create(id);
-  D.adopt(id, { breed: 'capybara_toon', name: '卡卡' }); V.giftPoints(id, { amount: 2000 });
+  D.adopt(id, { breed: 'alpaca_toon', name: '卡卡' }); V.giftPoints(id, { amount: 2000 });
   let before = state(id).wallet.balance;
   D.buy(id, { key: 'brush', qty: 2 });
   check('购买按数量扣款并入包', () => { assert.equal(qty(id, 'brush'), 2); assert.equal(state(id).wallet.balance, before - 64); });
@@ -42,7 +42,7 @@ try {
   used = D.useMaterial(id, { key: 'bow' });
   check('重新戴上不消耗、不重领心情', () => { assert.equal(used.pet.stats.mood, mood); assert.equal(qty(id, 'bow'), 1); });
   check('没有的物品不能使用或取下', () => { assert.throws(() => D.useMaterial(id, { key: 'invalid' })); assert.throws(() => D.useMaterial(id, { key: 'brush', equipped: false })); });
-  const old = 'legacy-material'; create(old); D.adopt(old, { breed: 'capybara_toon', name: '豆包' });
+  const old = 'legacy-material'; create(old); D.adopt(old, { breed: 'alpaca_toon', name: '豆包' });
   q.run("UPDATE pet_life SET breed='dog_corgi',species='dog' WHERE child_id=?", old);
   q.run('UPDATE pet_life SET outfit=? WHERE child_id=?', JSON.stringify({ neck: 'bow' }), old);
   q.run('INSERT INTO point_ledger VALUES(?,?,?,?,?,?,?)', 'old-crown', old, D.toDateKey(), -260, '兑换材料：迷你小皇冠 ×1', 'legacy-crown', new Date().toISOString());
@@ -58,7 +58,7 @@ try {
   q.run('UPDATE material_wardrobe SET first_worn_at=NULL WHERE child_id=? AND item_key=?', old, 'bow');
   used = D.useMaterial(old, { key: 'bow' });
   check('旧版重复库存与已穿戴并存时不补发首次奖励', () => { assert.equal(used.pet.stats.mood, 86); assert.equal(qty(old, 'bow'), 1); });
-  const rollback = 'material-rollback'; create(rollback); D.adopt(rollback, { breed: 'capybara_toon', name: '验收' }); V.giftPoints(rollback, { amount: 1000 });
+  const rollback = 'material-rollback'; create(rollback); D.adopt(rollback, { breed: 'alpaca_toon', name: '验收' }); V.giftPoints(rollback, { amount: 1000 });
   const rollbackBalance = state(rollback).wallet.balance;
   db.exec("CREATE TRIGGER fail_material_purchase BEFORE INSERT ON material_inv WHEN NEW.child_id='material-rollback' BEGIN SELECT RAISE(ABORT,'injected purchase'); END");
   check('购买入包失败时整笔回滚扣款和永久所有权', () => { assert.throws(() => D.buy(rollback, { key: 'crown' }), /injected/); assert.equal(state(rollback).wallet.balance, rollbackBalance); assert.equal(qty(rollback, 'crown'), 0); });
@@ -67,7 +67,7 @@ try {
   db.exec("CREATE TRIGGER fail_material_wear BEFORE UPDATE ON pet_life WHEN NEW.child_id='material-rollback' BEGIN SELECT RAISE(ABORT,'injected outfit'); END");
   check('穿戴失败时首次奖励标记与宠物修改一并回滚', () => { assert.throws(() => D.useMaterial(rollback, { key: 'crown' }), /injected/); assert.equal(q.get('SELECT first_worn_at FROM material_wardrobe WHERE child_id=? AND item_key=?', rollback, 'crown').first_worn_at, null); assert.equal(q.get('SELECT outfit FROM pet_life WHERE child_id=?', rollback).outfit, '{}'); });
   db.exec('DROP TRIGGER fail_material_wear');
-  const chest = 'material-chest'; create(chest); D.adopt(chest, { breed: 'capybara_toon', name: '验收' }); V.giftPoints(chest, { amount: 500 });
+  const chest = 'material-chest'; create(chest); D.adopt(chest, { breed: 'alpaca_toon', name: '验收' }); V.giftPoints(chest, { amount: 500 });
   D.buy(chest, { key: 'bow' }); D.buy(chest, { key: 'brush' });
   q.run('UPDATE pet_life SET stage=4,confirmed_level=7,growth=49 WHERE child_id=?', chest);
   const random = Math.random;

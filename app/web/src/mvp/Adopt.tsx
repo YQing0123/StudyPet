@@ -14,7 +14,7 @@ interface Props {
 
 export default function Adopt({ onDone, onToast, adoptFn, embedded, onParent }: Props) {
   const [breed, setBreed] = useState(BREEDS[0].id);
-  const [name, setName] = useState('小橘');
+  const [name, setName] = useState(BREEDS[0].defaultName);
   const [busy, setBusy] = useState(false);
   const [speciesFilter, setSpeciesFilter] = useState('all');
   const [hatching, setHatching] = useState<null | { species: string; name: string; data: TodayData }>(null);
@@ -41,9 +41,8 @@ export default function Adopt({ onDone, onToast, adoptFn, embedded, onParent }: 
   };
 
   if (hatching) {
-    const eggSpecies = ['capybara', 'alpaca'].includes(hatching.species) ? 'dog' : hatching.species;
-    const egg = `pets/eggs/${eggSpecies}-egg.png`;
-    const hatch = `pets/eggs/${eggSpecies}-hatch.png`;
+    const egg = 'pets/legacy.svg';
+    const hatch = chosen.avatar;
     return (
       <div className={`adopt-overlay hatch-mode${embedded ? " embedded" : ""}`}>
         <div className="hatch-scene">
@@ -61,7 +60,7 @@ export default function Adopt({ onDone, onToast, adoptFn, embedded, onParent }: 
     <div className={`adopt-overlay${embedded ? " embedded" : ""}`}>
       <div className="adopt-card">
         <div className="adopt-hero">
-          <img src="pets/banner_task.jpg" alt="" />
+          <img src="pets/room/sunroom.webp" alt="" />
           <div className="adopt-hero-copy">
             <span className="eyebrow">和小岛的第一天</span>
             <h1>领养你的学习伙伴</h1>
@@ -90,7 +89,7 @@ export default function Adopt({ onDone, onToast, adoptFn, embedded, onParent }: 
                 <span className="breed-check">✓</span>
               </button>
             ))}
-            <p className="breed-note">卡皮巴拉也来小岛了，选一位喜欢的小伙伴吧。</p>
+            <p className="breed-note">从今天起，让小伙伴陪你一起完成计划。</p>
           </div>
 
           <div className="adopt-form">

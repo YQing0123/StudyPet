@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { api } from './api';
+import { petAvatar } from './petGrowth';
 import PetStage, { type PetStageHandle } from './PetStage';
 import Confetti, { CONFETTI_DURATION } from './Confetti';
 import Adopt from './Adopt';
@@ -304,7 +305,7 @@ export default function Today() {
             <RoomBackdrop phase={sceneTone} />
 
             <div className="pet-chip">
-              <img src={`pets/avatars/${data.pet.breed}.png`} alt="" />
+              <img src={petAvatar(data.pet.breed)} alt="" />
               <div>
                 <b>{data.pet.name}</b>
                 <span>{stage?.name} · 第 {Math.max(1, Math.floor(stage?.days || 0) + 1)} 天</span>
@@ -382,7 +383,7 @@ export default function Today() {
             <div className="task-list">
               {data.tasks.length === 0 && (
                 <div className="task-empty">
-                  <img src="pets/banner_task.jpg" alt="" />
+                  <img src="pets/room/sunroom.webp" alt="" />
                   <h4>今天想完成点什么？</h4>
                   <p>把一个任务写下来，就已经开始一半了。</p>
                   <button className="btn primary sm" onClick={() => setSheet('task')}>添加第一个任务</button>

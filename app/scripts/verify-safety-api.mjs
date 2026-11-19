@@ -33,7 +33,7 @@ try{
  ok((await dad.call('/api/v2/parent')).settings.notifySummaryTime==='21:20'&&(await other.call('/api/v2/parent')).settings.notifySummaryTime==='20:30','同家庭家长共同管理时间，学生不能修改，其他家庭不受影响');
  await kid.call('/api/v2/settings',settings,403);await kid.call('/api/v2/notify/logs',undefined,403);await kid.call('/api/v2/notify/test',{},403);ok(true,'学生无权读取日志、修改配置或发送测试');
  ok(!(await other.call('/api/v2/parent')).settings.notifyChannels.some(c=>c.enabled),'其他家庭看不到推送配置');
- let s=await dad.call('/api/v2/adopt',{breed:'capybara_toon',name:'豆包'}),petId=s.pet.id;
+ let s=await dad.call('/api/v2/adopt',{breed:'alpaca_toon',name:'豆包'}),petId=s.pet.id;
  const b=await dad.call('/api/v2/pet/backups',{expectedPetId:petId});
  await kid.call('/api/v2/pet/backups',undefined,403);await kid.call('/api/v2/pet/restart',{expectedPetId:petId},403);await kid.call('/api/v2/pet/backups/'+b.id+'/restore',{expectedPetId:petId},403);
  await other.call('/api/v2/pet/backups/'+b.id+'/restore',{expectedPetId:null},400);ok(true,'学生和其他家庭无法操作当前孩子的备份');
@@ -46,12 +46,12 @@ try{
  const result=await dad.call('/api/v2/notify/test',{});ok(!result.ok&&result.results.some(r=>r.ok)&&result.results.some(r=>!r.ok),'全部通道测试分别返回成功与失败，不相互阻断');
  const failed=await dad.call('/api/v2/notify/logs?status=failed');ok(failed.items.length===1&&failed.items[0].httpStatus===200,'日志筛选与 HTTP 200 业务失败结果一致');
  const before=await dad.call('/api/v2/student');
- await dad.call('/api/v2/pet/breed',{breed:'cat_orange',expectedPetId:petId});
+ await dad.call('/api/v2/pet/breed',{breed:'capybara_toon',expectedPetId:petId});
  await dad.call('/api/v2/pet/restart',{expectedPetId:petId});
  const after=await dad.call('/api/v2/student');
  ok(!after.pet&&after.wallet.balance===before.wallet.balance&&after.tasks.length===before.tasks.length,'API重养仅清宠物，余额和计划任务保留');
  await dad.call('/api/v2/pet/backups/'+b.id+'/restore',{expectedPetId:null});s=await dad.call('/api/v2/student');
- ok(s.pet.breed==='capybara_toon'&&s.wallet.balance===before.wallet.balance,'无宠物时可通过备份恢复，已发学习奖励仍在');
+ ok(s.pet.breed==='alpaca_toon'&&s.wallet.balance===before.wallet.balance,'无宠物时可通过备份恢复，已发学习奖励仍在');
  const count=(await dad.call('/api/v2/pet/backups')).items.length;
  await dad.call('/api/v2/pet/restart',{expectedPetId:'old-id'},400);ok((await dad.call('/api/v2/pet/backups')).items.length===count,'过期操作被拒绝，不生成误导性备份');
  await dad.call('/api/auth/lock',{});await dad.call('/api/v2/pet/backups',undefined,403);await dad.call('/api/v2/notify/logs',undefined,403);ok(true,'家长端锁定后不能读取备份和发送日志');

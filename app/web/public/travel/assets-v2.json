@@ -1,14 +1,6 @@
 {
   "generator": "Image 2.6 API via image2/image-gen-cli",
   "pets": {
-    "cat_black": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "5796e7fd96ed30bcf7a4d0086ebb71e9bbac181d61afcf83d135d646b1ba795d"
-    },
     "alpaca_toon": {
       "width": 439,
       "height": 390,
@@ -17,154 +9,6 @@
       "native": true,
       "reference": "/pets/breeds/alpaca_toon/frames/frame-sit.png",
       "sha256": "778557fc4e585c830aa133912b27e4ec91c0b6195f1ac4f35c80b46946c44671",
-      "model": "gpt-image-2.6",
-      "quality": "medium",
-      "identityReference": true
-    },
-    "bird_pigeon": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "66a3759565555bac46378e9ca850bcec3327e3ddf3081d73a62ac81599b58a55"
-    },
-    "dog_corgi_toon": {
-      "width": 441,
-      "height": 392,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "reference": "/pets/breeds/dog_corgi_toon/frames/frame-sit.png",
-      "sha256": "42bb557da4e8b9a3fa7dc6df3fc8708bdcb64ed9b7f8f1f85cdf0a6046109d6c",
-      "model": "gpt-image-2.6",
-      "quality": "medium",
-      "identityReference": true
-    },
-    "turtle_redear": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "d7b15d80f949d885aae58436ba5140a7f1f4826b1a9ac8bbc115515f95ead3d3"
-    },
-    "cat_ragdoll": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "96e69d831e984ee3853d1514743a8e038cebd916c881e23bd482158c36b20a4b"
-    },
-    "turtle_map": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "228375719fd7eba4c4e6ea2ed7fcb92cb852657f7c6c02c7190bb43c111d26d2"
-    },
-    "turtle_grass": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "b235837a84026dd357f65746af6aa4d6d407c4a0ace2966379963b611cb6fe93"
-    },
-    "dog_dairy": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "c62375afe5702d0abe25762a689c4f0b716d480714cdb9595df128835d07ca68"
-    },
-    "turtle_flower": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "ad04d75eeebfc042892c56dc85c38f91c3529d7b67ee6811ec4f35e3ad8888de"
-    },
-    "bird_peachface": {
-      "width": 404,
-      "height": 432,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "7a224413ac91568662d0998c072d397e0dff246502668eec8fede1f584693f44"
-    },
-    "bird_cockatiel": {
-      "width": 417,
-      "height": 416,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "2a9f6a401eb36dbebbd149cdf2397ea55c08b3b1e1677d7e0fbe903947ef68d3"
-    },
-    "cat_blue": {
-      "width": 442,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "871e61f2eb294f5160a49a3eb060fdafea8449a2b4f9e4c499a25d24483dcaa7"
-    },
-    "dog_golden": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "dfbb191f1fc27ea3a34c83f6d6949566e9e91bdf32322ad7a32307ee34a9d1a6"
-    },
-    "dog_german": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "c265fe830550b8e907bde5e6379ea6ff52c805db73b52ee4f66ee249fd917602"
-    },
-    "cat_orange": {
-      "width": 437,
-      "height": 390,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "reference": "/pets/breeds/cat_orange/frames/frame-sit.png",
-      "sha256": "c3382cdbc46e0c258a5f881eb0e6255b314f31aeace4b431a3b73c090defca89",
-      "model": "gpt-image-2.6",
-      "quality": "medium",
-      "identityReference": true
-    },
-    "dog_corgi": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "f4325c05a08c968f9bd07fdbe4935fc33d5ae3d8d1bf44cc77c9d45e13c8654c"
-    },
-    "bird_parakeet": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "sha256": "9a74acd3c89a410df1e87c84f2dea4058e97b3bc588554c5601a52e596012033"
-    },
-    "capybara_toon": {
-      "width": 443,
-      "height": 394,
-      "frames": 9,
-      "durationMs": 1800,
-      "native": true,
-      "reference": "/pets/breeds/capybara_toon/frames/frame-sit.png",
-      "sha256": "d418cde3a39a4fb6b4f06467774eec6e738983f01162cc519945c2036c9e2578",
       "model": "gpt-image-2.6",
       "quality": "medium",
       "identityReference": true
@@ -298,9 +142,6 @@
     }
   },
   "availableBreeds": [
-    "cat_orange",
-    "dog_corgi_toon",
-    "capybara_toon",
     "alpaca_toon"
   ]
 }

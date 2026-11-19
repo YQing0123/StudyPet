@@ -20,7 +20,7 @@ const advance = ms => { time += ms; };
 let checks = 0;
 const check = (label, fn) => { fn(); checks++; console.log('✓ ' + label); };
 const schedule = { ...DEFAULT_SLEEP_SCHEDULE, nightEnabled: true, napEnabled: true };
-const create = id => { q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)', id, '睡眠验收', new Date().toISOString()); D.adopt(id, { breed: 'capybara_toon', name: '梦梦' }); };
+const create = id => { q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)', id, '睡眠验收', new Date().toISOString()); D.adopt(id, { breed: 'alpaca_toon', name: '梦梦' }); };
 try {
   const id = 'sleep-test'; create(id); create('sleep-other');
   check('既有家庭作息默认关闭，不突然限制互动', () => assert.equal(S.sleepState(id).active, null));

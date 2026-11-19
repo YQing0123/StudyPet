@@ -1,3 +1,5 @@
+import { isAvailablePetBreed } from '../shared/availablePetBreeds.mjs';
+
 /** Growth clothes are part of each animated character, separate from purchased accessories. */
 export const GROWTH_LOOKS = [
   { stage: 1, name: '幼年', look: '软萌幼崽', detail: '圆圆的脑袋、小小的身体，穿着最初的毛茸茸。' },
@@ -8,8 +10,8 @@ export const GROWTH_LOOKS = [
   { stage: 6, name: '老年', look: '暖暖披肩', detail: '换上暖杏色针织披肩，温柔地陪你继续长大。' },
 ];
 
-export const hasGrowthLooks = (breed: string) => breed === 'dog_corgi_toon' || breed === 'capybara_toon';
+export const hasGrowthLooks = (_breed: string) => false;
 export const growthLook = (stage: number) => GROWTH_LOOKS[Math.max(0, Math.min(5, stage - 1))];
-export const petAvatar = (breed: string, stage = 1) => hasGrowthLooks(breed) && stage > 1
-  ? `pets/breeds/${breed}/growth/${Math.min(6, stage)}/avatar.png`
-  : `pets/avatars/${breed}.png`;
+export const petAvatar = (breed: string, _stage = 1) => breed === 'capybara_toon'
+  ? 'pets/breeds/capybara_toon/capybara.svg'
+  : isAvailablePetBreed(breed) ? `pets/avatars/${breed}.png` : 'pets/legacy.svg';

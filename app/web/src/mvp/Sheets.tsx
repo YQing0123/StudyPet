@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { petAvatar } from './petGrowth';
 import type { InvItem, Pet, ShopItem, TodayData } from './types';
 
 /* ---------------- 通用弹层 ---------------- */
@@ -278,7 +279,7 @@ export function MenuSheet({
     <Sheet open={open} onClose={onClose} title="小岛档案" sub="慢慢来，记录都留在这里">
       {pet && (
         <div className="profile">
-          <img src={`pets/avatars/${pet.breed}.png`} alt="" />
+          <img src={petAvatar(pet.breed)} alt="" />
           <div className="profile-main">
             {editing ? (
               <div className="name-edit">

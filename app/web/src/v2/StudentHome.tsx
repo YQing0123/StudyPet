@@ -596,7 +596,7 @@ export default function StudentHome({ onParent, onLogout, parentName, accountBus
             <TaskViewport count={tasks.length}>
               {tasks.length === 0 && (
                 <div className="task-empty">
-                  <img src="pets/banner_task.jpg" alt="" />
+                  <img src="pets/room/sunroom.webp" alt="" />
                   <h4>今天还没有计划</h4>
                   <p>让家长在家长端安排今天的任务，或者先休息一下。</p>
                 </div>

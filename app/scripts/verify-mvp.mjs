@@ -30,7 +30,7 @@ await api('/api/auth/register', 'POST', { activationCode:testActivationCode(),lo
 let d = await api('/api/today');
 ok(d.isNew === true && d.pet === null, '新家庭初始处于未领养状态');
 
-d = await api('/api/pet/adopt', 'POST', { breed: 'cat_orange', name: '小橘' });
+d = await api('/api/pet/adopt', 'POST', { breed: 'alpaca_toon', name: '小橘' });
 ok(d.pet?.name === '小橘' && d.pet?.stage === 1, '领养橘猫并进入幼年');
 ok(d.tasks.length === 3, '领养时放入 3 个示例任务');
 ok(d.wallet.balance === 0, '初始星贝为 0');

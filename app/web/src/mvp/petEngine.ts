@@ -61,6 +61,10 @@ const GLOBAL_SCALE = 3.1;
 const GLOBAL_SCALE_MOBILE = 2.35;
 const DISPLAY_SCALE_MAX = 1.5;
 const PET_BASE = 'pets/';
+const LEGACY_APPEARANCE: Manifest['breeds'][string] = {
+  name: '', species: '', avatar: 'legacy.svg', frames: [{ key: 'sit', file: 'legacy.svg', bottom: .91 }],
+  videos: {}, walkTransitions: false,
+};
 
 const SOUND_MAP: Record<string, { hello: string[]; happy: string[]; sleep: string[] }> = {
   cat: { hello: ['cat-meow', 'cat-attention'], happy: ['cat-purr', 'cat-attention'], sleep: ['cat-purr'] },
@@ -394,16 +398,16 @@ export class PetEngine {
 
   /* ---------------- 品种 / 尺寸 ---------------- */
   private comp() {
-    return BREED_COMP[this.pet.breed] || BREED_COMP.cat_orange as any;
+    return BREED_COMP[this.pet.breed] || BREED_COMP.alpaca_toon;
   }
 
   private petMediaURL(file: string) {
-    const info = this.manifest.breeds[this.pet.breed] || this.manifest.breeds.cat_orange;
-    return `${PET_BASE}${file}${info.sourceVersion ? `?v=${encodeURIComponent(info.sourceVersion)}` : ''}`;
+    const info = this.manifest.breeds[this.pet.breed];
+    return `${PET_BASE}${file}${info?.sourceVersion ? `?v=${encodeURIComponent(info.sourceVersion)}` : ''}`;
   }
 
   private appearance() {
-    const base = this.manifest.breeds[this.pet.breed] || this.manifest.breeds.cat_orange;
+    const base = this.manifest.breeds[this.pet.breed] || LEGACY_APPEARANCE;
     return base.growth?.[String(clamp(this.pet.stage, 1, 6))] || base;
   }
 

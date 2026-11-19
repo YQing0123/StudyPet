@@ -29,7 +29,7 @@ const register = await api('/api/auth/register', 'POST', {
   password: 'Travel-Suite-2026!', name: '旅行验收家长', familyName: '旅行验收家庭', childName: '旅行孩子',
 });
 assert.equal(register.response.status, 200, JSON.stringify(register.json));
-const adopted = await api('/api/v2/adopt', 'POST', { breed: 'cat_orange', name: '小旅伴' });
+const adopted = await api('/api/v2/adopt', 'POST', { breed: 'alpaca_toon', name: '小旅伴' });
 assert.equal(adopted.response.status, 200, JSON.stringify(adopted.json));
 let state = adopted.json;
 check(state.travel.unlocked === false, '幼年宠物未开放旅行');
@@ -224,7 +224,7 @@ assert.equal(otherFamily.response.status, 200, JSON.stringify(otherFamily.json))
 check((await api('/api/v2/travel/' + fullTrip.id + '/claim', 'POST', {})).response.status === 404, '不能领取其他家庭孩子的行囊');
 let otherState = (await api('/api/v2/student')).json;
 check(otherState.travel.rarePity.completedWithoutRare === 0 && otherState.travel.rarePity.tripsUntilGuaranteed === 5, '另一家庭的稀有保底从零开始，和当前家庭独立');
-const otherAdopted = await api('/api/v2/adopt', 'POST', { breed: 'cat_orange', name: '旧旅行验收' });
+const otherAdopted = await api('/api/v2/adopt', 'POST', { breed: 'alpaca_toon', name: '旧旅行验收' });
 assert.equal(otherAdopted.response.status, 200, JSON.stringify(otherAdopted.json));
 const otherPet = db.prepare('SELECT pet_id,child_id FROM pet_life WHERE pet_id=?').get(otherAdopted.json.pet.id);
 const legacyOutcome = { early: false, progress: 100, destinations: ['beijing'], collectionDrops: [{ key: 'beijing.postcard', qty: 1 }], foodDrops: [], materialDrops: [], coins: 0, dropRates: { collectible: .083, food: .44, souvenir: .31, badge: .2, rare: .05 } };

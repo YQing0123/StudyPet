@@ -18,7 +18,7 @@ const pet = () => D.getPetRow(id), state = () => V.getStudentState(id);
 const clean = value => q.run('UPDATE pet_life SET clean=?,last_tick=? WHERE child_id=?', value, new Date().toISOString(), id);
 const qty = key => state().inventory.find(x => x.key === key)?.qty || 0;
 try {
-  for (const child of [id,other]) { q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)',child, '场景验收', new Date().toISOString()); D.adopt(child,{breed:'capybara_toon', name:'卡卡'}); }
+  for (const child of [id,other]) { q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)',child, '场景验收', new Date().toISOString()); D.adopt(child,{breed:'alpaca_toon', name:'卡卡'}); }
   for (let i=0;i<12;i++) V.giftPoints(id,{amount:500});
   check('共用服务夹住上下限且返回真实增减', () => {
     const r=changePetState(id,pet().pet_id,{set:{clean:90,mood:2},reason:'fixture'});
@@ -73,7 +73,7 @@ try {
   check('收回家具留在背包，重新摆放免费',()=>{assert.equal(R.roomState(id).placements.length,0);assert.equal(qty('f_sofa'),1);D.useMaterial(id,{key:'f_sofa'});assert.equal(state().wallet.balance,after);});
   const saved=R.roomState(id); B.restartPet(id,pet().pet_id);
   check('重新养宠不丢永久场景家具与布置',()=>assert.deepEqual(R.roomState(id),saved));
-  q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)','rounding','显示边界',new Date().toISOString());D.adopt('rounding',{breed:'cat_orange',name:'边界'});
+  q.run('INSERT INTO child(id,name,created_at) VALUES(?,?,?)','rounding','显示边界',new Date().toISOString());D.adopt('rounding',{breed:'alpaca_toon',name:'边界'});
   q.run('UPDATE pet_life SET clean=49.96 WHERE child_id=?','rounding');
   check('清洁显示50.0时资格与脏污等级一致，微量衰减不造成隐藏门槛',()=>{const r=V.getStudentState('rounding');assert.equal(r.pet.stats.clean,50);assert.equal(r.hygiene.showerAvailable,true);assert.equal(r.hygiene.dirtLevel,1);assert.equal(D.shower('rounding').pet.stats.clean,70);});
   const beforeFail=state().wallet.balance;

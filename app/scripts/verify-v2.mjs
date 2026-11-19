@@ -24,7 +24,7 @@ await api('/api/auth/register', 'POST', { activationCode:testActivationCode(),lo
 let s = await api('/api/v2/student');
 ok(s.pet === null, '新家庭初始无宠物');
 
-await api('/api/pet/adopt', 'POST', { breed: 'cat_orange', name: '小橘' });
+await api('/api/pet/adopt', 'POST', { breed: 'alpaca_toon', name: '小橘' });
 s = await api('/api/v2/student');
 ok(s.pet?.name === '小橘', '领养后学生端有宠物');
 
